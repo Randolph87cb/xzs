@@ -23,3 +23,7 @@
 - `reading-guide.md`：代码阅读入口建议。
 
 根目录 `PROJECT_STRUCTURE.md` 也保留了上述结构文档索引。
+
+## 维护规则
+
+- 如果项目目录结构发生新增、删除、移动或职责变化，需要同步更新 `docs/project-structure/` 下的相关结构文档；如果结构文档清单变化，也要同步更新根目录 `PROJECT_STRUCTURE.md` 和本文件中的文档位置说明。
