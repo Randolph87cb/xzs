@@ -13,6 +13,7 @@ source/vue/xzs-student/
     ├── components/   # 分页、富文本、返回顶部等通用组件
     ├── icons/        # svg-sprite 图标
     ├── layout/       # 学生端整体布局
+    ├── plugins/      # Element UI 等 Vue 插件按需注册入口
     ├── store/        # Vuex 模块
     ├── styles/       # 全局样式
     ├── utils/        # Axios 请求封装与工具函数
@@ -43,4 +44,10 @@ npm run serve
 ```powershell
 cd source\vue\xzs-student
 npm run build
+```
+
+或从仓库根目录运行：
+
+```powershell
+.\scripts\build-student.ps1 -SkipInstall
 ```

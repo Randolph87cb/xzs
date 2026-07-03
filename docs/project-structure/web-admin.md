@@ -13,6 +13,7 @@ source/vue/xzs-admin/
     ├── components/   # 分页、富文本、面包屑、图标等通用组件
     ├── icons/        # svg-sprite 图标
     ├── layout/       # 后台布局、侧边栏、导航、标签页
+    ├── plugins/      # Element UI 等 Vue 插件按需注册入口
     ├── store/        # Vuex 模块
     ├── styles/       # 全局样式与主题变量
     ├── utils/        # Axios 请求封装、工具函数、校验
@@ -46,4 +47,10 @@ npm run serve
 ```powershell
 cd source\vue\xzs-admin
 npm run build
+```
+
+或从仓库根目录运行：
+
+```powershell
+.\scripts\build-admin.ps1 -SkipInstall
 ```

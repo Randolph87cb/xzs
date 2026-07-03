@@ -9,7 +9,8 @@
 - 微信小程序学生端在 `source/wx/xzs-student`。
 - PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`。
 - 真题题库 Markdown 资料在 `docs/question-bank`。
-- 本地维护和数据导入脚本在 `scripts`。
+- 本地构建、测量、静态资源同步、维护和数据导入脚本在 `scripts`。
+- 构建性能优化方案和迁移评估文档在 `docs/build-performance-optimization-plan.md`、`docs/vite-vue2-migration-spike.md`、`docs/vue3-vite-migration-roadmap.md`。
 - 发布包与部署材料分别在 `release` 和 `docker`。
 
 ## 项目结构文档

@@ -3,17 +3,12 @@ import App from './App.vue'
 import { router } from './router'
 import store from './store'
 import 'normalize.css/normalize.css'
-import Element from 'element-ui'
-import './styles/element-variables.scss'
+import './plugins/element-ui'
 
 import '@/styles/index.scss' // global css
 import './icons' // icon
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-
-Vue.use(Element, {
-  size: 'medium' // set element-ui default size
-})
 
 Vue.config.productionTip = false
 
@@ -29,9 +24,8 @@ router.beforeEach(async (to, from, next) => {
   }
   store.commit('router/initRoutes')
 
-  if (to.path) {
-    // eslint-disable-next-line no-undef
-    _hmt.push(['_trackPageview', '/#' + to.fullPath])
+  if (to.path && window._hmt) {
+    window._hmt.push(['_trackPageview', '/#' + to.fullPath])
   }
 
   next()

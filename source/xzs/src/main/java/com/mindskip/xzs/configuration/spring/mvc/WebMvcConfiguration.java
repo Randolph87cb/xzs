@@ -4,9 +4,11 @@ import com.mindskip.xzs.configuration.property.SystemConfig;
 import com.mindskip.xzs.configuration.spring.wx.TokenHandlerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -17,6 +19,8 @@ import java.util.List;
  */
 @Configuration
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
+
+    private static final int NO_CACHE_SECONDS = 0;
 
     private final TokenHandlerInterceptor tokenHandlerInterceptor;
     private final SystemConfig systemConfig;
@@ -44,9 +48,17 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/admin/static/**", "/student/static/**")
+                .addResourceLocations("classpath:/static/")
+                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic());
+
+        registry.addResourceHandler("/admin/index.html", "/student/index.html")
+                .addResourceLocations("classpath:/static/")
+                .setCachePeriod(NO_CACHE_SECONDS);
+
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
-                .setCachePeriod(0);
+                .setCachePeriod(NO_CACHE_SECONDS);
     }
 
     @Override

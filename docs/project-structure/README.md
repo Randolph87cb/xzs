@@ -18,7 +18,7 @@ xzs/
 │   ├── project-structure/ # 项目结构拆分文档
 │   └── question-bank/   # 随项目版本管理的真题题库 Markdown 资料
 ├── release/             # 已构建发布包：后端 jar 与前端静态包
-├── scripts/             # 本地维护和数据导入脚本
+├── scripts/             # 本地构建、测量、静态资源同步、维护和数据导入脚本
 ├── source/              # 源码根目录
 │   ├── xzs/             # Spring Boot 后端
 │   ├── vue/             # Web 前端源码
@@ -41,3 +41,9 @@ xzs/
 - `wx-student.md`：微信小程序学生端结构。
 - `database-deploy.md`：数据库、发布包与部署资产。
 - `reading-guide.md`：按业务链路阅读代码的建议入口。
+
+## 构建优化文档
+
+- `docs/build-performance-optimization-plan.md`：构建与运行性能优化分阶段方案。
+- `docs/vite-vue2-migration-spike.md`：Vue 2.7 + Vite 迁移验证方案。
+- `docs/vue3-vite-migration-roadmap.md`：Vue 3 + Vite 长期迁移路线图。

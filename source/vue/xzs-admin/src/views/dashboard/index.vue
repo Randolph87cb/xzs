@@ -67,6 +67,31 @@
 import resize from './components/mixins/resize'
 import CountTo from 'vue-count-to'
 import dashboardApi from '@/api/dashboard'
+
+let echartsLoadPromise = null
+
+function loadEcharts () {
+  if (!echartsLoadPromise) {
+    echartsLoadPromise = Promise.all([
+      import('echarts/core'),
+      import('echarts/charts'),
+      import('echarts/components'),
+      import('echarts/renderers'),
+      import('echarts/theme/macarons.js')
+    ]).then(([echarts, charts, components, renderers]) => {
+      echarts.use([
+        charts.LineChart,
+        components.GridComponent,
+        components.TitleComponent,
+        components.TooltipComponent,
+        renderers.CanvasRenderer
+      ])
+      return echarts
+    })
+  }
+  return echartsLoadPromise
+}
+
 export default {
   mixins: [resize],
   components: {
@@ -80,26 +105,43 @@ export default {
       doQuestionCount: 0,
       echartsUserAction: null,
       echartsQuestion: null,
-      loading: false
+      loading: false,
+      chartDestroyed: false
     }
   },
-  mounted () {
-    // eslint-disable-next-line no-undef
-    this.echartsUserAction = echarts.init(document.getElementById('echarts-moth-user'), 'macarons')
-    // eslint-disable-next-line no-undef
-    this.echartsQuestion = echarts.init(document.getElementById('echarts-moth-question'), 'macarons')
-    let _this = this
+  async mounted () {
     this.loading = true
-    dashboardApi.index().then(re => {
+    try {
+      const [echarts, re] = await Promise.all([
+        loadEcharts(),
+        dashboardApi.index()
+      ])
+      if (this.chartDestroyed) {
+        return
+      }
+      this.echartsUserAction = echarts.init(document.getElementById('echarts-moth-user'), 'macarons')
+      this.echartsQuestion = echarts.init(document.getElementById('echarts-moth-question'), 'macarons')
       let response = re.response
-      _this.examPaperCount = response.examPaperCount
-      _this.questionCount = response.questionCount
-      _this.doExamPaperCount = response.doExamPaperCount
-      _this.doQuestionCount = response.doQuestionCount
-      _this.echartsUserAction.setOption(this.option('用户活跃度', '{b}日{c}度', response.mothDayText, response.mothDayUserActionValue))
-      _this.echartsQuestion.setOption(this.option('题目月数量', '{b}日{c}题', response.mothDayText, response.mothDayDoExamQuestionValue))
+      this.examPaperCount = response.examPaperCount
+      this.questionCount = response.questionCount
+      this.doExamPaperCount = response.doExamPaperCount
+      this.doQuestionCount = response.doQuestionCount
+      this.echartsUserAction.setOption(this.option('用户活跃度', '{b}日{c}度', response.mothDayText, response.mothDayUserActionValue))
+      this.echartsQuestion.setOption(this.option('题目月数量', '{b}日{c}题', response.mothDayText, response.mothDayDoExamQuestionValue))
+    } finally {
       this.loading = false
-    })
+    }
+  },
+  beforeDestroy () {
+    this.chartDestroyed = true
+    if (this.echartsUserAction) {
+      this.echartsUserAction.dispose()
+      this.echartsUserAction = null
+    }
+    if (this.echartsQuestion) {
+      this.echartsQuestion.dispose()
+      this.echartsQuestion = null
+    }
   },
   methods: {
     option (title, formatter, label, vaule) {
