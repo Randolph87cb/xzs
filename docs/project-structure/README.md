@@ -18,6 +18,7 @@ xzs/
 │   ├── project-structure/ # 项目结构拆分文档
 │   └── question-bank/   # 随项目版本管理的真题题库 Markdown 资料
 ├── release/             # 已构建发布包：后端 jar 与前端静态包
+├── scripts/             # 本地维护和数据导入脚本
 ├── source/              # 源码根目录
 │   ├── xzs/             # Spring Boot 后端
 │   ├── vue/             # Web 前端源码

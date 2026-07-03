@@ -9,6 +9,7 @@
 - 微信小程序学生端在 `source/wx/xzs-student`。
 - PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`。
 - 真题题库 Markdown 资料在 `docs/question-bank`。
+- 本地维护和数据导入脚本在 `scripts`。
 - 发布包与部署材料分别在 `release` 和 `docker`。
 
 ## 项目结构文档
