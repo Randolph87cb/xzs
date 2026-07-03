@@ -305,6 +305,16 @@ CREATE TABLE "public"."t_subject" (
 -- ----------------------------
 -- Records of t_subject
 -- ----------------------------
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (1, 'GESP 1级', 1, 'GESP 1级', 1, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (2, 'GESP 2级', 2, 'GESP 2级', 2, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (3, 'GESP 3级', 3, 'GESP 3级', 3, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (4, 'GESP 4级', 4, 'GESP 4级', 4, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (5, 'GESP 5级', 5, 'GESP 5级', 5, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (6, 'GESP 6级', 6, 'GESP 6级', 6, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (7, 'GESP 7级', 7, 'GESP 7级', 7, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (8, 'GESP 8级', 8, 'GESP 8级', 8, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (9, 'CSP-J', 9, 'CSP-J', 9, false);
+INSERT INTO "public"."t_subject" ("id", "name", "level", "level_name", "item_order", "deleted") VALUES (10, 'CSP-S', 10, 'CSP-S', 10, false);
 
 -- ----------------------------
 -- Table structure for t_task_exam
@@ -474,7 +484,7 @@ SELECT setval('"public"."t_question_id_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."t_subject_id_seq"
 OWNED BY "public"."t_subject"."id";
-SELECT setval('"public"."t_subject_id_seq"', 1, true);
+SELECT setval('"public"."t_subject_id_seq"', 10, true);
 
 -- ----------------------------
 -- Alter sequences owned by

@@ -1,13 +1,6 @@
 const app = getApp()
 Page({
-  data: {
-    levelIndex: 0
-  },
-  bindLevelChange: function (e) {
-    this.setData({
-      levelIndex: e.detail.value
-    })
-  },
+  data: {},
   formSubmit: function(e) {
     let _this = this;
     let form = e.detail.value
@@ -19,10 +12,7 @@ Page({
       app.message('密码不能为空', 'error');
       return;
     }
-    if (form.userLevel == null || form.userLevel == '') {
-      app.message('年级不能为空', 'error');
-      return;
-    }
+    form.userLevel = 1
     _this.setData({
       spinShow: true
     });

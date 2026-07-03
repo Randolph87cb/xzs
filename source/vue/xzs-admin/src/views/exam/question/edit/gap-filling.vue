@@ -1,14 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="100px" v-loading="formLoading"  :rules="rules">
-      <el-form-item label="年级：" prop="gradeLevel" required>
-        <el-select v-model="form.gradeLevel" placeholder="年级" @change="levelChange">
-          <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="学科：" prop="subjectId" required>
         <el-select v-model="form.subjectId" placeholder="学科" >
-          <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id" :label="item.name+' ( '+item.levelName+' )'"></el-option>
+          <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id" :label="item.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="题干：" prop="title" required>
@@ -51,7 +46,7 @@
 <script>
 import QuestionShow from '../components/Show'
 import Ueditor from '@/components/Ueditor'
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import questionApi from '@/api/question'
 
 export default {
@@ -63,7 +58,7 @@ export default {
       form: {
         id: null,
         questionType: 4,
-        gradeLevel: null,
+        gradeLevel: 1,
         subjectId: null,
         title: '',
         items: [
@@ -76,9 +71,6 @@ export default {
       subjectFilter: null,
       formLoading: false,
       rules: {
-        gradeLevel: [
-          { required: true, message: '请选择年级', trigger: 'change' }
-        ],
         subjectId: [
           { required: true, message: '请选择学科', trigger: 'change' }
         ],
@@ -198,10 +190,6 @@ export default {
         }
       })
     },
-    levelChange () {
-      this.form.subjectId = null
-      this.subjectFilter = this.subjects.filter(data => data.level === this.form.gradeLevel)
-    },
     showQuestion () {
       this.questionShow.dialog = true
       this.questionShow.qType = this.form.questionType
@@ -213,7 +201,7 @@ export default {
       this.form = {
         id: null,
         questionType: 4,
-        gradeLevel: null,
+        gradeLevel: 1,
         subjectId: null,
         title: '',
         items: [
@@ -229,11 +217,6 @@ export default {
     ...mapActions('tagsView', { delCurrentView: 'delCurrentView' })
   },
   computed: {
-    ...mapGetters('enumItem', ['enumFormat']),
-    ...mapState('enumItem', {
-      questionTypeEnum: state => state.exam.question.typeEnum,
-      levelEnum: state => state.user.levelEnum
-    }),
     ...mapState('exam', { subjects: state => state.subjects })
   }
 }

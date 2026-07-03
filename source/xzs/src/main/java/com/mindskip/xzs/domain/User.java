@@ -33,7 +33,7 @@ public class User implements Serializable {
     private Date birthDay;
 
     /**
-     * 学生年级(1-12)
+     * 学生兼容级别
      */
     private Integer userLevel;
 

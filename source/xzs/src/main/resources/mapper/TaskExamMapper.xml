@@ -152,7 +152,9 @@
     <include refid="Base_Column_List" />
     from t_task_exam
     where deleted='f'
-    and grade_level = #{gradeLevel,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      and grade_level = #{_parameter,jdbcType=INTEGER}
+    </if>
   </select>
 
 </mapper>

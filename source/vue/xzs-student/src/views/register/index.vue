@@ -19,12 +19,6 @@
                         placeholder="密码" name="password" tabindex="2" auto-complete="on"
                         @keyup.enter.native="handleLogin"/>
             </div>
-            <div class="lowin-group">
-              <label>年级 </label>
-              <el-select class="lowin-input" v-model="loginForm.userLevel" placeholder="年级">
-                <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-              </el-select>
-            </div>
             <el-button type="text" class="lowin-btn login-btn" @click.native.prevent="handleRegister">注册</el-button>
             <div class="text-foot">
               已有账号?
@@ -43,7 +37,7 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations } from 'vuex'
 import registerApi from '@/api/register'
 
 export default {
@@ -69,11 +63,6 @@ export default {
       })
     },
     ...mapMutations('user', ['setUserName'])
-  },
-  computed: {
-    ...mapState('enumItem', {
-      levelEnum: state => state.user.levelEnum
-    })
   }
 }
 </script>

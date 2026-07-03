@@ -4,14 +4,9 @@
       <el-form-item label="题目ID：">
         <el-input v-model="queryParam.id" clearable></el-input>
       </el-form-item>
-      <el-form-item label="年级：">
-        <el-select v-model="queryParam.level" placeholder="年级" @change="levelChange" clearable>
-          <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="学科：" >
         <el-select v-model="queryParam.subjectId"  clearable>
-          <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id" :label="item.name+' ( '+item.levelName+' )'"></el-option>
+          <el-option v-for="item in subjects" :key="item.id" :value="item.id" :label="item.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -39,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Pagination from '@/components/Pagination'
 import examPaperApi from '@/api/examPaper'
 
@@ -49,12 +44,10 @@ export default {
     return {
       queryParam: {
         id: null,
-        level: null,
         subjectId: null,
         pageIndex: 1,
         pageSize: 10
       },
-      subjectFilter: null,
       listLoading: true,
       tableData: [],
       total: 0
@@ -90,21 +83,13 @@ export default {
         }
       })
     },
-    levelChange () {
-      this.queryParam.subjectId = null
-      this.subjectFilter = this.subjects.filter(data => data.level === this.queryParam.level)
-    },
     subjectFormatter  (row, column, cellValue, index) {
-      return this.subjectEnumFormat(cellValue)
+      let subject = this.subjects.find(item => item.id === cellValue)
+      return subject ? subject.name : null
     },
     ...mapActions('exam', { initSubject: 'initSubject' })
   },
   computed: {
-    ...mapGetters('enumItem', ['enumFormat']),
-    ...mapState('enumItem', {
-      levelEnum: state => state.user.levelEnum
-    }),
-    ...mapGetters('exam', ['subjectEnumFormat']),
     ...mapState('exam', { subjects: state => state.subjects })
   }
 }

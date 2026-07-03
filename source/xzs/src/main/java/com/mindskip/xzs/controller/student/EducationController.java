@@ -4,7 +4,6 @@ package com.mindskip.xzs.controller.student;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.Subject;
-import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.viewmodel.student.education.SubjectEditRequestVM;
 import com.mindskip.xzs.viewmodel.student.education.SubjectVM;
@@ -27,8 +26,7 @@ public class EducationController extends BaseApiController {
 
     @RequestMapping(value = "/subject/list", method = RequestMethod.POST)
     public RestResponse<List<SubjectVM>> list() {
-        User user = getCurrentUser();
-        List<Subject> subjects = subjectService.getSubjectByLevel(user.getUserLevel());
+        List<Subject> subjects = subjectService.allSubject();
         List<SubjectVM> subjectVMS = subjects.stream().map(d -> {
             SubjectVM subjectVM = modelMapper.map(d, SubjectVM.class);
             subjectVM.setId(String.valueOf(d.getId()));

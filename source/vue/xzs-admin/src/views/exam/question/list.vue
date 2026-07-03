@@ -4,15 +4,10 @@
       <el-form-item label="题目ID：">
         <el-input v-model="queryParam.id" clearable></el-input>
       </el-form-item>
-      <el-form-item label="年级：">
-        <el-select v-model="queryParam.level" placeholder="年级"  @change="levelChange" clearable>
-          <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="学科：">
         <el-select v-model="queryParam.subjectId" clearable>
           <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id"
-                     :label="item.name+' ( '+item.levelName+' )'"></el-option>
+                     :label="item.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="题型：">
@@ -67,7 +62,6 @@ export default {
       queryParam: {
         id: null,
         questionType: null,
-        level: null,
         subjectId: null,
         pageIndex: 1,
         pageSize: 10
@@ -85,7 +79,9 @@ export default {
     }
   },
   created () {
-    this.initSubject()
+    this.initSubject(() => {
+      this.subjectFilter = this.subjects
+    })
     this.search()
   },
   methods: {
@@ -102,10 +98,6 @@ export default {
         this.queryParam.pageIndex = re.pageNum
         this.listLoading = false
       })
-    },
-    levelChange () {
-      this.queryParam.subjectId = null
-      this.subjectFilter = this.subjects.filter(data => data.level === this.queryParam.level)
     },
     addQuestion () {
       this.$router.push('/exam/question/edit/singleChoice')
@@ -139,7 +131,8 @@ export default {
       return this.enumFormat(this.questionType, cellValue)
     },
     subjectFormatter (row, column, cellValue, index) {
-      return this.subjectEnumFormat(cellValue)
+      let subject = this.subjects.find(item => item.id === cellValue)
+      return subject ? subject.name : null
     },
     ...mapActions('exam', { initSubject: 'initSubject' })
   },
@@ -147,10 +140,8 @@ export default {
     ...mapGetters('enumItem', ['enumFormat']),
     ...mapState('enumItem', {
       questionType: state => state.exam.question.typeEnum,
-      editUrlEnum: state => state.exam.question.editUrlEnum,
-      levelEnum: state => state.user.levelEnum
+      editUrlEnum: state => state.exam.question.editUrlEnum
     }),
-    ...mapGetters('exam', ['subjectEnumFormat']),
     ...mapState('exam', { subjects: state => state.subjects })
   }
 }

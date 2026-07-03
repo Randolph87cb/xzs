@@ -9,17 +9,17 @@ public class Subject implements Serializable {
     private Integer id;
 
     /**
-     * 语文 数学 英语 等
+     * 科目名称，如 GESP 1级、CSP-J
      */
     private String name;
 
     /**
-     * 年级 (1-12) 小学 初中
+     * 兼容级别
      */
     private Integer level;
 
     /**
-     * 一年级、二年级等
+     * 兼容级别名称
      */
     private String levelName;
 

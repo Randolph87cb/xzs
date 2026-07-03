@@ -1,15 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="form" ref="form" label-width="100px" v-loading="formLoading" :rules="rules">
-      <el-form-item label="年级：" prop="level" required>
-        <el-select v-model="form.level" placeholder="年级"  @change="levelChange">
-          <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="学科：" prop="subjectId" required>
         <el-select v-model="form.subjectId" placeholder="学科">
           <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id"
-                     :label="item.name+' ( '+item.levelName+' )'"></el-option>
+                     :label="item.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="试卷类型：" prop="paperType" required>
@@ -101,7 +96,7 @@ export default {
     return {
       form: {
         id: null,
-        level: null,
+        level: 1,
         subjectId: null,
         paperType: 1,
         limitDateTime: [],
@@ -112,9 +107,6 @@ export default {
       subjectFilter: null,
       formLoading: false,
       rules: {
-        level: [
-          { required: true, message: '请选择年级', trigger: 'change' }
-        ],
         subjectId: [
           { required: true, message: '请选择学科', trigger: 'change' }
         ],
@@ -213,10 +205,6 @@ export default {
       })
       this.questionPage.showDialog = false
     },
-    levelChange () {
-      this.form.subjectId = null
-      this.subjectFilter = this.subjects.filter(data => data.level === this.form.level)
-    },
     search () {
       this.questionPage.queryParam.subjectId = this.form.subjectId
       this.questionPage.listLoading = true
@@ -235,14 +223,15 @@ export default {
       return this.enumFormat(this.questionTypeEnum, cellValue)
     },
     subjectFormatter (row, column, cellValue, index) {
-      return this.subjectEnumFormat(cellValue)
+      let subject = this.subjects.find(item => item.id === cellValue)
+      return subject ? subject.name : null
     },
     resetForm () {
       let lastId = this.form.id
       this.$refs['form'].resetFields()
       this.form = {
         id: null,
-        level: null,
+        level: 1,
         subjectId: null,
         paperType: 1,
         limitDateTime: [],
@@ -259,8 +248,7 @@ export default {
     ...mapGetters('enumItem', ['enumFormat']),
     ...mapState('enumItem', {
       questionTypeEnum: state => state.exam.question.typeEnum,
-      paperTypeEnum: state => state.exam.examPaper.paperTypeEnum,
-      levelEnum: state => state.user.levelEnum
+      paperTypeEnum: state => state.exam.examPaper.paperTypeEnum
     }),
     ...mapState('exam', { subjects: state => state.subjects })
   }

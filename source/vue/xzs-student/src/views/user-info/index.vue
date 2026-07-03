@@ -17,7 +17,6 @@
           <el-divider/>
           <el-row class="user-info-fullInfo">
             <label>姓名：{{form.realName}}</label><br/>
-            <label>年级：{{levelFormatter(form.userLevel)}}</label><br/>
             <label>注册时间：{{form.createTime}}</label><br/>
           </el-row>
         </el-card>
@@ -56,12 +55,6 @@
                 <el-form-item label="手机：">
                   <el-input v-model="form.phone"></el-input>
                 </el-form-item>
-                <el-form-item label="年级：" prop="userLevel" required>
-                  <el-select v-model="form.userLevel" placeholder="年级">
-                    <el-option v-for="item in levelEnum" :key="item.key" :value="item.key"
-                               :label="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
                 <el-form-item>
                   <el-button type="primary" @click="submitForm">更新</el-button>
                 </el-form-item>
@@ -76,7 +69,7 @@
 
 <script>
 import userApi from '@/api/user'
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -97,9 +90,6 @@ export default {
       rules: {
         realName: [
           { required: true, message: '请输入真实姓名', trigger: 'blur' }
-        ],
-        userLevel: [
-          { required: true, message: '请选择年级', trigger: 'change' }
         ]
       }
     }
@@ -110,7 +100,9 @@ export default {
       _this.event = re.response
     })
     userApi.getCurrentUser().then(re => {
-      _this.form = re.response
+      _this.form = Object.assign({}, re.response, {
+        userLevel: re.response.userLevel || 1
+      })
     })
   },
   methods: {
@@ -126,7 +118,10 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.formLoading = true
-          userApi.update(this.form).then(data => {
+          const updateForm = Object.assign({}, this.form, {
+            userLevel: this.form.userLevel || 1
+          })
+          userApi.update(updateForm).then(data => {
             if (data.code === 1) {
               _this.$message.success(data.message)
             } else {
@@ -140,18 +135,11 @@ export default {
           return false
         }
       })
-    },
-    levelFormatter (level) {
-      return this.enumFormat(this.levelEnum, level)
     }
   },
   computed: {
-    ...mapGetters('enumItem', [
-      'enumFormat'
-    ]),
     ...mapState('enumItem', {
-      sexEnum: state => state.user.sexEnum,
-      levelEnum: state => state.user.levelEnum
+      sexEnum: state => state.user.sexEnum
     })
   }
 }

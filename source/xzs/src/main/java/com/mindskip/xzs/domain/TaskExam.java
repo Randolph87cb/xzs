@@ -15,7 +15,7 @@ public class TaskExam implements Serializable {
     private String title;
 
     /**
-     * 年级
+     * 兼容级别
      */
     private Integer gradeLevel;
 

@@ -5,11 +5,6 @@
       <el-form-item label="学科：" required>
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="年级：" required>
-        <el-select v-model="form.level" placeholder="年级">
-          <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
@@ -19,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import subjectApi from '@/api/subject'
 
 export default {
@@ -49,7 +44,7 @@ export default {
     submitForm () {
       let _this = this
       this.formLoading = true
-      this.form.levelName = this.enumFormat(this.levelEnum, this.form.level)
+      this.form.levelName = this.form.name
       subjectApi.edit(this.form).then(data => {
         if (data.code === 1) {
           _this.$message.success(data.message)
@@ -76,14 +71,6 @@ export default {
       this.form.id = lastId
     },
     ...mapActions('tagsView', { delCurrentView: 'delCurrentView' })
-  },
-  computed: {
-    ...mapGetters('enumItem', [
-      'enumFormat'
-    ]),
-    ...mapState('enumItem', {
-      levelEnum: state => state.user.levelEnum
-    })
   }
 }
 </script>

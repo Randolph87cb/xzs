@@ -25,7 +25,7 @@ public class ExamPaper implements Serializable {
     private Integer paperType;
 
     /**
-     * 年级
+     * 兼容级别
      */
     private Integer gradeLevel;
 

@@ -2,11 +2,6 @@
   <div class="app-container">
 
     <el-form :model="form" ref="form" label-width="100px" v-loading="formLoading" :rules="rules">
-      <el-form-item label="年级：" prop="gradeLevel"  required>
-        <el-select v-model="form.gradeLevel" placeholder="年级" @change="levelChange" >
-          <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="标题："  prop="title" required>
         <el-input v-model="form.title"></el-input>
       </el-form-item>
@@ -33,7 +28,7 @@
       <el-form :model="paperPage.queryParam" ref="queryForm" :inline="true">
         <el-form-item label="学科：" >
           <el-select v-model="paperPage.queryParam.subjectId"  clearable>
-            <el-option v-for="item in paperPage.subjectFilter" :key="item.id" :value="item.id" :label="item.name+' ( '+item.levelName+' )'"></el-option>
+            <el-option v-for="item in paperPage.subjectFilter" :key="item.id" :value="item.id" :label="item.name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -63,7 +58,7 @@
 import taskApi from '@/api/task'
 import examPaperApi from '@/api/examPaper'
 import Pagination from '@/components/Pagination'
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: { Pagination },
@@ -71,7 +66,7 @@ export default {
     return {
       form: {
         id: null,
-        gradeLevel: null,
+        gradeLevel: 1,
         title: '',
         paperItems: []
       },
@@ -82,7 +77,6 @@ export default {
         showDialog: false,
         queryParam: {
           subjectId: null,
-          level: null,
           paperType: 6,
           pageIndex: 1,
           pageSize: 5
@@ -92,7 +86,6 @@ export default {
         total: 0
       },
       rules: {
-        gradeLevel: [{ required: true, message: '请输入年级', trigger: 'change' }],
         title: [{ required: true, message: '请输入任务标题', trigger: 'blur' }]
       }
     }
@@ -114,7 +107,6 @@ export default {
   },
   methods: {
     addPaper () {
-      this.paperPage.queryParam.level = this.form.gradeLevel
       this.paperPage.showDialog = true
       this.search()
     },
@@ -139,10 +131,6 @@ export default {
     examPaperSubmitForm () {
       this.paperPage.queryParam.pageIndex = 1
       this.search()
-    },
-    levelChange () {
-      this.paperPage.queryParam.subjectId = null
-      this.paperPage.subjectFilter = this.subjects.filter(data => data.level === this.form.gradeLevel)
     },
     removePaper (row) {
       this.form.paperItems.forEach((item, index, arr) => {
@@ -179,25 +167,20 @@ export default {
       this.$refs['form'].resetFields()
       this.form = {
         id: null,
-        gradeLevel: null,
+        gradeLevel: 1,
         title: '',
         paperItems: []
       }
       this.form.id = lastId
     },
     subjectFormatter (row, column, cellValue, index) {
-      return this.subjectEnumFormat(cellValue)
+      let subject = this.subjects.find(item => item.id === cellValue)
+      return subject ? subject.name : null
     },
     ...mapActions('exam', { initSubject: 'initSubject' }),
     ...mapActions('tagsView', { delCurrentView: 'delCurrentView' })
   },
   computed: {
-    ...mapGetters('enumItem', ['enumFormat']),
-    ...mapState('enumItem', {
-      questionTypeEnum: state => state.exam.question.typeEnum,
-      levelEnum: state => state.user.levelEnum
-    }),
-    ...mapGetters('exam', ['subjectEnumFormat']),
     ...mapState('exam', { subjects: state => state.subjects })
   }
 }

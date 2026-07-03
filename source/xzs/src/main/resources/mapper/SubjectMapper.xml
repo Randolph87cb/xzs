@@ -117,6 +117,7 @@
     select
     <include refid="Base_Column_List"/>
     from t_subject where  deleted='f'
+    order by item_order
   </select>
 
   <select id="page" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.education.SubjectPageRequestVM">
@@ -127,9 +128,6 @@
        and deleted='f'
       <if test="id != null ">
         and id= #{id}
-      </if>
-      <if test="level != null ">
-        and level= #{level}
       </if>
     </where>
   </select>

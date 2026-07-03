@@ -25,11 +25,6 @@
       <el-form-item label="手机：">
         <el-input v-model="form.phone"></el-input>
       </el-form-item>
-      <el-form-item label="年级：" prop="userLevel" required>
-        <el-select v-model="form.userLevel" placeholder="年级">
-          <el-option v-for="item in levelEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="状态：" required>
         <el-select v-model="form.status" placeholder="状态">
           <el-option v-for="item in statusEnum" :key="item.key" :value="item.key" :label="item.value"></el-option>
@@ -44,7 +39,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import userApi from '@/api/user'
 
 export default {
@@ -61,7 +56,7 @@ export default {
         sex: '',
         birthDay: null,
         phone: null,
-        userLevel: null
+        userLevel: 1
       },
       formLoading: false,
       rules: {
@@ -70,9 +65,6 @@ export default {
         ],
         realName: [
           { required: true, message: '请输入真实姓名', trigger: 'blur' }
-        ],
-        userLevel: [
-          { required: true, message: '请选择年级', trigger: 'change' }
         ]
       }
     }
@@ -93,6 +85,9 @@ export default {
       let _this = this
       this.$refs.form.validate((valid) => {
         if (valid) {
+          if (this.form.userLevel === null || this.form.userLevel === undefined) {
+            this.form.userLevel = 1
+          }
           this.formLoading = true
           userApi.createUser(this.form).then(data => {
             if (data.code === 1) {
@@ -126,21 +121,17 @@ export default {
         sex: '',
         birthDay: null,
         phone: null,
-        userLevel: null
+        userLevel: 1
       }
       this.form.id = lastId
     },
     ...mapActions('tagsView', { delCurrentView: 'delCurrentView' })
   },
   computed: {
-    ...mapGetters('enumItem', [
-      'enumFormat'
-    ]),
     ...mapState('enumItem', {
       sexEnum: state => state.user.sexEnum,
       roleEnum: state => state.user.roleEnum,
-      statusEnum: state => state.user.statusEnum,
-      levelEnum: state => state.user.levelEnum
+      statusEnum: state => state.user.statusEnum
     })
   }
 }

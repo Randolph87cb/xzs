@@ -3,8 +3,7 @@ const app = getApp()
 Page({
   data: {
     userInfo: null,
-    spinShow: false,
-    levelIndex: 0
+    spinShow: false
   },
   onLoad: function(options) {
     this.loadUserInfo()
@@ -17,8 +16,7 @@ Page({
     app.formPost('/api/wx/student/user/current', null).then(res => {
       if (res.code == 1) {
         _this.setData({
-          userInfo: res.response,
-          levelIndex: res.response.userLevel-1
+          userInfo: res.response
         });
       }
       _this.setData({
@@ -31,11 +29,6 @@ Page({
       app.message(e, 'error')
     })
   },
-  bindLevelChange: function(e) {
-    this.setData({
-      levelIndex: e.detail.value
-    })
-  },
   bindDateChange(e) {
     let {
       value
@@ -45,12 +38,13 @@ Page({
     })
   },
   formSubmit: function(e) {
-    let _this = this
+    let form = e.detail.value
+    form.userLevel = (this.data.userInfo && this.data.userInfo.userLevel) || 1
     wx.showLoading({
       title: '提交中',
       mask: true
     })
-    app.formPost('/api/wx/student/user/update', e.detail.value)
+    app.formPost('/api/wx/student/user/update', form)
       .then(res => {
         if (res.code == 1) {
           wx.reLaunch({
