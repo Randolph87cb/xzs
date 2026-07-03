@@ -1,6 +1,7 @@
 param(
     [string]$Profile = "dev",
     [int]$Port = 8000,
+    [int]$DbPort = 5432,
     [switch]$NoDatabase
 )
 
@@ -80,9 +81,19 @@ if (-not (Test-Path -LiteralPath $Jar)) {
 }
 
 if (-not $NoDatabase) {
-    if (-not (Test-Port -HostName "127.0.0.1" -PortNumber 5432)) {
+    if (Test-DockerReady) {
+        $containerNames = docker ps -a --format "{{.Names}}"
+        if ($containerNames -contains $DbContainer) {
+            $mappedDbPort = docker inspect $DbContainer --format "{{(index (index .HostConfig.PortBindings `"5432/tcp`") 0).HostPort}}"
+            if ($mappedDbPort) {
+                $DbPort = [int]$mappedDbPort
+            }
+        }
+    }
+
+    if (-not (Test-Port -HostName "127.0.0.1" -PortNumber $DbPort)) {
         if (-not (Test-DockerReady)) {
-            throw "PostgreSQL is not listening on localhost:5432 and Docker daemon is not ready. Start Docker Desktop or start PostgreSQL manually."
+            throw "PostgreSQL is not listening on localhost:$DbPort and Docker daemon is not ready. Start Docker Desktop or start PostgreSQL manually."
         }
         if (-not (Test-Path -LiteralPath $SqlFile)) {
             throw "SQL init file not found: $SqlFile"
@@ -91,19 +102,23 @@ if (-not $NoDatabase) {
         $containerNames = docker ps -a --format "{{.Names}}"
         if ($containerNames -contains $DbContainer) {
             docker start $DbContainer | Out-Null
+            $mappedDbPort = docker inspect $DbContainer --format "{{(index (index .HostConfig.PortBindings `"5432/tcp`") 0).HostPort}}"
+            if ($mappedDbPort) {
+                $DbPort = [int]$mappedDbPort
+            }
         } else {
             docker run `
                 --name $DbContainer `
                 -e POSTGRES_PASSWORD=123456 `
                 -e POSTGRES_DB=xzs `
-                -p 5432:5432 `
+                -p ${DbPort}:5432 `
                 -v "${SqlFile}:/docker-entrypoint-initdb.d/01-xzs-postgresql.sql:ro" `
                 -d postgres:14-alpine | Out-Null
         }
         Set-Content -LiteralPath $DbMarkerFile -Value $DbContainer -Encoding UTF8
 
-        if (-not (Wait-Port -HostName "127.0.0.1" -PortNumber 5432 -TimeoutSeconds 90)) {
-            throw "PostgreSQL did not become ready on localhost:5432."
+        if (-not (Wait-Port -HostName "127.0.0.1" -PortNumber $DbPort -TimeoutSeconds 90)) {
+            throw "PostgreSQL did not become ready on localhost:$DbPort."
         }
         Start-Sleep -Seconds 5
     }
@@ -122,7 +137,10 @@ $arguments = @(
     "-Duser.timezone=Asia/Shanghai",
     "-Dspring.profiles.active=$Profile",
     "-jar",
-    $Jar
+    $Jar,
+    "--spring.datasource.url=jdbc:postgresql://localhost:$DbPort/xzs",
+    "--spring.datasource.username=postgres",
+    "--spring.datasource.password=123456"
 )
 
 $process = Start-Process `
@@ -151,4 +169,5 @@ if (-not (Wait-Port -HostName "127.0.0.1" -PortNumber $Port -TimeoutSeconds 90))
 Write-Output "XZS started. PID: $($process.Id)"
 Write-Output "Admin:   http://localhost:$Port/admin"
 Write-Output "Student: http://localhost:$Port/student"
+Write-Output "Database: localhost:$DbPort/xzs"
 Write-Output "Logs:    $RuntimeDir"
