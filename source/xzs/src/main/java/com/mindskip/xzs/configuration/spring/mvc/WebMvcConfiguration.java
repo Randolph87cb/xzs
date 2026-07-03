@@ -48,8 +48,12 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/admin/static/**", "/student/static/**")
-                .addResourceLocations("classpath:/static/")
+        registry.addResourceHandler("/admin/static/**")
+                .addResourceLocations("classpath:/static/admin/static/")
+                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic());
+
+        registry.addResourceHandler("/student/static/**")
+                .addResourceLocations("classpath:/static/student/static/")
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic());
 
         registry.addResourceHandler("/admin/index.html", "/student/index.html")
