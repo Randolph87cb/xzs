@@ -21,6 +21,8 @@ public interface ExamPaperService extends BaseService<ExamPaper> {
 
     ExamPaper savePaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM, User user);
 
+    ExamPaper createSmartTrainingPaper(Integer subjectId, User user);
+
     ExamPaperEditRequestVM examPaperToVM(Integer id);
 
     List<PaperInfo> indexPaper(PaperFilter paperFilter);

@@ -10,6 +10,8 @@ import com.mindskip.xzs.utility.PageInfoHelper;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperPageResponseVM;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperPageVM;
+import com.mindskip.xzs.viewmodel.student.exam.SmartTrainingCreateRequestVM;
+import com.mindskip.xzs.viewmodel.student.exam.SmartTrainingCreateResponseVM;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -37,6 +39,16 @@ public class ExamPaperController extends BaseApiController {
     public RestResponse<ExamPaperEditRequestVM> select(@PathVariable Integer id) {
         ExamPaperEditRequestVM vm = examPaperService.examPaperToVM(id);
         return RestResponse.ok(vm);
+    }
+
+    @RequestMapping(value = "/smartTraining/create", method = RequestMethod.POST)
+    public RestResponse<SmartTrainingCreateResponseVM> createSmartTraining(@RequestBody @Valid SmartTrainingCreateRequestVM model) {
+        try {
+            ExamPaper examPaper = examPaperService.createSmartTrainingPaper(model.getSubjectId(), getCurrentUser());
+            return RestResponse.ok(new SmartTrainingCreateResponseVM(examPaper.getId()));
+        } catch (IllegalArgumentException e) {
+            return RestResponse.fail(2, e.getMessage());
+        }
     }
 
 

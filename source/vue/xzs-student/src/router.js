@@ -45,6 +45,18 @@ const router = new Router({
       ]
     },
     {
+      path: '/training',
+      component: Layout,
+      children: [
+        {
+          path: 'index',
+          component: () => import('@/views/training/index'),
+          name: 'TrainingIndex',
+          meta: { title: '智能训练' }
+        }
+      ]
+    },
+    {
       path: '/question',
       component: Layout,
       children: [

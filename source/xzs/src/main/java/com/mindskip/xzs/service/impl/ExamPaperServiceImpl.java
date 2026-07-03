@@ -5,6 +5,7 @@ import com.mindskip.xzs.domain.ExamPaper;
 import com.mindskip.xzs.domain.Question;
 import com.mindskip.xzs.domain.TextContent;
 import com.mindskip.xzs.domain.enums.ExamPaperTypeEnum;
+import com.mindskip.xzs.domain.enums.QuestionTypeEnum;
 import com.mindskip.xzs.domain.exam.ExamPaperQuestionItemObject;
 import com.mindskip.xzs.domain.exam.ExamPaperTitleItemObject;
 import com.mindskip.xzs.domain.other.KeyValue;
@@ -34,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +46,8 @@ import java.util.stream.Collectors;
 public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements ExamPaperService {
 
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
+    private static final int SMART_TRAINING_QUESTION_LIMIT = 20;
+    private static final int SMART_TRAINING_SUGGEST_TIME = 30;
     private final ExamPaperMapper examPaperMapper;
     private final QuestionMapper questionMapper;
     private final TextContentService textContentService;
@@ -109,6 +113,40 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
             examPaperMapper.updateByPrimaryKeySelective(examPaper);
         }
+        return examPaper;
+    }
+
+    @Override
+    @Transactional
+    public ExamPaper createSmartTrainingPaper(Integer subjectId, User user) {
+        Subject subject = subjectService.selectById(subjectId);
+        if (subject == null) {
+            throw new IllegalArgumentException("科目不存在");
+        }
+
+        List<Question> questions = questionMapper.selectRandomBySubjectId(subjectId, SMART_TRAINING_QUESTION_LIMIT);
+        if (questions == null || questions.isEmpty()) {
+            throw new IllegalArgumentException("当前科目暂无可用题目");
+        }
+
+        Date now = new Date();
+        List<ExamPaperTitleItemObject> titleItems = frameTextContentFromQuestions(questions);
+        TextContent frameTextContent = new TextContent(JsonUtil.toJsonStr(titleItems), now);
+        textContentService.insertByFilter(frameTextContent);
+
+        ExamPaper examPaper = new ExamPaper();
+        examPaper.setName("智能训练-" + subject.getName() + "-" + DateTimeUtil.dateFormat(now));
+        examPaper.setSubjectId(subjectId);
+        examPaper.setPaperType(ExamPaperTypeEnum.SmartTraining.getCode());
+        examPaper.setGradeLevel(subject.getLevel());
+        examPaper.setScore(questions.stream().mapToInt(Question::getScore).sum());
+        examPaper.setQuestionCount(questions.size());
+        examPaper.setSuggestTime(SMART_TRAINING_SUGGEST_TIME);
+        examPaper.setFrameTextContentId(frameTextContent.getId());
+        examPaper.setCreateUser(user.getId());
+        examPaper.setCreateTime(now);
+        examPaper.setDeleted(false);
+        examPaperMapper.insertSelective(examPaper);
         return examPaper;
     }
 
@@ -199,5 +237,27 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             titleItem.setQuestionItems(questionItems);
             return titleItem;
         }).collect(Collectors.toList());
+    }
+
+    private List<ExamPaperTitleItemObject> frameTextContentFromQuestions(List<Question> questions) {
+        List<ExamPaperTitleItemObject> titleItems = new ArrayList<>();
+        AtomicInteger itemOrder = new AtomicInteger(1);
+        Arrays.stream(QuestionTypeEnum.values()).forEach(questionType -> {
+            List<ExamPaperQuestionItemObject> questionItems = questions.stream()
+                    .filter(q -> q.getQuestionType().equals(questionType.getCode()))
+                    .map(q -> {
+                        ExamPaperQuestionItemObject item = new ExamPaperQuestionItemObject();
+                        item.setId(q.getId());
+                        item.setItemOrder(itemOrder.getAndIncrement());
+                        return item;
+                    }).collect(Collectors.toList());
+            if (!questionItems.isEmpty()) {
+                ExamPaperTitleItemObject titleItem = new ExamPaperTitleItemObject();
+                titleItem.setName(questionType.getName());
+                titleItem.setQuestionItems(questionItems);
+                titleItems.add(titleItem);
+            }
+        });
+        return titleItems;
     }
 }

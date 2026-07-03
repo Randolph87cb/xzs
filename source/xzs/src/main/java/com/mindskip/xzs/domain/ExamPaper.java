@@ -20,7 +20,7 @@ public class ExamPaper implements Serializable {
     private Integer subjectId;
 
     /**
-     * 试卷类型( 1固定试卷 4.时段试卷 6.任务试卷)
+     * 试卷类型( 1固定试卷 4.时段试卷 6.任务试卷 7.智能训练)
      */
     private Integer paperType;
 

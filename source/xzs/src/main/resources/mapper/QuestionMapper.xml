@@ -211,6 +211,17 @@
     </foreach>
   </select>
 
+  <select id="selectRandomBySubjectId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_question
+    WHERE deleted='f'
+      AND subject_id = #{subjectId}
+      AND status = 1
+    ORDER BY random()
+    LIMIT #{limit}
+  </select>
+
 
   <select id="selectAllCount"  resultType="java.lang.Integer">
 		SELECT count(*) from t_question where  deleted='f'

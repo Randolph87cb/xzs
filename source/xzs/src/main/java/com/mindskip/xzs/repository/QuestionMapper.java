@@ -16,6 +16,8 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
     List<Question> selectByIds(@Param("ids") List<Integer> ids);
 
+    List<Question> selectRandomBySubjectId(@Param("subjectId") Integer subjectId, @Param("limit") Integer limit);
+
     Integer selectAllCount();
 
     List<KeyValue> selectCountByDate(@Param("startTime") Date startTime,@Param("endTime") Date endTime);

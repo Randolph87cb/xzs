@@ -73,8 +73,8 @@ New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 $existingProcess = Get-ProcessByPidFile
 if ($existingProcess) {
     Write-Output "XZS is already running. PID: $($existingProcess.Id)"
-    Write-Output "Admin:   http://localhost:$Port/admin"
-    Write-Output "Student: http://localhost:$Port/student"
+    Write-Output "Admin:   http://localhost:$Port/admin/index.html"
+    Write-Output "Student: http://localhost:$Port/student/index.html"
     exit 0
 }
 
@@ -171,7 +171,7 @@ if (-not (Wait-Port -HostName "127.0.0.1" -PortNumber $Port -TimeoutSeconds 90))
 }
 
 Write-Output "XZS started. PID: $($process.Id)"
-Write-Output "Admin:   http://localhost:$Port/admin"
-Write-Output "Student: http://localhost:$Port/student"
+Write-Output "Admin:   http://localhost:$Port/admin/index.html"
+Write-Output "Student: http://localhost:$Port/student/index.html"
 Write-Output "Database: localhost:$DbPort/xzs"
 Write-Output "Logs:    $RuntimeDir"
