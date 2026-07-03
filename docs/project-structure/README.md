@@ -14,7 +14,9 @@
 ```text
 xzs/
 ├── docker/              # Docker 部署材料，包含 compose、安装文件和发布 jar
-├── docs/                # 已构建的项目文档站静态文件，以及结构拆分文档
+├── docs/                # 已构建的项目文档站静态文件、结构拆分文档和题库资料
+│   ├── project-structure/ # 项目结构拆分文档
+│   └── question-bank/   # 随项目版本管理的真题题库 Markdown 资料
 ├── release/             # 已构建发布包：后端 jar 与前端静态包
 ├── source/              # 源码根目录
 │   ├── xzs/             # Spring Boot 后端

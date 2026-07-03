@@ -17,6 +17,8 @@ $OutLog = Join-Path $RuntimeDir "xzs.out.log"
 $ErrLog = Join-Path $RuntimeDir "xzs.err.log"
 $SqlFile = Join-Path $Root "sql\xzs-postgresql.sql"
 $DbContainer = "xzs-postgres"
+$DbVolume = "xzs-postgres-data"
+$DbImage = "postgres:12-alpine"
 
 function Test-Port {
     param([string]$HostName, [int]$PortNumber)
@@ -107,13 +109,15 @@ if (-not $NoDatabase) {
                 $DbPort = [int]$mappedDbPort
             }
         } else {
+            docker volume create $DbVolume | Out-Null
             docker run `
                 --name $DbContainer `
                 -e POSTGRES_PASSWORD=123456 `
                 -e POSTGRES_DB=xzs `
                 -p ${DbPort}:5432 `
+                -v "${DbVolume}:/var/lib/postgresql/data" `
                 -v "${SqlFile}:/docker-entrypoint-initdb.d/01-xzs-postgresql.sql:ro" `
-                -d postgres:14-alpine | Out-Null
+                -d $DbImage | Out-Null
         }
         Set-Content -LiteralPath $DbMarkerFile -Value $DbContainer -Encoding UTF8
 

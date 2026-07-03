@@ -8,6 +8,7 @@
 - 管理端 Web 在 `source/vue/xzs-admin`，学生端 Web 在 `source/vue/xzs-student`。
 - 微信小程序学生端在 `source/wx/xzs-student`。
 - PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`。
+- 真题题库 Markdown 资料在 `docs/question-bank`。
 - 发布包与部署材料分别在 `release` 和 `docker`。
 
 ## 项目结构文档
