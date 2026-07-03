@@ -34,6 +34,9 @@ public class QuestionEditRequestVM {
     @Range(min = 1, max = 5, message = "请选择题目难度")
     private Integer difficult;
 
+    @NotBlank
+    private String knowledgePoint;
+
     private Integer itemOrder;
 
     public Integer getId() {
@@ -122,6 +125,14 @@ public class QuestionEditRequestVM {
 
     public void setDifficult(Integer difficult) {
         this.difficult = difficult;
+    }
+
+    public String getKnowledgePoint() {
+        return knowledgePoint;
+    }
+
+    public void setKnowledgePoint(String knowledgePoint) {
+        this.knowledgePoint = knowledgePoint;
     }
 
     public Integer getItemOrder() {

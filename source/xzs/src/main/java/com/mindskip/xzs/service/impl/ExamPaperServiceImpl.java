@@ -13,6 +13,7 @@ import com.mindskip.xzs.repository.ExamPaperMapper;
 import com.mindskip.xzs.repository.QuestionMapper;
 import com.mindskip.xzs.service.ExamPaperService;
 import com.mindskip.xzs.service.QuestionService;
+import com.mindskip.xzs.service.SmartTrainingConfigService;
 import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.service.enums.ActionEnum;
@@ -24,6 +25,7 @@ import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperTitleItemVM;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionEditRequestVM;
+import com.mindskip.xzs.viewmodel.admin.smarttraining.SmartTrainingRuleVM;
 import com.mindskip.xzs.viewmodel.student.dashboard.PaperFilter;
 import com.mindskip.xzs.viewmodel.student.dashboard.PaperInfo;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperPageVM;
@@ -53,15 +55,17 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
     private final TextContentService textContentService;
     private final QuestionService questionService;
     private final SubjectService subjectService;
+    private final SmartTrainingConfigService smartTrainingConfigService;
 
     @Autowired
-    public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService) {
+    public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService, SmartTrainingConfigService smartTrainingConfigService) {
         super(examPaperMapper);
         this.examPaperMapper = examPaperMapper;
         this.questionMapper = questionMapper;
         this.textContentService = textContentService;
         this.questionService = questionService;
         this.subjectService = subjectService;
+        this.smartTrainingConfigService = smartTrainingConfigService;
     }
 
 
@@ -124,7 +128,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             throw new IllegalArgumentException("科目不存在");
         }
 
-        List<Question> questions = questionMapper.selectRandomBySubjectId(subjectId, SMART_TRAINING_QUESTION_LIMIT);
+        List<Question> questions = selectSmartTrainingQuestions(subjectId);
         if (questions == null || questions.isEmpty()) {
             throw new IllegalArgumentException("当前科目暂无可用题目");
         }
@@ -148,6 +152,28 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         examPaper.setDeleted(false);
         examPaperMapper.insertSelective(examPaper);
         return examPaper;
+    }
+
+    private List<Question> selectSmartTrainingQuestions(Integer subjectId) {
+        SmartTrainingConfig config = smartTrainingConfigService.selectBySubjectId(subjectId);
+        if (config == null || config.getRuleJson() == null || config.getRuleJson().length() == 0) {
+            return questionMapper.selectRandomBySubjectId(subjectId, SMART_TRAINING_QUESTION_LIMIT);
+        }
+
+        List<SmartTrainingRuleVM> rules = JsonUtil.toJsonListObject(config.getRuleJson(), SmartTrainingRuleVM.class);
+        if (rules == null || rules.isEmpty()) {
+            return questionMapper.selectRandomBySubjectId(subjectId, config.getQuestionCount());
+        }
+
+        List<Question> questions = new ArrayList<>();
+        for (SmartTrainingRuleVM rule : rules) {
+            Integer availableCount = questionMapper.selectCountBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint());
+            if (availableCount == null || availableCount < rule.getQuestionCount()) {
+                throw new IllegalArgumentException("知识点“" + rule.getKnowledgePoint() + "”可用题目不足，需要" + rule.getQuestionCount() + "题，当前" + (availableCount == null ? 0 : availableCount) + "题");
+            }
+            questions.addAll(questionMapper.selectRandomBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint(), rule.getQuestionCount()));
+        }
+        return questions;
     }
 
     @Override

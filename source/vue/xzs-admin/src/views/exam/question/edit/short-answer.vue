@@ -6,6 +6,9 @@
           <el-option v-for="item in subjectFilter" :key="item.id" :value="item.id" :label="item.name"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="知识点：" prop="knowledgePoint">
+        <el-input v-model="form.knowledgePoint"></el-input>
+      </el-form-item>
       <el-form-item label="题干：" prop="title" required>
         <el-input v-model="form.title"   @focus="inputClick(form,'title')" />
       </el-form-item>
@@ -57,6 +60,7 @@ export default {
         questionType: 5,
         gradeLevel: 1,
         subjectId: null,
+        knowledgePoint: '综合',
         title: '',
         items: [],
         analyze: '',
@@ -107,6 +111,7 @@ export default {
       _this.formLoading = true
       questionApi.select(id).then(re => {
         _this.form = re.response
+        _this.form.knowledgePoint = _this.form.knowledgePoint || '综合'
         _this.formLoading = false
       })
     }
@@ -160,6 +165,7 @@ export default {
         questionType: 5,
         gradeLevel: 1,
         subjectId: null,
+        knowledgePoint: '综合',
         title: '',
         items: [],
         analyze: '',

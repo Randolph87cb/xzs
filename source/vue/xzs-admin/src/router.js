@@ -102,6 +102,12 @@ const constantRoutes = [
         meta: { title: '题目列表', noCache: true }
       },
       {
+        path: 'smartTraining/config',
+        component: () => import('@/views/exam/smart-training/config'),
+        name: 'ExamSmartTrainingConfig',
+        meta: { title: '智能训练配置', noCache: true }
+      },
+      {
         path: 'question/edit/singleChoice',
         component: () => import('@/views/exam/question/edit/single-choice'),
         name: 'singleChoicePage',

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.repository.SmartTrainingConfigMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.domain.SmartTrainingConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
+    <result column="question_count" jdbcType="INTEGER" property="questionCount" />
+    <result column="rule_json" jdbcType="VARCHAR" property="ruleJson" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, subject_id, question_count, rule_json, create_time, modify_time, deleted
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_smart_training_config
+    WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectBySubjectId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_smart_training_config
+    WHERE deleted='f'
+      AND subject_id = #{subjectId}
+    LIMIT 1
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_smart_training_config
+    WHERE deleted='f'
+    ORDER BY subject_id
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    DELETE FROM t_smart_training_config
+    WHERE id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.mindskip.xzs.domain.SmartTrainingConfig" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO t_smart_training_config (id, subject_id, question_count, rule_json, create_time, modify_time, deleted)
+    VALUES (#{id,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER}, #{questionCount,jdbcType=INTEGER},
+            #{ruleJson,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.mindskip.xzs.domain.SmartTrainingConfig" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO t_smart_training_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">id,</if>
+      <if test="subjectId != null">subject_id,</if>
+      <if test="questionCount != null">question_count,</if>
+      <if test="ruleJson != null">rule_json,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="modifyTime != null">modify_time,</if>
+      <if test="deleted != null">deleted,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">#{id,jdbcType=INTEGER},</if>
+      <if test="subjectId != null">#{subjectId,jdbcType=INTEGER},</if>
+      <if test="questionCount != null">#{questionCount,jdbcType=INTEGER},</if>
+      <if test="ruleJson != null">#{ruleJson,jdbcType=VARCHAR},</if>
+      <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+      <if test="modifyTime != null">#{modifyTime,jdbcType=TIMESTAMP},</if>
+      <if test="deleted != null">#{deleted,jdbcType=BIT},</if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.mindskip.xzs.domain.SmartTrainingConfig">
+    UPDATE t_smart_training_config
+    <set>
+      <if test="subjectId != null">subject_id = #{subjectId,jdbcType=INTEGER},</if>
+      <if test="questionCount != null">question_count = #{questionCount,jdbcType=INTEGER},</if>
+      <if test="ruleJson != null">rule_json = #{ruleJson,jdbcType=VARCHAR},</if>
+      <if test="createTime != null">create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+      <if test="modifyTime != null">modify_time = #{modifyTime,jdbcType=TIMESTAMP},</if>
+      <if test="deleted != null">deleted = #{deleted,jdbcType=BIT},</if>
+    </set>
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.mindskip.xzs.domain.SmartTrainingConfig">
+    UPDATE t_smart_training_config
+    SET subject_id = #{subjectId,jdbcType=INTEGER},
+      question_count = #{questionCount,jdbcType=INTEGER},
+      rule_json = #{ruleJson,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT}
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

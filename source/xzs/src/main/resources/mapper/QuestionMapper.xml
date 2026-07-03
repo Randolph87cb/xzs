@@ -8,6 +8,7 @@
     <result column="score" jdbcType="INTEGER" property="score" />
     <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
     <result column="difficult" jdbcType="INTEGER" property="difficult" />
+    <result column="knowledge_point" jdbcType="VARCHAR" property="knowledgePoint" />
     <result column="correct" jdbcType="VARCHAR" property="correct" />
     <result column="info_text_content_id" jdbcType="INTEGER" property="infoTextContentId" />
     <result column="create_user" jdbcType="INTEGER" property="createUser" />
@@ -16,7 +17,7 @@
     <result column="deleted" jdbcType="BIT" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, question_type, subject_id, score, grade_level, difficult, correct, info_text_content_id,
+    id, question_type, subject_id, score, grade_level, difficult, knowledge_point, correct, info_text_content_id,
     create_user, status, create_time, deleted
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -31,12 +32,12 @@
   </delete>
   <insert id="insert" parameterType="com.mindskip.xzs.domain.Question" useGeneratedKeys="true" keyProperty="id">
     insert into t_question (id, question_type, subject_id,
-      score, grade_level, difficult,
+      score, grade_level, difficult, knowledge_point,
       correct, info_text_content_id, create_user,
       status, create_time, deleted
       )
     values (#{id,jdbcType=INTEGER}, #{questionType,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER},
-      #{score,jdbcType=INTEGER}, #{gradeLevel,jdbcType=INTEGER}, #{difficult,jdbcType=INTEGER},
+      #{score,jdbcType=INTEGER}, #{gradeLevel,jdbcType=INTEGER}, #{difficult,jdbcType=INTEGER}, #{knowledgePoint,jdbcType=VARCHAR},
       #{correct,jdbcType=VARCHAR}, #{infoTextContentId,jdbcType=INTEGER}, #{createUser,jdbcType=INTEGER},
       #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
       )
@@ -61,6 +62,9 @@
       </if>
       <if test="difficult != null">
         difficult,
+      </if>
+      <if test="knowledgePoint != null">
+        knowledge_point,
       </if>
       <if test="correct != null">
         correct,
@@ -100,6 +104,9 @@
       <if test="difficult != null">
         #{difficult,jdbcType=INTEGER},
       </if>
+      <if test="knowledgePoint != null">
+        #{knowledgePoint,jdbcType=VARCHAR},
+      </if>
       <if test="correct != null">
         #{correct,jdbcType=VARCHAR},
       </if>
@@ -138,6 +145,9 @@
       <if test="difficult != null">
         difficult = #{difficult,jdbcType=INTEGER},
       </if>
+      <if test="knowledgePoint != null">
+        knowledge_point = #{knowledgePoint,jdbcType=VARCHAR},
+      </if>
       <if test="correct != null">
         correct = #{correct,jdbcType=VARCHAR},
       </if>
@@ -166,6 +176,7 @@
       score = #{score,jdbcType=INTEGER},
       grade_level = #{gradeLevel,jdbcType=INTEGER},
       difficult = #{difficult,jdbcType=INTEGER},
+      knowledge_point = #{knowledgePoint,jdbcType=VARCHAR},
       correct = #{correct,jdbcType=VARCHAR},
       info_text_content_id = #{infoTextContentId,jdbcType=INTEGER},
       create_user = #{createUser,jdbcType=INTEGER},
@@ -196,6 +207,9 @@
       <if test="questionType != null ">
         and question_type= #{questionType}
       </if>
+      <if test="knowledgePoint != null and knowledgePoint != '' ">
+        and knowledge_point= #{knowledgePoint}
+      </if>
     </where>
   </select>
 
@@ -220,6 +234,38 @@
       AND status = 1
     ORDER BY random()
     LIMIT #{limit}
+  </select>
+
+  <select id="selectRandomBySubjectIdAndKnowledgePoint" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM t_question
+    WHERE deleted='f'
+      AND subject_id = #{subjectId}
+      AND knowledge_point = #{knowledgePoint}
+      AND status = 1
+    ORDER BY random()
+    LIMIT #{limit}
+  </select>
+
+  <select id="selectCountBySubjectIdAndKnowledgePoint" resultType="java.lang.Integer">
+    SELECT count(*)
+    FROM t_question
+    WHERE deleted='f'
+      AND subject_id = #{subjectId}
+      AND knowledge_point = #{knowledgePoint}
+      AND status = 1
+  </select>
+
+  <select id="selectKnowledgePointsBySubjectId" resultType="java.lang.String">
+    SELECT DISTINCT knowledge_point
+    FROM t_question
+    WHERE deleted='f'
+      AND subject_id = #{subjectId}
+      AND status = 1
+      AND knowledge_point IS NOT NULL
+      AND knowledge_point != ''
+    ORDER BY knowledge_point
   </select>
 
 

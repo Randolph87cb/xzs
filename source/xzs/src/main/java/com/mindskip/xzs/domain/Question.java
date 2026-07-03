@@ -39,6 +39,11 @@ public class Question implements Serializable {
     private Integer difficult;
 
     /**
+     * 知识点
+     */
+    private String knowledgePoint;
+
+    /**
      * 正确答案
      */
     private String correct;
@@ -115,6 +120,14 @@ public class Question implements Serializable {
 
     public String getCorrect() {
         return correct;
+    }
+
+    public String getKnowledgePoint() {
+        return knowledgePoint;
+    }
+
+    public void setKnowledgePoint(String knowledgePoint) {
+        this.knowledgePoint = knowledgePoint == null ? null : knowledgePoint.trim();
     }
 
     public void setCorrect(String correct) {

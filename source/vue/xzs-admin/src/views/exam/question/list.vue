@@ -15,6 +15,9 @@
           <el-option v-for="item in questionType" :key="item.key" :value="item.key" :label="item.value"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="知识点：">
+        <el-input v-model="queryParam.knowledgePoint" clearable></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm">查询</el-button>
         <el-popover placement="bottom" trigger="click">
@@ -29,6 +32,7 @@
       <el-table-column prop="id" label="Id" width="90px"/>
       <el-table-column prop="subjectId" label="学科" :formatter="subjectFormatter" width="120px"/>
       <el-table-column prop="questionType" label="题型" :formatter="questionTypeFormatter" width="70px"/>
+      <el-table-column prop="knowledgePoint" label="知识点" width="120px"/>
       <el-table-column prop="shortTitle" label="题干" show-overflow-tooltip/>
       <el-table-column prop="score" label="分数" width="60px"/>
       <el-table-column prop="difficult" label="难度" width="60px"/>
@@ -63,6 +67,7 @@ export default {
         id: null,
         questionType: null,
         subjectId: null,
+        knowledgePoint: null,
         pageIndex: 1,
         pageSize: 10
       },

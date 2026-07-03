@@ -98,6 +98,7 @@ public class QuestionController extends BaseApiController {
                                                               @RequestParam Integer subjectId,
                                                               @RequestParam(defaultValue = "1") String score,
                                                               @RequestParam(defaultValue = "1") Integer difficult,
+                                                              @RequestParam(required = false, defaultValue = "综合") String knowledgePoint,
                                                               @RequestParam(required = false, defaultValue = "暂无解析") String analyze) {
         if (file == null || file.isEmpty()) {
             return RestResponse.fail(2, "Markdown 文件不能为空");
@@ -141,6 +142,7 @@ public class QuestionController extends BaseApiController {
             requestVM.setCorrect(markdownQuestion.getCorrect());
             requestVM.setScore(score);
             requestVM.setDifficult(difficult);
+            requestVM.setKnowledgePoint(knowledgePoint);
 
             RestResponse validResult = validQuestionEditRequestVM(requestVM);
             if (validResult.getCode() != SystemCode.OK.getCode()) {

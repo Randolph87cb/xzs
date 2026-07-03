@@ -20,6 +20,7 @@ import com.mindskip.xzs.viewmodel.admin.question.QuestionEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionPageRequestVM;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setCorrectFromVM(model.getCorrect(), model.getCorrectArray());
         question.setScore(ExamUtil.scoreFromVM(model.getScore()));
         question.setDifficult(model.getDifficult());
+        question.setKnowledgePoint(normalizeKnowledgePoint(model.getKnowledgePoint()));
         question.setInfoTextContentId(infoTextContent.getId());
         question.setCreateUser(userId);
         question.setDeleted(false);
@@ -90,6 +92,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setGradeLevel(gradeLevel);
         question.setScore(ExamUtil.scoreFromVM(model.getScore()));
         question.setDifficult(model.getDifficult());
+        question.setKnowledgePoint(normalizeKnowledgePoint(model.getKnowledgePoint()));
         question.setCorrectFromVM(model.getCorrect(), model.getCorrectArray());
         questionMapper.updateByPrimaryKeySelective(question);
 
@@ -169,6 +172,10 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         questionObject.setTitleContent(model.getTitle());
         questionObject.setCorrect(model.getCorrect());
         infoTextContent.setContent(JsonUtil.toJsonStr(questionObject));
+    }
+
+    private String normalizeKnowledgePoint(String knowledgePoint) {
+        return StringUtils.isBlank(knowledgePoint) ? "综合" : knowledgePoint.trim();
     }
 
     @Override

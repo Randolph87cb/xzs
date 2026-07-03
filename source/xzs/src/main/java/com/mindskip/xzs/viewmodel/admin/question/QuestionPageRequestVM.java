@@ -10,6 +10,7 @@ public class QuestionPageRequestVM extends BasePage {
     private Integer level;
     private Integer subjectId;
     private Integer questionType;
+    private String knowledgePoint;
 
     public Integer getId() {
         return id;
@@ -41,5 +42,13 @@ public class QuestionPageRequestVM extends BasePage {
 
     public void setQuestionType(Integer questionType) {
         this.questionType = questionType;
+    }
+
+    public String getKnowledgePoint() {
+        return knowledgePoint;
+    }
+
+    public void setKnowledgePoint(String knowledgePoint) {
+        this.knowledgePoint = knowledgePoint;
     }
 }

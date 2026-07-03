@@ -18,6 +18,15 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
     List<Question> selectRandomBySubjectId(@Param("subjectId") Integer subjectId, @Param("limit") Integer limit);
 
+    List<Question> selectRandomBySubjectIdAndKnowledgePoint(@Param("subjectId") Integer subjectId,
+                                                            @Param("knowledgePoint") String knowledgePoint,
+                                                            @Param("limit") Integer limit);
+
+    Integer selectCountBySubjectIdAndKnowledgePoint(@Param("subjectId") Integer subjectId,
+                                                    @Param("knowledgePoint") String knowledgePoint);
+
+    List<String> selectKnowledgePointsBySubjectId(@Param("subjectId") Integer subjectId);
+
     Integer selectAllCount();
 
     List<KeyValue> selectCountByDate(@Param("startTime") Date startTime,@Param("endTime") Date endTime);

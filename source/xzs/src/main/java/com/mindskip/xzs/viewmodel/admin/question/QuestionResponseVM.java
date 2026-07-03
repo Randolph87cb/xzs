@@ -28,6 +28,8 @@ public class QuestionResponseVM extends BaseVM {
 
     private Integer difficult;
 
+    private String knowledgePoint;
+
     private String shortTitle;
 
     public Integer getId() {
@@ -116,6 +118,14 @@ public class QuestionResponseVM extends BaseVM {
 
     public void setDifficult(Integer difficult) {
         this.difficult = difficult;
+    }
+
+    public String getKnowledgePoint() {
+        return knowledgePoint;
+    }
+
+    public void setKnowledgePoint(String knowledgePoint) {
+        this.knowledgePoint = knowledgePoint;
     }
 
     public String getShortTitle() {

@@ -354,11 +354,11 @@ WITH content_row AS (
     RETURNING id
 )
 INSERT INTO t_question (
-    question_type, subject_id, score, grade_level, difficult, correct,
+    question_type, subject_id, score, grade_level, difficult, knowledge_point, correct,
     info_text_content_id, create_user, status, create_time, deleted
 )
 SELECT
-    $($Question.QuestionType), $($Question.SubjectId), 10, $($Question.Level), 1, $correctLiteral,
+    $($Question.QuestionType), $($Question.SubjectId), 10, $($Question.Level), 1, '综合', $correctLiteral,
     content_row.id, COALESCE((SELECT id FROM t_user WHERE user_name = 'admin' ORDER BY id LIMIT 1), 1),
     1, now(), false
 FROM content_row;

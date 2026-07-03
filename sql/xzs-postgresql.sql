@@ -65,6 +65,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for t_smart_training_config_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."t_smart_training_config_id_seq";
+CREATE SEQUENCE "public"."t_smart_training_config_id_seq"
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for t_subject_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."t_subject_id_seq";
@@ -274,6 +285,7 @@ CREATE TABLE "public"."t_question" (
   "score" int4,
   "grade_level" int4,
   "difficult" int4,
+  "knowledge_point" varchar(255) COLLATE "pg_catalog"."default",
   "correct" text COLLATE "pg_catalog"."default",
   "info_text_content_id" int4,
   "create_user" int4,
@@ -286,6 +298,33 @@ CREATE TABLE "public"."t_question" (
 -- ----------------------------
 -- Records of t_question
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_smart_training_config
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_smart_training_config";
+CREATE TABLE "public"."t_smart_training_config" (
+  "id" int4 NOT NULL DEFAULT nextval('t_smart_training_config_id_seq'::regclass),
+  "subject_id" int4,
+  "question_count" int4,
+  "rule_json" text COLLATE "pg_catalog"."default",
+  "create_time" timestamp(6),
+  "modify_time" timestamp(6),
+  "deleted" bool
+)
+;
+
+-- ----------------------------
+-- Records of t_smart_training_config
+-- ----------------------------
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (1, 1, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (2, 2, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (3, 3, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (4, 4, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (5, 5, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (6, 6, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (7, 7, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
+INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (8, 8, 20, '[{"knowledgePoint":"综合","questionCount":20}]', now(), now(), false);
 
 -- ----------------------------
 -- Table structure for t_subject
@@ -482,6 +521,13 @@ SELECT setval('"public"."t_question_id_seq"', 1, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+ALTER SEQUENCE "public"."t_smart_training_config_id_seq"
+OWNED BY "public"."t_smart_training_config"."id";
+SELECT setval('"public"."t_smart_training_config_id_seq"', 8, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "public"."t_subject_id_seq"
 OWNED BY "public"."t_subject"."id";
 SELECT setval('"public"."t_subject_id_seq"', 10, true);
@@ -557,6 +603,12 @@ ALTER TABLE "public"."t_message_user" ADD CONSTRAINT "t_message_user_pkey" PRIMA
 -- Primary Key structure for table t_question
 -- ----------------------------
 ALTER TABLE "public"."t_question" ADD CONSTRAINT "t_question_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Primary Key structure for table t_smart_training_config
+-- ----------------------------
+ALTER TABLE "public"."t_smart_training_config" ADD CONSTRAINT "t_smart_training_config_pkey" PRIMARY KEY ("id");
+ALTER TABLE "public"."t_smart_training_config" ADD CONSTRAINT "uk_smart_training_config_subject" UNIQUE ("subject_id");
 
 -- ----------------------------
 -- Primary Key structure for table t_subject
