@@ -10,7 +10,7 @@
 - 管理端 API 封装补齐到 `frontend/packages/api-client/src/adminOperations.ts`。
 - 管理端截图验证扩展到主要菜单路由、表格、表单、UEditor 加载、题目保存回读和临时数据清理。
 - 默认构建、同步和后端 static 入口继续使用 `scripts/build-admin.ps1`、`scripts/build-student.ps1`、`scripts/sync-web-static.ps1` 和 `scripts/build-all.ps1`。
-- 删除旧 Vue 2 Web 工程目录 `source/vue/xzs-admin` 和 `source/vue/xzs-student`。
+- 删除旧管理端和旧学生端 Vue 2 Web 工程目录。
 - 删除已废弃的 Vue 2.7 + Vite spike 文档和测量脚本。
 - 更新项目结构文档、发布说明和 Markdown 渲染测试包装器。
 
@@ -22,7 +22,7 @@
 
 ## 验收标准
 
-- `source/vue/xzs-admin` 和 `source/vue/xzs-student` 不再存在。
+- 旧管理端和旧学生端 Vue 2 Web 工程目录不再存在。
 - `scripts/test-markdown-renderer.js` 不再依赖旧 Vue2 renderer。
 - `scripts/build-admin.ps1`、`scripts/build-student.ps1` 和 `scripts/sync-web-static.ps1` 只使用 `frontend/apps/*` 产物。
 - 后端 jar 内 `/admin` 和 `/student` static 来自 Vue 3 + Vite 构建产物。
