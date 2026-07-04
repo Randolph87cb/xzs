@@ -5,7 +5,7 @@
 主要技术栈：
 
 - 后端：Java 8、Spring Boot 2.1.6、Spring Security、MyBatis、PageHelper、Undertow、PostgreSQL。
-- Web 前端：学生端默认构建已切换到 Vue 3、Vue Router 4、Pinia、Element Plus、Vite；管理端仍为 Vue 2.7、Vue Router 3、Vuex 3、Element UI、Vue CLI 4。
+- Web 前端：学生端默认构建已切换到 Vue 3、Vue Router 4、Pinia、Element Plus、Vite；管理端生产入口仍为 Vue 2.7、Vue Router 3、Vuex 3、Element UI、Vue CLI 4，Vue 3 + Vite 迁移工作区已覆盖登录、Dashboard、学科列表和题库/UEditor 最小闭环。
 - 微信小程序：原生微信小程序，内置 iView Weapp 组件。
 - 数据库：PostgreSQL 脚本位于 `sql/xzs-postgresql.sql`。
 
@@ -56,3 +56,4 @@ xzs/
 - `docs/frontend-modernization-stage4-student-core-loop.md`：学生端核心业务阶段验收报告。
 - `docs/frontend-modernization-stage5-student-cutover.md`：学生端生产入口覆盖切换报告。
 - `docs/frontend-modernization-stage6-admin-shell.md`：管理端 Vue 3 + Vite 基础壳阶段验收报告。
+- `docs/frontend-modernization-stage7-admin-question-ueditor.md`：管理端题库与 UEditor 闭环阶段验收报告。

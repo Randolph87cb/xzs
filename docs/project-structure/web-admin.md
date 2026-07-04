@@ -1,6 +1,8 @@
 # 管理端 Vue 项目结构
 
-管理端位于 `source/vue/xzs-admin`，构建输出目录为 `admin`，开发端口为 `8002`，开发代理将 `/api` 转发到 `http://localhost:8000`。
+管理端生产入口当前仍位于 `source/vue/xzs-admin`，构建输出目录为 `admin`，开发端口为 `8002`，开发代理将 `/api` 转发到 `http://localhost:8000`。
+
+Vue 3 + Vite 管理端迁移实现位于 `frontend/apps/admin`，当前已覆盖登录、Dashboard、学科列表、题目列表、题目预览和 UEditor 题目编辑最小闭环，但尚未接管 `source/xzs/src/main/resources/static/admin`。
 
 ```text
 source/vue/xzs-admin/
@@ -53,4 +55,20 @@ npm run build
 
 ```powershell
 .\scripts\build-admin.ps1 -SkipInstall
+```
+
+Vue 3 + Vite 管理端迁移工作区命令：
+
+```powershell
+pnpm --dir frontend --filter @xzs/admin dev
+```
+
+```powershell
+pnpm --dir frontend --filter @xzs/admin build
+```
+
+严格截图验证会创建并清理临时题：
+
+```powershell
+pnpm --dir frontend verify:admin-ui
 ```

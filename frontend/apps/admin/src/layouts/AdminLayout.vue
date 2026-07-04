@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Collection, DataLine, Reading } from '@element-plus/icons-vue'
+import { Collection, DataLine, EditPen, Reading, Tickets } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { adminMenus, type AdminMenuIconMap } from '@/router'
 import { useUserStore } from '@/stores/user'
@@ -48,7 +48,9 @@ import { useUserStore } from '@/stores/user'
 const iconMap: AdminMenuIconMap = {
   Collection,
   DataLine,
-  Reading
+  EditPen,
+  Reading,
+  Tickets
 }
 const route = useRoute()
 const router = useRouter()

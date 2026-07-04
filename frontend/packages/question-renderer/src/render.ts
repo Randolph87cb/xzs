@@ -1,3 +1,5 @@
+/// <reference path="./markdown-it-texmath.d.ts" />
+
 import DOMPurify from 'dompurify'
 import hljs from 'highlight.js/lib/core'
 import bash from 'highlight.js/lib/languages/bash'

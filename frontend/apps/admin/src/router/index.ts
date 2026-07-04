@@ -13,7 +13,7 @@ export interface AdminMenuItem {
   children?: AdminMenuItem[]
 }
 
-export type AdminMenuIcon = 'Collection' | 'DataLine' | 'Reading'
+export type AdminMenuIcon = 'Collection' | 'DataLine' | 'EditPen' | 'Reading' | 'Tickets'
 export type AdminMenuIconMap = Record<AdminMenuIcon, Component>
 
 export const adminMenus: AdminMenuItem[] = [
@@ -23,6 +23,12 @@ export const adminMenus: AdminMenuItem[] = [
     title: '教育管理',
     icon: 'Reading',
     children: [{ path: '/education/subject/list', title: '学科列表', icon: 'Collection' }]
+  },
+  {
+    path: '/exam',
+    title: '卷题管理',
+    icon: 'Tickets',
+    children: [{ path: '/exam/question/list', title: '题目列表', icon: 'EditPen' }]
   }
 ]
 
@@ -49,6 +55,18 @@ const routes: RouteRecordRaw[] = [
         name: 'EducationSubjectList',
         component: () => import('@/views/education/SubjectListView.vue'),
         meta: { title: '学科列表' }
+      },
+      {
+        path: 'exam/question/list',
+        name: 'ExamQuestionList',
+        component: () => import('@/views/question/QuestionListView.vue'),
+        meta: { title: '题目列表' }
+      },
+      {
+        path: 'exam/question/edit',
+        name: 'ExamQuestionEdit',
+        component: () => import('@/views/question/QuestionEditView.vue'),
+        meta: { title: '题目编辑' }
       }
     ]
   },

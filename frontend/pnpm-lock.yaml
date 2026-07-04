@@ -26,6 +26,9 @@ importers:
       '@xzs/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
+      '@xzs/question-renderer':
+        specifier: workspace:*
+        version: link:../../packages/question-renderer
       '@xzs/shared':
         specifier: workspace:*
         version: link:../../packages/shared

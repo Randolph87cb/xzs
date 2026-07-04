@@ -1,6 +1,6 @@
 # 现代前端迁移工作区结构
 
-`frontend/` 是 Vue 3 + Vite 覆盖式重构的迁移工作区，用于阶段性实现并验收新的学生端和后续管理端。学生端默认构建和后端 `/student` 静态入口已经切换到 `frontend/apps/student`；它不是长期生产并行入口，后续还需要删除或替换旧的 `source/vue/xzs-student` 历史源码目录。
+`frontend/` 是 Vue 3 + Vite 覆盖式重构的迁移工作区，用于阶段性实现并验收新的学生端和后续管理端。学生端默认构建和后端 `/student` 静态入口已经切换到 `frontend/apps/student`；它不是长期生产并行入口，后续还需要删除或替换旧的 `source/vue/xzs-student` 历史源码目录。管理端当前已覆盖登录、Dashboard、学科列表和题库/UEditor 最小闭环，但尚未接管后端 `/admin` 生产入口。
 
 当前阶段已建立学生端骨架：
 
@@ -24,7 +24,9 @@ frontend/
 │   └── admin/
 │       ├── index.html
 │       ├── vite.config.ts
+│       ├── public/
 │       └── src/
+│           ├── components/
 │           ├── layouts/
 │           ├── router/
 │           ├── stores/
@@ -47,8 +49,9 @@ frontend/
 ## 当前职责
 
 - `apps/student`：Vue 3 + Vite 学生端默认生产构建实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
-- `apps/admin`：Vue 3 + Vite 管理端基础迁移实现，开发端口 `8002`，构建输出目录为 `admin`，当前覆盖登录、Dashboard 和学科列表最小闭环。
-- `packages/api-client`：迁移期 API 请求封装，当前覆盖登录、登出、当前学生用户和消息数量接口。
+- `apps/admin`：Vue 3 + Vite 管理端迁移实现，开发端口 `8002`，构建输出目录为 `admin`，当前覆盖登录、Dashboard、学科列表、题目列表、题目预览和 UEditor 题目编辑最小闭环。
+- `apps/admin/public/admin/components/ueditor`：管理端 Vue 3 迁移期保留的 UEditor 静态资源，用于历史题库 HTML、公式插件和上传接口兼容。
+- `packages/api-client`：迁移期 API 请求封装，当前覆盖登录、登出、当前用户、学生端考试链路、管理端 Dashboard/学科/题库接口。
 - `packages/question-renderer`：题目 Markdown、历史 HTML、公式、代码高亮和安全清理的独立渲染包。
 - `packages/shared`：迁移期共享工具和类型的起始包。
 - `packages/config`：迁移期共享配置包，后续承载 ESLint、Prettier、Vite 和 TypeScript 公共配置。
@@ -142,6 +145,8 @@ pnpm --dir frontend --filter @xzs/admin build
 pnpm --dir frontend verify:admin-ui
 ```
 
+该验证现在会创建并清理临时题，覆盖管理端登录、Dashboard、学科列表、题目列表筛选、题目预览、UEditor 加载、题目保存回读和退出。
+
 或进入 `frontend` 后运行：
 
 ```powershell
@@ -157,7 +162,7 @@ pnpm --filter @xzs/student build
 - `scripts/build-student.ps1` 默认使用 `pnpm --filter @xzs/student run build` 构建 Vue 3 学生端。
 - `scripts/sync-web-static.ps1` 默认把 `frontend/apps/student/student` 同步到 `source/xzs/src/main/resources/static/student`。
 - 后端 jar 内 `/student/index.html` 由 Vue 3 + Vite 产物提供。
-- 管理端 Vue 3 版本当前仍是迁移工作区产物，尚未接管 `source/xzs/src/main/resources/static/admin`。
+- 管理端 Vue 3 版本当前仍是迁移工作区产物，尚未接管 `source/xzs/src/main/resources/static/admin`；题库最小闭环已可通过 `verify:admin-ui` 验证。
 
 ## 迁移约束
 
