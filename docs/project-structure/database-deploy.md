@@ -20,6 +20,16 @@
 
 注意：当前仓库 README、后端配置和 SQL 文件均指向 PostgreSQL 版，但 `docker/docker-compose.yml` 与 `docker/README.md` 中仍出现 MySQL 镜像和 MySQL 部署说明。使用 Docker 部署前需要按目标数据库版本核对 compose、SQL 脚本和后端 datasource。
 
+## Fly.io 部署
+
+根目录 `Dockerfile` 和 `fly.toml` 用于 Fly.io 部署：
+
+- `Dockerfile`：多阶段构建，先构建 Vue 3 + Vite 管理端和学生端，再将产物复制到 Spring Boot static，最后打包运行 jar。
+- `fly.toml`：Fly App 配置模板，默认内部端口为 `8000`。
+- `docs/fly-managed-postgres-deployment.md`：Fly Managed Postgres 创建、挂载、初始化和部署步骤。
+
+生产数据库推荐使用 Fly Managed Postgres。后端 `application-prod.yml` 支持 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD`，并兼容 Fly 默认注入的 `DATABASE_URL=postgres://...`。
+
 ## 集成部署提示
 
 集成部署时，将管理端构建产物 `admin` 和学生端构建产物 `student` 放到 `source/xzs/src/main/resources/static` 后，再打包后端 jar。当前学生端构建产物来自 `frontend/apps/student/student`，管理端构建产物来自 `frontend/apps/admin/admin`。

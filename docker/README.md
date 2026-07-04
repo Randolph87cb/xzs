@@ -1,5 +1,7 @@
 ### 6.3 docker部署
 
+> 注意：本目录保留的是上游旧 Docker Compose 示例，仍包含 MySQL 镜像和 MySQL 初始化说明。当前仓库主线是 PostgreSQL 版；Fly.io 部署请使用根目录 `Dockerfile`、`fly.toml` 和 `docs/fly-managed-postgres-deployment.md`，不要直接套用本文件。
+
 * 打开网站<https://gitee.com/mindskip/xzs-mysql>，找到docker目录，里面有已配置好的文件
 * 下载sql脚本，下载教程<https://www.mindskip.net:999>，然后解压sql压缩包，找到xzs-mysql.sql文件，编辑此文件，在文件开头加如下代码：
 

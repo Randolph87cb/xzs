@@ -26,6 +26,8 @@ xzs/
 │       └── xzs-student/ # 学生端小程序
 ├── sql/                 # PostgreSQL 建库/建表/初始化脚本
 ├── AGENTS.md            # 面向后续协作者的项目结构简述
+├── Dockerfile           # Fly.io 远端构建用多阶段镜像
+├── fly.toml             # Fly.io 应用配置模板
 ├── PROJECT_STRUCTURE.md # 项目结构文档索引
 ├── README.md            # 项目介绍、功能说明与外部文档链接
 └── LICENSE              # AGPL-3.0
@@ -55,3 +57,4 @@ xzs/
 - `docs/frontend-modernization-stage7-admin-question-ueditor.md`：管理端题库与 UEditor 闭环阶段验收报告。
 - `docs/frontend-modernization-stage8-admin-cutover.md`：管理端生产入口覆盖切换报告。
 - `docs/frontend-modernization-stage9-final-cutover-cleanup.md`：Vue 3 覆盖迁移最终清理报告。
+- `docs/fly-managed-postgres-deployment.md`：Fly.io + Managed Postgres 部署说明。

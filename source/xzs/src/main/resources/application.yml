@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: ${SERVER_PORT:8000}
   undertow:
     io-threads: 16
     worker-threads: 128
@@ -45,10 +45,10 @@ system:
       - /api/wx/student/auth/checkBind
       - /api/wx/student/user/register
   qn:
-    url: http://xzs.file.mindskip.net
-    bucket: mindskip
-    access-key: KabOBTPGVll2sSV8d1OIlW8G4_n_cReE7RSsLafA
-    secret-key: mSltk9_9KtCdFetCmxvvCAgsBg8JZHiXMuQeqSJA
+    url: ${XZS_QN_URL:http://xzs.file.mindskip.net}
+    bucket: ${XZS_QN_BUCKET:mindskip}
+    access-key: ${XZS_QN_ACCESS_KEY:KabOBTPGVll2sSV8d1OIlW8G4_n_cReE7RSsLafA}
+    secret-key: ${XZS_QN_SECRET_KEY:mSltk9_9KtCdFetCmxvvCAgsBg8JZHiXMuQeqSJA}
 
 
 #mybatis page helper

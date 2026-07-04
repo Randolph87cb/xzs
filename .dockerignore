@@ -1,0 +1,16 @@
+.git
+.idea
+.tmp
+logs
+node_modules
+release
+docker/release
+docker/install
+docs
+
+**/node_modules
+**/.tmp
+**/dist
+frontend/apps/admin/admin
+frontend/apps/student/student
+source/xzs/target
