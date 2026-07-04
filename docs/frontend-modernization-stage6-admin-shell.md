@@ -107,7 +107,9 @@ pnpm --dir frontend verify:admin-ui
 - 管理端题库、试卷、用户、消息、日志等完整业务模块尚未迁移。
 - UEditor/题库富文本闭环尚未迁移，这是下一阶段高风险重点。
 - ECharts、xlsx、CodeMirror、screenfull、SVG sprite 等第三方能力尚未完成完整适配。
-- 管理端生产入口仍未切换到 Vue 3，默认生产管理端仍是 `source/vue/xzs-admin`。
+- 管理端生产入口在阶段 6 时仍未切换到 Vue 3，默认生产管理端仍是旧 Vue 2 工程。
+
+最终状态更新：后续阶段已完成管理端题库、试卷、用户、消息、日志、个人资料等业务模块迁移，默认生产入口已切换到 `frontend/apps/admin`，旧 Vue 2 管理端源码目录已删除。
 
 ## 阶段 6 结论
 

@@ -6,6 +6,7 @@ export interface AdminUserInfo {
   realName?: string
   role?: number
   status?: number
+  phone?: string
   imagePath?: string
   createTime?: string
 }

@@ -40,7 +40,7 @@
 
 ## Renderer 边界样本
 
-这些样本来自当前 `scripts/test-markdown-renderer.js`，后续应迁入 `packages/question-renderer` 单元测试：
+这些样本已迁入 `frontend/packages/question-renderer` 单元测试；根目录 `scripts/test-markdown-renderer.js` 现在只是调用该测试包的兼容包装器：
 
 | 编号 | 内容形态 | 验收点 |
 | --- | --- | --- |
@@ -90,4 +90,3 @@
 | A08 | 题目插入图片 | 上传、保存、学生端展示正常 |
 | A09 | 题目插入代码块 | 语言标记、保存、学生端高亮正常 |
 | A10 | 试卷管理 | 创建试卷、添加题目、学生端可答题 |
-

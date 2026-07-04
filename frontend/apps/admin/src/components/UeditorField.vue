@@ -92,13 +92,21 @@ function loadScript(src: string) {
   return new Promise<void>((resolve, reject) => {
     const existing = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`)
     if (existing) {
-      resolve()
+      if (existing.dataset.loaded === 'true') {
+        resolve()
+        return
+      }
+      existing.addEventListener('load', () => resolve(), { once: true })
+      existing.addEventListener('error', () => reject(new Error(`UEditor script load failed: ${src}`)), { once: true })
       return
     }
 
     const script = document.createElement('script')
     script.src = src
-    script.onload = () => resolve()
+    script.onload = () => {
+      script.dataset.loaded = 'true'
+      resolve()
+    }
     script.onerror = () => reject(new Error(`UEditor script load failed: ${src}`))
     document.head.appendChild(script)
   })
@@ -114,11 +122,24 @@ function loadUeditorScripts() {
         if (window.UEDITOR_CONFIG) {
           window.UEDITOR_CONFIG.UEDITOR_HOME_URL = baseUrl
         }
-        return ueditorScripts.slice(1).reduce((promise, script) => promise.then(() => loadScript(baseUrl + script)), Promise.resolve())
+        return ueditorScripts.slice(1).reduce(
+          (promise, script) =>
+            promise.then(() =>
+              loadScript(baseUrl + script).then(() => {
+                if (script.startsWith('ueditor.all.js') && window.UE) {
+                  window.UE.I18N = window.UE.I18N || {}
+                }
+              })
+            ),
+          Promise.resolve()
+        )
       })
       .then(() => {
         if (window.UEDITOR_CONFIG) {
           window.UEDITOR_CONFIG.UEDITOR_HOME_URL = baseUrl
+        }
+        if (window.UE) {
+          window.UE.I18N = window.UE.I18N || {}
         }
         if (!window.UE) {
           throw new Error('UEditor loaded but window.UE is unavailable')
@@ -151,6 +172,7 @@ interface UEditorInstance {
 interface UEditorGlobal {
   getEditor: (id: string, options?: Record<string, unknown>) => UEditorInstance
   delEditor?: (id: string) => void
+  I18N?: Record<string, unknown>
   _customizeUI?: Record<string, unknown>
 }
 

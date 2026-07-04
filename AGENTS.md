@@ -2,17 +2,17 @@
 
 ## 项目结构概览
 
-本项目是学之思开源考试系统 PostgreSQL 版，包含一个 Spring Boot 后端、一个已切换默认构建和 `/admin` static 入口的 Vue 3 管理端、一个已切换默认构建入口的 Vue 3 学生端、旧 Vue 2 Web 历史目录，以及一个微信小程序学生端。
+本项目是学之思开源考试系统 PostgreSQL 版，包含一个 Spring Boot 后端、一个 Vue 3 + Vite 管理端、一个 Vue 3 + Vite 学生端，以及一个微信小程序学生端。
 
 - 后端源码在 `source/xzs`，主要按 `controller`、`service`、`repository`、`domain`、`viewmodel` 分层。
-- 管理端 Web 默认构建来源在 `frontend/apps/admin`；`source/vue/xzs-admin` 是旧 Vue 2 历史目录，暂时保留作剩余模块迁移参考，不再是默认生产构建入口。
-- 学生端 Web 默认构建来源在 `frontend/apps/student`；`source/vue/xzs-student` 是旧 Vue 2 历史目录，不再是默认生产构建入口。
-- 现代前端迁移工作区在 `frontend`，当前承载 Vue 3 + Vite 学生端和管理端默认生产构建；它不是长期新旧并行入口。
+- 管理端 Web 源码和默认构建来源在 `frontend/apps/admin`。
+- 学生端 Web 源码和默认构建来源在 `frontend/apps/student`。
+- 现代前端工作区在 `frontend`，承载 Vue 3 + Vite 学生端、管理端和共享包；旧 Vue 2 Web 目录已删除，不再保留新旧并行入口。
 - 微信小程序学生端在 `source/wx/xzs-student`。
 - PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`。
 - 真题题库 Markdown 资料在 `docs/question-bank`。
 - 本地构建、测量、静态资源同步、维护和数据导入脚本在 `scripts`。
-- 构建性能优化方案和迁移评估文档在 `docs/build-performance-optimization-plan.md`、`docs/vite-vue2-migration-spike.md`、`docs/vue3-vite-migration-roadmap.md`、`docs/frontend-modernization-migration-roadmap.md`。
+- 构建性能优化方案和迁移评估文档在 `docs/build-performance-optimization-plan.md`、`docs/vue3-vite-migration-roadmap.md`、`docs/frontend-modernization-migration-roadmap.md`。
 - 发布包与部署材料分别在 `release` 和 `docker`。
 
 ## 项目结构文档

@@ -19,6 +19,15 @@ export type AdminMenuIconMap = Record<AdminMenuIcon, Component>
 export const adminMenus: AdminMenuItem[] = [
   { path: '/dashboard', title: '主页', icon: 'DataLine' },
   {
+    path: '/user',
+    title: '用户管理',
+    icon: 'Collection',
+    children: [
+      { path: '/user/student/list', title: '学生列表', icon: 'Collection' },
+      { path: '/user/admin/list', title: '管理员列表', icon: 'Collection' }
+    ]
+  },
+  {
     path: '/education',
     title: '教育管理',
     icon: 'Reading',
@@ -28,7 +37,43 @@ export const adminMenus: AdminMenuItem[] = [
     path: '/exam',
     title: '卷题管理',
     icon: 'Tickets',
-    children: [{ path: '/exam/question/list', title: '题目列表', icon: 'EditPen' }]
+    children: [
+      { path: '/exam/paper/list', title: '试卷列表', icon: 'Tickets' },
+      { path: '/exam/question/list', title: '题目列表', icon: 'EditPen' },
+      { path: '/exam/smartTraining/config', title: '智能训练配置', icon: 'DataLine' }
+    ]
+  },
+  {
+    path: '/task',
+    title: '任务管理',
+    icon: 'EditPen',
+    children: [{ path: '/task/list', title: '任务列表', icon: 'EditPen' }]
+  },
+  {
+    path: '/answer',
+    title: '成绩管理',
+    icon: 'Tickets',
+    children: [{ path: '/answer/list', title: '答卷列表', icon: 'Tickets' }]
+  },
+  {
+    path: '/message',
+    title: '消息中心',
+    icon: 'EditPen',
+    children: [
+      { path: '/message/list', title: '消息列表', icon: 'EditPen' },
+      { path: '/message/send', title: '消息发送', icon: 'EditPen' }
+    ]
+  },
+  {
+    path: '/log',
+    title: '日志中心',
+    icon: 'DataLine',
+    children: [{ path: '/log/user/list', title: '用户日志', icon: 'DataLine' }]
+  },
+  {
+    path: '/profile/index',
+    title: '个人简介',
+    icon: 'Collection'
   }
 ]
 
@@ -57,6 +102,52 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '学科列表' }
       },
       {
+        path: 'education/subject/edit',
+        name: 'EducationSubjectEdit',
+        component: () => import('@/views/education/SubjectEditView.vue'),
+        meta: { title: '学科编辑' }
+      },
+      {
+        path: 'user/student/list',
+        name: 'UserStudentList',
+        component: () => import('@/views/user/UserListView.vue'),
+        props: { role: 1 },
+        meta: { title: '学生列表' }
+      },
+      {
+        path: 'user/student/edit',
+        name: 'UserStudentEdit',
+        component: () => import('@/views/user/UserEditView.vue'),
+        props: { role: 1 },
+        meta: { title: '学生编辑' }
+      },
+      {
+        path: 'user/admin/list',
+        name: 'UserAdminList',
+        component: () => import('@/views/user/UserListView.vue'),
+        props: { role: 3 },
+        meta: { title: '管理员列表' }
+      },
+      {
+        path: 'user/admin/edit',
+        name: 'UserAdminEdit',
+        component: () => import('@/views/user/UserEditView.vue'),
+        props: { role: 3 },
+        meta: { title: '管理员编辑' }
+      },
+      {
+        path: 'exam/paper/list',
+        name: 'ExamPaperList',
+        component: () => import('@/views/paper/PaperListView.vue'),
+        meta: { title: '试卷列表' }
+      },
+      {
+        path: 'exam/paper/edit',
+        name: 'ExamPaperEdit',
+        component: () => import('@/views/paper/PaperEditView.vue'),
+        meta: { title: '试卷编辑' }
+      },
+      {
         path: 'exam/question/list',
         name: 'ExamQuestionList',
         component: () => import('@/views/question/QuestionListView.vue'),
@@ -67,6 +158,58 @@ const routes: RouteRecordRaw[] = [
         name: 'ExamQuestionEdit',
         component: () => import('@/views/question/QuestionEditView.vue'),
         meta: { title: '题目编辑' }
+      },
+      {
+        path: 'exam/question/edit/:legacyType',
+        redirect: (to) => ({ path: '/exam/question/edit', query: to.query })
+      },
+      {
+        path: 'exam/smartTraining/config',
+        name: 'ExamSmartTrainingConfig',
+        component: () => import('@/views/smartTraining/SmartTrainingConfigView.vue'),
+        meta: { title: '智能训练配置' }
+      },
+      {
+        path: 'task/list',
+        name: 'TaskList',
+        component: () => import('@/views/task/TaskListView.vue'),
+        meta: { title: '任务列表' }
+      },
+      {
+        path: 'task/edit',
+        name: 'TaskEdit',
+        component: () => import('@/views/task/TaskEditView.vue'),
+        meta: { title: '任务创建' }
+      },
+      {
+        path: 'answer/list',
+        name: 'AnswerList',
+        component: () => import('@/views/answer/AnswerListView.vue'),
+        meta: { title: '答卷列表' }
+      },
+      {
+        path: 'message/list',
+        name: 'MessageList',
+        component: () => import('@/views/message/MessageListView.vue'),
+        meta: { title: '消息列表' }
+      },
+      {
+        path: 'message/send',
+        name: 'MessageSend',
+        component: () => import('@/views/message/MessageSendView.vue'),
+        meta: { title: '消息发送' }
+      },
+      {
+        path: 'log/user/list',
+        name: 'UserLogList',
+        component: () => import('@/views/log/UserLogListView.vue'),
+        meta: { title: '用户日志' }
+      },
+      {
+        path: 'profile/index',
+        name: 'Profile',
+        component: () => import('@/views/profile/ProfileView.vue'),
+        meta: { title: '个人简介' }
       }
     ]
   },

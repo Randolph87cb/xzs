@@ -58,6 +58,7 @@ try {
   await page.getByRole('heading', { name: '学科列表' }).waitFor({ timeout: 15000 })
   await expectRows('subject list')
   await capture('03-subject-list.png')
+  await verifyAdditionalAdminRoutes()
 
   const subjects = await postJson('/api/admin/education/subject/page', { pageIndex: 1, pageSize: 10 })
   assertApiOk(subjects, 'subject page API')
@@ -90,6 +91,38 @@ if (failures.length > 0) {
 }
 
 console.log(`admin UI screenshot verification passed: ${outputDir}`)
+
+async function verifyAdditionalAdminRoutes() {
+  const routes = [
+    { path: '/user/student/list', heading: '学生列表', table: true },
+    { path: '/user/admin/list', heading: '管理员列表', table: true },
+    { path: '/exam/paper/list', heading: '试卷列表', table: true },
+    { path: '/exam/paper/edit', heading: '试卷编辑', form: true },
+    { path: '/task/list', heading: '任务列表', table: true },
+    { path: '/task/edit', heading: '任务创建', form: true },
+    { path: '/exam/smartTraining/config', heading: '智能训练配置', form: true },
+    { path: '/answer/list', heading: '答卷列表', table: true },
+    { path: '/message/list', heading: '消息列表', table: true },
+    { path: '/message/send', heading: '消息发送', form: true },
+    { path: '/log/user/list', heading: '用户日志', table: true },
+    { path: '/profile/index', heading: '个人简介', form: true },
+    { path: '/education/subject/edit', heading: '学科编辑', form: true },
+    { path: '/exam/question/edit/singleChoice', heading: '题目编辑', form: true }
+  ]
+
+  for (const route of routes) {
+    await gotoHash(route.path)
+    await page.getByRole('heading', { name: route.heading }).waitFor({ timeout: 15000 })
+    if (route.table) {
+      await page.locator('.el-table').first().waitFor({ timeout: 15000 })
+    }
+    if (route.form) {
+      await page.locator('.el-form').first().waitFor({ timeout: 15000 })
+    }
+  }
+
+  await capture('04-admin-expanded-routes.png')
+}
 
 async function verifyQuestionListPreviewAndEdit(questionId, marker) {
   await gotoHash('/exam/question/list')

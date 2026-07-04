@@ -1,8 +1,8 @@
 # 学生端 Web 项目结构
 
-学生 Web 端默认构建来源已经切换到 `frontend/apps/student`，技术栈为 Vue 3 + Vite + TypeScript + Pinia + Element Plus。构建输出目录为 `frontend/apps/student/student`，开发端口为 `8001`，开发代理将 `/api` 转发到 `http://localhost:8000`。
+学生 Web 端源码和默认构建来源位于 `frontend/apps/student`，技术栈为 Vue 3 + Vite + TypeScript + Pinia + Element Plus。构建输出目录为 `frontend/apps/student/student`，开发端口为 `8001`，开发代理将 `/api` 转发到 `http://localhost:8000`。
 
-`source/vue/xzs-student` 仍保留旧 Vue 2 + Vue CLI 源码作为迁移期历史目录，但不再是默认生产构建入口；后续旧工程清理阶段应删除或替换该目录，避免重新形成新旧并行生产入口。
+旧 Vue 2 学生端工程已删除，不再保留并行源码入口。
 
 ```text
 frontend/apps/student/

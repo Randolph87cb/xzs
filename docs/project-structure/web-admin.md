@@ -1,8 +1,8 @@
 # 管理端 Vue 项目结构
 
-管理端默认生产构建当前位于 `frontend/apps/admin`，构建输出目录为 `admin`，开发端口为 `8002`，开发代理将 `/api` 转发到 `http://localhost:8000`。后端 `/admin` static 入口由 `frontend/apps/admin/admin` 同步到 `source/xzs/src/main/resources/static/admin` 后打包提供。
+管理端 Web 源码和默认生产构建位于 `frontend/apps/admin`，技术栈为 Vue 3 + Vite + TypeScript + Pinia + Element Plus。构建输出目录为 `frontend/apps/admin/admin`，开发端口为 `8002`，开发代理将 `/api` 转发到 `http://localhost:8000`。后端 `/admin` static 入口由 `frontend/apps/admin/admin` 同步到 `source/xzs/src/main/resources/static/admin` 后打包提供。
 
-`source/vue/xzs-admin` 是旧 Vue 2 管理端历史目录，暂时保留作剩余模块迁移参考，不再是默认生产构建入口。
+旧 Vue 2 管理端工程已删除，不再保留并行源码入口。
 
 ```text
 frontend/apps/admin/
@@ -16,7 +16,7 @@ frontend/apps/admin/
     ├── router/       # Vue Router 4 路由和静态菜单
     ├── stores/       # Pinia 状态
     ├── styles/       # 全局样式
-    ├── views/        # 登录、Dashboard、学科、题库等页面
+    ├── views/        # 登录、Dashboard 和管理端业务页面
     ├── main.ts
     ├── App.vue
     └── ...
@@ -25,10 +25,17 @@ frontend/apps/admin/
 ## 主要页面模块
 
 - `views/dashboard`：后台首页统计。
-- `views/education/SubjectListView.vue`：学科列表。
-- `views/question/QuestionListView.vue`：题目列表和预览。
+- `views/user`：学生和管理员列表、编辑、状态切换和删除。
+- `views/education`：学科列表、新增、编辑和删除。
+- `views/question/QuestionListView.vue`：题目列表、预览和删除。
 - `views/question/QuestionEditView.vue`：题目编辑和 UEditor 富文本闭环。
-- 旧 Vue 2 管理端仍包含用户、试卷、任务、答卷、消息、日志、个人资料等历史模块，这些模块尚待迁移到 Vue 3 管理端。
+- `views/paper`：试卷列表、创建和编辑。
+- `views/task`：任务列表、创建和编辑。
+- `views/smartTraining`：智能训练配置。
+- `views/answer`：答卷列表。
+- `views/message`：消息列表和发送。
+- `views/log`：用户日志。
+- `views/profile`：个人资料。
 
 ## 常用命令
 
@@ -46,7 +53,7 @@ pnpm --dir frontend --filter @xzs/admin build
 .\scripts\build-admin.ps1 -SkipInstall
 ```
 
-严格截图验证会创建并清理临时题：
+严格截图验证会创建并清理临时题，并覆盖主要管理端路由：
 
 ```powershell
 pnpm --dir frontend verify:admin-ui

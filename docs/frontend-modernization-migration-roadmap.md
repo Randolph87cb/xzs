@@ -85,7 +85,7 @@ frontend/
 
 不建立 `/student-v3`、`/admin-v3` 这类长期并行入口，也不维护两套生产前端。每个端完成验收后，直接覆盖对应旧端源码、构建脚本和后端 static 发布入口。
 
-允许在迁移阶段使用 `frontend/` 作为重构工作区；它的目标是最终替换 `source/vue/xzs-student` 和 `source/vue/xzs-admin`，不是成为第三套前端。
+允许在迁移阶段使用 `frontend/` 作为重构工作区；它的目标是最终替换旧学生端和旧管理端 Vue 2 工程，不是成为第三套前端。
 
 ### 2. 学生端优先
 
@@ -274,7 +274,7 @@ frontend/
 
 ### 任务
 
-- 用 `frontend/apps/student` 覆盖 `source/vue/xzs-student`，或把旧目录替换为新 Vue 3 工程。
+- 用 `frontend/apps/student` 覆盖旧学生端工程，或把旧目录替换为新 Vue 3 工程。
 - 更新学生端构建脚本，默认构建 Vue 3 版本。
 - 构建产物直接同步到 `source/xzs/src/main/resources/static/student`。
 - 验证 Spring Boot 内置 static 下的相对路径。
@@ -284,7 +284,7 @@ frontend/
 
 ### 产出
 
-- Vue 3 版 `source/vue/xzs-student`
+- Vue 3 版学生端工程
 - 覆盖后的 `source/xzs/src/main/resources/static/student`
 - 学生端默认构建脚本
 
@@ -390,7 +390,7 @@ frontend/
 
 ### 任务
 
-- 用 `frontend/apps/admin` 覆盖 `source/vue/xzs-admin`，或把旧目录替换为新 Vue 3 工程。
+- 用 `frontend/apps/admin` 覆盖旧管理端工程，或把旧目录替换为新 Vue 3 工程。
 - 更新管理端构建脚本，默认构建 Vue 3 版本。
 - 新增或改造 `scripts/build-frontend.ps1`。
 - 新增或改造 `scripts/sync-web-static.ps1`。
@@ -423,7 +423,7 @@ frontend/
 
 ### 任务
 
-- 确认 `source/vue/xzs-admin` 和 `source/vue/xzs-student` 已是 Vue 3 工程。
+- 确认旧管理端和旧学生端工程已被 Vue 3 实现覆盖。
 - 删除迁移期 `frontend/apps/*` 中已覆盖到旧目录的重复应用，或将 `source/vue/*` 改为指向最终 monorepo 结构。
 - 删除 Vue CLI、Webpack loader、Vue 2-only 依赖。
 - 清理旧构建脚本。
@@ -548,3 +548,9 @@ server:
 5. 阶段 4：跑通学生端答题主链路。
 
 只有这个闭环通过后，才推进管理端迁移。原因是当前最明确的痛点是试卷加载和热更新，学生端能最快验证新架构的真实收益。
+
+## 当前执行结果
+
+该路线已按覆盖式策略执行完成。学生端和管理端默认生产构建均来自 `frontend/apps/*`，旧 Vue 2 Web 工程已删除，不再保留新旧并行入口。
+
+最终阶段报告见 `docs/frontend-modernization-stage9-final-cutover-cleanup.md`。后续优化应围绕构建 chunk、题目渲染缓存、大试卷分批渲染和发布文档站更新展开。

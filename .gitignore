@@ -9,14 +9,6 @@ target/
 node_modules/
 dist/
 .tmp/
-/source/vue/xzs-admin/admin/
-/source/vue/xzs-admin/node_modules/
-/source/vue/xzs-admin/dist/
-/source/vue/xzs-admin/.tmp/
-/source/vue/xzs-student/student/
-/source/vue/xzs-student/node_modules/
-/source/vue/xzs-student/dist/
-/source/vue/xzs-student/.tmp/
 /frontend/apps/student/student/
 /frontend/apps/admin/admin/
 /frontend/apps/*/dist/

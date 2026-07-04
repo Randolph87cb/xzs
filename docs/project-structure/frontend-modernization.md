@@ -1,8 +1,8 @@
 # 现代前端迁移工作区结构
 
-`frontend/` 是 Vue 3 + Vite 覆盖式重构工作区，当前已承载学生端和管理端默认生产构建。学生端后端 `/student` 静态入口来自 `frontend/apps/student`，管理端后端 `/admin` 静态入口来自 `frontend/apps/admin`；旧的 `source/vue/xzs-student` 和 `source/vue/xzs-admin` 历史源码目录仍需在后续完整验收后删除或替换。
+`frontend/` 是 Vue 3 + Vite Web 前端工作区，当前承载学生端和管理端源码、默认生产构建和共享包。学生端后端 `/student` 静态入口来自 `frontend/apps/student`，管理端后端 `/admin` 静态入口来自 `frontend/apps/admin`；旧 Vue 2 Web 源码目录已删除，不再保留新旧并行入口。
 
-当前阶段已建立学生端骨架：
+当前结构：
 
 ```text
 frontend/
@@ -40,6 +40,7 @@ frontend/
 └── scripts/
     ├── build-student.ps1
     ├── dev-student.ps1
+    ├── verify-admin-ui-screenshots.mjs
     ├── verify-student-paper-readonly.ps1
     ├── verify-student-submit-edit-strict.ps1
     ├── verify-student-auth.ps1
@@ -49,9 +50,9 @@ frontend/
 ## 当前职责
 
 - `apps/student`：Vue 3 + Vite 学生端默认生产构建实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
-- `apps/admin`：Vue 3 + Vite 管理端默认生产构建实现，开发端口 `8002`，构建输出目录为 `admin`，当前覆盖登录、Dashboard、学科列表、题目列表、题目预览和 UEditor 题目编辑最小闭环。
+- `apps/admin`：Vue 3 + Vite 管理端默认生产构建实现，开发端口 `8002`，构建输出目录为 `admin`，覆盖登录、Dashboard、用户、学科、题库、试卷、任务、智能训练、答卷、消息、日志和个人资料模块。
 - `apps/admin/public/admin/components/ueditor`：管理端 Vue 3 迁移期保留的 UEditor 静态资源，用于历史题库 HTML、公式插件和上传接口兼容。
-- `packages/api-client`：迁移期 API 请求封装，当前覆盖登录、登出、当前用户、学生端考试链路、管理端 Dashboard/学科/题库接口。
+- `packages/api-client`：API 请求封装，覆盖登录、登出、当前用户、学生端考试链路、管理端 Dashboard、用户、学科、题库、试卷、任务、智能训练、答卷、消息、日志和个人资料接口。
 - `packages/question-renderer`：题目 Markdown、历史 HTML、公式、代码高亮和安全清理的独立渲染包。
 - `packages/shared`：迁移期共享工具和类型的起始包。
 - `packages/config`：迁移期共享配置包，后续承载 ESLint、Prettier、Vite 和 TypeScript 公共配置。
@@ -145,7 +146,7 @@ pnpm --dir frontend --filter @xzs/admin build
 pnpm --dir frontend verify:admin-ui
 ```
 
-该验证现在会创建并清理临时题，覆盖管理端登录、Dashboard、学科列表、题目列表筛选、题目预览、UEditor 加载、题目保存回读和退出。
+该验证现在会创建并清理临时题，覆盖管理端登录、Dashboard、用户、学科、题库、试卷、任务、智能训练、答卷、消息、日志、个人资料、UEditor 加载、题目保存回读和退出。
 
 管理端后端 static 入口验证需要后端已打包并启动：
 
@@ -174,6 +175,6 @@ pnpm --filter @xzs/student build
 ## 迁移约束
 
 - 不新增 `/student-v3`、`/admin-v3` 这类长期并行入口。
-- 学生端生产入口已经切换到 Vue 3，旧 `source/vue/xzs-student` 不能再作为生产构建来源。
-- 管理端生产入口已经切换到 Vue 3，旧 `source/vue/xzs-admin` 不能再作为生产构建来源。
+- 学生端和管理端生产入口已经切换到 Vue 3 + Vite，旧 Vue 2 Web 工程已删除。
+- 不再新增或恢复 Vue CLI 生产构建入口。
 - 新的题目渲染、API client、UI 组件应优先沉淀到 `packages/`，避免散落在页面中。

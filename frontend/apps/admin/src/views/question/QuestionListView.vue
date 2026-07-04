@@ -35,7 +35,7 @@
       <el-table-column prop="score" label="分数" width="80" />
       <el-table-column prop="difficult" label="难度" width="80" />
       <el-table-column prop="createTime" label="创建时间" width="170" />
-      <el-table-column label="操作" width="160" fixed="right">
+      <el-table-column label="操作" width="220" fixed="right">
         <template #default="{ row }">
           <el-button :data-testid="`question-preview-${row.id}`" size="small" @click="previewQuestion(row.id)">预览</el-button>
           <el-button
@@ -46,6 +46,7 @@
           >
             编辑
           </el-button>
+          <el-button size="small" type="danger" @click="removeQuestion(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -81,9 +82,11 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { QuestionMarkdown } from '@xzs/question-renderer'
 import { useRouter } from 'vue-router'
 import {
+  deleteAdminQuestion,
   getAdminQuestion,
   getAdminQuestionPage,
   type AdminQuestionEditModel,
@@ -132,6 +135,13 @@ async function previewQuestion(id: number) {
   const result = await getAdminQuestion(id)
   preview.value = result.response ?? null
   previewVisible.value = true
+}
+
+async function removeQuestion(id: number) {
+  await ElMessageBox.confirm('确认删除该题目？', '删除题目', { type: 'warning' })
+  const result = await deleteAdminQuestion(id)
+  ElMessage.success(result.message || '删除成功')
+  loadData()
 }
 
 function questionTypeText(type: number) {

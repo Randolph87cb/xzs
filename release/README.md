@@ -2,16 +2,14 @@
 
 ### 集成部署
 
-* 分别在\source\vue\xzs-student目录和source\vue\xzs-admin目录，执行前端打包命令
+* 在项目根目录执行前端构建、静态资源同步和后端打包脚本
 
- ```npm
-npm config set sass_binary_site https://npm.taobao.org/mirrors/node-sass/
-npm install --registry https://registry.npm.taobao.org  
-npm run build
+ ```powershell
+.\scripts\build-all.ps1
  ```
 
-* 打包后的目录为student和admin
-* 将文件放到\source\xzs\src\main\resources\static下，然后将java程序打包成jar包
+* Vue 3 + Vite 打包后的目录为 `frontend/apps/student/student` 和 `frontend/apps/admin/admin`
+* `build-all.ps1` 会将文件同步到 `source/xzs/src/main/resources/static`，然后将 Java 程序打包成 jar 包
 * 修改application-prod.yml中的datasource地址
 * 数据库账号密码设置为：root/123456
 * 数据库脚本领取地址：[https://www.mindskip.net:999](https://www.mindskip.net:999)

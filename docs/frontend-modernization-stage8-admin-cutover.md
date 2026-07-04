@@ -89,8 +89,8 @@ Subagent 独立只读复核发现两个必须修正项：`favicon.ico` 缺失、
 
 运行中的后端 jar 不会自动读取 `src/main/resources/static/admin` 的最新内容。同步 static 后必须重新打包并重启后端，`verify-admin-static.ps1` 会在浏览器验证前检查 HTTP 返回内容是否已经是 Vite 输出。
 
-旧管理端源码目录 `source/vue/xzs-admin` 尚未删除。当前 Vue 3 管理端已接管默认构建和 `/admin` static，但业务模块覆盖仍不完整，旧目录暂时保留作历史对照和后续模块迁移参考。
+最终状态更新：后续阶段已完成管理端剩余业务模块覆盖，旧 Vue 2 管理端源码目录已删除。当前 Vue 3 管理端是唯一管理端 Web 源码和默认生产构建入口。
 
 ## 阶段 8 结论
 
-管理端默认生产构建和后端 `/admin` static 入口已切换到 Vue 3 + Vite。后续阶段应继续迁移管理端剩余业务模块，并在完整验收后删除旧 Vue 2 管理端源码、Vue CLI 配置和相关遗留脚本。
+管理端默认生产构建和后端 `/admin` static 入口已切换到 Vue 3 + Vite。后续阶段已继续迁移管理端剩余业务模块，并删除旧 Vue 2 管理端源码、Vue CLI 配置和相关遗留脚本。

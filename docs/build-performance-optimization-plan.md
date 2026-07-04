@@ -6,8 +6,8 @@
 
 ## 当前基线
 
-- 管理端 `npm run build:prod`：约 98 秒。
-- 学生端 `npm run build:prod`：约 88 秒。
+- 迁移前管理端 Vue CLI `npm run build:prod`：约 98 秒。
+- 迁移前学生端 Vue CLI `npm run build:prod`：约 88 秒。
 - 后端无变更热打包 `mvn -DskipTests package`：约 11.5 秒。
 - 应用启动到端口可用 `start.ps1 -NoDatabase`：约 14.7 秒。
 - 后端 `resources/static`：约 8.7 MB。
@@ -42,8 +42,8 @@
 
 仍需关注：
 
-- 管理端构建仍慢，主要瓶颈是 Element UI 自定义主题 Sass 全量编译和 UEditor 大量静态资源复制。
-- `node-sass` 已替换为 `sass`，但 Vue CLI 4 的 sass-loader 仍触发 Dart Sass legacy JS API 与 `@import` 弃用警告。
+- 管理端和学生端已经完成 Vue 3 + Vite 覆盖迁移，默认生产构建不再调用 Vue CLI。
+- 管理端构建仍需要关注 UEditor 静态资源复制、Element Plus 自动导入和大 chunk 拆分。
 - 冷安装阶段仍有大量过期依赖和 npm audit 警告，应与构建时间分开统计。
 
 ## Harness 结构
@@ -55,7 +55,7 @@
 ### 输入
 
 - 当前仓库源码。
-- 现有前端构建配置：`source/vue/xzs-admin`、`source/vue/xzs-student`。
+- 现有前端构建配置：`frontend/apps/admin`、`frontend/apps/student`。
 - 现有后端 Maven 工程：`source/xzs`。
 - 上一轮实测基线与构建日志。
 
@@ -79,7 +79,7 @@
 - 前端生产构建通过。
 - 后端 `mvn -DskipTests package` 通过。
 - 后端 static 与前端构建产物可同步。
-- 迁移方案不影响当前生产构建链路。
+- 迁移方案已完成覆盖切换，当前生产构建链路只使用 Vue 3 + Vite。
 
 ### 失败处理
 
@@ -130,14 +130,13 @@ subagent 不提交、不 push。主线程完成验证后，按项目规则统一
 
 降低 `chunk-vendors` 体积，减少首屏 JS/CSS 解析成本。
 
-## 阶段四：Vue 2.7 + Vite 试验路径
+## 阶段四：Vue 2.7 + Vite 试验路径（已废弃）
 
 ### 改动
 
-- 不替换当前 Vue CLI 生产构建。
-- 新增迁移验证文档，记录 Vite 配置、别名、环境变量、public 资源、UEditor、SVG sprite 的适配点。
-- 可选新增独立试验脚本，明确只用于测量，不参与正式发布。
-- 当前检查脚本 `.\scripts\measure-vite-spike.ps1` 已验证两个前端仍未引入 Vite 依赖和 `build:vite` 脚本。
+- 该阶段曾用于低风险验证 Vue 2.7 + Vite 可行性。
+- 项目已选择直接推进 Vue 3 + Vite 覆盖式重构，Vue 2.7 spike 文档和测量脚本已删除。
+- 后续性能测量以 `scripts/build-admin.ps1`、`scripts/build-student.ps1`、`scripts/build-all.ps1` 和真实后端 static 验证为准。
 
 ### 预期收益
 
@@ -149,14 +148,14 @@ subagent 不提交、不 push。主线程完成验证后，按项目规则统一
 - Vite 官方定位是更快、更轻的现代前端工具，开发服务器基于原生 ESM，生产构建使用预配置优化打包：https://vite.dev/guide/
 - Vue 2 官方 LTS 页面说明 Vue 2 在 2023-12-31 后不再获得 OSS 更新，包括安全和浏览器兼容修复：https://v2.vuejs.org/lts/
 
-结论：短期不要直接替换生产构建；优先做 Vue 2.7 + Vite 独立 spike，对比 `build:vite` 与 Vue CLI 当前 88.99 秒、70.81 秒的构建耗时。
+结论：Vue CLI 维护状态和 Vue 2 OSS 终止更新仍是架构升级依据；当前项目已完成 Vue 3 + Vite 覆盖切换，不再维护 Vue 2.7 + Vite 过渡路径。
 
 ## 阶段五：Vue 3 + Vite 长期迁移方案
 
 ### 改动
 
 - 新增长期迁移设计文档，拆分路由、状态管理、UI 组件库、表单、富文本、构建部署。
-- 明确不在当前优化分支直接迁移 Vue 3。
+- 后续实际执行采用覆盖式路线，学生端和管理端均已切换到 Vue 3 + Vite。
 
 ### 预期收益
 

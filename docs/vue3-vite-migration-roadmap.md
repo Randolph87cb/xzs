@@ -255,3 +255,9 @@ Element UI 2.x 不支持 Vue 3，长期方案应迁移到 Element Plus。Element
 - 构建耗时、产物体积和首屏加载数据达到预设目标。
 - Vue 2 生产构建有明确回退标签或分支。
 - 发布脚本和文档明确 Vue 3 是默认构建，Vue CLI 不再被隐式调用。
+
+## 当前执行结果
+
+截至阶段 9，学生端和管理端 Web 已完成 Vue 3 + Vite 覆盖式迁移。默认生产构建、后端 `/student` 和 `/admin` static 入口、Markdown/KaTeX/代码高亮渲染、管理端 UEditor 题库闭环和主要管理端业务模块均已切换到 `frontend/` 工作区。
+
+旧 Vue 2 Web 工程、Vue CLI 生产入口和 Vue 2.7 + Vite 过渡 spike 已删除。后续工作不再是迁移阻塞，重点转为构建 chunk 拆分、大试卷渲染缓存、分批渲染和发布文档站更新。
