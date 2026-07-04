@@ -38,6 +38,12 @@ export const router = createRouter({
           meta: { title: '考试记录' }
         },
         {
+          path: 'question/index',
+          name: 'QuestionError',
+          component: () => import('@/views/question/QuestionErrorView.vue'),
+          meta: { title: '错题本' }
+        },
+        {
           path: 'training/index',
           name: 'Training',
           component: () => import('@/views/training/TrainingView.vue'),
@@ -50,6 +56,12 @@ export const router = createRouter({
       name: 'ExamDo',
       component: () => import('@/views/exam/ExamDoView.vue'),
       meta: { title: '试卷答题' }
+    },
+    {
+      path: '/read',
+      name: 'ExamRead',
+      component: () => import('@/views/exam/ExamReadView.vue'),
+      meta: { title: '试卷查看' }
     },
     {
       path: '/:pathMatch(.*)*',

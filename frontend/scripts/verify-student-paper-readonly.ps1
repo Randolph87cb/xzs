@@ -16,6 +16,7 @@ $cookieJar = Join-Path $tmpDir "student-paper-readonly-cookies.txt"
 $loginPayloadPath = Join-Path $tmpDir "student-paper-readonly-login.json"
 $paperListPayloadPath = Join-Path $tmpDir "student-paper-readonly-page.json"
 $recordPayloadPath = Join-Path $tmpDir "student-paper-readonly-record.json"
+$questionPayloadPath = Join-Path $tmpDir "student-paper-readonly-question.json"
 
 if (Test-Path $cookieJar) {
     Remove-Item -LiteralPath $cookieJar -Force
@@ -38,6 +39,11 @@ if (Test-Path $cookieJar) {
     pageIndex = 1
     pageSize = 10
 } | ConvertTo-Json -Compress | Set-Content -Path $recordPayloadPath -Encoding utf8
+
+@{
+    pageIndex = 1
+    pageSize = 10
+} | ConvertTo-Json -Compress | Set-Content -Path $questionPayloadPath -Encoding utf8
 
 function Invoke-StudentApi {
     param(
@@ -90,6 +96,12 @@ if (($subjects.response | Measure-Object).Count -eq 0) {
     throw "subject list is empty"
 }
 
+$dashboard = Invoke-StudentApi -Path "/api/student/dashboard/index"
+Assert-Code -Response $dashboard -Expected 1 -Label "dashboard index"
+
+$tasks = Invoke-StudentApi -Path "/api/student/dashboard/task"
+Assert-Code -Response $tasks -Expected 1 -Label "dashboard task"
+
 $paperPage = Invoke-StudentApi -Path "/api/student/exam/paper/pageList" -DataFile $paperListPayloadPath
 Assert-Code -Response $paperPage -Expected 1 -Label "paper page"
 
@@ -107,5 +119,20 @@ if (($paper.response.titleItems | Measure-Object).Count -eq 0) {
 
 $records = Invoke-StudentApi -Path "/api/student/exampaper/answer/pageList" -DataFile $recordPayloadPath
 Assert-Code -Response $records -Expected 1 -Label "record page"
+
+$completeRecord = @($records.response.list | Where-Object { $_.status -eq 2 } | Select-Object -First 1)
+if ($completeRecord.Count -gt 0) {
+    $read = Invoke-StudentApi -Path "/api/student/exampaper/answer/read/$($completeRecord[0].id)"
+    Assert-Code -Response $read -Expected 1 -Label "read answer"
+}
+
+$wrongQuestions = Invoke-StudentApi -Path "/api/student/question/answer/page" -DataFile $questionPayloadPath
+Assert-Code -Response $wrongQuestions -Expected 1 -Label "wrong question page"
+
+$firstWrongQuestion = @($wrongQuestions.response.list | Select-Object -First 1)
+if ($firstWrongQuestion.Count -gt 0) {
+    $wrongQuestionDetail = Invoke-StudentApi -Path "/api/student/question/answer/select/$($firstWrongQuestion[0].id)"
+    Assert-Code -Response $wrongQuestionDetail -Expected 1 -Label "wrong question detail"
+}
 
 Write-Output "student paper readonly verification passed for $BaseUrl, paperId=$paperId"

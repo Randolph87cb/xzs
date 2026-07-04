@@ -15,6 +15,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="做题时间" width="170" />
+      <el-table-column label="操作" align="right" width="110">
+        <template #default="{ row }">
+          <el-button v-if="row.status === 2" type="primary" link @click.stop="router.push({ path: '/read', query: { id: row.id } })">
+            查看试卷
+          </el-button>
+          <el-tag v-else type="warning">待批改</el-tag>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-pagination
@@ -40,9 +48,11 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { getExamRecordPage, type ExamRecordItem } from '@xzs/api-client'
 import { formatExamAnswerStatus, formatExamAnswerStatusTag } from '@/utils/format'
 
+const router = useRouter()
 const records = ref<ExamRecordItem[]>([])
 const total = ref(0)
 const loading = ref(false)

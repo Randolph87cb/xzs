@@ -7,6 +7,7 @@
         <el-menu-item index="/paper/index">试卷中心</el-menu-item>
         <el-menu-item index="/training/index">智能训练</el-menu-item>
         <el-menu-item index="/record/index">考试记录</el-menu-item>
+        <el-menu-item index="/question/index">错题本</el-menu-item>
       </el-menu>
       <el-button text @click="handleLogout">退出</el-button>
     </el-header>

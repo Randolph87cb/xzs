@@ -45,6 +45,10 @@ export interface ExamQuestion {
   questionType: number
   itemOrder: number
   score?: string | number
+  difficult?: number
+  analyze?: string
+  correct?: string
+  correctArray?: string[]
   items: QuestionOption[]
 }
 
@@ -62,11 +66,15 @@ export interface ExamPaperDetail {
 }
 
 export interface AnswerItem {
+  id?: number
   questionId: number
   content: string | null
   contentArray: string[]
   completed: boolean
   itemOrder: number
+  doRight?: boolean | null
+  score?: string | number | null
+  questionScore?: string | number
 }
 
 export interface ExamPaperSubmit {
@@ -87,6 +95,53 @@ export interface ExamRecordItem {
   paperScore: string
   questionCorrect: number
   questionCount: number
+}
+
+export interface ExamPaperRead {
+  paper: ExamPaperDetail
+  answer: ExamPaperSubmit & {
+    score: string | number
+    answerItems: AnswerItem[]
+  }
+}
+
+export interface DashboardPaperItem {
+  id: number
+  name: string
+  startTime?: string
+  endTime?: string
+}
+
+export interface DashboardIndex {
+  fixedPaper: DashboardPaperItem[]
+  timeLimitPaper: DashboardPaperItem[]
+  pushPaper: DashboardPaperItem[]
+}
+
+export interface DashboardTaskPaperItem {
+  examPaperId: number
+  examPaperName: string
+  examPaperAnswerId?: number
+  status: number | null
+}
+
+export interface DashboardTaskItem {
+  id: number
+  title: string
+  paperItems: DashboardTaskPaperItem[]
+}
+
+export interface QuestionAnswerListItem {
+  id: number
+  shortTitle: string
+  questionType: number
+  subjectName: string
+  createTime: string
+}
+
+export interface QuestionAnswerDetail {
+  questionVM: ExamQuestion
+  questionAnswerVM: AnswerItem
 }
 
 export interface SmartTrainingCreateRequest {
@@ -119,8 +174,28 @@ export function getExamRecordPage(request: PageRequest): Promise<ApiResponse<Pag
   return post<PageResponse<ExamRecordItem>>('/api/student/exampaper/answer/pageList', request)
 }
 
+export function readExamPaperAnswer(id: number): Promise<ApiResponse<ExamPaperRead>> {
+  return post<ExamPaperRead>(`/api/student/exampaper/answer/read/${id}`)
+}
+
 export function createSmartTrainingPaper(
   request: SmartTrainingCreateRequest
 ): Promise<ApiResponse<SmartTrainingCreateResponse | number | string>> {
   return post<SmartTrainingCreateResponse | number | string>('/api/student/exam/paper/smartTraining/create', request)
+}
+
+export function getDashboardIndex(): Promise<ApiResponse<DashboardIndex>> {
+  return post<DashboardIndex>('/api/student/dashboard/index')
+}
+
+export function getDashboardTasks(): Promise<ApiResponse<DashboardTaskItem[]>> {
+  return post<DashboardTaskItem[]>('/api/student/dashboard/task')
+}
+
+export function getQuestionAnswerPage(request: PageRequest): Promise<ApiResponse<PageResponse<QuestionAnswerListItem>>> {
+  return post<PageResponse<QuestionAnswerListItem>>('/api/student/question/answer/page', request)
+}
+
+export function getQuestionAnswerDetail(id: number): Promise<ApiResponse<QuestionAnswerDetail>> {
+  return post<QuestionAnswerDetail>(`/api/student/question/answer/select/${id}`)
 }
