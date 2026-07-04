@@ -7,6 +7,7 @@
     "dev:student": "pnpm --filter @xzs/student dev",
     "build:student": "pnpm --filter @xzs/student build",
     "preview:student": "pnpm --filter @xzs/student preview",
+    "test:question-renderer": "pnpm --filter @xzs/question-renderer test",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {

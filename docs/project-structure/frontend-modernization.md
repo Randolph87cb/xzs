@@ -24,6 +24,7 @@ frontend/
 ├── packages/
 │   ├── api-client/
 │   ├── config/
+│   ├── question-renderer/
 │   └── shared/
 └── scripts/
     ├── build-student.ps1
@@ -35,6 +36,7 @@ frontend/
 
 - `apps/student`：Vue 3 + Vite 学生端迁移实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
 - `packages/api-client`：迁移期 API 请求封装，当前覆盖登录、登出、当前学生用户和消息数量接口。
+- `packages/question-renderer`：题目 Markdown、历史 HTML、公式、代码高亮和安全清理的独立渲染包。
 - `packages/shared`：迁移期共享工具和类型的起始包。
 - `packages/config`：迁移期共享配置包，后续承载 ESLint、Prettier、Vite 和 TypeScript 公共配置。
 - `scripts`：现代前端工作区的启动和构建脚本。
@@ -55,6 +57,12 @@ frontend/
 
 ```powershell
 .\frontend\scripts\verify-student-auth.ps1
+```
+
+题目渲染包单元测试：
+
+```powershell
+pnpm --filter @xzs/question-renderer test
 ```
 
 或进入 `frontend` 后运行：
