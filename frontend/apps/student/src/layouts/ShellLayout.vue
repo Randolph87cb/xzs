@@ -5,12 +5,26 @@
       <el-menu mode="horizontal" router :default-active="$route.path" class="shell__menu">
         <el-menu-item index="/index">首页</el-menu-item>
       </el-menu>
+      <el-button text @click="handleLogout">退出</el-button>
     </el-header>
     <el-main class="shell__main">
       <RouterView />
     </el-main>
   </el-container>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+
+const router = useRouter()
+const userStore = useUserStore()
+
+async function handleLogout() {
+  await userStore.logout()
+  router.push('/login')
+}
+</script>
 
 <style scoped lang="scss">
 .shell {

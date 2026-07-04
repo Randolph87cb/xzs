@@ -22,16 +22,19 @@ frontend/
 │           ├── styles/
 │           └── views/
 ├── packages/
+│   ├── api-client/
 │   ├── config/
 │   └── shared/
 └── scripts/
     ├── build-student.ps1
-    └── dev-student.ps1
+    ├── dev-student.ps1
+    └── verify-student-auth.ps1
 ```
 
 ## 当前职责
 
 - `apps/student`：Vue 3 + Vite 学生端迁移实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
+- `packages/api-client`：迁移期 API 请求封装，当前覆盖登录、登出、当前学生用户和消息数量接口。
 - `packages/shared`：迁移期共享工具和类型的起始包。
 - `packages/config`：迁移期共享配置包，后续承载 ESLint、Prettier、Vite 和 TypeScript 公共配置。
 - `scripts`：现代前端工作区的启动和构建脚本。
@@ -46,6 +49,12 @@ frontend/
 
 ```powershell
 .\frontend\scripts\build-student.ps1
+```
+
+认证链路验证需要后端和 Vite dev server 已启动：
+
+```powershell
+.\frontend\scripts\verify-student-auth.ps1
 ```
 
 或进入 `frontend` 后运行：

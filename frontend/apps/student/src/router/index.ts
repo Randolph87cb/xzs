@@ -4,6 +4,7 @@ import LoginView from '@/views/login/LoginView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import ShellLayout from '@/layouts/ShellLayout.vue'
 import NotFoundView from '@/views/system/NotFoundView.vue'
+import { useUserStore } from '@/stores/user'
 
 NProgress.configure({ showSpinner: false })
 
@@ -14,7 +15,7 @@ export const router = createRouter({
       path: '/login',
       name: 'Login',
       component: LoginView,
-      meta: { title: '登录', bodyBackground: '#fbfbfb' }
+      meta: { title: '登录', bodyBackground: '#fbfbfb', public: true }
     },
     {
       path: '/',
@@ -33,12 +34,12 @@ export const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: NotFoundView,
-      meta: { title: '页面不存在' }
+      meta: { title: '页面不存在', public: true }
     }
   ]
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   NProgress.start()
   document.title = typeof to.meta.title === 'string' ? to.meta.title : '\u200E'
 
@@ -49,6 +50,29 @@ router.beforeEach((to) => {
   }
 
   window._hmt?.push(['_trackPageview', '/#' + to.fullPath])
+
+  const userStore = useUserStore()
+
+  if (to.meta.public) {
+    return
+  }
+
+  try {
+    if (!userStore.hasCheckedSession) {
+      await userStore.initUserInfo()
+    }
+
+    if (userStore.isAuthenticated) {
+      return
+    }
+  } catch {
+    userStore.clear()
+  }
+
+  return {
+    path: '/login',
+    query: { redirect: to.fullPath }
+  }
 })
 
 router.afterEach(() => {
