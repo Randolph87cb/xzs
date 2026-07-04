@@ -8,10 +8,12 @@
     "build:student": "pnpm --filter @xzs/student build",
     "preview:student": "pnpm --filter @xzs/student preview",
     "test:question-renderer": "pnpm --filter @xzs/question-renderer test",
+    "verify:student-ui": "node scripts/verify-student-ui-screenshots.mjs",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
     "@xzs/config": "workspace:*",
+    "playwright": "1.57.0",
     "typescript": "6.0.3"
   }
 }

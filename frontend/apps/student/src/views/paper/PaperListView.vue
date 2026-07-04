@@ -3,8 +3,8 @@
     <header class="paper-list__header">
       <h1>试卷中心</h1>
       <el-radio-group v-model="query.paperType" size="small" @change="loadPapers">
-        <el-radio-button :label="1">固定试卷</el-radio-button>
-        <el-radio-button :label="4">时段试卷</el-radio-button>
+        <el-radio-button :value="1">固定试卷</el-radio-button>
+        <el-radio-button :value="4">时段试卷</el-radio-button>
       </el-radio-group>
     </header>
 

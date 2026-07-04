@@ -3,7 +3,7 @@
     <QuestionMarkdown :content="question.title" class="question-editor__title" />
 
     <el-radio-group v-if="question.questionType === 1" v-model="answer.content" class="question-editor__options" @change="markCompleted">
-      <el-radio v-for="item in question.items" :key="item.prefix" :label="item.prefix">
+      <el-radio v-for="item in question.items" :key="item.prefix" :value="item.prefix">
         <span class="question-editor__prefix">{{ item.prefix }}.</span>
         <QuestionMarkdown :content="item.content" inline />
       </el-radio>
@@ -15,7 +15,7 @@
       class="question-editor__options"
       @change="markCompleted"
     >
-      <el-checkbox v-for="item in question.items" :key="item.prefix" :label="item.prefix">
+      <el-checkbox v-for="item in question.items" :key="item.prefix" :value="item.prefix">
         <span class="question-editor__prefix">{{ item.prefix }}.</span>
         <QuestionMarkdown :content="item.content" inline />
       </el-checkbox>
@@ -23,7 +23,7 @@
 
     <el-radio-group v-else-if="question.questionType === 3" v-model="answer.content" class="question-editor__inline" @change="markCompleted">
       <span>(</span>
-      <el-radio v-for="item in question.items" :key="item.prefix" :label="item.prefix">
+      <el-radio v-for="item in question.items" :key="item.prefix" :value="item.prefix">
         <QuestionMarkdown :content="item.content" inline />
       </el-radio>
       <span>)</span>

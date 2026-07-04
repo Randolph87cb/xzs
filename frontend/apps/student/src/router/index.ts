@@ -76,6 +76,12 @@ export const router = createRouter({
       meta: { title: '试卷查看' }
     },
     {
+      path: '/edit',
+      name: 'ExamEdit',
+      component: () => import('@/views/exam/ExamEditView.vue'),
+      meta: { title: '试卷批改' }
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/system/NotFoundView.vue'),

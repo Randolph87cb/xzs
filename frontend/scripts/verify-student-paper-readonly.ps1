@@ -3,7 +3,9 @@ param(
     [string]$UserName = "student",
     [string]$Password = "123456",
     [int]$SubjectId = 1,
-    [int]$PaperType = 1
+    [int]$PaperType = 1,
+    [switch]$RequireCompleteRecord,
+    [switch]$RequireWrongQuestion
 )
 
 $ErrorActionPreference = "Stop"
@@ -136,6 +138,8 @@ $completeRecord = @($records.response.list | Where-Object { $_.status -eq 2 } | 
 if ($completeRecord.Count -gt 0) {
     $read = Invoke-StudentApi -Path "/api/student/exampaper/answer/read/$($completeRecord[0].id)"
     Assert-Code -Response $read -Expected 1 -Label "read answer"
+} elseif ($RequireCompleteRecord) {
+    throw "expected at least one complete record with status=2"
 }
 
 $wrongQuestions = Invoke-StudentApi -Path "/api/student/question/answer/page" -DataFile $questionPayloadPath
@@ -145,6 +149,8 @@ $firstWrongQuestion = @($wrongQuestions.response.list | Select-Object -First 1)
 if ($firstWrongQuestion.Count -gt 0) {
     $wrongQuestionDetail = Invoke-StudentApi -Path "/api/student/question/answer/select/$($firstWrongQuestion[0].id)"
     Assert-Code -Response $wrongQuestionDetail -Expected 1 -Label "wrong question detail"
+} elseif ($RequireWrongQuestion) {
+    throw "expected at least one wrong question"
 }
 
 Write-Output "student paper readonly verification passed for $BaseUrl, paperId=$paperId"

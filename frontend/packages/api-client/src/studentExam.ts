@@ -170,6 +170,10 @@ export function submitExamPaperAnswer(payload: ExamPaperSubmit): Promise<ApiResp
   return post<string>('/api/student/exampaper/answer/answerSubmit', payload)
 }
 
+export function editExamPaperAnswer(payload: ExamPaperRead['answer']): Promise<ApiResponse<string>> {
+  return post<string>('/api/student/exampaper/answer/edit', payload)
+}
+
 export function getExamRecordPage(request: PageRequest): Promise<ApiResponse<PageResponse<ExamRecordItem>>> {
   return post<PageResponse<ExamRecordItem>>('/api/student/exampaper/answer/pageList', request)
 }

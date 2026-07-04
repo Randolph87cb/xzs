@@ -30,7 +30,8 @@ frontend/
     ├── build-student.ps1
     ├── dev-student.ps1
     ├── verify-student-paper-readonly.ps1
-    └── verify-student-auth.ps1
+    ├── verify-student-auth.ps1
+    └── verify-student-ui-screenshots.mjs
 ```
 
 ## 当前职责
@@ -40,7 +41,7 @@ frontend/
 - `packages/question-renderer`：题目 Markdown、历史 HTML、公式、代码高亮和安全清理的独立渲染包。
 - `packages/shared`：迁移期共享工具和类型的起始包。
 - `packages/config`：迁移期共享配置包，后续承载 ESLint、Prettier、Vite 和 TypeScript 公共配置。
-- `scripts`：现代前端工作区的启动和构建脚本。
+- `scripts`：现代前端工作区的启动、构建、接口验证和截图验证脚本。
 
 ## 常用命令
 
@@ -64,6 +65,28 @@ frontend/
 
 ```powershell
 .\frontend\scripts\verify-student-paper-readonly.ps1
+```
+
+如果当前测试数据应固定包含已完成记录和错题记录，可以开启严格只读验证：
+
+```powershell
+.\frontend\scripts\verify-student-paper-readonly.ps1 -RequireCompleteRecord -RequireWrongQuestion
+```
+
+学生端真实浏览器截图验证需要后端和 Vite dev server 已启动，截图输出到 `.tmp\playwright\student-ui`：
+
+```powershell
+Set-Location frontend
+pnpm verify:student-ui
+```
+
+截图验证默认使用 `XZS_EXAM_PAPER_ID=2` 和 `XZS_FORMULA_PAPER_ID=8`；如果要把查看试卷、批改页和错题详情变成必验项，运行前设置：
+
+```powershell
+$env:XZS_REQUIRE_COMPLETE_RECORD = "true"
+$env:XZS_REQUIRE_PENDING_RECORD = "true"
+$env:XZS_REQUIRE_WRONG_QUESTION = "true"
+pnpm verify:student-ui
 ```
 
 题目渲染包单元测试：

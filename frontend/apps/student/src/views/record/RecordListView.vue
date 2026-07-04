@@ -20,7 +20,9 @@
           <el-button v-if="row.status === 2" type="primary" link @click.stop="router.push({ path: '/read', query: { id: row.id } })">
             查看试卷
           </el-button>
-          <el-tag v-else type="warning">待批改</el-tag>
+          <el-button v-else-if="row.status === 1" type="primary" link @click.stop="router.push({ path: '/edit', query: { id: row.id } })">
+            批改
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

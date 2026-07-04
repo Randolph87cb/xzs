@@ -81,4 +81,7 @@ if ($current.response.userName -ne $UserName) {
 $logout = Invoke-StudentApi -Path "/api/user/logout"
 Assert-Code -Response $logout -Expected 1 -Label "logout"
 
+$afterLogout = Invoke-StudentApi -Path "/api/student/user/current"
+Assert-Code -Response $afterLogout -Expected 401 -Label "current after logout"
+
 Write-Output "student auth verification passed for $BaseUrl"
