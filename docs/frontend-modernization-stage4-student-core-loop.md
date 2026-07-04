@@ -89,6 +89,18 @@ pnpm verify:student-ui
 
 截图验证是冒烟验证：能发现白屏、路由失败、接口报错、关键 DOM 缺失和 KaTeX 未渲染；它只校验截图文件非空，不做像素级视觉回归。阶段 4 稳定验收需要可重置测试数据集提供普通试卷、公式试卷、已完成记录、待批改记录、错题和消息。
 
+```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1
+```
+
+该脚本验证真实变更链路：登录学生端、读取试卷、调用 `answerSubmit` 创建临时答卷、用数据库把临时答卷转为待批改状态、调用 `read` 读取批改 payload、调用 `edit` 完成批改，然后清理临时答卷、答题明细、临时文本内容和本次脚本产生的用户日志。默认使用 PostgreSQL 容器 `xzs-postgres` 和试卷 `PaperId=2`。
+
+```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -RunScreenshotStrict
+```
+
+开启后，脚本会在临时待批改记录存在时运行严格截图验证，因此 `/edit` 从条件覆盖变成必验覆盖。
+
 ## 关键实现说明
 
 答题 payload 保持旧端结构：
@@ -156,7 +168,7 @@ pnpm --filter @xzs/question-renderer test
 .\frontend\scripts\build-student.ps1
 ```
 
-结果：通过，Vite reported `built in 6.87s`。
+结果：通过，Vite reported `built in 8.03s`。
 
 开发服务：
 
@@ -164,7 +176,7 @@ pnpm --filter @xzs/question-renderer test
 pnpm --filter @xzs/student dev -- --open false
 ```
 
-结果：Vite ready in `783 ms`。
+结果：Vite ready in `504 ms`。
 
 认证验证：
 
@@ -190,6 +202,22 @@ pnpm --filter @xzs/student dev -- --open false
 
 结果：通过。
 
+严格真实提交/批改验证：
+
+```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1
+```
+
+结果：通过，临时答卷 `answerId=8` 已自动清理。
+
+严格真实提交/批改 + 截图验证：
+
+```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -RunScreenshotStrict
+```
+
+结果：通过，临时答卷 `answerId=9` 已自动清理，生成 `/edit` 截图 `06c-exam-edit.png`。
+
 截图验证：
 
 ```powershell
@@ -212,11 +240,12 @@ D:\workspace\xzs\.tmp\playwright\student-ui
 - `05b-exam-formula-mobile.png`
 - `06-record-list.png`
 - `06b-exam-read.png`
+- `06c-exam-edit.png`
 - `07-question-error.png`
 - `08-user-center.png`
 - `09-user-message.png`
 
-本次数据库没有 `status === 1` 的待批改记录，因此 `/edit` 截图被脚本跳过；`ExamEditView` 已通过 TypeScript 和生产构建验证。
+普通截图脚本仍会在数据库缺少 `status === 1` 记录时跳过 `/edit`。严格组合验证通过 `verify-student-submit-edit-strict.ps1 -RunScreenshotStrict` 临时创建待批改记录，已覆盖 `/edit` 截图和真实批改提交。
 
 构建 warning：
 
@@ -226,17 +255,17 @@ D:\workspace\xzs\.tmp\playwright\student-ui
 
 ## 未验证项
 
-为避免污染本地考试记录，本次没有自动执行真实交卷接口 `answerSubmit` 和批改提交接口 `edit`。答题提交和批改页面逻辑已实现，后续应使用专用测试账号或可重置数据集验证交卷、重复提交、批改提交和记录状态变化。
+真实交卷接口 `answerSubmit` 和批改接口 `edit` 已通过临时数据脚本验证。脚本使用现有试卷 `PaperId=2` 创建临时答卷，并在验证后清理。它仍不是完整业务验收数据集，原因是待批改状态由脚本转换出来，而不是由包含填空/简答的专用试卷自然生成。
 
 ## 剩余工作
 
 阶段 4 还剩：
 
-- 使用可重置测试数据验证真实交卷和真实批改提交。
+- 准备专用可重置测试数据集，让待批改记录由填空/简答题自然生成，而不是脚本转换状态。
 - 大试卷分批渲染或虚拟滚动。
 - Element Plus 按需导入和进一步拆包。
 - 用户资料修改、头像上传等低频个人中心编辑能力。
 
 ## 阶段 4 子闭环结论
 
-学生端核心子闭环已经具备可运行基础：可登录、可拉取首页任务和试卷列表、可进入答题页、题目内容使用新 renderer 渲染、可查看考试记录和已完成试卷、可进入待批改试卷页面、可查看错题本、可打开个人中心和消息中心、可创建智能训练卷。阶段 4 仍不能进入阶段 5 覆盖切换，原因是还缺少可重置数据下的提交/批改变更验证和大试卷性能验证。
+学生端核心子闭环已经具备可运行基础：可登录、可拉取首页任务和试卷列表、可进入答题页、题目内容使用新 renderer 渲染、可查看考试记录和已完成试卷、可进入待批改试卷页面、可查看错题本、可打开个人中心和消息中心、可创建智能训练卷。真实提交/批改接口和 `/edit` 截图已经进入严格验证；阶段 4 仍不能进入阶段 5 覆盖切换，原因是还缺少专用可重置业务数据集、大试卷性能验证和低频个人中心编辑能力。

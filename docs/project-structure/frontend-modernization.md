@@ -30,6 +30,7 @@ frontend/
     ├── build-student.ps1
     ├── dev-student.ps1
     ├── verify-student-paper-readonly.ps1
+    ├── verify-student-submit-edit-strict.ps1
     ├── verify-student-auth.ps1
     └── verify-student-ui-screenshots.mjs
 ```
@@ -78,6 +79,18 @@ frontend/
 ```powershell
 Set-Location frontend
 pnpm verify:student-ui
+```
+
+学生端真实提交/批改严格验证需要后端已启动，默认使用 PostgreSQL 容器 `xzs-postgres` 和试卷 `PaperId=2`，脚本会自动清理临时答卷：
+
+```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1
+```
+
+如果要同时让 `/edit` 截图变成必验项，需要后端和 Vite dev server 都已启动：
+
+```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -RunScreenshotStrict
 ```
 
 截图验证默认使用 `XZS_EXAM_PAPER_ID=2` 和 `XZS_FORMULA_PAPER_ID=8`；如果要把查看试卷、批改页和错题详情变成必验项，运行前设置：
