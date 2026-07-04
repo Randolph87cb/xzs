@@ -44,6 +44,18 @@ export const router = createRouter({
           meta: { title: '错题本' }
         },
         {
+          path: 'user/index',
+          name: 'UserCenter',
+          component: () => import('@/views/user/UserCenterView.vue'),
+          meta: { title: '个人中心' }
+        },
+        {
+          path: 'user/message',
+          name: 'UserMessage',
+          component: () => import('@/views/user/UserMessageView.vue'),
+          meta: { title: '消息中心' }
+        },
+        {
           path: 'training/index',
           name: 'Training',
           component: () => import('@/views/training/TrainingView.vue'),

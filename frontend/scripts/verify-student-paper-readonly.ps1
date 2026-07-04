@@ -17,6 +17,7 @@ $loginPayloadPath = Join-Path $tmpDir "student-paper-readonly-login.json"
 $paperListPayloadPath = Join-Path $tmpDir "student-paper-readonly-page.json"
 $recordPayloadPath = Join-Path $tmpDir "student-paper-readonly-record.json"
 $questionPayloadPath = Join-Path $tmpDir "student-paper-readonly-question.json"
+$messagePayloadPath = Join-Path $tmpDir "student-paper-readonly-message.json"
 
 if (Test-Path $cookieJar) {
     Remove-Item -LiteralPath $cookieJar -Force
@@ -44,6 +45,11 @@ if (Test-Path $cookieJar) {
     pageIndex = 1
     pageSize = 10
 } | ConvertTo-Json -Compress | Set-Content -Path $questionPayloadPath -Encoding utf8
+
+@{
+    pageIndex = 1
+    pageSize = 10
+} | ConvertTo-Json -Compress | Set-Content -Path $messagePayloadPath -Encoding utf8
 
 function Invoke-StudentApi {
     param(
@@ -101,6 +107,12 @@ Assert-Code -Response $dashboard -Expected 1 -Label "dashboard index"
 
 $tasks = Invoke-StudentApi -Path "/api/student/dashboard/task"
 Assert-Code -Response $tasks -Expected 1 -Label "dashboard task"
+
+$events = Invoke-StudentApi -Path "/api/student/user/log"
+Assert-Code -Response $events -Expected 1 -Label "user events"
+
+$messages = Invoke-StudentApi -Path "/api/student/user/message/page" -DataFile $messagePayloadPath
+Assert-Code -Response $messages -Expected 1 -Label "message page"
 
 $paperPage = Invoke-StudentApi -Path "/api/student/exam/paper/pageList" -DataFile $paperListPayloadPath
 Assert-Code -Response $paperPage -Expected 1 -Label "paper page"
