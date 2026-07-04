@@ -11,10 +11,19 @@ frontend/
 ├── pnpm-workspace.yaml
 ├── tsconfig.base.json
 ├── apps/
-│   └── student/
+│   ├── student/
 │       ├── index.html
 │       ├── vite.config.ts
 │       ├── public/
+│       └── src/
+│           ├── layouts/
+│           ├── router/
+│           ├── stores/
+│           ├── styles/
+│           └── views/
+│   └── admin/
+│       ├── index.html
+│       ├── vite.config.ts
 │       └── src/
 │           ├── layouts/
 │           ├── router/
@@ -38,6 +47,7 @@ frontend/
 ## 当前职责
 
 - `apps/student`：Vue 3 + Vite 学生端默认生产构建实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
+- `apps/admin`：Vue 3 + Vite 管理端基础迁移实现，开发端口 `8002`，构建输出目录为 `admin`，当前覆盖登录、Dashboard 和学科列表最小闭环。
 - `packages/api-client`：迁移期 API 请求封装，当前覆盖登录、登出、当前学生用户和消息数量接口。
 - `packages/question-renderer`：题目 Markdown、历史 HTML、公式、代码高亮和安全清理的独立渲染包。
 - `packages/shared`：迁移期共享工具和类型的起始包。
@@ -114,6 +124,24 @@ pnpm verify:student-ui
 pnpm --filter @xzs/question-renderer test
 ```
 
+管理端开发服务：
+
+```powershell
+pnpm --dir frontend --filter @xzs/admin dev
+```
+
+管理端构建：
+
+```powershell
+pnpm --dir frontend --filter @xzs/admin build
+```
+
+管理端截图验证需要后端已启动：
+
+```powershell
+pnpm --dir frontend verify:admin-ui
+```
+
 或进入 `frontend` 后运行：
 
 ```powershell
@@ -129,6 +157,7 @@ pnpm --filter @xzs/student build
 - `scripts/build-student.ps1` 默认使用 `pnpm --filter @xzs/student run build` 构建 Vue 3 学生端。
 - `scripts/sync-web-static.ps1` 默认把 `frontend/apps/student/student` 同步到 `source/xzs/src/main/resources/static/student`。
 - 后端 jar 内 `/student/index.html` 由 Vue 3 + Vite 产物提供。
+- 管理端 Vue 3 版本当前仍是迁移工作区产物，尚未接管 `source/xzs/src/main/resources/static/admin`。
 
 ## 迁移约束
 

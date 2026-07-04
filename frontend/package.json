@@ -7,8 +7,12 @@
     "dev:student": "pnpm --filter @xzs/student dev",
     "build:student": "pnpm --filter @xzs/student build",
     "preview:student": "pnpm --filter @xzs/student preview",
+    "dev:admin": "pnpm --filter @xzs/admin dev",
+    "build:admin": "pnpm --filter @xzs/admin build",
+    "preview:admin": "pnpm --filter @xzs/admin preview",
     "test:question-renderer": "pnpm --filter @xzs/question-renderer test",
     "verify:student-ui": "node scripts/verify-student-ui-screenshots.mjs",
+    "verify:admin-ui": "node scripts/verify-admin-ui-screenshots.mjs",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {

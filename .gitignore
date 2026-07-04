@@ -18,6 +18,7 @@ dist/
 /source/vue/xzs-student/dist/
 /source/vue/xzs-student/.tmp/
 /frontend/apps/student/student/
+/frontend/apps/admin/admin/
 /frontend/apps/*/dist/
 /frontend/apps/*/.tmp/
 

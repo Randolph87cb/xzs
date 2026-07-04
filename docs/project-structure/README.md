@@ -55,3 +55,4 @@ xzs/
 - `docs/frontend-modernization-stage3-question-renderer.md`：题目渲染包阶段验收报告。
 - `docs/frontend-modernization-stage4-student-core-loop.md`：学生端核心业务阶段验收报告。
 - `docs/frontend-modernization-stage5-student-cutover.md`：学生端生产入口覆盖切换报告。
+- `docs/frontend-modernization-stage6-admin-shell.md`：管理端 Vue 3 + Vite 基础壳阶段验收报告。
