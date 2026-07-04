@@ -3,116 +3,16 @@
 </template>
 
 <script>
-import MarkdownIt from 'markdown-it'
-import texmath from 'markdown-it-texmath'
-import katex from 'katex'
-import hljs from 'highlight.js/lib/core'
-import bash from 'highlight.js/lib/languages/bash'
-import cpp from 'highlight.js/lib/languages/cpp'
-import csharp from 'highlight.js/lib/languages/csharp'
-import css from 'highlight.js/lib/languages/css'
-import java from 'highlight.js/lib/languages/java'
-import javascript from 'highlight.js/lib/languages/javascript'
-import json from 'highlight.js/lib/languages/json'
-import markdownLanguage from 'highlight.js/lib/languages/markdown'
-import python from 'highlight.js/lib/languages/python'
-import sql from 'highlight.js/lib/languages/sql'
-import typescript from 'highlight.js/lib/languages/typescript'
-import xml from 'highlight.js/lib/languages/xml'
 import DOMPurify from 'dompurify'
+import renderer from './renderer'
 import 'highlight.js/styles/github.css'
 import 'katex/dist/katex.min.css'
 import 'markdown-it-texmath/css/texmath.css'
-
-hljs.registerLanguage('bash', bash)
-hljs.registerLanguage('shell', bash)
-hljs.registerLanguage('sh', bash)
-hljs.registerLanguage('cpp', cpp)
-hljs.registerLanguage('c++', cpp)
-hljs.registerLanguage('csharp', csharp)
-hljs.registerLanguage('cs', csharp)
-hljs.registerLanguage('css', css)
-hljs.registerLanguage('java', java)
-hljs.registerLanguage('javascript', javascript)
-hljs.registerLanguage('js', javascript)
-hljs.registerLanguage('json', json)
-hljs.registerLanguage('markdown', markdownLanguage)
-hljs.registerLanguage('md', markdownLanguage)
-hljs.registerLanguage('python', python)
-hljs.registerLanguage('py', python)
-hljs.registerLanguage('sql', sql)
-hljs.registerLanguage('typescript', typescript)
-hljs.registerLanguage('ts', typescript)
-hljs.registerLanguage('xml', xml)
-hljs.registerLanguage('html', xml)
-
-const htmlEscapeMap = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;'
-}
 
 const sanitizeOptions = {
   ADD_TAGS: ['eq', 'eqn'],
   ADD_ATTR: ['encoding', 'display']
 }
-
-function escapeHtml (content) {
-  return String(content).replace(/[&<>"']/g, char => htmlEscapeMap[char])
-}
-
-function normalizeContent (content) {
-  if (content === null || content === undefined) {
-    return ''
-  }
-  if (Array.isArray(content)) {
-    return content.map(item => normalizeContent(item)).join('\n\n')
-  }
-  if (typeof content === 'object') {
-    return JSON.stringify(content)
-  }
-  return String(content)
-}
-
-function highlightCode (content, lang) {
-  if (lang && hljs.getLanguage(lang)) {
-    try {
-      return '<pre class="hljs"><code>' + hljs.highlight(content, { language: lang, ignoreIllegals: true }).value + '</code></pre>'
-    } catch (e) {
-      try {
-        return '<pre class="hljs"><code>' + hljs.highlight(lang, content, true).value + '</code></pre>'
-      } catch (ignore) {
-        return '<pre class="hljs"><code>' + escapeHtml(content) + '</code></pre>'
-      }
-    }
-  }
-
-  if (typeof hljs.highlightAuto === 'function') {
-    try {
-      return '<pre class="hljs"><code>' + hljs.highlightAuto(content).value + '</code></pre>'
-    } catch (e) {
-      return '<pre class="hljs"><code>' + escapeHtml(content) + '</code></pre>'
-    }
-  }
-
-  return '<pre class="hljs"><code>' + escapeHtml(content) + '</code></pre>'
-}
-
-const markdown = new MarkdownIt({
-  html: true,
-  linkify: true,
-  breaks: true,
-  highlight: highlightCode
-}).use(texmath, {
-  engine: katex,
-  delimiters: ['dollars', 'brackets', 'beg_end'],
-  katexOptions: {
-    throwOnError: false,
-    strict: false
-  }
-})
 
 export default {
   name: 'MarkdownView',
@@ -132,8 +32,7 @@ export default {
   },
   computed: {
     renderedContent () {
-      const source = normalizeContent(this.content)
-      const html = this.inline ? markdown.renderInline(source) : markdown.render(source)
+      const html = renderer.renderMarkdown(this.content, this.inline)
       return DOMPurify.sanitize(html, sanitizeOptions)
     }
   }
