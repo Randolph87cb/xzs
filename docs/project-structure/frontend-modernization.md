@@ -29,6 +29,7 @@ frontend/
 └── scripts/
     ├── build-student.ps1
     ├── dev-student.ps1
+    ├── verify-student-paper-readonly.ps1
     └── verify-student-auth.ps1
 ```
 
@@ -57,6 +58,12 @@ frontend/
 
 ```powershell
 .\frontend\scripts\verify-student-auth.ps1
+```
+
+学生端试卷只读链路验证需要后端和 Vite dev server 已启动：
+
+```powershell
+.\frontend\scripts\verify-student-paper-readonly.ps1
 ```
 
 题目渲染包单元测试：

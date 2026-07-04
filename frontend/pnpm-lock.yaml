@@ -98,6 +98,9 @@ importers:
       markdown-it-texmath:
         specifier: 1.0.0
         version: 1.0.0
+      vue:
+        specifier: 3.5.39
+        version: 3.5.39(typescript@6.0.3)
     devDependencies:
       '@types/markdown-it':
         specifier: 14.1.2
