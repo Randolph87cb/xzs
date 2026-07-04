@@ -17,6 +17,9 @@ dist/
 /source/vue/xzs-student/node_modules/
 /source/vue/xzs-student/dist/
 /source/vue/xzs-student/.tmp/
+/frontend/apps/student/student/
+/frontend/apps/*/dist/
+/frontend/apps/*/.tmp/
 
 # eclipse ignore
 .settings/

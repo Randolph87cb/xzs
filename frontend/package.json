@@ -1,0 +1,16 @@
+{
+  "name": "xzs-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev:student": "pnpm --filter @xzs/student dev",
+    "build:student": "pnpm --filter @xzs/student build",
+    "preview:student": "pnpm --filter @xzs/student preview",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@xzs/config": "workspace:*",
+    "typescript": "6.0.3"
+  }
+}

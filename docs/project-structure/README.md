@@ -18,6 +18,7 @@ xzs/
 │   ├── project-structure/ # 项目结构拆分文档
 │   └── question-bank/   # 随项目版本管理的真题题库 Markdown 资料
 ├── release/             # 已构建发布包：后端 jar 与前端静态包
+├── frontend/            # Vue 3 + Vite 覆盖式重构迁移工作区
 ├── scripts/             # 本地构建、测量、静态资源同步、维护和数据导入脚本
 ├── source/              # 源码根目录
 │   ├── xzs/             # Spring Boot 后端
@@ -38,6 +39,7 @@ xzs/
 - `backend.md`：Spring Boot 后端结构。
 - `web-admin.md`：管理端 Vue 项目结构。
 - `web-student.md`：学生端 Vue 项目结构。
+- `frontend-modernization.md`：Vue 3 + Vite 覆盖式重构工作区结构。
 - `wx-student.md`：微信小程序学生端结构。
 - `database-deploy.md`：数据库、发布包与部署资产。
 - `reading-guide.md`：按业务链路阅读代码的建议入口。
@@ -47,3 +49,5 @@ xzs/
 - `docs/build-performance-optimization-plan.md`：构建与运行性能优化分阶段方案。
 - `docs/vite-vue2-migration-spike.md`：Vue 2.7 + Vite 迁移验证方案。
 - `docs/vue3-vite-migration-roadmap.md`：Vue 3 + Vite 长期迁移路线图。
+- `docs/frontend-modernization-migration-roadmap.md`：覆盖式 Vue 3 + Vite 前端重构路线。
+- `docs/frontend-modernization-stage1-student-shell.md`：学生端现代前端骨架阶段验收报告。
