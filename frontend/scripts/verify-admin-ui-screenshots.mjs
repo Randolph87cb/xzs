@@ -17,7 +17,7 @@ const failures = []
 let createdQuestionId = null
 
 page.on('pageerror', (error) => {
-  failures.push(`pageerror: ${error.message}`)
+  failures.push(`pageerror: ${error.stack || error.message}`)
 })
 page.on('console', (message) => {
   if (message.type() === 'error') {

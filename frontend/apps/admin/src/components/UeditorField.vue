@@ -26,8 +26,13 @@ onMounted(async () => {
   containerRef.value?.appendChild(editorNode)
 
   const ue = await loadUeditorScripts()
+  disableUnstableUeditorPlugins(ue)
   await nextTick()
-  editor = ue.getEditor(editorId)
+  editor = ue.getEditor(editorId, {
+    elementPathEnabled: false,
+    wordCount: false,
+    scaleEnabled: false
+  })
   editor.addListener('ready', () => {
     ready.value = true
     editor?.setContent(props.modelValue || '')
@@ -128,6 +133,13 @@ function loadUeditorScripts() {
   return ueditorLoadPromise
 }
 
+function disableUnstableUeditorPlugins(ue: UEditorGlobal) {
+  // The bundled message UI plugin assumes editor.ui exists inside async ready
+  // callbacks. In Vue route mounts that can race and throw, while the plugin is
+  // not used by the question editor toolbar.
+  delete ue._customizeUI?.message
+}
+
 interface UEditorInstance {
   addListener: (eventName: string, callback: () => void) => void
   removeListener?: (eventName: string, callback: () => void) => void
@@ -137,8 +149,9 @@ interface UEditorInstance {
 }
 
 interface UEditorGlobal {
-  getEditor: (id: string) => UEditorInstance
+  getEditor: (id: string, options?: Record<string, unknown>) => UEditorInstance
   delEditor?: (id: string) => void
+  _customizeUI?: Record<string, unknown>
 }
 
 declare global {

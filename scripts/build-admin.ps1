@@ -44,12 +44,13 @@ function Invoke-External {
 }
 
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
-$projectDir = Join-Path $workspaceRoot "source\vue\xzs-admin"
+$frontendDir = Join-Path $workspaceRoot "frontend"
+$projectDir = Join-Path $frontendDir "apps\admin"
 if (-not (Test-Path -LiteralPath (Join-Path $projectDir "package.json"))) {
     throw "Admin package.json not found: $projectDir"
 }
 
-$npm = Resolve-CommandPath -Names @("npm.cmd", "npm")
+$pnpm = Resolve-CommandPath -Names @("pnpm.cmd", "pnpm")
 $logFile = $null
 if ($LogDir) {
     $resolvedLogDir = [System.IO.Path]::GetFullPath($LogDir)
@@ -59,13 +60,9 @@ if ($LogDir) {
 }
 
 if (-not $SkipInstall) {
-    $installArgs = @("install")
-    if (Test-Path -LiteralPath (Join-Path $projectDir "package-lock.json")) {
-        $installArgs = @("ci")
-    }
-    Invoke-External -FilePath $npm -Arguments $installArgs -WorkingDirectory $projectDir -LogFile $logFile
+    Invoke-External -FilePath $pnpm -Arguments @("install", "--frozen-lockfile") -WorkingDirectory $frontendDir -LogFile $logFile
 }
 
-Invoke-External -FilePath $npm -Arguments @("run", $NpmScript) -WorkingDirectory $projectDir -LogFile $logFile
+Invoke-External -FilePath $pnpm -Arguments @("--filter", "@xzs/admin", "run", $NpmScript) -WorkingDirectory $frontendDir -LogFile $logFile
 
 Write-Output "Admin web build completed: $(Join-Path $projectDir 'admin')"

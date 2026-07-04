@@ -57,7 +57,7 @@ $backendStatic = Join-Path $workspaceRoot "source\xzs\src\main\resources\static"
 
 if (-not $SkipAdmin) {
     Sync-StaticDirectory `
-        -Source (Join-Path $workspaceRoot "source\vue\xzs-admin\admin") `
+        -Source (Join-Path $workspaceRoot "frontend\apps\admin\admin") `
         -Target (Join-Path $backendStatic "admin") `
         -WorkspaceRoot $workspaceRoot
 }
