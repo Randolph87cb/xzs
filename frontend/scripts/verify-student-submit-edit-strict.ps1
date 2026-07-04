@@ -8,6 +8,8 @@ param(
     [string]$PostgresDatabase = "xzs",
     [switch]$RunScreenshotStrict,
     [string]$FrontendBaseUrl = "http://localhost:8001",
+    [switch]$UseTemporarySubjectivePaper,
+    [int]$SubjectId = 1,
     [switch]$KeepData
 )
 
@@ -27,6 +29,10 @@ if (Test-Path $cookieJar) {
 }
 
 $createdAnswerId = $null
+$createdPaperId = $null
+$createdQuestionId = $null
+$createdQuestionTextContentId = $null
+$createdPaperFrameTextContentId = $null
 $beforeEventId = 0
 $userId = $null
 $paperName = $null
@@ -199,6 +205,25 @@ try {
     $beforeAnswerId = [int](Invoke-PostgresScalar -Label "answer max id" -Sql "select coalesce(max(id), 0) from t_exam_paper_answer;")
     $beforeEventId = [int](Invoke-PostgresScalar -Label "event max id" -Sql "select coalesce(max(id), 0) from t_user_event_log;")
 
+    if ($UseTemporarySubjectivePaper) {
+        $marker = "XZS_STRICT_" + [Guid]::NewGuid().ToString("N")
+        $questionInfo = "{""titleContent"":""<p>$marker 请简述为什么需要严格验证。</p>"",""analyze"":""<p>$marker 自动化验证解析</p>"",""questionItemObjects"":[],""correct"":""严格验证需要覆盖真实提交和批改链路。""}"
+        $questionInfoSql = Escape-SqlLiteral -Value $questionInfo
+        $questionCorrectSql = Escape-SqlLiteral -Value "严格验证需要覆盖真实提交和批改链路。"
+        $markerSql = Escape-SqlLiteral -Value $marker
+
+        $createdQuestionTextContentId = [int](Invoke-PostgresScalar -Label "temporary question text content" -Sql "insert into t_text_content (content, create_time) values ('$questionInfoSql', now()) returning id;")
+        $createdQuestionId = [int](Invoke-PostgresScalar -Label "temporary question" -Sql "insert into t_question (question_type, subject_id, score, grade_level, difficult, knowledge_point, correct, info_text_content_id, create_user, status, create_time, deleted) values (5, $SubjectId, 100, (select level from t_subject where id = $SubjectId), 1, 'XZS_STRICT', '$questionCorrectSql', $createdQuestionTextContentId, $userId, 1, now(), false) returning id;")
+
+        $paperFrame = "[{""name"":""简答题"",""questionItems"":[{""id"":$createdQuestionId,""itemOrder"":1}]}]"
+        $paperFrameSql = Escape-SqlLiteral -Value $paperFrame
+        $createdPaperFrameTextContentId = [int](Invoke-PostgresScalar -Label "temporary paper frame text content" -Sql "insert into t_text_content (content, create_time) values ('$paperFrameSql', now()) returning id;")
+        $paperName = "$marker 临时简答试卷"
+        $paperNameSql = Escape-SqlLiteral -Value $paperName
+        $createdPaperId = [int](Invoke-PostgresScalar -Label "temporary paper" -Sql "insert into t_exam_paper (name, subject_id, paper_type, grade_level, score, question_count, suggest_time, frame_text_content_id, create_user, create_time, deleted) values ('$paperNameSql', $SubjectId, 1, (select level from t_subject where id = $SubjectId), 100, 1, 5, $createdPaperFrameTextContentId, $userId, now(), false) returning id;")
+        $PaperId = $createdPaperId
+    }
+
     @{
         userName = $UserName
         password = $Password
@@ -231,7 +256,18 @@ try {
         throw "answerSubmit did not create answer item rows for answer $createdAnswerId"
     }
 
-    $forcePendingSql = @"
+    if ($UseTemporarySubjectivePaper) {
+        $pendingStatus = [int](Invoke-PostgresScalar -Label "pending answer status" -Sql "select status from t_exam_paper_answer where id = $createdAnswerId;")
+        if ($pendingStatus -ne 1) {
+            throw "temporary subjective paper expected natural status=1, got $pendingStatus"
+        }
+
+        $pendingItemCount = [int](Invoke-PostgresScalar -Label "pending answer item count" -Sql "select count(*) from t_exam_paper_question_customer_answer where exam_paper_answer_id = $createdAnswerId and do_right is null;")
+        if ($pendingItemCount -le 0) {
+            throw "temporary subjective paper expected at least one item with do_right=null"
+        }
+    } else {
+        $forcePendingSql = @"
 update t_exam_paper_answer
 set status = 1, user_score = 0, system_score = 0, question_correct = 0
 where id = $createdAnswerId;
@@ -240,15 +276,17 @@ update t_exam_paper_question_customer_answer
 set do_right = null, customer_score = 0
 where id = $createdItemId;
 "@
-    Invoke-Postgres -Sql $forcePendingSql | Out-Null
+        Invoke-Postgres -Sql $forcePendingSql | Out-Null
 
-    $pendingStatus = [int](Invoke-PostgresScalar -Label "pending answer status" -Sql "select status from t_exam_paper_answer where id = $createdAnswerId;")
-    if ($pendingStatus -ne 1) {
-        throw "forced pending answer expected status=1, got $pendingStatus"
+        $pendingStatus = [int](Invoke-PostgresScalar -Label "pending answer status" -Sql "select status from t_exam_paper_answer where id = $createdAnswerId;")
+        if ($pendingStatus -ne 1) {
+            throw "forced pending answer expected status=1, got $pendingStatus"
+        }
     }
 
     if ($RunScreenshotStrict) {
         $oldBaseUrl = $env:XZS_STUDENT_BASE_URL
+        $oldApiBaseUrl = $env:XZS_STUDENT_API_BASE_URL
         $oldUserName = $env:XZS_STUDENT_USERNAME
         $oldPassword = $env:XZS_STUDENT_PASSWORD
         $oldExamPaperId = $env:XZS_EXAM_PAPER_ID
@@ -258,6 +296,7 @@ where id = $createdItemId;
 
         try {
             $env:XZS_STUDENT_BASE_URL = $FrontendBaseUrl
+            $env:XZS_STUDENT_API_BASE_URL = $BaseUrl
             $env:XZS_STUDENT_USERNAME = $UserName
             $env:XZS_STUDENT_PASSWORD = $Password
             $env:XZS_EXAM_PAPER_ID = "$PaperId"
@@ -276,6 +315,7 @@ where id = $createdItemId;
             }
         } finally {
             $env:XZS_STUDENT_BASE_URL = $oldBaseUrl
+            $env:XZS_STUDENT_API_BASE_URL = $oldApiBaseUrl
             $env:XZS_STUDENT_USERNAME = $oldUserName
             $env:XZS_STUDENT_PASSWORD = $oldPassword
             $env:XZS_EXAM_PAPER_ID = $oldExamPaperId
@@ -335,14 +375,39 @@ where exam_paper_answer_id = $createdAnswerId;
 delete from t_exam_paper_answer
 where id = $createdAnswerId;
 
-delete from t_user_event_log
-where id > $beforeEventId
-  and user_id = $userId;
 "@
         try {
             Invoke-Postgres -Sql $cleanupSql | Out-Null
         } catch {
             Write-Warning "cleanup failed for answerId=${createdAnswerId}: $($_.Exception.Message)"
+            throw
+        }
+    }
+
+    if ($UseTemporarySubjectivePaper -and -not $KeepData -and $createdPaperId) {
+        $cleanupPaperSql = @"
+delete from t_exam_paper
+where id = $createdPaperId;
+
+delete from t_question
+where id = $createdQuestionId;
+
+delete from t_text_content
+where id in ($createdPaperFrameTextContentId, $createdQuestionTextContentId);
+"@
+        try {
+            Invoke-Postgres -Sql $cleanupPaperSql | Out-Null
+        } catch {
+            Write-Warning "temporary paper cleanup failed for paperId=${createdPaperId}: $($_.Exception.Message)"
+            throw
+        }
+    }
+
+    if (-not $KeepData -and $userId -and $beforeEventId -gt 0) {
+        try {
+            Invoke-Postgres -Sql "delete from t_user_event_log where id > $beforeEventId and user_id = $userId;" | Out-Null
+        } catch {
+            Write-Warning "event log cleanup failed after id=${beforeEventId}: $($_.Exception.Message)"
             throw
         }
     }

@@ -10,30 +10,91 @@
         <div><dt>性别</dt><dd>{{ sexText(user?.sex) }}</dd></div>
         <div><dt>手机</dt><dd>{{ user?.phone ?? '-' }}</dd></div>
       </dl>
+      <el-upload
+        accept=".jpg,.jpeg,.png"
+        :auto-upload="false"
+        :show-file-list="false"
+        :on-change="uploadAvatar"
+      >
+        <el-button :loading="avatarUploading">更换头像</el-button>
+      </el-upload>
     </aside>
 
-    <main v-loading="loading" class="user-center__events">
-      <header>
-        <h2>用户动态</h2>
-        <el-button @click="loadData">刷新</el-button>
-      </header>
-      <el-timeline v-if="events.length > 0">
-        <el-timeline-item v-for="event in events" :key="event.id" :timestamp="event.createTime" placement="top">
-          <p>{{ event.content }}</p>
-        </el-timeline-item>
-      </el-timeline>
-      <el-empty v-else description="暂无动态" />
+    <main v-loading="loading" class="user-center__panel">
+      <el-tabs v-model="activeTab">
+        <el-tab-pane label="用户动态" name="events">
+          <header class="user-center__panel-header">
+            <h2>用户动态</h2>
+            <el-button @click="loadData">刷新</el-button>
+          </header>
+          <el-timeline v-if="events.length > 0">
+            <el-timeline-item v-for="event in events" :key="event.id" :timestamp="event.createTime" placement="top">
+              <p>{{ event.content }}</p>
+            </el-timeline-item>
+          </el-timeline>
+          <el-empty v-else description="暂无动态" />
+        </el-tab-pane>
+
+        <el-tab-pane label="个人资料" name="profile">
+          <el-form ref="formRef" class="user-center__form" :model="form" :rules="rules" label-width="96px">
+            <el-form-item label="真实姓名" prop="realName">
+              <el-input v-model="form.realName" />
+            </el-form-item>
+            <el-form-item label="年龄">
+              <el-input v-model="form.age" />
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-select v-model="form.sex" clearable placeholder="请选择">
+                <el-option label="男" :value="1" />
+                <el-option label="女" :value="2" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="出生日期">
+              <el-date-picker v-model="form.birthDay" value-format="YYYY-MM-DD" type="date" placeholder="选择日期" />
+            </el-form-item>
+            <el-form-item label="手机">
+              <el-input v-model="form.phone" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" :loading="saving" @click="saveProfile">保存资料</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
     </main>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { getCurrentStudentUser, getStudentUserEvents, type StudentUserInfo, type UserEventLog } from '@xzs/api-client'
+import { ElMessage, type FormInstance, type FormRules, type UploadProps } from 'element-plus'
+import {
+  getCurrentStudentUser,
+  getStudentUserEvents,
+  updateCurrentStudentUser,
+  uploadStudentAvatar,
+  type StudentUserInfo,
+  type UserEventLog
+} from '@xzs/api-client'
 
 const loading = ref(false)
+const saving = ref(false)
+const avatarUploading = ref(false)
+const activeTab = ref('events')
 const user = ref<StudentUserInfo | null>(null)
 const events = ref<UserEventLog[]>([])
+const formRef = ref<FormInstance>()
+const form = ref({
+  realName: '',
+  age: '',
+  sex: undefined as number | undefined,
+  birthDay: null as string | null,
+  phone: '',
+  userLevel: 1
+})
+const rules: FormRules = {
+  realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }]
+}
 const userInitial = computed(() => user.value?.userName?.slice(0, 1).toUpperCase() ?? 'U')
 
 onMounted(loadData)
@@ -43,9 +104,74 @@ async function loadData() {
   try {
     const [userResult, eventResult] = await Promise.all([getCurrentStudentUser(), getStudentUserEvents()])
     user.value = userResult.response ?? null
+    syncForm(user.value)
     events.value = eventResult.response ?? []
   } finally {
     loading.value = false
+  }
+}
+
+async function saveProfile() {
+  const valid = await formRef.value?.validate().catch(() => false)
+  if (!valid) {
+    return
+  }
+
+  saving.value = true
+  try {
+    const result = await updateCurrentStudentUser({
+      realName: form.value.realName,
+      age: form.value.age,
+      sex: form.value.sex ?? null,
+      birthDay: form.value.birthDay,
+      phone: form.value.phone,
+      userLevel: form.value.userLevel
+    })
+
+    if (result.code === 1) {
+      ElMessage.success(result.message)
+      await loadData()
+    } else {
+      ElMessage.error(result.message)
+    }
+  } finally {
+    saving.value = false
+  }
+}
+
+const uploadAvatar: UploadProps['onChange'] = async (uploadFile) => {
+  const file = uploadFile.raw
+  if (!file) {
+    return
+  }
+
+  if (!['image/jpeg', 'image/png'].includes(file.type)) {
+    ElMessage.error('只支持 JPG 或 PNG 图片')
+    return
+  }
+
+  avatarUploading.value = true
+  try {
+    const result = await uploadStudentAvatar(file)
+    if (result.code === 1) {
+      ElMessage.success('头像已更新')
+      await loadData()
+    } else {
+      ElMessage.error(result.message)
+    }
+  } finally {
+    avatarUploading.value = false
+  }
+}
+
+function syncForm(nextUser: StudentUserInfo | null) {
+  form.value = {
+    realName: nextUser?.realName ?? '',
+    age: nextUser?.age == null ? '' : String(nextUser.age),
+    sex: nextUser?.sex,
+    birthDay: nextUser?.birthDay ?? null,
+    phone: nextUser?.phone ?? '',
+    userLevel: nextUser?.userLevel ?? 1
   }
 }
 
@@ -70,7 +196,7 @@ function sexText(sex?: number) {
 }
 
 .user-center__profile,
-.user-center__events {
+.user-center__panel {
   padding: 18px;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
@@ -111,7 +237,7 @@ function sexText(sex?: number) {
   color: #111827;
 }
 
-.user-center__events header {
+.user-center__panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -119,10 +245,14 @@ function sexText(sex?: number) {
   margin-bottom: 16px;
 }
 
-.user-center__events h2 {
+.user-center__panel-header h2 {
   margin: 0;
   color: #111827;
   font-size: 20px;
+}
+
+.user-center__form {
+  max-width: 520px;
 }
 
 @media (max-width: 840px) {

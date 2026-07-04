@@ -24,7 +24,7 @@
         <p v-if="paper">试卷总分：{{ paper.score }} · 考试时间：{{ paper.suggestTime }} 分钟</p>
       </header>
 
-      <template v-for="titleItem in paper?.titleItems ?? []" :key="titleItem.name">
+      <template v-for="titleItem in visibleTitleItems" :key="titleItem.name">
         <section class="exam-do__section">
           <h2>{{ titleItem.name }}</h2>
           <article
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, nextTick, onUnmounted, reactive, ref, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import {
@@ -67,23 +67,44 @@ const paper = ref<ExamPaperDetail | null>(null)
 const loading = ref(false)
 const submitting = ref(false)
 const remainTime = ref(0)
+const visibleQuestionLimit = ref(0)
 const answer = reactive<ExamPaperSubmit>({
   id: 0,
   doTime: 0,
   answerItems: []
 })
 let timer: number | undefined
+let renderBatchTimer: number | undefined
+let renderIdleHandle: number | undefined
 const paperId = computed(() => Number(route.query.id))
+const totalQuestionCount = computed(() => answer.answerItems.length)
+const visibleTitleItems = computed(() =>
+  (paper.value?.titleItems ?? [])
+    .map((titleItem) => ({
+      ...titleItem,
+      questionItems: titleItem.questionItems.filter((question) => question.itemOrder <= visibleQuestionLimit.value)
+    }))
+    .filter((titleItem) => titleItem.questionItems.length > 0)
+)
 
-onMounted(loadPaper)
+watch(paperId, loadPaper, { immediate: true })
 onUnmounted(() => {
   if (timer) {
     window.clearInterval(timer)
   }
+
+  cancelQuestionBatch()
 })
 
 async function loadPaper() {
   if (!paperId.value) {
+    paper.value = null
+    answer.id = 0
+    answer.doTime = 0
+    answer.answerItems.splice(0, answer.answerItems.length)
+    remainTime.value = 0
+    visibleQuestionLimit.value = 0
+    cancelQuestionBatch()
     ElMessage.error('缺少试卷 ID')
     router.replace('/paper/index')
     return
@@ -103,6 +124,7 @@ async function loadPaper() {
     answer.doTime = 0
     answer.answerItems.splice(0, answer.answerItems.length, ...createAnswerItems(result.response))
     remainTime.value = result.response.suggestTime * 60
+    resetQuestionBatch(totalQuestionCount.value)
     startTimer()
   } finally {
     loading.value = false
@@ -137,6 +159,57 @@ function startTimer() {
   }, 1000)
 }
 
+function resetQuestionBatch(total: number) {
+  cancelQuestionBatch()
+  visibleQuestionLimit.value = Math.min(8, total)
+  scheduleQuestionBatch(total)
+}
+
+function scheduleQuestionBatch(total: number) {
+  if (visibleQuestionLimit.value >= total) {
+    return
+  }
+
+  const windowWithIdle = window as Window & {
+    requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number
+    cancelIdleCallback?: (handle: number) => void
+  }
+
+  if (windowWithIdle.requestIdleCallback) {
+    renderIdleHandle = windowWithIdle.requestIdleCallback(
+      () => {
+        renderIdleHandle = undefined
+        renderNextQuestionBatch(total)
+      },
+      { timeout: 250 }
+    )
+    return
+  }
+
+  renderBatchTimer = window.setTimeout(() => {
+    renderBatchTimer = undefined
+    renderNextQuestionBatch(total)
+  }, 16)
+}
+
+function renderNextQuestionBatch(total: number) {
+  visibleQuestionLimit.value = Math.min(total, visibleQuestionLimit.value + 8)
+  scheduleQuestionBatch(total)
+}
+
+function cancelQuestionBatch() {
+  if (renderBatchTimer) {
+    window.clearTimeout(renderBatchTimer)
+    renderBatchTimer = undefined
+  }
+
+  if (renderIdleHandle) {
+    const windowWithIdle = window as Window & { cancelIdleCallback?: (handle: number) => void }
+    windowWithIdle.cancelIdleCallback?.(renderIdleHandle)
+    renderIdleHandle = undefined
+  }
+}
+
 async function submitPaper() {
   if (submitting.value || !paper.value) {
     return
@@ -165,7 +238,9 @@ async function submitPaper() {
   }
 }
 
-function scrollToQuestion(itemOrder: number) {
+async function scrollToQuestion(itemOrder: number) {
+  visibleQuestionLimit.value = Math.max(visibleQuestionLimit.value, itemOrder)
+  await nextTick()
   document.getElementById(`question-${itemOrder}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 </script>

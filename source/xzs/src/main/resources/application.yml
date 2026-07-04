@@ -8,6 +8,12 @@ server:
   compression:
     enabled: true
     min-response-size: 2KB
+    mime-types:
+      - text/html
+      - text/css
+      - application/javascript
+      - application/json
+      - image/svg+xml
 
 #logging logback
 logging:

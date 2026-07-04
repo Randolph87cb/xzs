@@ -1,11 +1,11 @@
 import { createApp } from 'vue'
-import ElementPlus from 'element-plus'
-import { ElMessage } from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
+import 'element-plus/es/components/loading/style/css'
+import 'element-plus/es/components/message/style/css'
 import { createPinia } from 'pinia'
 import { configureApiClient } from '@xzs/api-client'
 import App from './App.vue'
 import { router } from './router'
-import 'element-plus/dist/index.css'
 import 'nprogress/nprogress.css'
 import './styles/index.scss'
 
@@ -23,5 +23,5 @@ configureApiClient({
 
 app.use(pinia)
 app.use(router)
-app.use(ElementPlus)
+app.directive('loading', ElLoading.directive)
 app.mount('#app')

@@ -5,7 +5,7 @@
 主要技术栈：
 
 - 后端：Java 8、Spring Boot 2.1.6、Spring Security、MyBatis、PageHelper、Undertow、PostgreSQL。
-- Web 前端：Vue 2.7、Vue Router 3、Vuex 3、Element UI、Axios、Vue CLI 4。
+- Web 前端：学生端默认构建已切换到 Vue 3、Vue Router 4、Pinia、Element Plus、Vite；管理端仍为 Vue 2.7、Vue Router 3、Vuex 3、Element UI、Vue CLI 4。
 - 微信小程序：原生微信小程序，内置 iView Weapp 组件。
 - 数据库：PostgreSQL 脚本位于 `sql/xzs-postgresql.sql`。
 
@@ -22,9 +22,9 @@ xzs/
 ├── scripts/             # 本地构建、测量、静态资源同步、维护和数据导入脚本
 ├── source/              # 源码根目录
 │   ├── xzs/             # Spring Boot 后端
-│   ├── vue/             # Web 前端源码
-│   │   ├── xzs-admin/   # 管理端 Vue 项目
-│   │   └── xzs-student/ # 学生端 Vue 项目
+│   ├── vue/             # 旧 Web 前端源码
+│   │   ├── xzs-admin/   # 管理端 Vue 2 项目
+│   │   └── xzs-student/ # 学生端 Vue 2 历史目录，非默认生产入口
 │   └── wx/              # 微信小程序源码
 │       └── xzs-student/ # 学生端小程序
 ├── sql/                 # PostgreSQL 建库/建表/初始化脚本
@@ -51,3 +51,7 @@ xzs/
 - `docs/vue3-vite-migration-roadmap.md`：Vue 3 + Vite 长期迁移路线图。
 - `docs/frontend-modernization-migration-roadmap.md`：覆盖式 Vue 3 + Vite 前端重构路线。
 - `docs/frontend-modernization-stage1-student-shell.md`：学生端现代前端骨架阶段验收报告。
+- `docs/frontend-modernization-stage2-auth.md`：学生端认证链路阶段验收报告。
+- `docs/frontend-modernization-stage3-question-renderer.md`：题目渲染包阶段验收报告。
+- `docs/frontend-modernization-stage4-student-core-loop.md`：学生端核心业务阶段验收报告。
+- `docs/frontend-modernization-stage5-student-cutover.md`：学生端生产入口覆盖切换报告。

@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
@@ -82,12 +82,14 @@ const answerItemsByOrder = computed<Record<number, AnswerItem>>(() => {
   return result
 })
 
-onMounted(loadAnswer)
+watch(() => route.query.id, loadAnswer, { immediate: true })
 
 async function loadAnswer() {
   const id = Number(route.query.id)
 
   if (!id) {
+    paper.value = null
+    answer.value = null
     ElMessage.error('缺少答卷 ID')
     router.replace('/record/index')
     return

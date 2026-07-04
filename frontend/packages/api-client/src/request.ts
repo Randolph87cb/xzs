@@ -29,13 +29,18 @@ export async function request<T = unknown>(config: AxiosRequestConfig): Promise<
   let data: ApiResponse<T>
 
   try {
+    const requestHeaders: AxiosRequestConfig['headers'] = {
+      'request-ajax': true,
+      ...config.headers
+    }
+
+    if (!isFormData(config.data)) {
+      requestHeaders['Content-Type'] = 'application/json'
+    }
+
     const result = await apiClient.request<ApiResponse<T>>({
       ...config,
-      headers: {
-        'Content-Type': 'application/json',
-        'request-ajax': true,
-        ...config.headers
-      }
+      headers: requestHeaders
     })
     data = result.data
   } catch (error) {
@@ -63,6 +68,10 @@ export function post<T = unknown>(url: string, data?: unknown) {
     method: 'post',
     data
   })
+}
+
+function isFormData(data: unknown): data is FormData {
+  return typeof FormData !== 'undefined' && data instanceof FormData
 }
 
 function resolveErrorMessage(error: unknown) {

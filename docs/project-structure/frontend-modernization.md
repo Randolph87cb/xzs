@@ -1,6 +1,6 @@
 # 现代前端迁移工作区结构
 
-`frontend/` 是 Vue 3 + Vite 覆盖式重构的迁移工作区，用于阶段性实现并验收新的学生端和后续管理端。它不是长期生产并行入口；迁移完成后会覆盖旧的 `source/vue/xzs-student` 和 `source/vue/xzs-admin`，或收敛为最终唯一前端结构。
+`frontend/` 是 Vue 3 + Vite 覆盖式重构的迁移工作区，用于阶段性实现并验收新的学生端和后续管理端。学生端默认构建和后端 `/student` 静态入口已经切换到 `frontend/apps/student`；它不是长期生产并行入口，后续还需要删除或替换旧的 `source/vue/xzs-student` 历史源码目录。
 
 当前阶段已建立学生端骨架：
 
@@ -37,7 +37,7 @@ frontend/
 
 ## 当前职责
 
-- `apps/student`：Vue 3 + Vite 学生端迁移实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
+- `apps/student`：Vue 3 + Vite 学生端默认生产构建实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
 - `packages/api-client`：迁移期 API 请求封装，当前覆盖登录、登出、当前学生用户和消息数量接口。
 - `packages/question-renderer`：题目 Markdown、历史 HTML、公式、代码高亮和安全清理的独立渲染包。
 - `packages/shared`：迁移期共享工具和类型的起始包。
@@ -87,10 +87,16 @@ pnpm verify:student-ui
 .\frontend\scripts\verify-student-submit-edit-strict.ps1
 ```
 
+如果要验证真实主观题待批改链路，使用临时简答题试卷模式：
+
+```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -UseTemporarySubjectivePaper
+```
+
 如果要同时让 `/edit` 截图变成必验项，需要后端和 Vite dev server 都已启动：
 
 ```powershell
-.\frontend\scripts\verify-student-submit-edit-strict.ps1 -RunScreenshotStrict
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -UseTemporarySubjectivePaper -RunScreenshotStrict
 ```
 
 截图验证默认使用 `XZS_EXAM_PAPER_ID=2` 和 `XZS_FORMULA_PAPER_ID=8`；如果要把查看试卷、批改页和错题详情变成必验项，运行前设置：
@@ -118,9 +124,15 @@ pnpm --filter @xzs/student dev
 pnpm --filter @xzs/student build
 ```
 
+## 生产入口
+
+- `scripts/build-student.ps1` 默认使用 `pnpm --filter @xzs/student run build` 构建 Vue 3 学生端。
+- `scripts/sync-web-static.ps1` 默认把 `frontend/apps/student/student` 同步到 `source/xzs/src/main/resources/static/student`。
+- 后端 jar 内 `/student/index.html` 由 Vue 3 + Vite 产物提供。
+
 ## 迁移约束
 
 - 不新增 `/student-v3`、`/admin-v3` 这类长期并行入口。
-- 学生端验收后直接覆盖旧学生端生产入口。
+- 学生端生产入口已经切换到 Vue 3，旧 `source/vue/xzs-student` 不能再作为生产构建来源。
 - 管理端验收后直接覆盖旧管理端生产入口。
 - 新的题目渲染、API client、UI 组件应优先沉淀到 `packages/`，避免散落在页面中。

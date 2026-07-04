@@ -29,14 +29,14 @@
 新增页面：
 
 - `PaperListView`：试卷中心，支持学科切换、固定/时段试卷切换、分页。
-- `ExamDoView`：答题页，支持单选、多选、判断、填空、简答、倒计时、答题卡、提交。
+- `ExamDoView`：答题页，支持单选、多选、判断、填空、简答、倒计时、答题卡、提交，并按题号分批渲染题目。
 - `RecordListView`：考试记录列表和选中记录摘要。
 - `TrainingView`：智能训练创建并跳转答题。
 - `ExamReadView`：查看已完成试卷。
 - `ExamEditView`：批改待批改试卷，支持按题号定位、查看题目 Markdown/公式/代码渲染和分数选择。
 - `QuestionErrorView`：错题本列表和错题详情。
 - `DashboardView`：首页任务中心、固定试卷和时段试卷入口。
-- `UserCenterView`：个人资料展示和用户动态。
+- `UserCenterView`：个人资料展示、资料编辑、头像上传和用户动态。
 - `UserMessageView`：消息列表和展开标记已读。
 
 新增组件和工具：
@@ -96,6 +96,12 @@ pnpm verify:student-ui
 该脚本验证真实变更链路：登录学生端、读取试卷、调用 `answerSubmit` 创建临时答卷、用数据库把临时答卷转为待批改状态、调用 `read` 读取批改 payload、调用 `edit` 完成批改，然后清理临时答卷、答题明细、临时文本内容和本次脚本产生的用户日志。默认使用 PostgreSQL 容器 `xzs-postgres` 和试卷 `PaperId=2`。
 
 ```powershell
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -UseTemporarySubjectivePaper
+```
+
+该模式会临时插入一张包含简答题的固定试卷，调用 `answerSubmit` 后自然生成 `status=1` 待批改答卷，再完成读取、批改和清理。它比默认模式更接近真实业务数据，因为不再通过 SQL 把已有客观题答卷转换成待批改状态。
+
+```powershell
 .\frontend\scripts\verify-student-submit-edit-strict.ps1 -RunScreenshotStrict
 ```
 
@@ -133,24 +139,30 @@ pnpm verify:student-ui
 - 题干和选项均使用 `QuestionMarkdown`。
 - `$N$`、HTML 包裹公式、代码块和 XSS 清理沿用阶段 3 的 `question-renderer`。
 
+路由重载：
+
+- `/do`、`/read`、`/edit` 均监听 query id 变化，同一路由切换不同试卷或答卷时会重新加载数据。
+- 严格截图在 `/do?id=临时简答卷` 后切换到 `/do?id=8` 验证公式渲染，覆盖了同组件复用场景。
+
 ## 构建与拆包
 
-首次把答题页静态引入时，学生端主 JS 从约 `1043 kB` 增至约 `1801 kB`。已改为路由懒加载，答题页和渲染器独立拆包。
+首次把答题页静态引入时，学生端主 JS 从约 `1043 kB` 增至约 `1801 kB`。已改为路由懒加载，答题页和渲染器独立拆包；随后移除 Element Plus 整包注册，改为按需引入。
 
 当前构建结果：
 
 | 文件 | 体积 |
 | --- | ---: |
-| `student/index.html` | `1.24 kB`, gzip `0.67 kB` |
-| 主 CSS | `357.89 kB`, gzip `48.11 kB` |
-| 主 JS | `981.47 kB`, gzip `317.37 kB` |
-| 题目渲染共享 JS | `741.74 kB`, gzip `235.41 kB` |
-| 答题页 JS | `5.66 kB`, gzip `2.24 kB` |
-| 查看试卷 JS | `2.25 kB`, gzip `1.22 kB` |
-| 批改试卷 JS | `3.45 kB`, gzip `1.66 kB` |
-| 错题本 JS | `2.23 kB`, gzip `1.23 kB` |
+| `student/index.html` | `1.36 kB`, gzip `0.68 kB` |
+| 主 CSS | `22.13 kB`, gzip `3.99 kB` |
+| 主 JS | `120.70 kB`, gzip `42.78 kB` |
+| 题目渲染共享 JS | `741.71 kB`, gzip `235.38 kB` |
+| 答题页 JS | `8.21 kB`, gzip `3.17 kB` |
+| 查看试卷 JS | `2.31 kB`, gzip `1.24 kB` |
+| 批改试卷 JS | `3.56 kB`, gzip `1.70 kB` |
+| 错题本 JS | `2.28 kB`, gzip `1.24 kB` |
+| 个人中心 JS | `124.21 kB`, gzip `36.72 kB` |
 
-主 JS 仍偏大，主要原因仍是 Element Plus 整包接入。后续应接入按需导入。
+主 JS 已从按需引入前约 `981 kB` 降到约 `121 kB`。仍偏大的 chunk 主要是题目渲染共享包和 Element Plus 局部组件依赖，后续可继续做 renderer 内部拆包和 CSS 合并评估。
 
 ## 验证结果
 
@@ -168,7 +180,7 @@ pnpm --filter @xzs/question-renderer test
 .\frontend\scripts\build-student.ps1
 ```
 
-结果：通过，Vite reported `built in 8.03s`。
+结果：通过，Element Plus 按需引入后 Vite reported `built in 8.90s`；根生产构建脚本缓存构建 reported `built in 4.24s`。
 
 开发服务：
 
@@ -176,7 +188,7 @@ pnpm --filter @xzs/question-renderer test
 pnpm --filter @xzs/student dev -- --open false
 ```
 
-结果：Vite ready in `504 ms`。
+结果：Vite ready in `2831 ms`。
 
 认证验证：
 
@@ -205,18 +217,18 @@ pnpm --filter @xzs/student dev -- --open false
 严格真实提交/批改验证：
 
 ```powershell
-.\frontend\scripts\verify-student-submit-edit-strict.ps1
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -UseTemporarySubjectivePaper
 ```
 
-结果：通过，临时答卷 `answerId=8` 已自动清理。
+结果：通过，临时试卷 `paperId=13`、临时答卷 `answerId=13` 已自动清理。
 
 严格真实提交/批改 + 截图验证：
 
 ```powershell
-.\frontend\scripts\verify-student-submit-edit-strict.ps1 -RunScreenshotStrict
+.\frontend\scripts\verify-student-submit-edit-strict.ps1 -UseTemporarySubjectivePaper -RunScreenshotStrict
 ```
 
-结果：通过，临时答卷 `answerId=9` 已自动清理，生成 `/edit` 截图 `06c-exam-edit.png`。
+结果：通过，临时试卷 `paperId=14`、临时答卷 `answerId=14` 已自动清理，生成 `/edit` 截图 `06c-exam-edit.png`。
 
 截图验证：
 
@@ -250,22 +262,21 @@ D:\workspace\xzs\.tmp\playwright\student-ui
 构建 warning：
 
 - `@vueuse/core` 的 `/* #__PURE__ */` 注释位置触发 Rolldown `INVALID_ANNOTATION`，来源于第三方包。
-- 主 chunk 和题目渲染共享 chunk 仍超过 500 kB，需要阶段 4 后续处理 Element Plus 按需导入、题目渲染懒加载或更细粒度拆包。
-- 构建存在 `PLUGIN_TIMINGS` 提示，耗时主要在 `vite:vue`、`vite:css` 和 `vite:css-post`。
+- 题目渲染共享 chunk 仍超过 500 kB，后续可继续处理 KaTeX、Markdown、DOMPurify 和代码高亮的更细粒度拆包。
+- 构建存在 `PLUGIN_TIMINGS` 提示，按需组件插件在冷构建中占比较高。
 
 ## 未验证项
 
-真实交卷接口 `answerSubmit` 和批改接口 `edit` 已通过临时数据脚本验证。脚本使用现有试卷 `PaperId=2` 创建临时答卷，并在验证后清理。它仍不是完整业务验收数据集，原因是待批改状态由脚本转换出来，而不是由包含填空/简答的专用试卷自然生成。
+真实交卷接口 `answerSubmit` 和批改接口 `edit` 已通过临时简答题试卷验证。脚本会创建专用临时试卷和简答题，使提交自然生成 `status=1` 待批改记录，并在验证后清理试卷、题目、答卷、明细、临时文本和本次脚本日志。
 
 ## 剩余工作
 
-阶段 4 还剩：
+阶段 4 原剩余项已处理：
 
-- 准备专用可重置测试数据集，让待批改记录由填空/简答题自然生成，而不是脚本转换状态。
-- 大试卷分批渲染或虚拟滚动。
-- Element Plus 按需导入和进一步拆包。
-- 用户资料修改、头像上传等低频个人中心编辑能力。
+- 大试卷性能：答题页首屏先渲染前 8 题，后续题目通过 `requestIdleCallback` 或短延时分批挂载；点击答题卡会立即补渲染到目标题号再滚动。
+- 拆包：学生端移除 `app.use(ElementPlus)` 整包注册，改用 `unplugin-auto-import` 和 `unplugin-vue-components` 对 Element Plus 组件与样式按需导入。
+- 个人中心低频能力：补齐资料编辑、头像上传和对应截图验证断言。
 
 ## 阶段 4 子闭环结论
 
-学生端核心子闭环已经具备可运行基础：可登录、可拉取首页任务和试卷列表、可进入答题页、题目内容使用新 renderer 渲染、可查看考试记录和已完成试卷、可进入待批改试卷页面、可查看错题本、可打开个人中心和消息中心、可创建智能训练卷。真实提交/批改接口和 `/edit` 截图已经进入严格验证；阶段 4 仍不能进入阶段 5 覆盖切换，原因是还缺少专用可重置业务数据集、大试卷性能验证和低频个人中心编辑能力。
+学生端核心子闭环已经具备可运行基础：可登录、可拉取首页任务和试卷列表、可进入答题页、题目内容使用新 renderer 渲染、可查看考试记录和已完成试卷、可进入待批改试卷页面、可查看错题本、可打开个人中心和消息中心、可创建智能训练卷。真实提交/批改接口、自然待批改数据和 `/edit` 截图已经进入严格验证；大试卷分批渲染、Element Plus 按需拆包和个人中心编辑能力已补齐，可以进入阶段 5 学生端覆盖切换。

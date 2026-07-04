@@ -64,7 +64,7 @@ if (-not $SkipAdmin) {
 
 if (-not $SkipStudent) {
     Sync-StaticDirectory `
-        -Source (Join-Path $workspaceRoot "source\vue\xzs-student\student") `
+        -Source (Join-Path $workspaceRoot "frontend\apps\student\student") `
         -Target (Join-Path $backendStatic "student") `
         -WorkspaceRoot $workspaceRoot
 }

@@ -2,11 +2,12 @@
 
 ## 项目结构概览
 
-本项目是学之思开源考试系统 PostgreSQL 版，包含一个 Spring Boot 后端、两个 Vue 2 Web 前端、一个微信小程序学生端，以及迁移中的 Vue 3 + Vite 覆盖式重构工作区。
+本项目是学之思开源考试系统 PostgreSQL 版，包含一个 Spring Boot 后端、一个 Vue 2 管理端、一个已切换默认构建入口的 Vue 3 学生端、旧 Vue 2 学生端历史目录，以及一个微信小程序学生端。
 
 - 后端源码在 `source/xzs`，主要按 `controller`、`service`、`repository`、`domain`、`viewmodel` 分层。
-- 管理端 Web 在 `source/vue/xzs-admin`，学生端 Web 在 `source/vue/xzs-student`。
-- 现代前端迁移工作区在 `frontend`，当前用于 Vue 3 + Vite 覆盖式重构；它不是长期新旧并行入口。
+- 管理端 Web 在 `source/vue/xzs-admin`。
+- 学生端 Web 默认构建来源在 `frontend/apps/student`；`source/vue/xzs-student` 是旧 Vue 2 历史目录，不再是默认生产构建入口。
+- 现代前端迁移工作区在 `frontend`，当前承载 Vue 3 + Vite 学生端和后续管理端覆盖式重构；它不是长期新旧并行入口。
 - 微信小程序学生端在 `source/wx/xzs-student`。
 - PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`。
 - 真题题库 Markdown 资料在 `docs/question-bank`。

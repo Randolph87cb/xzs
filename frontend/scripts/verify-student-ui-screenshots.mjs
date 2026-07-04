@@ -4,6 +4,7 @@ import path from 'node:path'
 import process from 'node:process'
 
 const baseUrl = process.env.XZS_STUDENT_BASE_URL ?? 'http://localhost:8001'
+const apiBaseUrl = process.env.XZS_STUDENT_API_BASE_URL ?? baseUrl
 const userName = process.env.XZS_STUDENT_USERNAME ?? 'student'
 const password = process.env.XZS_STUDENT_PASSWORD ?? '123456'
 const examPaperId = process.env.XZS_EXAM_PAPER_ID ?? '2'
@@ -29,7 +30,7 @@ page.on('console', (message) => {
 })
 
 try {
-  await page.goto(`${baseUrl}/#/login`, { waitUntil: 'networkidle' })
+  await page.goto(appUrl('/login'), { waitUntil: 'networkidle' })
   await capture('01-login.png')
 
   await page.locator('input[autocomplete="username"]').fill(userName)
@@ -103,6 +104,9 @@ try {
 
   await gotoHash('/user/index')
   await page.getByRole('heading', { name: '用户动态' }).waitFor({ timeout: 15000 })
+  await page.locator('.user-center__profile button', { hasText: '更换头像' }).waitFor({ timeout: 15000 })
+  await page.getByRole('tab', { name: '个人资料' }).click()
+  await page.getByRole('button', { name: '保存资料' }).waitFor({ timeout: 15000 })
   await capture('08-user-center.png')
 
   await gotoHash('/user/message')
@@ -119,7 +123,13 @@ if (failures.length > 0) {
 console.log(`student UI screenshot verification passed: ${outputDir}`)
 
 async function gotoHash(hashPath) {
-  await page.goto(`${baseUrl}/#${hashPath}`, { waitUntil: 'networkidle' })
+  await page.goto(appUrl(hashPath), { waitUntil: 'networkidle' })
+}
+
+function appUrl(hashPath) {
+  const normalizedHash = hashPath.startsWith('/') ? hashPath : `/${hashPath}`
+  const separator = baseUrl.endsWith('/') ? '#' : baseUrl.endsWith('.html') ? '#' : '/#'
+  return `${baseUrl}${separator}${normalizedHash}`
 }
 
 async function postJson(url, data) {
@@ -137,7 +147,7 @@ async function postJson(url, data) {
 
       return response.json()
     },
-    { targetUrl: `${baseUrl}${url}`, payload: data }
+    { targetUrl: `${apiBaseUrl}${url}`, payload: data }
   )
 }
 

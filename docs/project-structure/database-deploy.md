@@ -22,11 +22,11 @@
 
 ## 集成部署提示
 
-集成部署时，将管理端构建产物 `admin` 和学生端构建产物 `student` 放到 `source/xzs/src/main/resources/static` 后，再打包后端 jar。
+集成部署时，将管理端构建产物 `admin` 和学生端构建产物 `student` 放到 `source/xzs/src/main/resources/static` 后，再打包后端 jar。当前学生端构建产物来自 `frontend/apps/student/student`，管理端构建产物仍来自 `source/vue/xzs-admin/admin`。
 
 仓库根目录提供了构建脚本：
 
-- `scripts/sync-web-static.ps1`：同步两个 Web 构建产物到后端静态资源目录。
+- `scripts/sync-web-static.ps1`：同步两个 Web 构建产物到后端静态资源目录；学生端默认同步 Vue 3 + Vite 产物。
 - `scripts/package-backend.ps1`：使用 Maven Wrapper、系统 Maven 或临时 Maven 打包后端。
 - `scripts/build-all.ps1`：按管理端、学生端、静态资源同步、后端打包顺序执行集成构建。
 - `scripts/measure-build.ps1`：记录各阶段耗时，便于对比优化效果。
