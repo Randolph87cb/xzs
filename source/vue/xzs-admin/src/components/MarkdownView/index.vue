@@ -4,6 +4,8 @@
 
 <script>
 import MarkdownIt from 'markdown-it'
+import texmath from 'markdown-it-texmath'
+import katex from 'katex'
 import hljs from 'highlight.js/lib/core'
 import bash from 'highlight.js/lib/languages/bash'
 import cpp from 'highlight.js/lib/languages/cpp'
@@ -19,6 +21,8 @@ import typescript from 'highlight.js/lib/languages/typescript'
 import xml from 'highlight.js/lib/languages/xml'
 import DOMPurify from 'dompurify'
 import 'highlight.js/styles/github.css'
+import 'katex/dist/katex.min.css'
+import 'markdown-it-texmath/css/texmath.css'
 
 hljs.registerLanguage('bash', bash)
 hljs.registerLanguage('shell', bash)
@@ -48,6 +52,11 @@ const htmlEscapeMap = {
   '>': '&gt;',
   '"': '&quot;',
   "'": '&#39;'
+}
+
+const sanitizeOptions = {
+  ADD_TAGS: ['eq', 'eqn'],
+  ADD_ATTR: ['encoding', 'display']
 }
 
 function escapeHtml (content) {
@@ -96,6 +105,13 @@ const markdown = new MarkdownIt({
   linkify: true,
   breaks: true,
   highlight: highlightCode
+}).use(texmath, {
+  engine: katex,
+  delimiters: ['dollars', 'brackets', 'beg_end'],
+  katexOptions: {
+    throwOnError: false,
+    strict: false
+  }
 })
 
 export default {
@@ -118,7 +134,7 @@ export default {
     renderedContent () {
       const source = normalizeContent(this.content)
       const html = this.inline ? markdown.renderInline(source) : markdown.render(source)
-      return DOMPurify.sanitize(html)
+      return DOMPurify.sanitize(html, sanitizeOptions)
     }
   }
 }
@@ -172,6 +188,16 @@ export default {
     padding-left: 10px;
     color: #606266;
     border-left: 3px solid #dcdfe6;
+  }
+
+  ::v-deep eq,
+  ::v-deep eqn {
+    max-width: 100%;
+  }
+
+  ::v-deep .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 }
 
