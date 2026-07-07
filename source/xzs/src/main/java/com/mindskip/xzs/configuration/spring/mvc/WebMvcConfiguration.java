@@ -38,15 +38,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", "/student/index.html");
-        registry.addRedirectViewController("/student", "/student/index.html");
-        registry.addRedirectViewController("/student/", "/student/index.html");
-        registry.addRedirectViewController("/admin", "/admin/index.html");
-        registry.addRedirectViewController("/admin/", "/admin/index.html");
-    }
-
-    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/admin/static/**")
                 .addResourceLocations("classpath:/static/admin/static/")

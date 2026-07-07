@@ -26,9 +26,9 @@
 
 - `Dockerfile`：多阶段构建，先构建 Vue 3 + Vite 管理端和学生端，再将产物复制到 Spring Boot static，最后打包运行 jar。
 - `fly.toml`：Fly App 配置模板，默认内部端口为 `8000`。
-- `docs/fly-managed-postgres-deployment.md`：Fly Managed Postgres 创建、挂载、初始化和部署步骤。
+- `docs/fly-managed-postgres-deployment.md`：Fly.io 冷启动按量部署、Postgres 挂载、初始化和日常停机步骤。
 
-生产数据库推荐使用 Fly Managed Postgres。后端 `application-prod.yml` 支持 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD`，并兼容 Fly 默认注入的 `DATABASE_URL=postgres://...`。
+当前低成本部署使用可冷启动的 Fly Postgres App + Volume；如果需要托管运维和更高可靠性，再改用 Fly Managed Postgres。后端 `application-prod.yml` 支持 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD`，并兼容 Fly 默认注入的 `DATABASE_URL=postgres://...`。
 
 ## 集成部署提示
 

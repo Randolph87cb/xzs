@@ -1,12 +1,21 @@
-# Fly.io + Managed Postgres 部署说明
+# Fly.io 冷启动按量部署说明
 
 ## 架构
 
 - Fly App：运行 Spring Boot jar，端口 `8000`，内置管理端和学生端 Vue 3 + Vite 静态资源。
-- Fly Managed Postgres：持久化业务数据库。
+- Fly Postgres App：使用带 Volume 的 Postgres Machine 持久化业务数据库，并开启 `FLY_SCALE_TO_ZERO=1` 支持冷启动。
 - 对象存储：题目图片、富文本图片、头像等继续使用七牛或其他 S3 兼容对象存储，不写入 Fly App 本地磁盘。
 
-Fly App 的普通文件系统不是持久化存储。Fly Volume 可持久化某台 Machine 的本地目录，但不能自动多机共享；本项目核心业务数据应放在 Managed Postgres，上传文件应放对象存储。
+Fly App 的普通文件系统不是持久化存储。Fly Volume 可持久化某台 Machine 的本地目录，但不能自动多机共享；本项目核心业务数据应放在 Postgres，上传文件应放对象存储。
+
+当前部署目标是低成本冷启动：
+
+- Web App 设置 `auto_start_machines = true`、`auto_stop_machines = "stop"`、`min_machines_running = 0`。
+- Postgres App 设置 secret `FLY_SCALE_TO_ZERO=1`。
+- Web 和数据库 Machine 都可以停机，访问应用时再启动。
+- Machine 计算资源按运行时间计费；Postgres Volume 存储即使停机也会继续按容量计费。
+
+如果需要 Fly 官方托管运维、备份和更少数据库维护工作，可以改用 Fly Managed Postgres；它不适合当前“冷启动、按量付费优先”的目标。
 
 ## 文件
 
@@ -25,19 +34,25 @@ fly launch --copy-config --no-deploy --name <your-unique-app-name>
 
 `--no-deploy` 可以避免数据库 secret 注入前先部署一次并失败。如果不使用 `--name`，需要先把 `fly.toml` 里的 `app = "xzs"` 改成你的唯一 Fly app 名。
 
-创建 Fly Managed Postgres：
+创建可冷启动的 Fly Postgres：
 
 ```powershell
-fly mpg create
+fly postgres create --name <your-postgres-app-name> --region nrt --initial-cluster-size 1 --vm-size shared-cpu-1x --volume-size 1
 ```
 
-创建完成后，把数据库挂到应用：
+开启 Postgres 冷启动：
 
 ```powershell
-fly mpg attach <cluster-id> -a <your-unique-app-name>
+fly secrets set FLY_SCALE_TO_ZERO=1 -a <your-postgres-app-name>
 ```
 
-`fly mpg attach` 会把连接串写入应用 secret。项目已支持 Fly 默认的 `DATABASE_URL`，也支持显式设置 Spring datasource：
+把数据库挂到应用：
+
+```powershell
+fly postgres attach <your-postgres-app-name> -a <your-unique-app-name>
+```
+
+`fly postgres attach` 会把连接串写入应用 secret。项目已支持 Fly 默认的 `DATABASE_URL`，也支持显式设置 Spring datasource：
 
 ```powershell
 fly secrets set `
@@ -58,16 +73,16 @@ fly secrets set `
   -a <your-unique-app-name>
 ```
 
-导入数据库初始化脚本：
+导入数据库初始化脚本。如果本地有 `psql`，可以通过代理连接后导入：
 
 ```powershell
-fly mpg connect <cluster-id>
+fly proxy 15432:5432 -a <your-postgres-app-name>
 ```
 
-进入 psql 后执行 `sql/xzs-postgresql.sql`。如果本地有 `psql`，也可以使用 Fly 提供的连接串导入：
+另开一个终端执行：
 
 ```powershell
-psql "<postgres-connection-url>" -f .\sql\xzs-postgresql.sql
+psql "postgres://<user>:<password>@localhost:15432/<database>" -f .\sql\xzs-postgresql.sql
 ```
 
 部署应用：
@@ -75,6 +90,20 @@ psql "<postgres-connection-url>" -f .\sql\xzs-postgresql.sql
 ```powershell
 fly deploy -a <your-unique-app-name>
 ```
+
+减少常驻实例数：
+
+```powershell
+fly scale count 1 -a <your-unique-app-name> --yes
+```
+
+确认 Web 冷启动配置：
+
+```powershell
+fly config show -a <your-unique-app-name>
+```
+
+确认输出中 `auto_start_machines` 为 `true`、`auto_stop_machines` 为 `true` 或 `stop`、`min_machines_running` 为 `0`。
 
 ## 日常发布
 
@@ -97,6 +126,18 @@ fly logs -a <your-unique-app-name>
 ```powershell
 fly open -a <your-unique-app-name>
 ```
+
+手动停机进入冷启动状态：
+
+```powershell
+fly machine list -a <your-unique-app-name>
+fly machine stop <web-machine-id> -a <your-unique-app-name>
+
+fly machine list -a <your-postgres-app-name>
+fly machine stop <postgres-machine-id> -a <your-postgres-app-name>
+```
+
+停机后再次访问应用 URL，Fly 会按需启动 Web Machine；应用连接数据库时会唤起 Postgres Machine。
 
 ## 本地验证
 
@@ -124,7 +165,8 @@ docker run --rm -p 8000:8000 `
 
 ## 持久化选择
 
-- Managed Postgres：账号、题目、试卷、答卷、成绩、消息等业务数据。
+- Fly Postgres App + Volume：当前冷启动按量方案，用于账号、题目、试卷、答卷、成绩、消息等业务数据。
+- Managed Postgres：适合需要托管运维、备份和更高数据库可靠性的生产部署，但不符合最低成本冷启动目标。
 - 对象存储：图片、附件、头像、富文本媒体资源。
 - Fly Volume：只在确实需要本地持久目录时使用，例如单机日志归档；不要用它存多实例共享上传文件。
 - 容器本地磁盘：只用于临时文件和运行时缓存。

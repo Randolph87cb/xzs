@@ -57,4 +57,4 @@ xzs/
 - `docs/frontend-modernization-stage7-admin-question-ueditor.md`：管理端题库与 UEditor 闭环阶段验收报告。
 - `docs/frontend-modernization-stage8-admin-cutover.md`：管理端生产入口覆盖切换报告。
 - `docs/frontend-modernization-stage9-final-cutover-cleanup.md`：Vue 3 覆盖迁移最终清理报告。
-- `docs/fly-managed-postgres-deployment.md`：Fly.io + Managed Postgres 部署说明。
+- `docs/fly-managed-postgres-deployment.md`：Fly.io 冷启动按量部署说明。

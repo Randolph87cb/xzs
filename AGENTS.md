@@ -13,7 +13,7 @@
 - 真题题库 Markdown 资料在 `docs/question-bank`。
 - 本地构建、测量、静态资源同步、维护和数据导入脚本在 `scripts`。
 - 构建性能优化方案和迁移评估文档在 `docs/build-performance-optimization-plan.md`、`docs/vue3-vite-migration-roadmap.md`、`docs/frontend-modernization-migration-roadmap.md`。
-- Fly.io + Managed Postgres 部署说明在 `docs/fly-managed-postgres-deployment.md`；根目录 `Dockerfile` 和 `fly.toml` 是 Fly 部署入口。
+- Fly.io 冷启动按量部署说明在 `docs/fly-managed-postgres-deployment.md`；根目录 `Dockerfile` 和 `fly.toml` 是 Fly 部署入口。
 - 发布包与部署材料分别在 `release` 和 `docker`。
 
 ## 项目结构文档
