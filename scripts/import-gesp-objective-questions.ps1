@@ -5,6 +5,7 @@ param(
     [string]$Database = "xzs",
     [string]$User = "postgres",
     [string]$PsqlDockerImage = "postgres:17",
+    [switch]$SqlOnly,
     [switch]$KeepExisting,
     [switch]$DryRun
 )
@@ -528,6 +529,11 @@ foreach ($question in $questions) {
 [void]$sql.AppendLine("COMMIT;")
 
 Set-Content -LiteralPath $SqlFile -Value $sql.ToString() -Encoding UTF8
+
+if ($SqlOnly) {
+    Write-Output "Generated SQL: $SqlFile"
+    exit 0
+}
 
 if ($ConnectionString) {
     $mountPath = $RuntimeDir.Replace("\", "/")
