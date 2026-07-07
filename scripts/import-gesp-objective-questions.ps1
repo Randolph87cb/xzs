@@ -148,7 +148,7 @@ function Resolve-KnowledgePoint {
     )
 
     $text = (@($Lines) -join "`n").Trim()
-    $explicit = [regex]::Match($text, "(?m)^\s*(知识点|考点)\s*[:：]\s*(.+?)\s*$")
+    $explicit = [regex]::Match($text, "(?m)^\s*(?:[【\[]\s*)?(知识点|考点)\s*[:：]\s*([^】\]\r\n]+?)\s*(?:[】\]])?\s*$")
     if ($explicit.Success) {
         return $explicit.Groups[2].Value.Trim()
     }
@@ -182,6 +182,15 @@ function Resolve-KnowledgePoint {
         return "概念判断"
     }
     return "综合"
+}
+
+function Test-KnowledgePointLine {
+    param([AllowNull()][string]$Line)
+
+    if ($null -eq $Line) {
+        return $false
+    }
+    return $Line.Trim() -match "^(?:[【\[]\s*)?(知识点|考点)\s*[:：].*(?:[】\]])?$"
 }
 
 function Split-QuestionBlocks {
@@ -232,6 +241,9 @@ function Parse-SingleChoiceBlock {
         $line = $rawLine.Trim()
         if ($line.StartsWith('```')) {
             $inFence = -not $inFence
+        }
+        if (Test-KnowledgePointLine $rawLine) {
+            continue
         }
         $answerMatch = [regex]::Match($line, "^答案\s*[:：]\s*([A-Z])\s*$")
         $optionMatch = [regex]::Match($rawLine, "^([A-Z])\.\s*(.*)$")
@@ -321,6 +333,9 @@ function Parse-TrueFalseBlock {
 
     foreach ($rawLine in $Block.Lines) {
         $line = $rawLine.Trim()
+        if (Test-KnowledgePointLine $rawLine) {
+            continue
+        }
         $answerMatch = [regex]::Match($line, "^答案\s*[:：]\s*(.+?)\s*$")
         if (-not $answerSeen -and $answerMatch.Success) {
             $answerText = $answerMatch.Groups[1].Value.Trim()
@@ -527,6 +542,7 @@ foreach ($question in $questions) {
     [void]$sql.AppendLine((New-QuestionInsertSql -Question $question))
 }
 [void]$sql.AppendLine("COMMIT;")
+[void]$sql.AppendLine("\q")
 
 Set-Content -LiteralPath $SqlFile -Value $sql.ToString() -Encoding UTF8
 
