@@ -1,8 +1,10 @@
 param(
     [string]$QuestionBankRoot,
+    [string]$ConnectionString,
     [string]$ContainerName = "xzs-postgres",
     [string]$Database = "xzs",
     [string]$User = "postgres",
+    [string]$PsqlDockerImage = "postgres:17",
     [switch]$KeepExisting,
     [switch]$DryRun
 )
@@ -138,6 +140,49 @@ function Trim-BlankLines {
     return (($list[$start..($end - 1)]) -join "`n").Trim()
 }
 
+function Resolve-KnowledgePoint {
+    param(
+        [System.Collections.IEnumerable]$Lines,
+        [string]$Kind
+    )
+
+    $text = (@($Lines) -join "`n").Trim()
+    $explicit = [regex]::Match($text, "(?m)^\s*(知识点|考点)\s*[:：]\s*(.+?)\s*$")
+    if ($explicit.Success) {
+        return $explicit.Groups[2].Value.Trim()
+    }
+
+    $rules = @(
+        [pscustomobject]@{ Name = "递归"; Pattern = "递归|调用自身" },
+        [pscustomobject]@{ Name = "排序与查找"; Pattern = "排序|查找|二分|sort\s*\(|lower_bound|upper_bound" },
+        [pscustomobject]@{ Name = "算法基础"; Pattern = "贪心|动态规划|\bdp\b|搜索|深度优先|\bDFS\b|广度优先|\bBFS\b|图|树|栈|队列|链表|集合|\bmap\b|\bset\b" },
+        [pscustomobject]@{ Name = "数组"; Pattern = "数组|下标|\[[^\]]+\]" },
+        [pscustomobject]@{ Name = "字符串"; Pattern = "字符串|\bstring\b|字符数组|substr|find\s*\(|length\s*\(|size\s*\(" },
+        [pscustomobject]@{ Name = "循环结构"; Pattern = "\bfor\s*\(|\bwhile\s*\(|\bdo\s*\{|循环|\bbreak\b|\bcontinue\b" },
+        [pscustomobject]@{ Name = "分支结构"; Pattern = "\bif\s*\(|\belse\b|\bswitch\s*\(|\bcase\b|条件|分支" },
+        [pscustomobject]@{ Name = "函数"; Pattern = "函数|形参|实参|返回值|调用" },
+        [pscustomobject]@{ Name = "指针与引用"; Pattern = "指针|引用|地址|取地址|\bnew\b|\bdelete\b" },
+        [pscustomobject]@{ Name = "结构体与类"; Pattern = "\bstruct\b|\bclass\b|结构体|对象|成员" },
+        [pscustomobject]@{ Name = "运算符与表达式"; Pattern = "运算符|表达式|优先级|取余|求余|自增|自减|\+\+|--|逻辑|&&|\|\||!=" },
+        [pscustomobject]@{ Name = "数学与进制"; Pattern = "质数|素数|约数|倍数|最大公约数|\bgcd\b|最小公倍数|\blcm\b|进制|二进制|八进制|十六进制|组合|排列|概率|数位|取整" },
+        [pscustomobject]@{ Name = "复杂度"; Pattern = "时间复杂度|空间复杂度|复杂度|O\s*\(" },
+        [pscustomobject]@{ Name = "变量与数据类型"; Pattern = "数据类型|变量|常量|\bint\b|\blong\s+long\b|\bdouble\b|\bfloat\b|\bchar\b|\bbool\b|ASCII|sizeof" },
+        [pscustomobject]@{ Name = "输入输出"; Pattern = "\bcin\b|\bcout\b|\bscanf\b|\bprintf\b|输入|输出|格式" },
+        [pscustomobject]@{ Name = "计算机基础"; Pattern = "CPU|内存|编译|解释|程序|软件|硬件|操作系统|文件|网络|编码|字节|位|bit|byte" }
+    )
+
+    foreach ($rule in $rules) {
+        if ($text -match $rule.Pattern) {
+            return $rule.Name
+        }
+    }
+
+    if ($Kind -eq "判断题") {
+        return "概念判断"
+    }
+    return "综合"
+}
+
 function Split-QuestionBlocks {
     param([string]$Markdown)
 
@@ -254,6 +299,7 @@ function Parse-SingleChoiceBlock {
 
     return [ordered]@{
         questionType = 1
+        knowledgePoint = Resolve-KnowledgePoint -Lines $Block.Lines -Kind "选择题"
         correct = $correct
         title = Convert-MarkdownToHtml $titleMarkdown
         analyze = $analyzeHtml
@@ -310,6 +356,7 @@ function Parse-TrueFalseBlock {
 
     return [ordered]@{
         questionType = 3
+        knowledgePoint = Resolve-KnowledgePoint -Lines $Block.Lines -Kind "判断题"
         correct = $correct
         title = Convert-MarkdownToHtml $titleMarkdown
         analyze = $analyzeHtml
@@ -338,6 +385,7 @@ function New-QuestionInsertSql {
         analyze = $Question.Analyze
         questionItemObjects = $Question.Items
         correct = $Question.Correct
+        knowledgePoint = $Question.KnowledgePoint
         importBatch = $ImportBatch
         importSource = $Question.Source
         importQuestionOrder = $Question.Order
@@ -346,6 +394,7 @@ function New-QuestionInsertSql {
     $json = $jsonObject | ConvertTo-Json -Depth 20 -Compress
     $contentLiteral = New-DollarQuotedSqlLiteral $json
     $correctLiteral = New-DollarQuotedSqlLiteral $Question.Correct
+    $knowledgePointLiteral = New-DollarQuotedSqlLiteral $Question.KnowledgePoint
 
     return @"
 WITH content_row AS (
@@ -358,7 +407,7 @@ INSERT INTO t_question (
     info_text_content_id, create_user, status, create_time, deleted
 )
 SELECT
-    $($Question.QuestionType), $($Question.SubjectId), 10, $($Question.Level), 1, '综合', $correctLiteral,
+    $($Question.QuestionType), $($Question.SubjectId), 10, $($Question.Level), 1, $knowledgePointLiteral, $correctLiteral,
     content_row.id, COALESCE((SELECT id FROM t_user WHERE user_name = 'admin' ORDER BY id LIMIT 1), 1),
     1, now(), false
 FROM content_row;
@@ -408,6 +457,7 @@ foreach ($file in $files) {
             Level = $level
             SubjectId = $level
             QuestionType = $parsed.questionType
+            KnowledgePoint = $parsed.knowledgePoint
             Title = $parsed.title
             Analyze = $parsed.analyze
             Items = $parsed.items
@@ -436,6 +486,11 @@ $countByType = $questions |
 Write-Output "Parsed questions: $($questions.Count)"
 Write-Output ($countByType -join "; ")
 Write-Output ($countByLevel -join "; ")
+$countByKnowledgePoint = $questions |
+    Group-Object KnowledgePoint |
+    Sort-Object @{ Expression = "Count"; Descending = $true }, Name |
+    ForEach-Object { "$($_.Name): $($_.Count)" }
+Write-Output "Knowledge points: $($countByKnowledgePoint -join '; ')"
 if ($skippedFiles.Count -gt 0) {
     Write-Output "Skipped placeholder files: $($skippedFiles.Count)"
 }
@@ -474,7 +529,20 @@ foreach ($question in $questions) {
 
 Set-Content -LiteralPath $SqlFile -Value $sql.ToString() -Encoding UTF8
 
+if ($ConnectionString) {
+    $mountPath = $RuntimeDir.Replace("\", "/")
+    docker run --rm -v "${mountPath}:/work:ro" $PsqlDockerImage psql $ConnectionString -f "/work/import-gesp-objective-questions.sql"
+    if ($LASTEXITCODE -ne 0) {
+        throw "psql import failed with exit code $LASTEXITCODE"
+    }
+    Write-Output "Imported questions into remote database."
+    exit 0
+}
+
 docker cp $SqlFile "${ContainerName}:${ContainerSqlFile}" | Out-Null
 docker exec $ContainerName psql -q -U $User -d $Database -f $ContainerSqlFile
+if ($LASTEXITCODE -ne 0) {
+    throw "psql import failed with exit code $LASTEXITCODE"
+}
 
 Write-Output "Imported questions into database '$Database' in container '$ContainerName'."
