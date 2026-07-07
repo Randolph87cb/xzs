@@ -30,7 +30,7 @@ frontend/apps/student/
 - `views/record`：考试记录。
 - `views/question`：错题本。
 - `views/training`：智能训练入口。
-- `views/user`：个人中心、资料编辑、头像上传和消息中心。
+- `views/user`：个人中心、资料编辑和消息中心；头像上传入口已关闭。
 - `views/login`：登录。
 
 题目 Markdown、历史 HTML、KaTeX 公式和代码高亮渲染由 `frontend/packages/question-renderer` 提供；学生端接口封装由 `frontend/packages/api-client` 提供。

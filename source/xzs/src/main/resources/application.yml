@@ -30,8 +30,6 @@ mybatis:
 system:
   security-ignore-urls:
     - /api/wx/**
-    - /api/admin/upload/configAndUpload
-    - /api/admin/upload/auth
     - /api/student/user/register
   pwdKey:
     publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQClwwxhJKwStDnu7c0yCRkwTW2VKuLWwyVtFC6Zx9bYdF1qwqSP26CkDwaF6GHayIvv9b8BHlAaQH4SLIPzir062yzNukqspmthUw4gPJhbx1AQrWRoQJSv3/1Sk+tWyJRHXSiCZJZ3216LDhtx42LQ0HItDP8U9BLtsxA+5LEZzQIDAQAB
@@ -44,13 +42,6 @@ system:
       - /api/wx/student/auth/bind
       - /api/wx/student/auth/checkBind
       - /api/wx/student/user/register
-  qn:
-    url: ${XZS_QN_URL:http://xzs.file.mindskip.net}
-    bucket: ${XZS_QN_BUCKET:mindskip}
-    access-key: ${XZS_QN_ACCESS_KEY:KabOBTPGVll2sSV8d1OIlW8G4_n_cReE7RSsLafA}
-    secret-key: ${XZS_QN_SECRET_KEY:mSltk9_9KtCdFetCmxvvCAgsBg8JZHiXMuQeqSJA}
-
-
 #mybatis page helper
 pagehelper:
   autoDialect: true

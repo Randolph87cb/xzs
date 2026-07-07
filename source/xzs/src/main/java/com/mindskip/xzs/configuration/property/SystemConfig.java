@@ -17,7 +17,6 @@ public class SystemConfig {
     private PasswordKeyConfig pwdKey;
     private List<String> securityIgnoreUrls;
     private WxConfig wx;
-    private QnConfig qn;
 
     /**
      * Gets pwd key.
@@ -71,24 +70,6 @@ public class SystemConfig {
      */
     public void setWx(WxConfig wx) {
         this.wx = wx;
-    }
-
-    /**
-     * Gets qn.
-     *
-     * @return the qn
-     */
-    public QnConfig getQn() {
-        return qn;
-    }
-
-    /**
-     * Sets qn.
-     *
-     * @param qn the qn
-     */
-    public void setQn(QnConfig qn) {
-        this.qn = qn;
     }
 
 }

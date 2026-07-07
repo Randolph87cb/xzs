@@ -42,7 +42,6 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimeline: typeof import('element-plus/es')['ElTimeline']
     ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
-    ElUpload: typeof import('element-plus/es')['ElUpload']
     QuestionEditor: typeof import('./src/components/QuestionEditor.vue')['default']
     QuestionReview: typeof import('./src/components/QuestionReview.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

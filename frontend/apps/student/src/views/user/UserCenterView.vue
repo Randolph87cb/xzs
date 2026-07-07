@@ -10,14 +10,6 @@
         <div><dt>性别</dt><dd>{{ sexText(user?.sex) }}</dd></div>
         <div><dt>手机</dt><dd>{{ user?.phone ?? '-' }}</dd></div>
       </dl>
-      <el-upload
-        accept=".jpg,.jpeg,.png"
-        :auto-upload="false"
-        :show-file-list="false"
-        :on-change="uploadAvatar"
-      >
-        <el-button :loading="avatarUploading">更换头像</el-button>
-      </el-upload>
     </aside>
 
     <main v-loading="loading" class="user-center__panel">
@@ -67,19 +59,17 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { ElMessage, type FormInstance, type FormRules, type UploadProps } from 'element-plus'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import {
   getCurrentStudentUser,
   getStudentUserEvents,
   updateCurrentStudentUser,
-  uploadStudentAvatar,
   type StudentUserInfo,
   type UserEventLog
 } from '@xzs/api-client'
 
 const loading = ref(false)
 const saving = ref(false)
-const avatarUploading = ref(false)
 const activeTab = ref('events')
 const user = ref<StudentUserInfo | null>(null)
 const events = ref<UserEventLog[]>([])
@@ -136,31 +126,6 @@ async function saveProfile() {
     }
   } finally {
     saving.value = false
-  }
-}
-
-const uploadAvatar: UploadProps['onChange'] = async (uploadFile) => {
-  const file = uploadFile.raw
-  if (!file) {
-    return
-  }
-
-  if (!['image/jpeg', 'image/png'].includes(file.type)) {
-    ElMessage.error('只支持 JPG 或 PNG 图片')
-    return
-  }
-
-  avatarUploading.value = true
-  try {
-    const result = await uploadStudentAvatar(file)
-    if (result.code === 1) {
-      ElMessage.success('头像已更新')
-      await loadData()
-    } else {
-      ElMessage.error(result.message)
-    }
-  } finally {
-    avatarUploading.value = false
   }
 }
 

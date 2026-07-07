@@ -51,7 +51,7 @@ frontend/
 
 - `apps/student`：Vue 3 + Vite 学生端默认生产构建实现，开发端口 `8001`，构建输出目录为 `student`，静态资源目录为 `static`。
 - `apps/admin`：Vue 3 + Vite 管理端默认生产构建实现，开发端口 `8002`，构建输出目录为 `admin`，覆盖登录、Dashboard、用户、学科、题库、试卷、任务、智能训练、答卷、消息、日志和个人资料模块。
-- `apps/admin/public/admin/components/ueditor`：管理端 Vue 3 迁移期保留的 UEditor 静态资源，用于历史题库 HTML、公式插件和上传接口兼容。
+- `apps/admin/public/admin/components/ueditor`：管理端 Vue 3 迁移期保留的 UEditor 静态资源，用于历史题库 HTML 和公式插件兼容；图片上传入口已关闭。
 - `packages/api-client`：API 请求封装，覆盖登录、登出、当前用户、学生端考试链路、管理端 Dashboard、用户、学科、题库、试卷、任务、智能训练、答卷、消息、日志和个人资料接口。
 - `packages/question-renderer`：题目 Markdown、历史 HTML、公式、代码高亮和安全清理的独立渲染包。
 - `packages/shared`：迁移期共享工具和类型的起始包。

@@ -57,12 +57,6 @@ export function updateCurrentStudentUser(request: StudentUserUpdateRequest): Pro
   return post<void>('/api/student/user/update', request)
 }
 
-export function uploadStudentAvatar(file: File): Promise<ApiResponse<string>> {
-  const formData = new FormData()
-  formData.append('file', file)
-  return post<string>('/api/student/upload/image', formData)
-}
-
 export function getStudentMessageCount(): Promise<ApiResponse<number>> {
   return post<number>('/api/student/user/message/unreadCount')
 }

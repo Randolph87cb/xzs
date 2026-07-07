@@ -4,9 +4,9 @@
 
 - Fly App：运行 Spring Boot jar，端口 `8000`，内置管理端和学生端 Vue 3 + Vite 静态资源。
 - Fly Postgres App：使用带 Volume 的 Postgres Machine 持久化业务数据库，并开启 `FLY_SCALE_TO_ZERO=1` 支持冷启动。
-- 对象存储：题目图片、富文本图片、头像等继续使用七牛或其他 S3 兼容对象存储，不写入 Fly App 本地磁盘。
+- 文件上传：当前关闭题目图片、富文本图片、头像等上传入口，不依赖七牛或其他对象存储。
 
-Fly App 的普通文件系统不是持久化存储。Fly Volume 可持久化某台 Machine 的本地目录，但不能自动多机共享；本项目核心业务数据应放在 Postgres，上传文件应放对象存储。
+Fly App 的普通文件系统不是持久化存储。Fly Volume 可持久化某台 Machine 的本地目录，但不能自动多机共享；本项目核心业务数据应放在 Postgres。当前没有运行时上传文件需要持久化。
 
 当前部署目标是低成本冷启动：
 
@@ -59,17 +59,6 @@ fly secrets set `
   SPRING_DATASOURCE_URL="jdbc:postgresql://<host>:5432/<database>" `
   SPRING_DATASOURCE_USERNAME="<user>" `
   SPRING_DATASOURCE_PASSWORD="<password>" `
-  -a <your-unique-app-name>
-```
-
-如果要覆盖七牛或其他对象存储配置，使用 secrets：
-
-```powershell
-fly secrets set `
-  XZS_QN_URL="<public-file-url>" `
-  XZS_QN_BUCKET="<bucket>" `
-  XZS_QN_ACCESS_KEY="<access-key>" `
-  XZS_QN_SECRET_KEY="<secret-key>" `
   -a <your-unique-app-name>
 ```
 
@@ -167,6 +156,6 @@ docker run --rm -p 8000:8000 `
 
 - Fly Postgres App + Volume：当前冷启动按量方案，用于账号、题目、试卷、答卷、成绩、消息等业务数据。
 - Managed Postgres：适合需要托管运维、备份和更高数据库可靠性的生产部署，但不符合最低成本冷启动目标。
-- 对象存储：图片、附件、头像、富文本媒体资源。
+- 文件上传：当前已关闭，不需要对象存储；历史题目中已保存的外链图片仍可按原 URL 展示。
 - Fly Volume：只在确实需要本地持久目录时使用，例如单机日志归档；不要用它存多实例共享上传文件。
 - 容器本地磁盘：只用于临时文件和运行时缓存。

@@ -36,7 +36,7 @@
 - `ExamEditView`：批改待批改试卷，支持按题号定位、查看题目 Markdown/公式/代码渲染和分数选择。
 - `QuestionErrorView`：错题本列表和错题详情。
 - `DashboardView`：首页任务中心、固定试卷和时段试卷入口。
-- `UserCenterView`：个人资料展示、资料编辑、头像上传和用户动态。
+- `UserCenterView`：个人资料展示、资料编辑和用户动态；头像上传入口已关闭。
 - `UserMessageView`：消息列表和展开标记已读。
 
 新增组件和工具：
@@ -275,7 +275,7 @@ D:\workspace\xzs\.tmp\playwright\student-ui
 
 - 大试卷性能：答题页首屏先渲染前 8 题，后续题目通过 `requestIdleCallback` 或短延时分批挂载；点击答题卡会立即补渲染到目标题号再滚动。
 - 拆包：学生端移除 `app.use(ElementPlus)` 整包注册，改用 `unplugin-auto-import` 和 `unplugin-vue-components` 对 Element Plus 组件与样式按需导入。
-- 个人中心低频能力：补齐资料编辑、头像上传和对应截图验证断言。
+- 个人中心低频能力：补齐资料编辑和对应截图验证断言；头像上传入口已关闭。
 
 ## 阶段 4 子闭环结论
 

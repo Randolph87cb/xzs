@@ -148,13 +148,4 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public User selectByWxOpenId(String wxOpenId) {
         return userMapper.selectByWxOpenId(wxOpenId);
     }
-
-    @Override
-    @Transactional
-    public void changePicture(User user, String imagePath) {
-        User changePictureUser = new User();
-        changePictureUser.setId(user.getId());
-        changePictureUser.setImagePath(imagePath);
-        userMapper.updateByPrimaryKeySelective(changePictureUser);
-    }
 }
