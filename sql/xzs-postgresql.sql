@@ -333,6 +333,9 @@ CREATE TABLE "public"."t_question_review_record" (
 )
 ;
 
+CREATE INDEX "idx_question_review_record_question_type"
+  ON "public"."t_question_review_record" ("question_id", "review_type", "review_round");
+
 -- ----------------------------
 -- Table structure for t_question_correction_record
 -- ----------------------------
@@ -351,6 +354,7 @@ CREATE TABLE "public"."t_question_correction_record" (
   "reviewer_id" int4,
   "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
   "review_comment" text COLLATE "pg_catalog"."default",
+  "resubmit_count" int4 DEFAULT 0,
   "submit_time" timestamp(6),
   "review_time" timestamp(6),
   "deleted" bool DEFAULT false
@@ -364,7 +368,10 @@ DROP TABLE IF EXISTS "public"."t_question_correction_review_record";
 CREATE TABLE "public"."t_question_correction_review_record" (
   "id" serial PRIMARY KEY,
   "correction_id" int4 NOT NULL,
-  "review_round" int4 NOT NULL,
+  "review_round" int4,
+  "review_result" varchar(32) COLLATE "pg_catalog"."default",
+  "student_wrong_reason" text COLLATE "pg_catalog"."default",
+  "student_correct_thinking" text COLLATE "pg_catalog"."default",
   "before_wrong_reason" text COLLATE "pg_catalog"."default",
   "before_correct_thinking" text COLLATE "pg_catalog"."default",
   "after_wrong_reason" text COLLATE "pg_catalog"."default",
@@ -380,8 +387,14 @@ CREATE UNIQUE INDEX "uk_question_correction_customer_answer"
   ON "public"."t_question_correction_record" ("customer_answer_id", "user_id")
   WHERE "deleted" = false;
 
+CREATE INDEX "idx_question_correction_record_status_submit"
+  ON "public"."t_question_correction_record" ("review_status", "submit_time");
+
 CREATE INDEX "idx_question_correction_review_record_correction"
   ON "public"."t_question_correction_review_record" ("correction_id", "review_round");
+
+CREATE INDEX "idx_question_correction_review_record_time"
+  ON "public"."t_question_correction_review_record" ("correction_id", "create_time");
 
 -- ----------------------------
 -- Records of t_smart_training_config

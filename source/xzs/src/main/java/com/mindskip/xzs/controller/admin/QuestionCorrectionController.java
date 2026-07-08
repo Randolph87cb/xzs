@@ -65,11 +65,11 @@ public class QuestionCorrectionController extends BaseApiController {
         if (request.getId() == null) {
             return RestResponse.fail(2, "改错记录不能为空");
         }
-        if (StringUtils.isBlank(request.getReviewedWrongReason())) {
-            return RestResponse.fail(2, "错误原因不能为空");
+        if (!"APPROVED".equals(request.getReviewResult()) && !"REJECTED".equals(request.getReviewResult())) {
+            return RestResponse.fail(2, "审核结果不正确");
         }
-        if (StringUtils.isBlank(request.getReviewedCorrectThinking())) {
-            return RestResponse.fail(2, "正确思路不能为空");
+        if ("REJECTED".equals(request.getReviewResult()) && StringUtils.isBlank(request.getReviewComment())) {
+            return RestResponse.fail(2, "审核意见不能为空");
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
                 "select * from t_question_correction_record where deleted = false and id = ?",
@@ -78,30 +78,30 @@ public class QuestionCorrectionController extends BaseApiController {
             return RestResponse.fail(2, "改错记录不存在");
         }
         Map<String, Object> before = rows.get(0);
-        int round = request.getReviewRound() == null || request.getReviewRound() < 1 ? 1 : request.getReviewRound();
-        String status = round >= 2 ? "REVIEWED_TWICE" : "REVIEWED_ONCE";
+        if (!"SUBMITTED".equals(before.get("review_status"))) {
+            return RestResponse.fail(2, "当前改错记录不可审核");
+        }
         User user = getCurrentUser();
         String reviewerName = StringUtils.defaultIfBlank(user.getRealName(), user.getUserName());
 
         jdbcTemplate.update(
-                "update t_question_correction_record set reviewed_wrong_reason = ?, reviewed_correct_thinking = ?, review_status = ?, reviewer_id = ?, reviewer_name = ?, review_comment = ?, review_time = now() where id = ?",
-                request.getReviewedWrongReason().trim(),
-                request.getReviewedCorrectThinking().trim(),
-                status,
+                "update t_question_correction_record set review_status = ?, reviewer_id = ?, reviewer_name = ?, review_comment = ?, review_time = now() where id = ?",
+                request.getReviewResult(),
                 user.getId(),
                 reviewerName,
                 request.getReviewComment(),
                 request.getId());
 
         jdbcTemplate.update(
-                "insert into t_question_correction_review_record (correction_id, review_round, before_wrong_reason, before_correct_thinking, after_wrong_reason, after_correct_thinking, reviewer_id, reviewer_name, review_comment, create_time) " +
+                "insert into t_question_correction_review_record " +
+                        "(correction_id, review_result, student_wrong_reason, student_correct_thinking, before_wrong_reason, before_correct_thinking, reviewer_id, reviewer_name, review_comment, create_time) " +
                         "values (?, ?, ?, ?, ?, ?, ?, ?, ?, now())",
                 request.getId(),
-                round,
-                StringUtils.defaultIfBlank((String) before.get("reviewed_wrong_reason"), (String) before.get("student_wrong_reason")),
-                StringUtils.defaultIfBlank((String) before.get("reviewed_correct_thinking"), (String) before.get("student_correct_thinking")),
-                request.getReviewedWrongReason().trim(),
-                request.getReviewedCorrectThinking().trim(),
+                request.getReviewResult(),
+                before.get("student_wrong_reason"),
+                before.get("student_correct_thinking"),
+                before.get("student_wrong_reason"),
+                before.get("student_correct_thinking"),
                 user.getId(),
                 reviewerName,
                 request.getReviewComment());
@@ -154,9 +154,7 @@ public class QuestionCorrectionController extends BaseApiController {
 
     public static class QuestionCorrectionReviewRequest {
         private Integer id;
-        private Integer reviewRound;
-        private String reviewedWrongReason;
-        private String reviewedCorrectThinking;
+        private String reviewResult;
         private String reviewComment;
 
         public Integer getId() {
@@ -167,28 +165,12 @@ public class QuestionCorrectionController extends BaseApiController {
             this.id = id;
         }
 
-        public Integer getReviewRound() {
-            return reviewRound;
+        public String getReviewResult() {
+            return reviewResult;
         }
 
-        public void setReviewRound(Integer reviewRound) {
-            this.reviewRound = reviewRound;
-        }
-
-        public String getReviewedWrongReason() {
-            return reviewedWrongReason;
-        }
-
-        public void setReviewedWrongReason(String reviewedWrongReason) {
-            this.reviewedWrongReason = reviewedWrongReason;
-        }
-
-        public String getReviewedCorrectThinking() {
-            return reviewedCorrectThinking;
-        }
-
-        public void setReviewedCorrectThinking(String reviewedCorrectThinking) {
-            this.reviewedCorrectThinking = reviewedCorrectThinking;
+        public void setReviewResult(String reviewResult) {
+            this.reviewResult = reviewResult;
         }
 
         public String getReviewComment() {

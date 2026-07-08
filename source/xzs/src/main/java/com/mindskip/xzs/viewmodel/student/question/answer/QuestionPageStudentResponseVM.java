@@ -1,6 +1,8 @@
 package com.mindskip.xzs.viewmodel.student.question.answer;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class QuestionPageStudentResponseVM {
     private Integer id;
 
@@ -11,6 +13,12 @@ public class QuestionPageStudentResponseVM {
     private String subjectName;
 
     private String shortTitle;
+
+    @JsonProperty("correction_status")
+    private String correctionStatus;
+
+    @JsonProperty("review_comment")
+    private String reviewComment;
 
     public Integer getId() {
         return id;
@@ -50,5 +58,21 @@ public class QuestionPageStudentResponseVM {
 
     public void setShortTitle(String shortTitle) {
         this.shortTitle = shortTitle;
+    }
+
+    public String getCorrectionStatus() {
+        return correctionStatus;
+    }
+
+    public void setCorrectionStatus(String correctionStatus) {
+        this.correctionStatus = correctionStatus;
+    }
+
+    public String getReviewComment() {
+        return reviewComment;
+    }
+
+    public void setReviewComment(String reviewComment) {
+        this.reviewComment = reviewComment;
     }
 }

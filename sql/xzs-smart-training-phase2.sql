@@ -92,19 +92,37 @@ CREATE TABLE IF NOT EXISTS "public"."t_question_correction_record" (
   "reviewer_id" int4,
   "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
   "review_comment" text COLLATE "pg_catalog"."default",
+  "resubmit_count" int4 DEFAULT 0,
   "submit_time" timestamp(6),
   "review_time" timestamp(6),
   "deleted" bool DEFAULT false
 );
 
+ALTER TABLE "public"."t_question_correction_record"
+  ADD COLUMN IF NOT EXISTS "resubmit_count" int4 DEFAULT 0;
+
+UPDATE "public"."t_question_correction_record"
+SET "resubmit_count" = 0
+WHERE "resubmit_count" IS NULL;
+
+UPDATE "public"."t_question_correction_record"
+SET "review_status" = 'APPROVED'
+WHERE "review_status" IN ('REVIEWED_ONCE', 'REVIEWED_TWICE');
+
 CREATE UNIQUE INDEX IF NOT EXISTS "uk_question_correction_customer_answer"
   ON "public"."t_question_correction_record" ("customer_answer_id", "user_id")
   WHERE "deleted" = false;
 
+CREATE INDEX IF NOT EXISTS "idx_question_correction_record_status_submit"
+  ON "public"."t_question_correction_record" ("review_status", "submit_time");
+
 CREATE TABLE IF NOT EXISTS "public"."t_question_correction_review_record" (
   "id" serial PRIMARY KEY,
   "correction_id" int4 NOT NULL,
-  "review_round" int4 NOT NULL,
+  "review_round" int4,
+  "review_result" varchar(32) COLLATE "pg_catalog"."default",
+  "student_wrong_reason" text COLLATE "pg_catalog"."default",
+  "student_correct_thinking" text COLLATE "pg_catalog"."default",
   "before_wrong_reason" text COLLATE "pg_catalog"."default",
   "before_correct_thinking" text COLLATE "pg_catalog"."default",
   "after_wrong_reason" text COLLATE "pg_catalog"."default",
@@ -115,5 +133,25 @@ CREATE TABLE IF NOT EXISTS "public"."t_question_correction_review_record" (
   "create_time" timestamp(6)
 );
 
+ALTER TABLE "public"."t_question_correction_review_record"
+  ADD COLUMN IF NOT EXISTS "review_result" varchar(32) COLLATE "pg_catalog"."default",
+  ADD COLUMN IF NOT EXISTS "student_wrong_reason" text COLLATE "pg_catalog"."default",
+  ADD COLUMN IF NOT EXISTS "student_correct_thinking" text COLLATE "pg_catalog"."default";
+
+ALTER TABLE "public"."t_question_correction_review_record"
+  ALTER COLUMN "review_round" DROP NOT NULL;
+
+UPDATE "public"."t_question_correction_review_record"
+SET
+  "review_result" = COALESCE("review_result", 'APPROVED'),
+  "student_wrong_reason" = COALESCE("student_wrong_reason", "before_wrong_reason", "after_wrong_reason"),
+  "student_correct_thinking" = COALESCE("student_correct_thinking", "before_correct_thinking", "after_correct_thinking")
+WHERE "review_result" IS NULL
+   OR "student_wrong_reason" IS NULL
+   OR "student_correct_thinking" IS NULL;
+
 CREATE INDEX IF NOT EXISTS "idx_question_correction_review_record_correction"
   ON "public"."t_question_correction_review_record" ("correction_id", "review_round");
+
+CREATE INDEX IF NOT EXISTS "idx_question_correction_review_record_time"
+  ON "public"."t_question_correction_review_record" ("correction_id", "create_time");

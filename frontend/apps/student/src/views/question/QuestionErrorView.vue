@@ -6,12 +6,35 @@
         <el-button :loading="loading" @click="loadQuestions">刷新</el-button>
       </header>
 
-      <el-table v-loading="loading" :data="questions" row-key="id" highlight-current-row @row-click="selectQuestion">
+      <el-tabs v-model="activeCorrectionLayer" class="question-error__tabs" @tab-change="handleLayerChange">
+        <el-tab-pane v-for="layer in correctionLayers" :key="layer.key" :name="layer.key">
+          <template #label>
+            <span>{{ layer.label }}</span>
+            <span class="question-error__tab-count">{{ layerCount(layer.key) }}</span>
+          </template>
+        </el-tab-pane>
+      </el-tabs>
+
+      <el-table
+        v-loading="loading"
+        :data="filteredQuestions"
+        row-key="id"
+        highlight-current-row
+        empty-text="当前层次暂无错题"
+        @row-click="selectQuestion"
+      >
         <el-table-column prop="shortTitle" label="题干" min-width="220" show-overflow-tooltip />
         <el-table-column label="题型" width="90">
           <template #default="{ row }">{{ questionTypeText(row.questionType) }}</template>
         </el-table-column>
         <el-table-column prop="subjectName" label="学科" width="90" />
+        <el-table-column label="改错状态" width="120">
+          <template #default="{ row }">
+            <el-tag size="small" :type="correctionTagType(rowCorrectionLayer(row))">
+              {{ correctionLayerText(rowCorrectionLayer(row)) }}
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="做题时间" width="170" />
       </el-table>
 
@@ -28,30 +51,61 @@
 
     <aside v-loading="detailLoading" class="question-error__detail">
       <template v-if="selectedQuestion && selectedAnswer">
-        <QuestionReview :question="selectedQuestion" :answer="selectedAnswer" />
-        <section class="question-error__correction">
-          <div class="question-error__correction-header">
-            <h2>改错</h2>
-            <el-button size="small" type="primary" @click="openCorrectionDialog">提交改错</el-button>
+        <section class="question-error__section">
+          <div class="question-error__section-header">
+            <h2>题目</h2>
+            <el-tag size="small" type="info">{{ questionTypeText(selectedQuestion.questionType) }}</el-tag>
           </div>
-          <p class="question-error__status">{{ correctionStatusText }}</p>
-          <template v-if="correction">
-            <h3>我的错误原因</h3>
-            <p>{{ correction.student_wrong_reason }}</p>
-            <h3>我的正确思路</h3>
-            <p>{{ correction.student_correct_thinking }}</p>
-            <template v-if="correction.reviewed_wrong_reason || correction.reviewed_correct_thinking">
-              <h3>老师修订</h3>
-              <p>{{ correction.reviewed_wrong_reason }}</p>
-              <p>{{ correction.reviewed_correct_thinking }}</p>
-            </template>
-          </template>
+          <QuestionReview :question="selectedQuestion" :answer="selectedAnswer" />
+        </section>
+
+        <section class="question-error__section">
+          <div class="question-error__section-header">
+            <div>
+              <h2>改错</h2>
+              <p class="question-error__status">{{ selectedCorrectionStatusText }}</p>
+            </div>
+            <el-button v-if="canSubmitCorrection" size="small" type="primary" @click="openCorrectionDialog">
+              {{ correctionSubmitButtonText }}
+            </el-button>
+          </div>
+
+          <div v-if="correction" class="question-error__correction-content">
+            <div>
+              <h3>我的错误原因</h3>
+              <p>{{ correction.student_wrong_reason || '暂无填写' }}</p>
+            </div>
+            <div>
+              <h3>我的正确思路</h3>
+              <p>{{ correction.student_correct_thinking || '暂无填写' }}</p>
+            </div>
+          </div>
+          <el-empty v-else description="还没有提交改错" :image-size="72" />
+        </section>
+
+        <section class="question-error__section">
+          <div class="question-error__section-header">
+            <h2>历史</h2>
+            <el-tag size="small" :type="correctionTagType(selectedCorrectionLayer)">
+              {{ selectedCorrectionStatusText }}
+            </el-tag>
+          </div>
+
+          <el-timeline v-if="correction" class="question-error__timeline">
+            <el-timeline-item :type="correctionTimelineType(selectedCorrectionLayer)" :timestamp="selectedCorrectionStatusText">
+              <p>{{ correctionHistoryText }}</p>
+              <p v-if="correction.review_comment" class="question-error__review-comment">
+                审核意见：{{ correction.review_comment }}
+              </p>
+            </el-timeline-item>
+          </el-timeline>
+          <el-empty v-else description="暂无改错历史" :image-size="72" />
         </section>
       </template>
       <el-empty v-else description="请选择错题" />
     </aside>
 
-    <el-dialog v-model="correctionDialogVisible" title="提交改错" width="560px">
+    <el-dialog v-model="correctionDialogVisible" :title="correctionDialogTitle" width="560px">
       <el-form label-position="top">
         <el-form-item label="我错在哪里">
           <el-input v-model="correctionForm.wrongReason" type="textarea" :rows="4" />
@@ -62,7 +116,7 @@
       </el-form>
       <template #footer>
         <el-button @click="correctionDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitCorrectionForm">提交</el-button>
+        <el-button :loading="submitting" type="primary" @click="submitCorrectionForm">提交</el-button>
       </template>
     </el-dialog>
   </section>
@@ -79,14 +133,32 @@ import {
   type AnswerItem,
   type ExamQuestion,
   type QuestionCorrectionRecord,
+  type QuestionCorrectionReviewStatus,
   type QuestionAnswerListItem
 } from '@xzs/api-client'
 import QuestionReview from '@/components/QuestionReview.vue'
 
+type CorrectionLayerKey = 'UNSUBMITTED' | QuestionCorrectionReviewStatus
+
+interface CorrectionLayer {
+  key: CorrectionLayerKey
+  label: string
+}
+
+const correctionLayers: CorrectionLayer[] = [
+  { key: 'UNSUBMITTED', label: '未提交改错' },
+  { key: 'SUBMITTED', label: '改错待审核' },
+  { key: 'APPROVED', label: '改错已通过' },
+  { key: 'REJECTED', label: '改错被驳回' }
+]
+
 const loading = ref(false)
 const detailLoading = ref(false)
+const submitting = ref(false)
 const questions = ref<QuestionAnswerListItem[]>([])
 const total = ref(0)
+const activeCorrectionLayer = ref<CorrectionLayerKey>('UNSUBMITTED')
+const selectedRow = ref<QuestionAnswerListItem | null>(null)
 const selectedQuestion = ref<ExamQuestion | null>(null)
 const selectedAnswer = ref<AnswerItem | null>(null)
 const correction = ref<QuestionCorrectionRecord | null>(null)
@@ -99,14 +171,29 @@ const correctionForm = reactive({
   wrongReason: '',
   correctThinking: ''
 })
-const correctionStatusText = computed(() => {
-  if (!correction.value) return '未提交改错'
-  const map: Record<string, string> = {
-    SUBMITTED: '已提交，待老师审核',
-    REVIEWED_ONCE: '一审完成',
-    REVIEWED_TWICE: '二审完成'
+
+const filteredQuestions = computed(() =>
+  questions.value.filter((question) => rowCorrectionLayer(question) === activeCorrectionLayer.value)
+)
+
+const selectedCorrectionLayer = computed<CorrectionLayerKey>(() => correctionLayerFromRecord(correction.value))
+const selectedCorrectionStatusText = computed(() => correctionLayerText(selectedCorrectionLayer.value))
+const canSubmitCorrection = computed(() => {
+  const status = selectedCorrectionLayer.value
+  return status === 'UNSUBMITTED' || status === 'REJECTED'
+})
+const correctionSubmitButtonText = computed(() =>
+  selectedCorrectionLayer.value === 'REJECTED' ? '重新提交改错' : '提交改错'
+)
+const correctionDialogTitle = computed(() => correctionSubmitButtonText.value)
+const correctionHistoryText = computed(() => {
+  const map: Record<CorrectionLayerKey, string> = {
+    UNSUBMITTED: '未提交改错，暂无审核历史。',
+    SUBMITTED: '改错已提交，等待老师审核。',
+    APPROVED: '老师已通过本次改错。',
+    REJECTED: '老师已驳回本次改错，可根据审核意见重新提交。'
   }
-  return map[correction.value.review_status ?? ''] ?? '已提交'
+  return map[selectedCorrectionLayer.value]
 })
 
 onMounted(loadQuestions)
@@ -120,15 +207,14 @@ async function loadQuestions() {
     total.value = page?.total ?? 0
     query.pageIndex = page?.pageNum ?? query.pageIndex
 
-    if (questions.value[0]) {
-      await selectQuestion(questions.value[0])
-    }
+    await selectFirstQuestionInCurrentLayer()
   } finally {
     loading.value = false
   }
 }
 
 async function selectQuestion(row: QuestionAnswerListItem) {
+  selectedRow.value = row
   detailLoading.value = true
   try {
     const result = await getQuestionAnswerDetail(row.id)
@@ -142,12 +228,21 @@ async function selectQuestion(row: QuestionAnswerListItem) {
 
 async function loadCorrection() {
   correction.value = null
-  if (!selectedAnswer.value?.id) return
+  if (!selectedAnswer.value?.id) {
+    updateSelectedRowStatus(null)
+    return
+  }
   const result = await getQuestionCorrection(selectedAnswer.value.id)
   correction.value = result.response ?? null
+  const status = updateSelectedRowStatus(correction.value)
+  activeCorrectionLayer.value = status
 }
 
 function openCorrectionDialog() {
+  if (!canSubmitCorrection.value) {
+    ElMessage.warning('当前状态不允许提交改错')
+    return
+  }
   correctionForm.wrongReason = correction.value?.student_wrong_reason ?? ''
   correctionForm.correctThinking = correction.value?.student_correct_thinking ?? ''
   correctionDialogVisible.value = true
@@ -158,23 +253,113 @@ async function submitCorrectionForm() {
     ElMessage.error('请选择错题')
     return
   }
+  if (!canSubmitCorrection.value) {
+    ElMessage.warning('当前状态不允许提交改错')
+    return
+  }
   if (!correctionForm.wrongReason.trim() || !correctionForm.correctThinking.trim()) {
     ElMessage.error('请完整填写错误原因和正确思路')
     return
   }
-  const result = await submitQuestionCorrection({
-    customerAnswerId: selectedAnswer.value.id,
-    wrongReason: correctionForm.wrongReason,
-    correctThinking: correctionForm.correctThinking
-  })
-  ElMessage.success(result.message || '改错已提交')
-  correctionDialogVisible.value = false
-  await loadCorrection()
+
+  submitting.value = true
+  try {
+    const result = await submitQuestionCorrection({
+      customerAnswerId: selectedAnswer.value.id,
+      wrongReason: correctionForm.wrongReason,
+      correctThinking: correctionForm.correctThinking
+    })
+    ElMessage.success(result.message || '改错已提交')
+    correctionDialogVisible.value = false
+    await loadCorrection()
+    activeCorrectionLayer.value = selectedCorrectionLayer.value
+  } finally {
+    submitting.value = false
+  }
 }
 
 function handlePageChange(page: number) {
   query.pageIndex = page
   loadQuestions()
+}
+
+function handleLayerChange() {
+  selectFirstQuestionInCurrentLayer()
+}
+
+async function selectFirstQuestionInCurrentLayer() {
+  const firstQuestion = filteredQuestions.value[0]
+  if (firstQuestion) {
+    await selectQuestion(firstQuestion)
+    return
+  }
+  clearSelectedQuestion()
+}
+
+function clearSelectedQuestion() {
+  selectedRow.value = null
+  selectedQuestion.value = null
+  selectedAnswer.value = null
+  correction.value = null
+}
+
+function updateSelectedRowStatus(record: QuestionCorrectionRecord | null) {
+  const status = correctionLayerFromRecord(record)
+  if (selectedRow.value) {
+    selectedRow.value.correction_status = status === 'UNSUBMITTED' ? null : status
+  }
+  return status
+}
+
+function rowCorrectionLayer(row: QuestionAnswerListItem): CorrectionLayerKey {
+  return normalizeCorrectionLayer(row.correction_status)
+}
+
+function correctionLayerFromRecord(record: QuestionCorrectionRecord | null): CorrectionLayerKey {
+  if (!record) return 'UNSUBMITTED'
+  return normalizeCorrectionLayer(record.review_status, 'SUBMITTED')
+}
+
+function normalizeCorrectionLayer(
+  status?: QuestionCorrectionReviewStatus | null,
+  fallback: CorrectionLayerKey = 'UNSUBMITTED'
+): CorrectionLayerKey {
+  if (status === 'SUBMITTED' || status === 'APPROVED' || status === 'REJECTED') return status
+  return fallback
+}
+
+function correctionLayerText(status: CorrectionLayerKey) {
+  const map: Record<CorrectionLayerKey, string> = {
+    UNSUBMITTED: '未提交改错',
+    SUBMITTED: '改错待审核',
+    APPROVED: '改错已通过',
+    REJECTED: '改错被驳回'
+  }
+  return map[status]
+}
+
+function correctionTagType(status: CorrectionLayerKey) {
+  const map: Record<CorrectionLayerKey, 'info' | 'warning' | 'success' | 'danger'> = {
+    UNSUBMITTED: 'info',
+    SUBMITTED: 'warning',
+    APPROVED: 'success',
+    REJECTED: 'danger'
+  }
+  return map[status]
+}
+
+function correctionTimelineType(status: CorrectionLayerKey) {
+  const map: Record<CorrectionLayerKey, 'info' | 'warning' | 'success' | 'danger'> = {
+    UNSUBMITTED: 'info',
+    SUBMITTED: 'warning',
+    APPROVED: 'success',
+    REJECTED: 'danger'
+  }
+  return map[status]
+}
+
+function layerCount(status: CorrectionLayerKey) {
+  return questions.value.filter((question) => rowCorrectionLayer(question) === status).length
 }
 
 function questionTypeText(type: number) {
@@ -193,7 +378,7 @@ function questionTypeText(type: number) {
 <style scoped lang="scss">
 .question-error {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
   gap: 18px;
 }
 
@@ -205,18 +390,47 @@ function questionTypeText(type: number) {
   background: #fff;
 }
 
-.question-error__header {
+.question-error__header,
+.question-error__section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+}
+
+.question-error__header {
+  margin-bottom: 12px;
+}
+
+.question-error__header h1,
+.question-error__section h2,
+.question-error__section h3,
+.question-error__section p {
+  margin: 0;
 }
 
 .question-error__header h1 {
-  margin: 0;
   color: #111827;
   font-size: 22px;
+}
+
+.question-error__tabs {
+  margin-bottom: 8px;
+}
+
+.question-error__tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 12px;
+  line-height: 20px;
 }
 
 .question-error__pagination {
@@ -224,37 +438,51 @@ function questionTypeText(type: number) {
   margin-top: 18px;
 }
 
-.question-error__correction {
+.question-error__detail {
   display: grid;
-  gap: 8px;
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid #e5e7eb;
+  align-content: start;
+  gap: 14px;
 }
 
-.question-error__correction-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.question-error__section {
+  display: grid;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.question-error__correction h2,
-.question-error__correction h3,
-.question-error__correction p {
-  margin: 0;
+.question-error__section:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 
-.question-error__correction h2 {
+.question-error__section h2 {
+  color: #111827;
   font-size: 18px;
 }
 
-.question-error__correction h3 {
+.question-error__section h3 {
   color: #374151;
   font-size: 14px;
 }
 
-.question-error__status {
+.question-error__status,
+.question-error__review-comment {
   color: #6b7280;
+}
+
+.question-error__correction-content {
+  display: grid;
+  gap: 12px;
+}
+
+.question-error__correction-content > div {
+  display: grid;
+  gap: 6px;
+}
+
+.question-error__timeline {
+  padding-left: 4px;
 }
 
 @media (max-width: 980px) {

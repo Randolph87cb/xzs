@@ -14,8 +14,8 @@
       <el-form-item label="状态">
         <el-select v-model="query.reviewStatus" clearable placeholder="全部" style="width: 180px">
           <el-option label="待审核" value="SUBMITTED" />
-          <el-option label="一审完成" value="REVIEWED_ONCE" />
-          <el-option label="二审完成" value="REVIEWED_TWICE" />
+          <el-option label="已通过" value="APPROVED" />
+          <el-option label="未通过" value="REJECTED" />
         </el-select>
       </el-form-item>
     </el-form>
@@ -65,17 +65,14 @@
         </section>
 
         <el-form label-width="90px">
-          <el-form-item label="审核轮次">
-            <el-input-number v-model="reviewForm.reviewRound" :min="1" :max="9" />
+          <el-form-item label="审核结果">
+            <el-radio-group v-model="reviewForm.reviewResult">
+              <el-radio label="APPROVED">通过</el-radio>
+              <el-radio label="REJECTED">不通过</el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="错误原因">
-            <el-input v-model="reviewForm.reviewedWrongReason" type="textarea" :rows="4" />
-          </el-form-item>
-          <el-form-item label="正确思路">
-            <el-input v-model="reviewForm.reviewedCorrectThinking" type="textarea" :rows="4" />
-          </el-form-item>
-          <el-form-item label="审核说明">
-            <el-input v-model="reviewForm.reviewComment" type="textarea" :rows="2" />
+          <el-form-item label="审核意见">
+            <el-input v-model="reviewForm.reviewComment" type="textarea" :rows="3" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="saveReview">保存审核</el-button>
@@ -83,11 +80,12 @@
         </el-form>
 
         <el-table :data="detail.reviewRecords ?? []" border>
-          <el-table-column prop="review_round" label="轮次" width="80" />
+          <el-table-column label="审核结果" width="110">
+            <template #default="{ row }">{{ statusText(row.review_result) }}</template>
+          </el-table-column>
           <el-table-column prop="reviewer_name" label="审核人" width="120" />
-          <el-table-column prop="after_wrong_reason" label="审核后错误原因" min-width="180" show-overflow-tooltip />
-          <el-table-column prop="after_correct_thinking" label="审核后正确思路" min-width="180" show-overflow-tooltip />
-          <el-table-column prop="review_comment" label="说明" min-width="160" show-overflow-tooltip />
+          <el-table-column prop="review_comment" label="审核意见" min-width="220" show-overflow-tooltip />
+          <el-table-column prop="create_time" label="审核时间" width="170" />
         </el-table>
       </div>
     </el-dialog>
@@ -103,7 +101,8 @@ import {
   getAdminQuestionCorrectionPage,
   saveAdminQuestionCorrectionReview,
   type AdminQuestionCorrectionItem,
-  type AdminQuestionCorrectionPageRequest
+  type AdminQuestionCorrectionPageRequest,
+  type AdminQuestionCorrectionReviewRequest
 } from '@xzs/api-client'
 
 const loading = ref(false)
@@ -112,15 +111,13 @@ const records = ref<AdminQuestionCorrectionItem[]>([])
 const detail = ref<AdminQuestionCorrectionItem | null>(null)
 const total = ref(0)
 const query = reactive<AdminQuestionCorrectionPageRequest>({
-  reviewStatus: null,
+  reviewStatus: 'SUBMITTED',
   pageIndex: 1,
   pageSize: 10
 })
-const reviewForm = reactive({
+const reviewForm = reactive<AdminQuestionCorrectionReviewRequest>({
   id: 0,
-  reviewRound: 1,
-  reviewedWrongReason: '',
-  reviewedCorrectThinking: '',
+  reviewResult: 'APPROVED',
   reviewComment: ''
 })
 
@@ -142,16 +139,14 @@ async function openReview(id: number) {
   detail.value = result.response ?? null
   if (!detail.value) return
   reviewForm.id = id
-  reviewForm.reviewRound = nextRound(detail.value.review_status)
-  reviewForm.reviewedWrongReason = detail.value.reviewed_wrong_reason || detail.value.student_wrong_reason || ''
-  reviewForm.reviewedCorrectThinking = detail.value.reviewed_correct_thinking || detail.value.student_correct_thinking || ''
+  reviewForm.reviewResult = 'APPROVED'
   reviewForm.reviewComment = ''
   reviewVisible.value = true
 }
 
 async function saveReview() {
-  if (!reviewForm.reviewedWrongReason.trim() || !reviewForm.reviewedCorrectThinking.trim()) {
-    ElMessage.error('请完整填写错误原因和正确思路')
+  if (reviewForm.reviewResult === 'REJECTED' && !reviewForm.reviewComment?.trim()) {
+    ElMessage.error('不通过时请填写审核意见')
     return
   }
   const result = await saveAdminQuestionCorrectionReview(reviewForm)
@@ -160,17 +155,11 @@ async function saveReview() {
   await loadData()
 }
 
-function nextRound(status?: string) {
-  if (status === 'REVIEWED_ONCE') return 2
-  if (status === 'REVIEWED_TWICE') return 2
-  return 1
-}
-
 function statusText(status?: string) {
   const map: Record<string, string> = {
     SUBMITTED: '待审核',
-    REVIEWED_ONCE: '一审完成',
-    REVIEWED_TWICE: '二审完成'
+    APPROVED: '已通过',
+    REJECTED: '未通过'
   }
   return map[status ?? ''] ?? '未知'
 }

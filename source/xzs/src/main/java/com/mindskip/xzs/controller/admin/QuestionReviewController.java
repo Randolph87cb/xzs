@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,21 +32,35 @@ public class QuestionReviewController extends BaseApiController {
         int offset = (pageIndex - 1) * pageSize;
 
         StringBuilder where = new StringBuilder(" where q.deleted = false and q.status = 1 ");
-        Map<String, Object> params = new HashMap<>();
+        List<Object> params = new ArrayList<>();
         if (request.getSubjectId() != null) {
-            where.append(" and q.subject_id = :subjectId ");
-            params.put("subjectId", request.getSubjectId());
+            where.append(" and q.subject_id = ? ");
+            params.add(request.getSubjectId());
         }
         if (StringUtils.isNotBlank(request.getKnowledgePoint())) {
-            where.append(" and q.knowledge_point = :knowledgePoint ");
-            params.put("knowledgePoint", request.getKnowledgePoint().trim());
+            where.append(" and q.knowledge_point = ? ");
+            params.add(request.getKnowledgePoint().trim());
+        }
+        if (StringUtils.isNotBlank(request.getKeyword())) {
+            where.append(" and (tc.content::jsonb ->> 'titleContent' like ? " +
+                    "or tc.content::jsonb ->> 'analyze' like ? " +
+                    "or q.knowledge_point like ?) ");
+            String keyword = "%" + request.getKeyword().trim() + "%";
+            params.add(keyword);
+            params.add(keyword);
+            params.add(keyword);
         }
 
-        String whereSql = where.toString()
-                .replace(":subjectId", params.containsKey("subjectId") ? String.valueOf(params.get("subjectId")) : "null")
-                .replace(":knowledgePoint", params.containsKey("knowledgePoint") ? "'" + StringUtils.replace(String.valueOf(params.get("knowledgePoint")), "'", "''") + "'" : "null");
+        appendReviewStatusFilter(where, params, request.getReviewType(), request.getReviewStatus());
 
-        Integer total = jdbcTemplate.queryForObject("select count(*) from t_question q " + whereSql, Integer.class);
+        Integer total = jdbcTemplate.queryForObject(
+                "select count(*) from t_question q join t_text_content tc on tc.id = q.info_text_content_id " + where,
+                Integer.class,
+                params.toArray());
+
+        List<Object> listParams = new ArrayList<>(params);
+        listParams.add(pageSize);
+        listParams.add(offset);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(
                 "select q.id, q.subject_id, q.question_type, q.knowledge_point, " +
                         "tc.content::jsonb ->> 'titleContent' as title, " +
@@ -53,10 +68,9 @@ public class QuestionReviewController extends BaseApiController {
                         "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'ANALYSIS'), 0) as analysis_review_round, " +
                         "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'KNOWLEDGE_POINT'), 0) as knowledge_review_round " +
                         "from t_question q join t_text_content tc on tc.id = q.info_text_content_id " +
-                        whereSql +
+                        where +
                         " order by q.id desc limit ? offset ?",
-                pageSize,
-                offset);
+                listParams.toArray());
 
         Map<String, Object> result = new HashMap<>();
         result.put("list", list);
@@ -72,7 +86,9 @@ public class QuestionReviewController extends BaseApiController {
                 "select q.id, q.subject_id, q.question_type, q.knowledge_point, q.correct, " +
                         "tc.content::jsonb ->> 'titleContent' as title, " +
                         "tc.content::jsonb ->> 'analyze' as analyze, " +
-                        "tc.content::jsonb -> 'questionItemObjects' as items " +
+                        "tc.content::jsonb -> 'questionItemObjects' as items, " +
+                        "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'ANALYSIS'), 0) as analysis_review_round, " +
+                        "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'KNOWLEDGE_POINT'), 0) as knowledge_review_round " +
                         "from t_question q join t_text_content tc on tc.id = q.info_text_content_id " +
                         "where q.deleted = false and q.id = ?",
                 questionId);
@@ -93,7 +109,6 @@ public class QuestionReviewController extends BaseApiController {
         if (StringUtils.isBlank(request.getAfterValue())) {
             return RestResponse.fail(2, "解析不能为空");
         }
-        Integer round = reviewRound(request.getReviewRound());
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
                 "select q.info_text_content_id, tc.content::jsonb ->> 'analyze' as before_value " +
                         "from t_question q join t_text_content tc on tc.id = q.info_text_content_id " +
@@ -108,6 +123,7 @@ public class QuestionReviewController extends BaseApiController {
                 "update t_text_content set content = jsonb_set(content::jsonb, '{analyze}', to_jsonb(?::text), true)::text where id = ?",
                 request.getAfterValue(),
                 textContentId);
+        Integer round = nextReviewRound(request.getQuestionId(), "ANALYSIS");
         insertReviewRecord(request.getQuestionId(), "ANALYSIS", round, beforeValue, request.getAfterValue(), request.getReviewComment());
         return RestResponse.ok();
     }
@@ -121,7 +137,6 @@ public class QuestionReviewController extends BaseApiController {
         if (StringUtils.isBlank(request.getAfterValue())) {
             return RestResponse.fail(2, "知识点不能为空");
         }
-        Integer round = reviewRound(request.getReviewRound());
         String knowledgePoint = request.getAfterValue().trim();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
                 "select q.info_text_content_id, q.knowledge_point as before_value " +
@@ -137,6 +152,7 @@ public class QuestionReviewController extends BaseApiController {
                 "update t_text_content set content = jsonb_set(content::jsonb, '{knowledgePoint}', to_jsonb(?::text), true)::text where id = ?",
                 knowledgePoint,
                 textContentId);
+        Integer round = nextReviewRound(request.getQuestionId(), "KNOWLEDGE_POINT");
         insertReviewRecord(request.getQuestionId(), "KNOWLEDGE_POINT", round, beforeValue, knowledgePoint, request.getReviewComment());
         return RestResponse.ok();
     }
@@ -176,13 +192,68 @@ public class QuestionReviewController extends BaseApiController {
                 reviewComment);
     }
 
-    private Integer reviewRound(Integer reviewRound) {
-        return reviewRound == null || reviewRound < 1 ? 1 : reviewRound;
+    private Integer nextReviewRound(Integer questionId, String reviewType) {
+        Integer round = jdbcTemplate.queryForObject(
+                "select coalesce(max(review_round), 0) + 1 from t_question_review_record " +
+                        "where deleted = false and question_id = ? and review_type = ?",
+                Integer.class,
+                questionId,
+                reviewType);
+        return round == null || round < 1 ? 1 : round;
+    }
+
+    private void appendReviewStatusFilter(StringBuilder where, List<Object> params, String reviewType, String reviewStatus) {
+        if (StringUtils.isBlank(reviewStatus)) {
+            return;
+        }
+        String roundSql = reviewRoundSql(reviewType);
+        if (roundSql == null) {
+            return;
+        }
+        switch (reviewStatus.trim()) {
+            case "UNREVIEWED":
+                where.append(" and ").append(roundSql).append(" = 0 ");
+                break;
+            case "REVIEWED_ONCE":
+                where.append(" and ").append(roundSql).append(" = 1 ");
+                break;
+            case "REVIEWED_TWICE":
+                where.append(" and ").append(roundSql).append(" >= 2 ");
+                break;
+            case "REVIEWED_AT_LEAST_ONCE":
+            case "REVIEWED":
+                where.append(" and ").append(roundSql).append(" >= 1 ");
+                break;
+            default:
+                return;
+        }
+        if (StringUtils.isNotBlank(reviewType) && isValidReviewType(reviewType.trim())) {
+            params.add(reviewType.trim());
+        }
+    }
+
+    private String reviewRoundSql(String reviewType) {
+        if (StringUtils.isNotBlank(reviewType)) {
+            return isValidReviewType(reviewType.trim()) ?
+                    "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = ?), 0)" :
+                    null;
+        }
+        return "greatest(" +
+                "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'ANALYSIS'), 0), " +
+                "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'KNOWLEDGE_POINT'), 0)" +
+                ")";
+    }
+
+    private boolean isValidReviewType(String reviewType) {
+        return "ANALYSIS".equals(reviewType) || "KNOWLEDGE_POINT".equals(reviewType);
     }
 
     public static class QuestionReviewPageRequest {
         private Integer subjectId;
         private String knowledgePoint;
+        private String reviewType;
+        private String reviewStatus;
+        private String keyword;
         private Integer pageIndex;
         private Integer pageSize;
 
@@ -200,6 +271,30 @@ public class QuestionReviewController extends BaseApiController {
 
         public void setKnowledgePoint(String knowledgePoint) {
             this.knowledgePoint = knowledgePoint;
+        }
+
+        public String getReviewType() {
+            return reviewType;
+        }
+
+        public void setReviewType(String reviewType) {
+            this.reviewType = reviewType;
+        }
+
+        public String getReviewStatus() {
+            return reviewStatus;
+        }
+
+        public void setReviewStatus(String reviewStatus) {
+            this.reviewStatus = reviewStatus;
+        }
+
+        public String getKeyword() {
+            return keyword;
+        }
+
+        public void setKeyword(String keyword) {
+            this.keyword = keyword;
         }
 
         public Integer getPageIndex() {

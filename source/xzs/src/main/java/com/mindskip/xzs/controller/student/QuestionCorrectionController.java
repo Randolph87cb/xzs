@@ -53,28 +53,42 @@ public class QuestionCorrectionController extends BaseApiController {
         }
 
         Map<String, Object> answer = answerRows.get(0);
-        List<Integer> existingIds = jdbcTemplate.queryForList(
-                "select id from t_question_correction_record where deleted = false and customer_answer_id = ? and user_id = ? order by id desc limit 1",
-                Integer.class,
+        List<Map<String, Object>> existingRows = jdbcTemplate.queryForList(
+                "select id, review_status from t_question_correction_record where deleted = false and customer_answer_id = ? and user_id = ? order by id desc limit 1",
                 request.getCustomerAnswerId(),
                 getCurrentUser().getId());
-        if (existingIds.isEmpty()) {
+        if (existingRows.isEmpty()) {
             jdbcTemplate.update(
-                    "insert into t_question_correction_record (user_id, question_id, exam_paper_answer_id, customer_answer_id, student_wrong_reason, student_correct_thinking, review_status, submit_time, deleted) " +
-                            "values (?, ?, ?, ?, ?, ?, 'SUBMITTED', now(), false)",
+                    "insert into t_question_correction_record (user_id, question_id, exam_paper_answer_id, customer_answer_id, student_wrong_reason, student_correct_thinking, review_status, resubmit_count, submit_time, deleted) " +
+                            "values (?, ?, ?, ?, ?, ?, 'SUBMITTED', 0, now(), false)",
                     getCurrentUser().getId(),
                     answer.get("question_id"),
                     answer.get("exam_paper_answer_id"),
                     request.getCustomerAnswerId(),
                     request.getWrongReason().trim(),
                     request.getCorrectThinking().trim());
-        } else {
-            jdbcTemplate.update(
-                    "update t_question_correction_record set student_wrong_reason = ?, student_correct_thinking = ?, review_status = 'SUBMITTED', submit_time = now() where id = ?",
-                    request.getWrongReason().trim(),
-                    request.getCorrectThinking().trim(),
-                    existingIds.get(0));
+            return RestResponse.ok();
         }
+
+        Map<String, Object> existing = existingRows.get(0);
+        String reviewStatus = (String) existing.get("review_status");
+        if ("SUBMITTED".equals(reviewStatus)) {
+            return RestResponse.fail(2, "改错已提交，请等待审核");
+        }
+        if ("APPROVED".equals(reviewStatus) || "REVIEWED_ONCE".equals(reviewStatus) || "REVIEWED_TWICE".equals(reviewStatus)) {
+            return RestResponse.fail(2, "改错已通过，不能重复提交");
+        }
+        if (!"REJECTED".equals(reviewStatus)) {
+            return RestResponse.fail(2, "当前改错状态不能提交");
+        }
+
+        jdbcTemplate.update(
+                "update t_question_correction_record set student_wrong_reason = ?, student_correct_thinking = ?, review_status = 'SUBMITTED', " +
+                        "reviewer_id = null, reviewer_name = null, review_comment = null, review_time = null, " +
+                        "resubmit_count = coalesce(resubmit_count, 0) + 1, submit_time = now() where id = ?",
+                request.getWrongReason().trim(),
+                request.getCorrectThinking().trim(),
+                existing.get("id"));
         return RestResponse.ok();
     }
 

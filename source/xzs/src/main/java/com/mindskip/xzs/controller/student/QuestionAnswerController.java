@@ -21,7 +21,11 @@ import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentReq
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController("StudentQuestionAnswerController")
 @RequestMapping(value = "/api/student/question/answer")
@@ -31,13 +35,15 @@ public class QuestionAnswerController extends BaseApiController {
     private final QuestionService questionService;
     private final TextContentService textContentService;
     private final SubjectService subjectService;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public QuestionAnswerController(ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, QuestionService questionService, TextContentService textContentService, SubjectService subjectService) {
+    public QuestionAnswerController(ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, QuestionService questionService, TextContentService textContentService, SubjectService subjectService, JdbcTemplate jdbcTemplate) {
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
         this.questionService = questionService;
         this.textContentService = textContentService;
         this.subjectService = subjectService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.POST)
@@ -53,6 +59,7 @@ public class QuestionAnswerController extends BaseApiController {
             String clearHtml = HtmlUtil.clear(questionObject.getTitleContent());
             vm.setShortTitle(clearHtml);
             vm.setSubjectName(subject.getName());
+            fillCorrectionStatus(vm, q.getId());
             return vm;
         });
         return RestResponse.ok(page);
@@ -68,6 +75,20 @@ public class QuestionAnswerController extends BaseApiController {
         vm.setQuestionVM(questionVM);
         vm.setQuestionAnswerVM(questionAnswerVM);
         return RestResponse.ok(vm);
+    }
+
+    private void fillCorrectionStatus(QuestionPageStudentResponseVM vm, Integer customerAnswerId) {
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(
+                "select review_status, review_comment from t_question_correction_record " +
+                        "where deleted = false and customer_answer_id = ? and user_id = ? order by id desc limit 1",
+                customerAnswerId,
+                getCurrentUser().getId());
+        if (rows.isEmpty()) {
+            return;
+        }
+        Map<String, Object> row = rows.get(0);
+        vm.setCorrectionStatus((String) row.get("review_status"));
+        vm.setReviewComment((String) row.get("review_comment"));
     }
 
 }

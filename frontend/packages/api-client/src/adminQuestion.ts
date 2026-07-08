@@ -48,6 +48,9 @@ export interface AdminQuestionEditModel {
 export interface AdminQuestionReviewPageRequest {
   subjectId?: number | null
   knowledgePoint?: string | null
+  reviewType?: 'ANALYSIS' | 'KNOWLEDGE_POINT' | null
+  reviewStatus?: 'UNREVIEWED' | 'REVIEWED' | null
+  keyword?: string | null
   pageIndex: number
   pageSize: number
 }
@@ -91,7 +94,6 @@ export interface AdminKnowledgePointDistributionItem {
 
 export interface AdminQuestionReviewEditRequest {
   questionId: number
-  reviewRound: number
   afterValue: string
   reviewComment?: string
 }

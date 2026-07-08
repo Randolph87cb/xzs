@@ -153,7 +153,7 @@ export interface AdminSmartTrainingConfig {
 }
 
 export interface AdminQuestionCorrectionPageRequest {
-  reviewStatus?: string | null
+  reviewStatus?: 'SUBMITTED' | 'APPROVED' | 'REJECTED' | null
   pageIndex: number
   pageSize: number
 }
@@ -170,7 +170,7 @@ export interface AdminQuestionCorrectionItem {
   student_correct_thinking?: string
   reviewed_wrong_reason?: string
   reviewed_correct_thinking?: string
-  review_status?: 'SUBMITTED' | 'REVIEWED_ONCE' | 'REVIEWED_TWICE'
+  review_status?: 'SUBMITTED' | 'APPROVED' | 'REJECTED'
   reviewer_name?: string
   review_comment?: string
   submit_time?: string
@@ -181,9 +181,7 @@ export interface AdminQuestionCorrectionItem {
 export interface AdminQuestionCorrectionReviewRecord {
   id: number
   correction_id: number
-  review_round: number
-  after_wrong_reason?: string
-  after_correct_thinking?: string
+  review_result?: 'APPROVED' | 'REJECTED'
   reviewer_name?: string
   review_comment?: string
   create_time?: string
@@ -198,9 +196,7 @@ export interface AdminQuestionCorrectionPageResponse {
 
 export interface AdminQuestionCorrectionReviewRequest {
   id: number
-  reviewRound: number
-  reviewedWrongReason: string
-  reviewedCorrectThinking: string
+  reviewResult: 'APPROVED' | 'REJECTED'
   reviewComment?: string
 }
 

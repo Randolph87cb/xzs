@@ -137,12 +137,15 @@ export interface QuestionAnswerListItem {
   questionType: number
   subjectName: string
   createTime: string
+  correction_status?: QuestionCorrectionReviewStatus | null
 }
 
 export interface QuestionAnswerDetail {
   questionVM: ExamQuestion
   questionAnswerVM: AnswerItem
 }
+
+export type QuestionCorrectionReviewStatus = 'SUBMITTED' | 'APPROVED' | 'REJECTED'
 
 export interface QuestionCorrectionRecord {
   id?: number
@@ -151,9 +154,7 @@ export interface QuestionCorrectionRecord {
   customer_answer_id?: number
   student_wrong_reason?: string
   student_correct_thinking?: string
-  reviewed_wrong_reason?: string
-  reviewed_correct_thinking?: string
-  review_status?: 'SUBMITTED' | 'REVIEWED_ONCE' | 'REVIEWED_TWICE'
+  review_status?: QuestionCorrectionReviewStatus | null
   reviewer_name?: string
   review_comment?: string
 }
