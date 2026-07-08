@@ -184,6 +184,17 @@ function Resolve-KnowledgePoint {
     return "综合"
 }
 
+function Format-GespSubjectKnowledgePoint {
+    param(
+        [int]$Level,
+        [AllowNull()][string]$KnowledgePoint
+    )
+
+    $name = if ([string]::IsNullOrWhiteSpace($KnowledgePoint)) { "综合" } else { $KnowledgePoint.Trim() }
+    $name = [regex]::Replace($name, "^GESP[1-8]级/", "")
+    return "GESP$($Level)级/$name"
+}
+
 function Test-KnowledgePointLine {
     param([AllowNull()][string]$Line)
 
@@ -473,7 +484,7 @@ foreach ($file in $files) {
             Level = $level
             SubjectId = $level
             QuestionType = $parsed.questionType
-            KnowledgePoint = $parsed.knowledgePoint
+            KnowledgePoint = Format-GespSubjectKnowledgePoint -Level $level -KnowledgePoint $parsed.knowledgePoint
             Title = $parsed.title
             Analyze = $parsed.analyze
             Items = $parsed.items

@@ -6,6 +6,7 @@ import com.mindskip.xzs.viewmodel.admin.question.QuestionPageRequestVM;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface QuestionService extends BaseService<Question> {
 
@@ -18,6 +19,8 @@ public interface QuestionService extends BaseService<Question> {
     QuestionEditRequestVM getQuestionEditRequestVM(Integer questionId);
 
     QuestionEditRequestVM getQuestionEditRequestVM(Question question);
+
+    Map<String, Object> normalizeGespKnowledgePointsBySubject();
 
     Integer selectAllCount();
 

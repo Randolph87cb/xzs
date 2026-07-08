@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController("AdminQuestionController")
 @RequestMapping(value = "/api/admin/question")
@@ -90,6 +91,11 @@ public class QuestionController extends BaseApiController {
         question.setDeleted(true);
         questionService.updateByIdFilter(question);
         return RestResponse.ok();
+    }
+
+    @RequestMapping(value = "/normalizeGespKnowledgePoints", method = RequestMethod.POST)
+    public RestResponse<Map<String, Object>> normalizeGespKnowledgePoints() {
+        return RestResponse.ok(questionService.normalizeGespKnowledgePointsBySubject());
     }
 
     @RequestMapping(value = "/import/markdown", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

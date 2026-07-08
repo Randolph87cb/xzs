@@ -23,11 +23,14 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,13 +40,15 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
     private final QuestionMapper questionMapper;
     private final TextContentService textContentService;
     private final SubjectService subjectService;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public QuestionServiceImpl(QuestionMapper questionMapper, TextContentService textContentService, SubjectService subjectService) {
+    public QuestionServiceImpl(QuestionMapper questionMapper, TextContentService textContentService, SubjectService subjectService, JdbcTemplate jdbcTemplate) {
         super(questionMapper);
         this.textContentService = textContentService;
         this.questionMapper = questionMapper;
         this.subjectService = subjectService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -153,6 +158,59 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         }).collect(Collectors.toList());
         questionEditRequestVM.setItems(editItems);
         return questionEditRequestVM;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> normalizeGespKnowledgePointsBySubject() {
+        String importedQuestionCte = "WITH imported AS ( " +
+                "select q.id, q.info_text_content_id, " +
+                "(regexp_match(translate(tc.content::jsonb ->> 'importSource', chr(92), '/'), '^([0-9]{4})-([0-9]{2})/C\\+\\+-([0-9]+)/(选择题|判断题)\\.md$'))[3] as gesp_level, " +
+                "regexp_replace(coalesce(nullif(q.knowledge_point, ''), '综合'), '^GESP[1-8]级/', '') as base_knowledge_point " +
+                "from t_question q join t_text_content tc on tc.id = q.info_text_content_id " +
+                "where q.deleted = false and tc.content::jsonb ->> 'importBatch' = 'GESP_OBJECTIVE_MD' " +
+                "), normalized AS ( " +
+                "select id, info_text_content_id, 'GESP' || gesp_level || '级/' || base_knowledge_point as scoped_knowledge_point " +
+                "from imported where gesp_level is not null " +
+                ") ";
+
+        String updateQuestionSql = importedQuestionCte +
+                "update t_question q set knowledge_point = n.scoped_knowledge_point " +
+                "from normalized n " +
+                "where q.id = n.id and q.knowledge_point is distinct from n.scoped_knowledge_point " +
+                "returning q.id";
+        List<Integer> updatedQuestionIds = jdbcTemplate.queryForList(updateQuestionSql, Integer.class);
+
+        String updateTextContentSql = importedQuestionCte +
+                "update t_text_content tc set content = jsonb_set(tc.content::jsonb, '{knowledgePoint}', to_jsonb(n.scoped_knowledge_point))::text " +
+                "from normalized n " +
+                "where tc.id = n.info_text_content_id " +
+                "and tc.content::jsonb ->> 'knowledgePoint' is distinct from n.scoped_knowledge_point " +
+                "returning tc.id";
+        List<Integer> updatedContentIds = jdbcTemplate.queryForList(updateTextContentSql, Integer.class);
+
+        String updateConfigSql = "update t_smart_training_config c set rule_json = normalized.rule_json " +
+                "from ( " +
+                "select c2.id, jsonb_agg(jsonb_set(rule.value, '{knowledgePoint}', to_jsonb('GESP' || c2.subject_id || '级/' || regexp_replace(coalesce(nullif(rule.value ->> 'knowledgePoint', ''), '综合'), '^GESP[1-8]级/', ''))) order by rule.ordinality)::text as rule_json " +
+                "from t_smart_training_config c2 " +
+                "cross join lateral jsonb_array_elements(c2.rule_json::jsonb) with ordinality as rule(value, ordinality) " +
+                "where c2.subject_id between 1 and 8 and c2.rule_json is not null and c2.rule_json <> '' " +
+                "group by c2.id " +
+                ") normalized " +
+                "where c.id = normalized.id and c.rule_json is distinct from normalized.rule_json";
+        int updatedConfigCount = jdbcTemplate.update(updateConfigSql);
+
+        List<Map<String, Object>> subjectSummary = jdbcTemplate.queryForList(
+                "select subject_id, count(*) as question_count, count(distinct knowledge_point) as knowledge_point_count " +
+                        "from t_question where deleted = false and subject_id between 1 and 8 and knowledge_point like 'GESP%级/%' " +
+                        "group by subject_id order by subject_id");
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("updatedQuestionCount", updatedQuestionIds.size());
+        result.put("updatedContentCount", updatedContentIds.size());
+        result.put("updatedSmartTrainingConfigCount", updatedConfigCount);
+        result.put("subjectSummary", subjectSummary);
+        return result;
     }
 
     public void setQuestionInfoFromVM(TextContent infoTextContent, QuestionEditRequestVM model) {
