@@ -80,6 +80,19 @@ psql "postgres://<user>:<password>@localhost:15432/<database>" -f .\sql\xzs-post
 fly deploy -a <your-unique-app-name>
 ```
 
+部署后执行远端验收测试，确认 Spring Boot 已启动、数据库可连通，并且管理端和学生端静态入口是本次打包出的 Vite 产物：
+
+```powershell
+.\scripts\test-remote-deployment.ps1 -BaseUrl "https://<your-unique-app-name>.fly.dev"
+```
+
+如果是低成本冷启动部署，首次请求可能需要等待 Web Machine 和 Postgres Machine 启动。脚本默认最多重试 30 次，每次间隔 10 秒；任一检查失败会以非 0 退出码结束，适合接到 CI 或发布脚本的 `fly deploy` 后面。
+
+```powershell
+fly deploy -a <your-unique-app-name>
+.\scripts\test-remote-deployment.ps1 -BaseUrl "https://<your-unique-app-name>.fly.dev" -RetryCount 45 -RetryDelaySeconds 10
+```
+
 减少常驻实例数：
 
 ```powershell
@@ -114,6 +127,12 @@ fly logs -a <your-unique-app-name>
 
 ```powershell
 fly open -a <your-unique-app-name>
+```
+
+机器可判定的部署后检查：
+
+```powershell
+.\scripts\test-remote-deployment.ps1 -BaseUrl "https://<your-unique-app-name>.fly.dev"
 ```
 
 手动停机进入冷启动状态：
