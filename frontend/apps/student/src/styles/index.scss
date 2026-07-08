@@ -1,3 +1,31 @@
+:root {
+  --xzs-bg: #f6f8fb;
+  --xzs-surface: var(--xzs-surface)fff;
+  --xzs-surface-soft: #f9fbff;
+  --xzs-surface-blue: #f1f6ff;
+  --xzs-border: #e3e9f3;
+  --xzs-border-strong: #d5deeb;
+  --xzs-text: #10203f;
+  --xzs-text-muted: #61708a;
+  --xzs-text-soft: #8a98ad;
+  --xzs-primary: #1769ff;
+  --xzs-primary-dark: #0d49c8;
+  --xzs-success: #13a66b;
+  --xzs-warning: #f07b22;
+  --xzs-danger: #ef4444;
+  --xzs-radius: 8px;
+  --xzs-radius-sm: 6px;
+  --xzs-shadow: 0 10px 30px rgb(16 32 63 / 8%);
+  --el-color-primary: var(--xzs-primary);
+  --el-color-success: var(--xzs-success);
+  --el-color-warning: var(--xzs-warning);
+  --el-border-radius-base: var(--xzs-radius-sm);
+  --el-text-color-primary: var(--xzs-text);
+  --el-text-color-regular: #344463;
+  --el-border-color: var(--xzs-border);
+  --el-fill-color-light: var(--xzs-surface-soft);
+}
+
 html,
 body,
 #app {
@@ -6,11 +34,40 @@ body,
 
 body {
   margin: 0;
-  color: #1f2937;
+  color: var(--xzs-text);
   font-family: Inter, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-  background: #f5f7fb;
+  background: var(--xzs-bg);
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.el-button {
+  font-weight: 600;
+}
+
+.el-button--primary {
+  box-shadow: 0 8px 18px rgb(23 105 255 / 18%);
+}
+
+.el-table {
+  --el-table-border-color: var(--xzs-border);
+  --el-table-header-bg-color: #f8fbff;
+  --el-table-header-text-color: #4b5c78;
+  --el-table-row-hover-bg-color: #f4f8ff;
+  color: #273957;
+  border-radius: var(--xzs-radius);
+  overflow: hidden;
+}
+
+.el-table th.el-table__cell {
+  font-weight: 700;
+}
+
+.el-input__wrapper,
+.el-select__wrapper,
+.el-textarea__inner {
+  box-shadow: 0 0 0 1px var(--xzs-border) inset;
 }

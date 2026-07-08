@@ -163,9 +163,9 @@ function sexText(sex?: number) {
 .user-center__profile,
 .user-center__panel {
   padding: 18px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--xzs-border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--xzs-surface);
 }
 
 .user-center__profile {
@@ -193,13 +193,13 @@ function sexText(sex?: number) {
 }
 
 .user-center__profile dt {
-  color: #64748b;
+  color: var(--xzs-text-muted);
   font-size: 13px;
 }
 
 .user-center__profile dd {
   margin: 0;
-  color: #111827;
+  color: var(--xzs-text);
 }
 
 .user-center__panel-header {
@@ -212,7 +212,7 @@ function sexText(sex?: number) {
 
 .user-center__panel-header h2 {
   margin: 0;
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 20px;
 }
 

@@ -1,7 +1,13 @@
 <template>
   <main class="admin-login">
     <el-form ref="formRef" class="admin-login__form" :model="form" :rules="rules" @submit.prevent="handleLogin">
-      <h1>学之思管理系统</h1>
+      <div class="admin-login__brand">
+        <span>S</span>
+        <div>
+          <h1>学之思</h1>
+          <p>管理系统</p>
+        </div>
+      </div>
       <el-form-item prop="userName">
         <el-input v-model="form.userName" autocomplete="username" placeholder="用户名" />
       </el-form-item>

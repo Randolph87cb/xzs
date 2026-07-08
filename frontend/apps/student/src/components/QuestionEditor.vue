@@ -72,7 +72,7 @@ function resolveBlankIndex(prefix: string, fallbackIndex: number) {
 }
 
 .question-editor__title {
-  color: #111827;
+  color: var(--xzs-text);
 }
 
 .question-editor__options {
@@ -92,7 +92,7 @@ function resolveBlankIndex(prefix: string, fallbackIndex: number) {
 .question-editor__prefix {
   display: inline-block;
   min-width: 24px;
-  color: #475569;
+  color: var(--xzs-text-muted);
   font-weight: 600;
 }
 

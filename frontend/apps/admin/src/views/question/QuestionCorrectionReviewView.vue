@@ -226,8 +226,8 @@ function formatAnswer(value?: string | null) {
   display: grid;
   gap: 8px;
   padding: 12px;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
+  border: 1px solid var(--xzs-border);
+  background: var(--xzs-surface-soft);
 }
 
 .correction-review__items {

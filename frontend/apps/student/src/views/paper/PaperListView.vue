@@ -1,11 +1,16 @@
 <template>
   <section class="paper-list">
     <header class="paper-list__header">
-      <h1>试卷中心</h1>
-      <el-radio-group v-model="query.paperType" size="small" @change="loadPapers">
-        <el-radio-button :value="1">固定试卷</el-radio-button>
-        <el-radio-button :value="4">时段试卷</el-radio-button>
-      </el-radio-group>
+      <div>
+        <p>试卷中心</p>
+        <h1>选择试卷并开始答题</h1>
+      </div>
+      <div class="paper-list__switch">
+        <el-radio-group v-model="query.paperType" size="small" @change="loadPapers">
+          <el-radio-button :value="1">固定试卷</el-radio-button>
+          <el-radio-button :value="4">时段试卷</el-radio-button>
+        </el-radio-group>
+      </div>
     </header>
 
     <el-tabs v-model="activeSubjectId" tab-position="left" class="paper-list__tabs" @tab-change="handleSubjectChange">
@@ -109,20 +114,35 @@ function handlePageChange(page: number) {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  padding: 22px 24px;
+  border: 1px solid var(--xzs-border);
+  border-radius: var(--xzs-radius);
+  background: var(--xzs-surface);
+}
+
+.paper-list__header p {
+  margin: 0 0 6px;
+  color: var(--xzs-primary);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .paper-list__header h1 {
   margin: 0;
-  color: #111827;
-  font-size: 22px;
+  color: var(--xzs-text);
+  font-size: 24px;
+}
+
+.paper-list__switch {
+  flex: 0 0 auto;
 }
 
 .paper-list__tabs {
   min-height: 360px;
   padding: 18px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: #fff;
+  border: 1px solid var(--xzs-border);
+  border-radius: var(--xzs-radius);
+  background: var(--xzs-surface);
 }
 
 .paper-list__pagination {

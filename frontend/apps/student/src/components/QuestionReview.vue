@@ -134,7 +134,7 @@ function resolveBlankIndex(prefix: string, fallbackIndex: number) {
 .question-review__prefix {
   display: inline-block;
   min-width: 24px;
-  color: #475569;
+  color: var(--xzs-text-muted);
   font-weight: 600;
 }
 
@@ -163,13 +163,13 @@ function resolveBlankIndex(prefix: string, fallbackIndex: number) {
 }
 
 .question-review__meta dt {
-  color: #64748b;
+  color: var(--xzs-text-muted);
   font-size: 13px;
 }
 
 .question-review__meta dd {
   margin: 0;
-  color: #111827;
+  color: var(--xzs-text);
 }
 
 .question-review__explain {

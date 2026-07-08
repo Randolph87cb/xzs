@@ -1,7 +1,13 @@
 <template>
   <el-container class="shell">
     <el-header class="shell__header">
-      <div class="shell__brand">学生考试系统</div>
+      <div class="shell__brand">
+        <span class="shell__mark">S</span>
+        <div>
+          <strong>学之思</strong>
+          <span>学生考试系统</span>
+        </div>
+      </div>
       <el-menu mode="horizontal" router :default-active="$route.path" class="shell__menu">
         <el-menu-item index="/index">首页</el-menu-item>
         <el-menu-item index="/paper/index">试卷中心</el-menu-item>
@@ -11,7 +17,11 @@
         <el-menu-item index="/user/index">个人中心</el-menu-item>
         <el-menu-item index="/user/message">消息</el-menu-item>
       </el-menu>
-      <el-button text @click="handleLogout">退出</el-button>
+      <div class="shell__tools">
+        <el-button :icon="Search" circle text aria-label="搜索" />
+        <el-button :icon="Bell" circle text aria-label="消息" />
+        <el-button text @click="handleLogout">退出</el-button>
+      </div>
     </el-header>
     <el-main class="shell__main">
       <RouterView />
@@ -20,6 +30,7 @@
 </template>
 
 <script setup lang="ts">
+import { Bell, Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
@@ -35,23 +46,55 @@ async function handleLogout() {
 <style scoped lang="scss">
 .shell {
   min-height: 100vh;
-  background: #f5f7fb;
+  background: var(--xzs-bg);
 }
 
 .shell__header {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 22px;
+  height: 64px;
   padding: 0 24px;
-  border-bottom: 1px solid #e5e7eb;
-  background: #fff;
+  border-bottom: 1px solid var(--xzs-border);
+  background: rgb(255 255 255 / 94%);
+  backdrop-filter: blur(10px);
 }
 
 .shell__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   flex: 0 0 auto;
+  min-width: 168px;
+  color: var(--xzs-text);
+}
+
+.shell__mark {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--xzs-surface);
+  font-size: 20px;
+  font-weight: 800;
+  background: var(--xzs-primary);
+  box-shadow: 0 10px 20px rgb(23 105 255 / 24%);
+}
+
+.shell__brand div {
+  display: grid;
+  gap: 2px;
+}
+
+.shell__brand strong {
   font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
+  line-height: 1;
+}
+
+.shell__brand span:last-child {
+  color: var(--xzs-text-soft);
+  font-size: 12px;
 }
 
 .shell__menu {
@@ -59,9 +102,33 @@ async function handleLogout() {
   border-bottom: 0;
 }
 
+.shell__tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .shell__main {
-  width: min(1120px, calc(100vw - 32px));
+  width: min(1180px, calc(100vw - 32px));
   margin: 0 auto;
   padding: 24px 0;
+}
+
+@media (max-width: 920px) {
+  .shell__header {
+    align-items: stretch;
+    flex-direction: column;
+    height: auto;
+    padding: 12px 16px;
+  }
+
+  .shell__menu {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .shell__tools {
+    display: none;
+  }
 }
 </style>

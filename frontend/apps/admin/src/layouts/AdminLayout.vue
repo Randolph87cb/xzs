@@ -1,8 +1,14 @@
 <template>
   <el-container class="admin-layout">
     <el-aside class="admin-layout__aside" width="232px">
-      <div class="admin-layout__brand">学之思管理系统</div>
-      <el-menu router :default-active="route.path" background-color="#1f2937" text-color="#d1d5db" active-text-color="#fff">
+      <div class="admin-layout__brand">
+        <span class="admin-layout__mark">S</span>
+        <div class="admin-layout__brand-text">
+          <strong>学之思</strong>
+          <span>考试管理系统</span>
+        </div>
+      </div>
+      <el-menu router :default-active="route.path" class="admin-layout__menu">
         <template v-for="item in adminMenus" :key="item.path">
           <el-sub-menu v-if="item.children?.length" :index="item.path">
             <template #title>
@@ -24,8 +30,18 @@
 
     <el-container>
       <el-header class="admin-layout__header">
-        <div class="admin-layout__title">{{ routeTitle }}</div>
+        <div class="admin-layout__header-left">
+          <div class="admin-layout__title">管理后台</div>
+          <nav class="admin-layout__tabs" aria-label="后台视图">
+            <RouterLink class="admin-layout__tab" :class="{ 'is-active': route.path === '/dashboard' }" to="/dashboard">数据看板</RouterLink>
+            <RouterLink class="admin-layout__tab" :class="{ 'is-active': route.path.startsWith('/exam') }" to="/exam/paper/list">考试管理</RouterLink>
+            <RouterLink class="admin-layout__tab" :class="{ 'is-active': route.path.startsWith('/user') }" to="/user/student/list">用户中心</RouterLink>
+          </nav>
+        </div>
         <div class="admin-layout__user">
+          <el-button :icon="Search" circle text aria-label="搜索" />
+          <el-button :icon="Bell" circle text aria-label="通知" />
+          <el-button :icon="QuestionFilled" circle text aria-label="帮助" />
           <el-avatar :size="32" :src="userStore.userInfo?.imagePath">{{ userInitial }}</el-avatar>
           <span>{{ userStore.userInfo?.userName ?? userStore.userName }}</span>
           <el-button text @click="handleLogout">退出</el-button>
@@ -40,7 +56,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Collection, DataLine, EditPen, Reading, Tickets } from '@element-plus/icons-vue'
+import { Bell, Collection, DataLine, EditPen, QuestionFilled, Reading, Search, Tickets } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { adminMenus, type AdminMenuIconMap } from '@/router'
 import { useUserStore } from '@/stores/user'
@@ -55,7 +71,6 @@ const iconMap: AdminMenuIconMap = {
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-const routeTitle = computed(() => (typeof route.meta.title === 'string' ? route.meta.title : '管理后台'))
 const userInitial = computed(() => (userStore.userInfo?.userName ?? userStore.userName ?? 'A').slice(0, 1).toUpperCase())
 
 async function handleLogout() {

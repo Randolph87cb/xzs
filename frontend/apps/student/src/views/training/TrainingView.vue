@@ -80,14 +80,14 @@ function resolvePaperId(response: number | string | { id?: number; paperId?: num
   gap: 18px;
   max-width: 520px;
   padding: 24px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--xzs-border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--xzs-surface);
 }
 
 .training h1 {
   margin: 0;
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 22px;
 }
 

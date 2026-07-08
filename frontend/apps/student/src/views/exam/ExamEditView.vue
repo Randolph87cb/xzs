@@ -168,7 +168,7 @@ function scrollToQuestion(itemOrder: number) {
 <style scoped lang="scss">
 .exam-edit {
   min-height: 100vh;
-  background: #f5f7fb;
+  background: var(--xzs-bg);
 }
 
 .exam-edit__nav {
@@ -180,8 +180,8 @@ function scrollToQuestion(itemOrder: number) {
   justify-content: space-between;
   gap: 16px;
   padding: 12px 24px;
-  border-bottom: 1px solid #e5e7eb;
-  background: #fff;
+  border-bottom: 1px solid var(--xzs-border);
+  background: var(--xzs-surface);
 }
 
 .exam-edit__anchors {
@@ -205,13 +205,13 @@ function scrollToQuestion(itemOrder: number) {
 
 .exam-edit__title h1 {
   margin: 0 0 8px;
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 24px;
 }
 
 .exam-edit__title p {
   margin: 0;
-  color: #64748b;
+  color: var(--xzs-text-muted);
 }
 
 .exam-edit__section {
@@ -221,7 +221,7 @@ function scrollToQuestion(itemOrder: number) {
 
 .exam-edit__section h2 {
   margin: 0;
-  color: #1f2937;
+  color: var(--xzs-text);
   font-size: 18px;
 }
 
@@ -230,13 +230,13 @@ function scrollToQuestion(itemOrder: number) {
   grid-template-columns: 44px minmax(0, 1fr);
   gap: 8px;
   padding: 18px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--xzs-border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--xzs-surface);
 }
 
 .exam-edit__question-order {
-  color: #475569;
+  color: var(--xzs-text-muted);
   font-weight: 700;
 }
 
@@ -251,7 +251,7 @@ function scrollToQuestion(itemOrder: number) {
   flex-wrap: wrap;
   gap: 12px;
   padding-top: 12px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--xzs-border);
   color: #b45309;
 }
 

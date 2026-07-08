@@ -102,9 +102,9 @@ function selectRecord(record: ExamRecordItem) {
   display: grid;
   gap: 18px;
   padding: 18px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--xzs-border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--xzs-surface);
 }
 
 .record-list__header {
@@ -116,7 +116,7 @@ function selectRecord(record: ExamRecordItem) {
 
 .record-list__header h1 {
   margin: 0;
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 22px;
 }
 
@@ -128,7 +128,7 @@ function selectRecord(record: ExamRecordItem) {
   display: grid;
   grid-template-columns: repeat(3, minmax(120px, 1fr));
   gap: 10px;
-  color: #475569;
+  color: var(--xzs-text-muted);
 }
 
 @media (max-width: 720px) {

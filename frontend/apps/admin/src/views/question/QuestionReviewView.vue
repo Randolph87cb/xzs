@@ -321,7 +321,7 @@ function reviewRoundText(round?: number) {
   display: grid;
   gap: 8px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--xzs-border);
 }
 
 .review-dialog__preview h3 {
@@ -330,7 +330,7 @@ function reviewRoundText(round?: number) {
 }
 
 .review-dialog__round {
-  color: #374151;
+  color: #344463;
 }
 
 .review-dialog__editor {
@@ -343,14 +343,14 @@ function reviewRoundText(round?: number) {
 .review-dialog__markdown-preview {
   min-height: 240px;
   padding: 10px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid var(--xzs-border-strong);
   border-radius: 4px;
   overflow: auto;
 }
 
 .review-dialog__markdown-preview h4 {
   margin: 0 0 8px;
-  color: #606266;
+  color: var(--xzs-text-muted);
   font-size: 14px;
   font-weight: 500;
 }

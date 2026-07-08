@@ -248,7 +248,7 @@ async function scrollToQuestion(itemOrder: number) {
 <style scoped lang="scss">
 .exam-do {
   min-height: 100vh;
-  background: #f5f7fb;
+  background: var(--xzs-bg);
 }
 
 .exam-do__nav {
@@ -260,8 +260,9 @@ async function scrollToQuestion(itemOrder: number) {
   justify-content: space-between;
   gap: 16px;
   padding: 12px 24px;
-  border-bottom: 1px solid #e5e7eb;
-  background: #fff;
+  border-bottom: 1px solid var(--xzs-border);
+  background: rgb(255 255 255 / 94%);
+  backdrop-filter: blur(10px);
 }
 
 .exam-do__anchors {
@@ -275,19 +276,19 @@ async function scrollToQuestion(itemOrder: number) {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  color: #475569;
+  color: var(--xzs-text-muted);
   white-space: nowrap;
 }
 
 .exam-do__timer strong {
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 18px;
 }
 
 .exam-do__paper {
   display: grid;
   gap: 18px;
-  width: min(960px, calc(100vw - 32px));
+  width: min(980px, calc(100vw - 32px));
   margin: 0 auto;
   padding: 24px 0;
 }
@@ -298,13 +299,13 @@ async function scrollToQuestion(itemOrder: number) {
 
 .exam-do__title h1 {
   margin: 0 0 8px;
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 24px;
 }
 
 .exam-do__title p {
   margin: 0;
-  color: #64748b;
+  color: var(--xzs-text-muted);
 }
 
 .exam-do__section {
@@ -314,7 +315,7 @@ async function scrollToQuestion(itemOrder: number) {
 
 .exam-do__section h2 {
   margin: 0;
-  color: #1f2937;
+  color: var(--xzs-text);
   font-size: 18px;
 }
 
@@ -323,13 +324,13 @@ async function scrollToQuestion(itemOrder: number) {
   grid-template-columns: 44px minmax(0, 1fr);
   gap: 8px;
   padding: 18px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: #fff;
+  border: 1px solid var(--xzs-border);
+  border-radius: var(--xzs-radius);
+  background: var(--xzs-surface);
 }
 
 .exam-do__question-order {
-  color: #475569;
+  color: var(--xzs-primary);
   font-weight: 700;
 }
 

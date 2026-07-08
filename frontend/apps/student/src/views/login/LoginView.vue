@@ -1,7 +1,13 @@
 <template>
   <main class="login">
     <section class="login__panel">
-      <h1>学生考试系统</h1>
+      <div class="login__brand">
+        <span>S</span>
+        <div>
+          <h1>学之思</h1>
+          <p>学生考试系统</p>
+        </div>
+      </div>
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" class="login__form" @keyup.enter="handleLogin">
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="form.userName" autocomplete="username" autofocus />
@@ -72,22 +78,56 @@ async function handleLogin() {
   min-height: 100vh;
   place-items: center;
   padding: 24px;
+  background:
+    linear-gradient(135deg, rgb(23 105 255 / 10%), transparent 42%),
+    linear-gradient(315deg, rgb(19 166 107 / 10%), transparent 38%),
+    var(--xzs-bg);
 }
 
 .login__panel {
-  width: min(360px, 100%);
-  padding: 28px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  width: min(392px, 100%);
+  padding: 32px;
+  border: 1px solid var(--xzs-border);
+  border-radius: var(--xzs-radius);
+  background: rgb(255 255 255 / 92%);
+  box-shadow: var(--xzs-shadow);
 }
 
-.login__panel h1 {
-  margin: 0 0 24px;
+.login__brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.login__brand span {
+  display: inline-grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--xzs-surface);
+  font-size: 24px;
+  font-weight: 800;
+  background: var(--xzs-primary);
+  box-shadow: 0 10px 20px rgb(23 105 255 / 24%);
+}
+
+.login__brand h1,
+.login__brand p {
+  margin: 0;
+}
+
+.login__brand h1 {
   font-size: 22px;
-  color: #1f2937;
-  text-align: center;
+  color: var(--xzs-text);
+}
+
+.login__brand p {
+  margin-top: 4px;
+  color: var(--xzs-text-muted);
+  font-size: 13px;
 }
 
 .login__button {

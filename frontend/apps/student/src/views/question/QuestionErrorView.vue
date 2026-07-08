@@ -385,9 +385,9 @@ function questionTypeText(type: number) {
 .question-error__list,
 .question-error__detail {
   padding: 18px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--xzs-border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--xzs-surface);
 }
 
 .question-error__header,
@@ -410,7 +410,7 @@ function questionTypeText(type: number) {
 }
 
 .question-error__header h1 {
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 22px;
 }
 
@@ -427,8 +427,8 @@ function questionTypeText(type: number) {
   margin-left: 6px;
   padding: 0 6px;
   border-radius: 10px;
-  background: #f3f4f6;
-  color: #4b5563;
+  background: var(--xzs-surface-blue);
+  color: var(--xzs-text-muted);
   font-size: 12px;
   line-height: 20px;
 }
@@ -448,7 +448,7 @@ function questionTypeText(type: number) {
   display: grid;
   gap: 12px;
   padding-bottom: 14px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--xzs-border);
 }
 
 .question-error__section:last-child {
@@ -457,18 +457,18 @@ function questionTypeText(type: number) {
 }
 
 .question-error__section h2 {
-  color: #111827;
+  color: var(--xzs-text);
   font-size: 18px;
 }
 
 .question-error__section h3 {
-  color: #374151;
+  color: #344463;
   font-size: 14px;
 }
 
 .question-error__status,
 .question-error__review-comment {
-  color: #6b7280;
+  color: var(--xzs-text-muted);
 }
 
 .question-error__correction-content {
