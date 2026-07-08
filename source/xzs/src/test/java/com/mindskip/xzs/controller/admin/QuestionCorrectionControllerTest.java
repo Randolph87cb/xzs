@@ -91,6 +91,22 @@ public class QuestionCorrectionControllerTest {
         }, reviewInsert.getArgs());
     }
 
+    @Test
+    public void selectIncludesQuestionItemsAndStudentAnswer() {
+        Map<String, Object> row = correction("SUBMITTED");
+        row.put("student_answer", "A");
+        jdbcTemplate.addQueryForListResult(Collections.singletonList(row));
+        jdbcTemplate.addQueryForListResult(Collections.emptyList());
+
+        RestResponse<Map<String, Object>> response = controller.select(3);
+
+        assertEquals(1, response.getCode());
+        RecordingJdbcTemplate.Call detailQuery = jdbcTemplate.getCalls("queryForList").get(0);
+        assertTrue(detailQuery.getSql().contains("questionItemObjects"));
+        assertTrue(detailQuery.getSql().contains("student_answer"));
+        assertEquals("A", response.getResponse().get("student_answer"));
+    }
+
     private QuestionCorrectionController.QuestionCorrectionReviewRequest reviewRequest(Integer id, String result, String comment) {
         QuestionCorrectionController.QuestionCorrectionReviewRequest request = new QuestionCorrectionController.QuestionCorrectionReviewRequest();
         request.setId(id);

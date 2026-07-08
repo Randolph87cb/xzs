@@ -114,11 +114,14 @@ public class QuestionCorrectionController extends BaseApiController {
     }
 
     private String pageBaseSql() {
-        return "select c.*, u.user_name, u.real_name, tc.content::jsonb ->> 'titleContent' as title " +
+        return "select c.*, u.user_name, u.real_name, q.question_type, q.correct, a.answer as student_answer, " +
+                "tc.content::jsonb ->> 'titleContent' as title, " +
+                "tc.content::jsonb -> 'questionItemObjects' as items " +
                 "from t_question_correction_record c " +
                 "join t_user u on u.id = c.user_id " +
                 "join t_question q on q.id = c.question_id " +
                 "join t_text_content tc on tc.id = q.info_text_content_id " +
+                "join t_exam_paper_question_customer_answer a on a.id = c.customer_answer_id " +
                 "where c.deleted = false ";
     }
 

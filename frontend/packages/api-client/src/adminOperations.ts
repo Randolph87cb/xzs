@@ -1,6 +1,6 @@
 import { post, type ApiResponse } from './request'
 import type { AdminPageResponse, AdminUserListItem } from './adminUser'
-import type { AdminQuestionEditModel } from './adminQuestion'
+import type { AdminQuestionEditItem, AdminQuestionEditModel } from './adminQuestion'
 
 export interface AdminMessagePageRequest {
   sendUserName?: string | null
@@ -166,6 +166,10 @@ export interface AdminQuestionCorrectionItem {
   question_id: number
   customer_answer_id: number
   title?: string
+  items?: AdminQuestionEditItem[] | string | null
+  question_type?: number
+  correct?: string
+  student_answer?: string
   student_wrong_reason?: string
   student_correct_thinking?: string
   reviewed_wrong_reason?: string

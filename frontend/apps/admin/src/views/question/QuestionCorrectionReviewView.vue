@@ -57,6 +57,16 @@
         <section>
           <h3>题干</h3>
           <QuestionMarkdown :content="detail.title || ''" />
+          <ol v-if="questionItems.length" class="correction-review__items">
+            <li v-for="(item, index) in questionItems" :key="item.itemUuid || item.prefix || index">
+              <strong>{{ item.prefix }}.</strong>
+              <QuestionMarkdown :content="item.content" inline />
+            </li>
+          </ol>
+          <div class="correction-review__answers">
+            <p><strong>学生答案：</strong>{{ formatAnswer(detail.student_answer) }}</p>
+            <p><strong>正确答案：</strong>{{ formatAnswer(detail.correct) }}</p>
+          </div>
         </section>
         <section class="correction-review__student">
           <h3>学生提交</h3>
@@ -93,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { QuestionMarkdown } from '@xzs/question-renderer'
 import {
@@ -102,7 +112,8 @@ import {
   saveAdminQuestionCorrectionReview,
   type AdminQuestionCorrectionItem,
   type AdminQuestionCorrectionPageRequest,
-  type AdminQuestionCorrectionReviewRequest
+  type AdminQuestionCorrectionReviewRequest,
+  type AdminQuestionEditItem
 } from '@xzs/api-client'
 
 const loading = ref(false)
@@ -120,6 +131,7 @@ const reviewForm = reactive<AdminQuestionCorrectionReviewRequest>({
   reviewResult: 'APPROVED',
   reviewComment: ''
 })
+const questionItems = computed(() => normalizeQuestionItems(detail.value?.items))
 
 loadData()
 
@@ -167,6 +179,36 @@ function statusText(status?: string) {
 function stripHtml(value?: string) {
   return (value ?? '').replace(/<[^>]*>/g, '').slice(0, 120)
 }
+
+function normalizeQuestionItems(items: AdminQuestionCorrectionItem['items']): AdminQuestionEditItem[] {
+  if (Array.isArray(items)) {
+    return items
+  }
+  if (typeof items !== 'string' || !items.trim()) {
+    return []
+  }
+  try {
+    const parsed = JSON.parse(items) as unknown
+    return Array.isArray(parsed) ? (parsed as AdminQuestionEditItem[]) : []
+  } catch {
+    return []
+  }
+}
+
+function formatAnswer(value?: string | null) {
+  if (!value) {
+    return '-'
+  }
+  try {
+    const parsed = JSON.parse(value) as unknown
+    if (Array.isArray(parsed)) {
+      return parsed.join('、') || '-'
+    }
+  } catch {
+    // Plain answer values such as A/B do not need JSON parsing.
+  }
+  return value
+}
 </script>
 
 <style scoped>
@@ -186,5 +228,22 @@ function stripHtml(value?: string) {
   padding: 12px;
   border: 1px solid #e5e7eb;
   background: #f9fafb;
+}
+
+.correction-review__items {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding-left: 22px;
+}
+
+.correction-review__items li {
+  padding-left: 4px;
+}
+
+.correction-review__answers {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
 }
 </style>
