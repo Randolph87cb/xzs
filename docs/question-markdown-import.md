@@ -7,6 +7,8 @@ POST /api/admin/question/import/markdown
 Content-Type: multipart/form-data
 ```
 
+该接口用于管理端手动导入普通单选题。GESP 历年客观题使用 `scripts/import-gesp-objective-questions.ps1` 批量导入，题型、试卷标题、顺序和按级别隔离的知识点规则见 `docs/question-bank/GESP/README.md`。
+
 ## 请求字段
 
 - `file`：必填，UTF-8 编码的 Markdown 文件。
