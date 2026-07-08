@@ -50,6 +50,7 @@ public class SmartTrainingController extends BaseApiController {
         vm.setId(config.getId());
         vm.setQuestionCount(config.getQuestionCount());
         List<SmartTrainingRuleVM> rules = JsonUtil.toJsonListObject(config.getRuleJson(), SmartTrainingRuleVM.class);
+        normalizeRules(rules);
         vm.setRules(rules == null || rules.isEmpty() ? defaultRules() : rules);
         return RestResponse.ok(vm);
     }
@@ -70,9 +71,14 @@ public class SmartTrainingController extends BaseApiController {
     }
 
     private RestResponse validConfig(SmartTrainingConfigVM model) {
-        int ruleQuestionCount = 0;
+        int minQuestionCount = 0;
+        int maxQuestionCount = 0;
         Set<String> knowledgePoints = new HashSet<>();
         for (SmartTrainingRuleVM rule : model.getRules()) {
+            normalizeRule(rule);
+            if (Boolean.FALSE.equals(rule.getEnabled())) {
+                continue;
+            }
             String knowledgePoint = StringUtils.trim(rule.getKnowledgePoint());
             if (StringUtils.isBlank(knowledgePoint)) {
                 return RestResponse.fail(2, "知识点不能为空");
@@ -81,10 +87,17 @@ public class SmartTrainingController extends BaseApiController {
                 return RestResponse.fail(2, "知识点不能重复：" + knowledgePoint);
             }
             rule.setKnowledgePoint(knowledgePoint);
-            ruleQuestionCount += rule.getQuestionCount();
+            if (rule.getMinCount() > rule.getMaxCount()) {
+                return RestResponse.fail(2, "知识点“" + knowledgePoint + "”下限不能大于上限");
+            }
+            minQuestionCount += rule.getMinCount();
+            maxQuestionCount += rule.getMaxCount();
         }
-        if (ruleQuestionCount != model.getQuestionCount()) {
-            return RestResponse.fail(2, "知识点题目数量之和必须等于总题数");
+        if (minQuestionCount > model.getQuestionCount()) {
+            return RestResponse.fail(2, "启用知识点题目下限之和不能大于总题数");
+        }
+        if (maxQuestionCount < model.getQuestionCount()) {
+            return RestResponse.fail(2, "启用知识点题目上限之和不能小于总题数");
         }
         return RestResponse.ok();
     }
@@ -93,8 +106,48 @@ public class SmartTrainingController extends BaseApiController {
         SmartTrainingRuleVM rule = new SmartTrainingRuleVM();
         rule.setKnowledgePoint("综合");
         rule.setQuestionCount(20);
+        rule.setMinCount(20);
+        rule.setMaxCount(20);
+        rule.setWeight(20);
+        rule.setEnabled(true);
         List<SmartTrainingRuleVM> rules = new ArrayList<>();
         rules.add(rule);
         return rules;
+    }
+
+    private void normalizeRules(List<SmartTrainingRuleVM> rules) {
+        if (rules == null) {
+            return;
+        }
+        for (SmartTrainingRuleVM rule : rules) {
+            normalizeRule(rule);
+        }
+    }
+
+    private void normalizeRule(SmartTrainingRuleVM rule) {
+        Integer legacyCount = rule.getQuestionCount();
+        Integer minCount = rule.getMinCount();
+        Integer maxCount = rule.getMaxCount();
+        if (minCount == null && legacyCount != null) {
+            minCount = legacyCount;
+        }
+        if (maxCount == null && legacyCount != null) {
+            maxCount = legacyCount;
+        }
+        if (minCount == null) {
+            minCount = 0;
+        }
+        if (maxCount == null) {
+            maxCount = minCount;
+        }
+        rule.setMinCount(minCount);
+        rule.setMaxCount(maxCount);
+        rule.setQuestionCount(maxCount);
+        if (rule.getWeight() == null || rule.getWeight() < 1) {
+            rule.setWeight(Math.max(1, maxCount));
+        }
+        if (rule.getEnabled() == null) {
+            rule.setEnabled(true);
+        }
     }
 }

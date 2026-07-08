@@ -45,6 +45,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -288,15 +289,100 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             return questionMapper.selectRandomBySubjectId(subjectId, config.getQuestionCount());
         }
 
-        List<Question> questions = new ArrayList<>();
-        for (SmartTrainingRuleVM rule : rules) {
-            Integer availableCount = questionMapper.selectCountBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint());
-            if (availableCount == null || availableCount < rule.getQuestionCount()) {
-                throw new IllegalArgumentException("知识点“" + rule.getKnowledgePoint() + "”可用题目不足，需要" + rule.getQuestionCount() + "题，当前" + (availableCount == null ? 0 : availableCount) + "题");
+        Integer targetQuestionCount = config.getQuestionCount() == null ? SMART_TRAINING_QUESTION_LIMIT : config.getQuestionCount();
+        List<SmartTrainingRuleVM> enabledRules = rules.stream()
+                .filter(rule -> !Boolean.FALSE.equals(rule.getEnabled()))
+                .collect(Collectors.toList());
+        if (enabledRules.isEmpty()) {
+            return questionMapper.selectRandomBySubjectId(subjectId, targetQuestionCount);
+        }
+
+        Map<SmartTrainingRuleVM, Integer> availableCounts = new HashMap<>();
+        Map<SmartTrainingRuleVM, Integer> selectedCounts = new HashMap<>();
+        int selectedTotal = 0;
+        for (SmartTrainingRuleVM rule : enabledRules) {
+            int minCount = smartTrainingMinCount(rule);
+            int maxCount = smartTrainingMaxCount(rule);
+            if (minCount > maxCount) {
+                throw new IllegalArgumentException("知识点“" + rule.getKnowledgePoint() + "”下限不能大于上限");
             }
-            questions.addAll(questionMapper.selectRandomBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint(), rule.getQuestionCount()));
+            Integer availableCount = questionMapper.selectCountBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint());
+            int available = availableCount == null ? 0 : availableCount;
+            int boundedMinCount = Math.min(minCount, available);
+            int boundedMaxCount = Math.min(maxCount, available);
+            availableCounts.put(rule, boundedMaxCount);
+            selectedCounts.put(rule, boundedMinCount);
+            selectedTotal += boundedMinCount;
+        }
+
+        if (selectedTotal > targetQuestionCount) {
+            throw new IllegalArgumentException("智能训练知识点下限之和超过总题数");
+        }
+
+        int remainingCount = targetQuestionCount - selectedTotal;
+        Random random = new Random();
+        while (remainingCount > 0) {
+            List<SmartTrainingRuleVM> candidates = enabledRules.stream()
+                    .filter(rule -> selectedCounts.get(rule) < availableCounts.get(rule))
+                    .collect(Collectors.toList());
+            if (candidates.isEmpty()) {
+                throw new IllegalArgumentException("当前科目可用题目不足，无法生成" + targetQuestionCount + "题智能训练");
+            }
+
+            int totalWeight = candidates.stream()
+                    .mapToInt(this::smartTrainingWeight)
+                    .sum();
+            int randomWeight = random.nextInt(Math.max(1, totalWeight));
+            int weightCursor = 0;
+            SmartTrainingRuleVM selectedRule = candidates.get(candidates.size() - 1);
+            for (SmartTrainingRuleVM candidate : candidates) {
+                weightCursor += smartTrainingWeight(candidate);
+                if (randomWeight < weightCursor) {
+                    selectedRule = candidate;
+                    break;
+                }
+            }
+            selectedCounts.put(selectedRule, selectedCounts.get(selectedRule) + 1);
+            remainingCount--;
+        }
+
+        List<Question> questions = new ArrayList<>();
+        for (SmartTrainingRuleVM rule : enabledRules) {
+            Integer selectedCount = selectedCounts.get(rule);
+            if (selectedCount == null || selectedCount <= 0) {
+                continue;
+            }
+            List<Question> selectedQuestions = questionMapper.selectRandomBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint(), selectedCount);
+            if (selectedQuestions.size() < selectedCount) {
+                throw new IllegalArgumentException("知识点“" + rule.getKnowledgePoint() + "”可用题目不足，需要" + selectedCount + "题，当前" + selectedQuestions.size() + "题");
+            }
+            questions.addAll(selectedQuestions);
         }
         return questions;
+    }
+
+    private int smartTrainingMinCount(SmartTrainingRuleVM rule) {
+        if (rule.getMinCount() != null) {
+            return rule.getMinCount();
+        }
+        if (rule.getQuestionCount() != null) {
+            return rule.getQuestionCount();
+        }
+        return 0;
+    }
+
+    private int smartTrainingMaxCount(SmartTrainingRuleVM rule) {
+        if (rule.getMaxCount() != null) {
+            return rule.getMaxCount();
+        }
+        if (rule.getQuestionCount() != null) {
+            return rule.getQuestionCount();
+        }
+        return smartTrainingMinCount(rule);
+    }
+
+    private int smartTrainingWeight(SmartTrainingRuleVM rule) {
+        return rule.getWeight() == null || rule.getWeight() < 1 ? Math.max(1, smartTrainingMaxCount(rule)) : rule.getWeight();
     }
 
     @Override

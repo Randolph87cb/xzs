@@ -138,7 +138,11 @@ export interface AdminTaskEditModel {
 
 export interface AdminSmartTrainingRule {
   knowledgePoint: string
-  questionCount: number
+  minCount: number
+  maxCount: number
+  weight: number
+  enabled: boolean
+  questionCount?: number
 }
 
 export interface AdminSmartTrainingConfig {
