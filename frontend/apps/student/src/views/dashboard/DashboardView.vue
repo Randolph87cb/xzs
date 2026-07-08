@@ -46,34 +46,34 @@
       <section class="dashboard__section">
         <div class="dashboard__section-title">
           <h2>固定试卷</h2>
-          <el-tag type="success" effect="plain">{{ dashboard.fixedPaper.length }} 套</el-tag>
+          <el-tag type="success" effect="plain">{{ fixedPapers.length }} 套</el-tag>
         </div>
         <div class="dashboard__paper-list">
-          <article v-for="paper in dashboard.fixedPaper" :key="paper.id" class="dashboard__paper">
+          <article v-for="paper in fixedPapers" :key="paper.id" class="dashboard__paper">
             <div>
               <strong>{{ paper.name }}</strong>
               <span>可随时开始</span>
             </div>
             <el-button type="primary" link @click="router.push({ path: '/do', query: { id: paper.id } })">开始做题</el-button>
           </article>
-          <el-empty v-if="dashboard.fixedPaper.length === 0" description="暂无固定试卷" :image-size="72" />
+          <el-empty v-if="fixedPapers.length === 0" description="暂无固定试卷" :image-size="72" />
         </div>
       </section>
 
       <section class="dashboard__section dashboard__section--wide">
         <div class="dashboard__section-title">
           <h2>时段试卷</h2>
-          <el-tag type="warning" effect="plain">{{ dashboard.timeLimitPaper.length }} 套</el-tag>
+          <el-tag type="warning" effect="plain">{{ timeLimitPapers.length }} 套</el-tag>
         </div>
         <div class="dashboard__paper-grid">
-          <article v-for="paper in dashboard.timeLimitPaper" :key="paper.id" class="dashboard__paper">
+          <article v-for="paper in timeLimitPapers" :key="paper.id" class="dashboard__paper">
             <div>
               <strong>{{ paper.name }}</strong>
               <span>{{ paper.startTime }} {{ paper.endTime }}</span>
             </div>
             <el-button type="primary" link @click="router.push({ path: '/do', query: { id: paper.id } })">开始做题</el-button>
           </article>
-          <el-empty v-if="dashboard.timeLimitPaper.length === 0" description="暂无时段试卷" :image-size="72" />
+          <el-empty v-if="timeLimitPapers.length === 0" description="暂无时段试卷" :image-size="72" />
         </div>
       </section>
 
@@ -104,11 +104,14 @@ const dashboard = reactive<DashboardIndex>({
   timeLimitPaper: [],
   pushPaper: []
 })
+const fixedPapers = computed(() => dashboard.fixedPaper ?? [])
+const timeLimitPapers = computed(() => dashboard.timeLimitPaper ?? [])
+const pushPapers = computed(() => dashboard.pushPaper ?? [])
 const stats = computed(() => [
   { label: '任务数量', value: tasks.value.length },
-  { label: '固定试卷', value: dashboard.fixedPaper.length },
-  { label: '时段试卷', value: dashboard.timeLimitPaper.length },
-  { label: '推送试卷', value: dashboard.pushPaper.length }
+  { label: '固定试卷', value: fixedPapers.value.length },
+  { label: '时段试卷', value: timeLimitPapers.value.length },
+  { label: '推送试卷', value: pushPapers.value.length }
 ])
 
 onMounted(loadDashboard)
