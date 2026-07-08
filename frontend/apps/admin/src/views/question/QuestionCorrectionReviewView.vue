@@ -60,7 +60,7 @@
           <ol v-if="questionItems.length" class="correction-review__items">
             <li v-for="(item, index) in questionItems" :key="item.itemUuid || item.prefix || index">
               <strong>{{ item.prefix }}.</strong>
-              <QuestionMarkdown :content="item.content" inline />
+              <QuestionMarkdown :content="item.content" />
             </li>
           </ol>
           <div class="correction-review__answers">
@@ -181,18 +181,73 @@ function stripHtml(value?: string) {
 }
 
 function normalizeQuestionItems(items: AdminQuestionCorrectionItem['items']): AdminQuestionEditItem[] {
-  if (Array.isArray(items)) {
-    return items
+  const rawItems = coerceQuestionItems(items)
+  const deduped: AdminQuestionEditItem[] = []
+  const seenPrefixes = new Set<string>()
+
+  for (const rawItem of rawItems) {
+    if (!isRecord(rawItem)) {
+      continue
+    }
+
+    const prefix = String(rawItem.prefix ?? '').trim()
+    if (!prefix || seenPrefixes.has(prefix)) {
+      continue
+    }
+
+    seenPrefixes.add(prefix)
+    deduped.push({
+      prefix,
+      content: String(rawItem.content ?? ''),
+      score: rawItem.score == null ? undefined : String(rawItem.score),
+      itemUuid: rawItem.itemUuid == null ? undefined : String(rawItem.itemUuid)
+    })
   }
-  if (typeof items !== 'string' || !items.trim()) {
+
+  return deduped
+}
+
+function coerceQuestionItems(value: unknown): unknown[] {
+  if (Array.isArray(value)) {
+    return value
+  }
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    if (!trimmed) {
+      return []
+    }
+
+    try {
+      return coerceQuestionItems(JSON.parse(trimmed) as unknown)
+    } catch {
+      return []
+    }
+  }
+
+  if (!isRecord(value)) {
     return []
   }
-  try {
-    const parsed = JSON.parse(items) as unknown
-    return Array.isArray(parsed) ? (parsed as AdminQuestionEditItem[]) : []
-  } catch {
-    return []
+
+  const wrappedValue = value.value ?? value.stringValue
+  if (typeof wrappedValue === 'string') {
+    return coerceQuestionItems(wrappedValue)
   }
+
+  if (Array.isArray(value.questionItemObjects)) {
+    return value.questionItemObjects
+  }
+
+  if (Array.isArray(value.items)) {
+    return value.items
+  }
+
+  const objectValues = Object.values(value)
+  return objectValues.every((item) => isRecord(item) && 'prefix' in item) ? objectValues : []
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
 }
 
 function formatAnswer(value?: string | null) {
@@ -238,6 +293,9 @@ function formatAnswer(value?: string | null) {
 }
 
 .correction-review__items li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px;
   padding-left: 4px;
 }
 

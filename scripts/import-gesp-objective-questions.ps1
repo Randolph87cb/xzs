@@ -75,6 +75,16 @@ function Convert-MarkdownToHtml {
     $paragraph = New-Object System.Text.StringBuilder
     $inFence = $false
 
+    function Get-FenceLanguage {
+        param([string]$Line)
+
+        $match = [regex]::Match($Line.Trim(), '^```\s*([A-Za-z0-9_+#.+-]+)?\s*$')
+        if (-not $match.Success -or [string]::IsNullOrWhiteSpace($match.Groups[1].Value)) {
+            return ""
+        }
+        return $match.Groups[1].Value
+    }
+
     function Flush-Paragraph {
         if ($paragraph.Length -eq 0) {
             return
@@ -90,7 +100,12 @@ function Convert-MarkdownToHtml {
             if ($inFence) {
                 [void]$html.Append("</code></pre>")
             } else {
-                [void]$html.Append("<pre><code>")
+                $language = Get-FenceLanguage $trimmed
+                if ([string]::IsNullOrWhiteSpace($language)) {
+                    [void]$html.Append("<pre><code>")
+                } else {
+                    [void]$html.Append('<pre><code class="language-').Append([System.Net.WebUtility]::HtmlEncode($language)).Append('">')
+                }
             }
             $inFence = -not $inFence
             continue
@@ -306,6 +321,14 @@ function Parse-SingleChoiceBlock {
     }
     if (-not ($items | Where-Object { $_.Prefix -eq $correct })) {
         throw "$RelativePath 第$($Block.Order)题答案不在选项中: $correct"
+    }
+
+    $seenPrefixes = @{}
+    foreach ($item in $items) {
+        if ($seenPrefixes.ContainsKey($item.Prefix)) {
+            throw "$RelativePath 第$($Block.Order)题存在重复选项: $($item.Prefix)"
+        }
+        $seenPrefixes[$item.Prefix] = $true
     }
 
     $itemObjects = @()

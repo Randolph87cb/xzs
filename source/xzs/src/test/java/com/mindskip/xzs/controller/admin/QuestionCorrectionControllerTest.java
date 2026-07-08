@@ -102,7 +102,7 @@ public class QuestionCorrectionControllerTest {
 
         assertEquals(1, response.getCode());
         RecordingJdbcTemplate.Call detailQuery = jdbcTemplate.getCalls("queryForList").get(0);
-        assertTrue(detailQuery.getSql().contains("questionItemObjects"));
+        assertTrue(detailQuery.getSql().contains("->> 'questionItemObjects' as items"));
         assertTrue(detailQuery.getSql().contains("student_answer"));
         assertEquals("A", response.getResponse().get("student_answer"));
     }

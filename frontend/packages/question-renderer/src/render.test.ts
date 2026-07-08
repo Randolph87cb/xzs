@@ -67,6 +67,22 @@ describe('question renderer', () => {
     expect(html).not.toContain('katex')
   })
 
+  it('keeps legacy HTML code blocks styled without a language', () => {
+    const html = renderQuestionContent('<pre><code>if ($N$ &lt; 10) cout &lt;&lt; "x";</code></pre>')
+
+    expect(html).toContain('<pre class="hljs">')
+    expect(html).toContain('if ($N$ &lt; 10)')
+    expect(html).not.toContain('katex')
+  })
+
+  it('highlights legacy HTML code blocks with a language class', () => {
+    const html = renderQuestionContent('<pre><code class="language-cpp">int main() { return 0; }</code></pre>')
+
+    expect(html).toContain('class="language-cpp"')
+    expect(html).toContain('class="hljs')
+    expect(html).toContain('hljs-')
+  })
+
   it('caches repeated render results', () => {
     const source = '<p>判断$N$ 是否为偶数</p>'
 

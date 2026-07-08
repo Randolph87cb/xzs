@@ -86,7 +86,7 @@ public class QuestionReviewController extends BaseApiController {
                 "select q.id, q.subject_id, q.question_type, q.knowledge_point, q.correct, " +
                         "tc.content::jsonb ->> 'titleContent' as title, " +
                         "tc.content::jsonb ->> 'analyze' as analyze, " +
-                        "tc.content::jsonb -> 'questionItemObjects' as items, " +
+                        "tc.content::jsonb ->> 'questionItemObjects' as items, " +
                         "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'ANALYSIS'), 0) as analysis_review_round, " +
                         "coalesce((select max(review_round) from t_question_review_record r where r.deleted = false and r.question_id = q.id and r.review_type = 'KNOWLEDGE_POINT'), 0) as knowledge_review_round " +
                         "from t_question q join t_text_content tc on tc.id = q.info_text_content_id " +

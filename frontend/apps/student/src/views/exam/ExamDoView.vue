@@ -24,20 +24,28 @@
         <p v-if="paper">试卷总分：{{ paper.score }} · 考试时间：{{ paper.suggestTime }} 分钟</p>
       </header>
 
-      <template v-for="titleItem in visibleTitleItems" :key="titleItem.name">
-        <section class="exam-do__section">
-          <h2>{{ titleItem.name }}</h2>
-          <article
-            v-for="question in titleItem.questionItems"
-            :id="`question-${question.itemOrder}`"
-            :key="question.id"
-            class="exam-do__question"
-          >
-            <div class="exam-do__question-order">{{ question.itemOrder }}.</div>
-            <QuestionEditor :question="question" :answer="answer.answerItems[question.itemOrder - 1]" />
-          </article>
-        </section>
-      </template>
+      <div
+        class="exam-do__question-area"
+        @copy.prevent
+        @cut.prevent
+        @contextmenu.prevent
+        @selectstart.prevent
+      >
+        <template v-for="titleItem in visibleTitleItems" :key="titleItem.name">
+          <section class="exam-do__section">
+            <h2>{{ titleItem.name }}</h2>
+            <article
+              v-for="question in titleItem.questionItems"
+              :id="`question-${question.itemOrder}`"
+              :key="question.id"
+              class="exam-do__question"
+            >
+              <div class="exam-do__question-order">{{ question.itemOrder }}.</div>
+              <QuestionEditor :question="question" :answer="answer.answerItems[question.itemOrder - 1]" />
+            </article>
+          </section>
+        </template>
+      </div>
 
       <footer class="exam-do__actions">
         <el-button @click="router.push('/paper/index')">取消</el-button>
@@ -49,7 +57,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, reactive, ref, watch } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import {
   getExamPaperDetail,
@@ -223,10 +231,8 @@ async function submitPaper() {
   try {
     const result = await submitExamPaperAnswer(answer)
     if (result.code === 1) {
-      await ElMessageBox.alert(`试卷得分：${result.response} 分`, '考试结果', {
-        confirmButtonText: '返回考试记录'
-      })
-      router.push('/record/index')
+      ElMessage.success(`提交成功，试卷得分：${result.response} 分`)
+      router.replace('/record/index')
     } else {
       ElMessage.error(result.message)
       startTimer()
@@ -291,6 +297,12 @@ async function scrollToQuestion(itemOrder: number) {
   width: min(980px, calc(100vw - 32px));
   margin: 0 auto;
   padding: 24px 0;
+}
+
+.exam-do__question-area {
+  display: grid;
+  gap: 18px;
+  user-select: none;
 }
 
 .exam-do__title {

@@ -61,7 +61,8 @@ export function renderQuestionContent(content: QuestionContent, options: RenderQ
 
   const rendered = options.inline ? markdown.renderInline(source) : markdown.render(source)
   const withMath = renderMathInsideHtmlText(rendered)
-  const sanitized = DOMPurify.sanitize(withMath, {
+  const withCodeBlocks = enhanceLegacyCodeBlocks(withMath)
+  const sanitized = DOMPurify.sanitize(withCodeBlocks, {
     ADD_TAGS: ['eq', 'eqn'],
     ADD_ATTR: ['encoding', 'display']
   })
@@ -164,6 +165,28 @@ export function renderMathInsideHtmlText(html: string) {
   return result
 }
 
+export function enhanceLegacyCodeBlocks(html: string) {
+  return html.replace(/<pre\b([^>]*)>\s*<code\b([^>]*)>([\s\S]*?)<\/code>\s*<\/pre>/gi, (_match, preAttrs, codeAttrs, codeHtml) => {
+    const language = getCodeLanguage(String(codeAttrs))
+    const preAttributes = ensureClass(String(preAttrs), 'hljs')
+    const codeAttributes = language ? ensureClass(String(codeAttrs), `language-${language}`) : String(codeAttrs)
+
+    if (!language || !hljs.getLanguage(language)) {
+      return `<pre${preAttributes}><code${codeAttributes}>${codeHtml}</code></pre>`
+    }
+
+    try {
+      const highlighted = hljs.highlight(decodeHtmlEntities(String(codeHtml)), {
+        language,
+        ignoreIllegals: true
+      }).value
+      return `<pre${preAttributes}><code${codeAttributes}>${highlighted}</code></pre>`
+    } catch {
+      return `<pre${preAttributes}><code${codeAttributes}>${codeHtml}</code></pre>`
+    }
+  })
+}
+
 function normalizeContent(content: QuestionContent): string {
   if (content === null || content === undefined) {
     return ''
@@ -262,6 +285,45 @@ function readHtmlTag(html: string, start: number) {
   }
 
   return null
+}
+
+function getCodeLanguage(attributes: string) {
+  const classMatch = attributes.match(/\bclass\s*=\s*(["'])(.*?)\1/i)
+  const className = classMatch?.[2] ?? ''
+  const languageMatch = className.match(/(?:^|\s)(?:language|lang)-([A-Za-z0-9_+#.-]+)/)
+  return languageMatch?.[1] ?? ''
+}
+
+function ensureClass(attributes: string, className: string) {
+  const trimmed = attributes.trim()
+  const classMatch = trimmed.match(/\bclass\s*=\s*(["'])(.*?)\1/i)
+
+  if (!classMatch) {
+    return trimmed ? ` ${trimmed} class="${className}"` : ` class="${className}"`
+  }
+
+  const existingClasses = classMatch[2].split(/\s+/).filter(Boolean)
+  if (existingClasses.includes(className)) {
+    return trimmed ? ` ${trimmed}` : ''
+  }
+
+  const nextClasses = [...existingClasses, className].join(' ')
+  return ` ${trimmed.replace(classMatch[0], `class=${classMatch[1]}${nextClasses}${classMatch[1]}`)}`
+}
+
+function decodeHtmlEntities(content: string) {
+  if (typeof document !== 'undefined') {
+    const textarea = document.createElement('textarea')
+    textarea.innerHTML = content
+    return textarea.value
+  }
+
+  return content
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, '&')
 }
 
 function escapeHtml(content: string) {

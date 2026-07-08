@@ -106,6 +106,20 @@ public class QuestionReviewControllerTest {
         assertArrayEquals(new Object[]{20, 0}, list.getArgs());
     }
 
+    @Test
+    public void selectReturnsQuestionItemsAsTextJson() {
+        Map<String, Object> question = new HashMap<>();
+        question.put("id", 7);
+        jdbcTemplate.addQueryForListResult(Collections.singletonList(question));
+        jdbcTemplate.addQueryForListResult(Collections.emptyList());
+
+        RestResponse<Map<String, Object>> response = controller.select(7);
+
+        assertEquals(1, response.getCode());
+        RecordingJdbcTemplate.Call detailQuery = jdbcTemplate.getCalls("queryForList").get(0);
+        assertTrue(detailQuery.getSql().contains("->> 'questionItemObjects' as items"));
+    }
+
     private User user(Integer id, String userName, String realName) {
         User user = new User();
         user.setId(id);

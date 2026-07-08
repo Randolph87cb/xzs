@@ -3,7 +3,9 @@ package com.mindskip.xzs.utility;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionEditItemVM;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -123,6 +125,7 @@ public final class MarkdownQuestionImportUtil {
         if (!containsPrefix(items, correct)) {
             throw new IllegalArgumentException("第" + block.order + "题答案不在选项中: " + correct);
         }
+        assertUniquePrefixes(items, block.order);
 
         String analyzeMarkdown = trimBlankLines(analyzeLines);
         if (analyzeMarkdown.isEmpty()) {
@@ -139,6 +142,15 @@ public final class MarkdownQuestionImportUtil {
             }
         }
         return false;
+    }
+
+    private static void assertUniquePrefixes(List<QuestionEditItemVM> items, int order) {
+        Set<String> seenPrefixes = new HashSet<>();
+        for (QuestionEditItemVM item : items) {
+            if (!seenPrefixes.add(item.getPrefix())) {
+                throw new IllegalArgumentException("第" + order + "题存在重复选项: " + item.getPrefix());
+            }
+        }
     }
 
     private static String trimBlankLines(List<String> lines) {
@@ -178,7 +190,12 @@ public final class MarkdownQuestionImportUtil {
                 if (inFence) {
                     html.append("</code></pre>");
                 } else {
-                    html.append("<pre><code>");
+                    String language = fenceLanguage(trimmed);
+                    if (language.isEmpty()) {
+                        html.append("<pre><code>");
+                    } else {
+                        html.append("<pre><code class=\"language-").append(escapeHtml(language)).append("\">");
+                    }
                 }
                 inFence = !inFence;
                 continue;
@@ -204,6 +221,14 @@ public final class MarkdownQuestionImportUtil {
             html.append("</code></pre>");
         }
         return html.toString();
+    }
+
+    private static String fenceLanguage(String line) {
+        Matcher matcher = Pattern.compile("^```\\s*([A-Za-z0-9_+#.+-]+)?\\s*$").matcher(line);
+        if (!matcher.matches() || matcher.group(1) == null) {
+            return "";
+        }
+        return matcher.group(1);
     }
 
     private static void flushParagraph(StringBuilder html, StringBuilder paragraph) {

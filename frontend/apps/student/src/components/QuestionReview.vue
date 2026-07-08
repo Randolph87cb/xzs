@@ -3,22 +3,22 @@
     <QuestionMarkdown :content="question.title" class="question-review__title" />
 
     <el-radio-group v-if="question.questionType === 1" :model-value="answer.content" disabled class="question-review__options">
-      <el-radio v-for="item in question.items" :key="item.prefix" :value="item.prefix">
+      <el-radio v-for="item in dedupedChoiceItems" :key="item.prefix" :value="item.prefix">
         <span class="question-review__prefix">{{ item.prefix }}.</span>
-        <QuestionMarkdown :content="item.content" inline />
+        <QuestionMarkdown :content="item.content" class="question-review__option-content" />
       </el-radio>
     </el-radio-group>
 
     <el-checkbox-group v-else-if="question.questionType === 2" :model-value="answer.contentArray ?? []" disabled class="question-review__options">
-      <el-checkbox v-for="item in question.items" :key="item.prefix" :value="item.prefix">
+      <el-checkbox v-for="item in dedupedChoiceItems" :key="item.prefix" :value="item.prefix">
         <span class="question-review__prefix">{{ item.prefix }}.</span>
-        <QuestionMarkdown :content="item.content" inline />
+        <QuestionMarkdown :content="item.content" class="question-review__option-content" />
       </el-checkbox>
     </el-checkbox-group>
 
     <el-radio-group v-else-if="question.questionType === 3" :model-value="answer.content" disabled class="question-review__inline">
       <span>(</span>
-      <el-radio v-for="item in question.items" :key="item.prefix" :value="item.prefix">
+      <el-radio v-for="item in dedupedChoiceItems" :key="item.prefix" :value="item.prefix">
         <QuestionMarkdown :content="item.content" inline />
       </el-radio>
       <span>)</span>
@@ -65,11 +65,14 @@
 import { computed } from 'vue'
 import { QuestionMarkdown } from '@xzs/question-renderer'
 import type { AnswerItem, ExamQuestion } from '@xzs/api-client'
+import { dedupeQuestionItemsByPrefix } from '@/utils/questionItems'
 
 const props = defineProps<{
   question: ExamQuestion
   answer: AnswerItem
 }>()
+
+const dedupedChoiceItems = computed(() => dedupeQuestionItemsByPrefix(props.question.items))
 
 const doRightText = computed(() => {
   if (props.answer.doRight === true) {
@@ -131,11 +134,26 @@ function resolveBlankIndex(prefix: string, fallbackIndex: number) {
   white-space: normal;
 }
 
+.question-review__options :deep(.el-radio__label),
+.question-review__options :deep(.el-checkbox__label) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 4px;
+  min-width: 0;
+  line-height: 1.8;
+  white-space: normal;
+}
+
 .question-review__prefix {
   display: inline-block;
   min-width: 24px;
   color: var(--xzs-text-muted);
   font-weight: 600;
+}
+
+.question-review__option-content {
+  min-width: 0;
 }
 
 .question-review__inline {
