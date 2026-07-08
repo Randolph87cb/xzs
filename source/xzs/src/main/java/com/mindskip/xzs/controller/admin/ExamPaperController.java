@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController("AdminExamPaperController")
 @RequestMapping(value = "/api/admin/exam/paper")
@@ -57,6 +61,15 @@ public class ExamPaperController extends BaseApiController {
         ExamPaper examPaper = examPaperService.savePaperFromVM(model, getCurrentUser());
         ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
         return RestResponse.ok(newVM);
+    }
+
+    @RequestMapping(value = "/importGespObjective", method = RequestMethod.POST)
+    public RestResponse<Map<String, Object>> importGespObjective() {
+        List<ExamPaper> examPapers = examPaperService.importGespObjectivePapers(getCurrentUser());
+        Map<String, Object> result = new HashMap<>();
+        result.put("count", examPapers.size());
+        result.put("titles", examPapers.stream().map(ExamPaper::getName).collect(Collectors.toList()));
+        return RestResponse.ok(result);
     }
 
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)

@@ -34,14 +34,21 @@ import com.github.pagehelper.PageInfo;
 import com.mindskip.xzs.domain.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,15 +57,18 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
     private static final int SMART_TRAINING_QUESTION_LIMIT = 20;
     private static final int SMART_TRAINING_SUGGEST_TIME = 30;
+    private static final int GESP_OBJECTIVE_SUGGEST_TIME = 60;
+    private static final Pattern GESP_IMPORT_SOURCE_PATTERN = Pattern.compile("^(\\d{4})-(\\d{2})/C\\+\\+-(\\d+)/(选择题|判断题)\\.md$");
     private final ExamPaperMapper examPaperMapper;
     private final QuestionMapper questionMapper;
     private final TextContentService textContentService;
     private final QuestionService questionService;
     private final SubjectService subjectService;
     private final SmartTrainingConfigService smartTrainingConfigService;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService, SmartTrainingConfigService smartTrainingConfigService) {
+    public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService, SmartTrainingConfigService smartTrainingConfigService, JdbcTemplate jdbcTemplate) {
         super(examPaperMapper);
         this.examPaperMapper = examPaperMapper;
         this.questionMapper = questionMapper;
@@ -66,6 +76,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         this.questionService = questionService;
         this.subjectService = subjectService;
         this.smartTrainingConfigService = smartTrainingConfigService;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
@@ -152,6 +163,118 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         examPaper.setDeleted(false);
         examPaperMapper.insertSelective(examPaper);
         return examPaper;
+    }
+
+    @Override
+    @Transactional
+    public List<ExamPaper> importGespObjectivePapers(User user) {
+        List<ImportedGespQuestion> importedQuestions = selectImportedGespObjectiveQuestions();
+        Map<String, GespPaperGroup> groups = new HashMap<>();
+        for (ImportedGespQuestion importedQuestion : importedQuestions) {
+            QuestionImportMetadata metadata = JsonUtil.toJsonObject(importedQuestion.getContent(), QuestionImportMetadata.class);
+            if (metadata == null || !"GESP_OBJECTIVE_MD".equals(metadata.getImportBatch())) {
+                continue;
+            }
+
+            String importSource = metadata.getImportSource() == null ? "" : metadata.getImportSource().replace("\\", "/");
+            Matcher matcher = GESP_IMPORT_SOURCE_PATTERN.matcher(importSource);
+            if (!matcher.matches() || metadata.getImportQuestionOrder() == null) {
+                continue;
+            }
+
+            int year = Integer.parseInt(matcher.group(1));
+            int month = Integer.parseInt(matcher.group(2));
+            int level = Integer.parseInt(matcher.group(3));
+            String kind = matcher.group(4);
+            int order = metadata.getImportQuestionOrder();
+            String key = year + "-" + month + "-" + level;
+            GespPaperGroup group = groups.computeIfAbsent(key, k -> new GespPaperGroup(year, month, level));
+
+            if ("选择题".equals(kind) && importedQuestion.getQuestionType() == QuestionTypeEnum.SingleChoice.getCode() && order >= 1 && order <= 15) {
+                group.getChoiceQuestions().put(order, importedQuestion.getQuestion());
+            } else if ("判断题".equals(kind) && importedQuestion.getQuestionType() == QuestionTypeEnum.TrueFalse.getCode() && order >= 1 && order <= 10) {
+                group.getTrueFalseQuestions().put(order, importedQuestion.getQuestion());
+            }
+        }
+
+        List<GespPaperGroup> completeGroups = groups.values().stream()
+                .filter(GespPaperGroup::isComplete)
+                .sorted(Comparator.comparingInt(GespPaperGroup::getYear)
+                        .thenComparingInt(GespPaperGroup::getMonth)
+                        .thenComparingInt(GespPaperGroup::getLevel))
+                .collect(Collectors.toList());
+        if (completeGroups.isEmpty()) {
+            throw new IllegalStateException("未找到完整的GESP客观题组卷数据，请先导入真题题库。");
+        }
+
+        List<ExamPaper> importedPapers = new ArrayList<>();
+        for (GespPaperGroup group : completeGroups) {
+            ExamPaperEditRequestVM requestVM = buildGespObjectivePaperRequest(group);
+            Integer existingPaperId = selectActiveFixedPaperIdByName(requestVM.getName());
+            requestVM.setId(existingPaperId);
+            importedPapers.add(savePaperFromVM(requestVM, user));
+        }
+        return importedPapers;
+    }
+
+    private List<ImportedGespQuestion> selectImportedGespObjectiveQuestions() {
+        String sql = "select q.id, q.question_type, q.subject_id, q.score, q.grade_level, q.difficult, q.knowledge_point, " +
+                "q.correct, q.info_text_content_id, q.create_user, q.status, q.create_time, q.deleted, tc.content " +
+                "from t_question q join t_text_content tc on tc.id = q.info_text_content_id " +
+                "where q.deleted = false and tc.content like '%\"importBatch\":\"GESP_OBJECTIVE_MD\"%' order by q.id";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Question question = new Question();
+            question.setId(rs.getInt("id"));
+            question.setQuestionType(rs.getInt("question_type"));
+            question.setSubjectId(rs.getInt("subject_id"));
+            question.setScore(rs.getInt("score"));
+            question.setGradeLevel(rs.getInt("grade_level"));
+            question.setDifficult(rs.getInt("difficult"));
+            question.setKnowledgePoint(rs.getString("knowledge_point"));
+            question.setCorrect(rs.getString("correct"));
+            question.setInfoTextContentId(rs.getInt("info_text_content_id"));
+            question.setCreateUser(rs.getInt("create_user"));
+            question.setStatus(rs.getInt("status"));
+            question.setCreateTime(rs.getTimestamp("create_time"));
+            question.setDeleted(rs.getBoolean("deleted"));
+            return new ImportedGespQuestion(question, rs.getString("content"));
+        });
+    }
+
+    private ExamPaperEditRequestVM buildGespObjectivePaperRequest(GespPaperGroup group) {
+        ExamPaperEditRequestVM requestVM = new ExamPaperEditRequestVM();
+        requestVM.setLevel(group.getLevel());
+        requestVM.setSubjectId(group.getLevel());
+        requestVM.setPaperType(ExamPaperTypeEnum.Fixed.getCode());
+        requestVM.setName(group.getTitle());
+        requestVM.setSuggestTime(GESP_OBJECTIVE_SUGGEST_TIME);
+
+        ExamPaperTitleItemVM choiceTitleItem = new ExamPaperTitleItemVM();
+        choiceTitleItem.setName("选择题");
+        choiceTitleItem.setQuestionItems(group.getChoiceQuestions().values().stream()
+                .map(questionService::getQuestionEditRequestVM)
+                .collect(Collectors.toList()));
+
+        ExamPaperTitleItemVM trueFalseTitleItem = new ExamPaperTitleItemVM();
+        trueFalseTitleItem.setName("判断题");
+        trueFalseTitleItem.setQuestionItems(group.getTrueFalseQuestions().values().stream()
+                .map(questionService::getQuestionEditRequestVM)
+                .collect(Collectors.toList()));
+
+        List<ExamPaperTitleItemVM> titleItems = new ArrayList<>();
+        titleItems.add(choiceTitleItem);
+        titleItems.add(trueFalseTitleItem);
+        requestVM.setTitleItems(titleItems);
+        return requestVM;
+    }
+
+    private Integer selectActiveFixedPaperIdByName(String paperName) {
+        List<Integer> ids = jdbcTemplate.queryForList(
+                "select id from t_exam_paper where name = ? and paper_type = ? and deleted = false order by id desc limit 1",
+                Integer.class,
+                paperName,
+                ExamPaperTypeEnum.Fixed.getCode());
+        return ids.isEmpty() ? null : ids.get(0);
     }
 
     private List<Question> selectSmartTrainingQuestions(Integer subjectId) {
@@ -285,5 +408,99 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             }
         });
         return titleItems;
+    }
+
+    private static class ImportedGespQuestion {
+        private final Question question;
+        private final String content;
+
+        ImportedGespQuestion(Question question, String content) {
+            this.question = question;
+            this.content = content;
+        }
+
+        Question getQuestion() {
+            return question;
+        }
+
+        String getContent() {
+            return content;
+        }
+
+        Integer getQuestionType() {
+            return question.getQuestionType();
+        }
+    }
+
+    private static class QuestionImportMetadata {
+        private String importBatch;
+        private String importSource;
+        private Integer importQuestionOrder;
+
+        public String getImportBatch() {
+            return importBatch;
+        }
+
+        public void setImportBatch(String importBatch) {
+            this.importBatch = importBatch;
+        }
+
+        public String getImportSource() {
+            return importSource;
+        }
+
+        public void setImportSource(String importSource) {
+            this.importSource = importSource;
+        }
+
+        public Integer getImportQuestionOrder() {
+            return importQuestionOrder;
+        }
+
+        public void setImportQuestionOrder(Integer importQuestionOrder) {
+            this.importQuestionOrder = importQuestionOrder;
+        }
+    }
+
+    private static class GespPaperGroup {
+        private final int year;
+        private final int month;
+        private final int level;
+        private final TreeMap<Integer, Question> choiceQuestions = new TreeMap<>();
+        private final TreeMap<Integer, Question> trueFalseQuestions = new TreeMap<>();
+
+        GespPaperGroup(int year, int month, int level) {
+            this.year = year;
+            this.month = month;
+            this.level = level;
+        }
+
+        int getYear() {
+            return year;
+        }
+
+        int getMonth() {
+            return month;
+        }
+
+        int getLevel() {
+            return level;
+        }
+
+        TreeMap<Integer, Question> getChoiceQuestions() {
+            return choiceQuestions;
+        }
+
+        TreeMap<Integer, Question> getTrueFalseQuestions() {
+            return trueFalseQuestions;
+        }
+
+        boolean isComplete() {
+            return choiceQuestions.size() == 15 && trueFalseQuestions.size() == 10;
+        }
+
+        String getTitle() {
+            return (year % 100) + "年" + month + "月GESP" + level + "级客观题";
+        }
     }
 }

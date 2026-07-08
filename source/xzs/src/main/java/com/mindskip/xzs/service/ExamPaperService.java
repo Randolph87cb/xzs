@@ -23,6 +23,8 @@ public interface ExamPaperService extends BaseService<ExamPaper> {
 
     ExamPaper createSmartTrainingPaper(Integer subjectId, User user);
 
+    List<ExamPaper> importGespObjectivePapers(User user);
+
     ExamPaperEditRequestVM examPaperToVM(Integer id);
 
     List<PaperInfo> indexPaper(PaperFilter paperFilter);
