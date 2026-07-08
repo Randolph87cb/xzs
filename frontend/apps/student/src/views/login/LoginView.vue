@@ -30,7 +30,7 @@ const loading = ref(false)
 const form = reactive({
   userName: '',
   password: '',
-  remember: false
+  remember: true
 })
 const rules: FormRules<typeof form> = {
   userName: [

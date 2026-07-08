@@ -23,6 +23,10 @@
     delete from t_user_token
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteByToken" parameterType="java.lang.String">
+    delete from t_user_token
+    where token = #{token}::uuid
+  </delete>
   <insert id="insert" parameterType="com.mindskip.xzs.domain.UserToken" useGeneratedKeys="true" keyProperty="id">
     insert into t_user_token (id, token, user_id,
       wx_open_id, create_time, end_time,

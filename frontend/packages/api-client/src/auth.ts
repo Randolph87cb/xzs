@@ -11,10 +11,18 @@ export interface LoginResponse {
   imagePath?: string
 }
 
-export function login(payload: LoginRequest): Promise<ApiResponse<LoginResponse>> {
-  return post<LoginResponse>('/api/user/login', payload)
+export function adminLogin(payload: LoginRequest): Promise<ApiResponse<LoginResponse>> {
+  return post<LoginResponse>('/api/admin/auth/login', payload)
 }
 
-export function logout(): Promise<ApiResponse<void>> {
-  return post<void>('/api/user/logout')
+export function adminLogout(): Promise<ApiResponse<void>> {
+  return post<void>('/api/admin/auth/logout')
+}
+
+export function studentLogin(payload: LoginRequest): Promise<ApiResponse<LoginResponse>> {
+  return post<LoginResponse>('/api/student/auth/login', payload)
+}
+
+export function studentLogout(): Promise<ApiResponse<void>> {
+  return post<void>('/api/student/auth/logout')
 }

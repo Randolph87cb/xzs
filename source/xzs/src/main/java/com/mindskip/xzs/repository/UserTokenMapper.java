@@ -8,4 +8,6 @@ public interface UserTokenMapper extends BaseMapper<UserToken> {
 
     UserToken getToken(String token);
 
+    void deleteByToken(String token);
+
 }

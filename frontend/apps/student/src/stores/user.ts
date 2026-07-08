@@ -3,8 +3,8 @@ import Cookies from 'js-cookie'
 import {
   getCurrentStudentUser,
   getStudentMessageCount,
-  login as loginApi,
-  logout as logoutApi,
+  studentLogin,
+  studentLogout,
   type StudentUserInfo
 } from '@xzs/api-client'
 
@@ -29,7 +29,7 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     async login(payload: { userName: string; password: string; remember: boolean }) {
-      const result = await loginApi(payload)
+      const result = await studentLogin(payload)
 
       if (result.code !== 1 || !result.response) {
         throw new Error(result.message)
@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', {
     },
     async logout() {
       try {
-        await logoutApi()
+        await studentLogout()
       } finally {
         this.clear()
       }

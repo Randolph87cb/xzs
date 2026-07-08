@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -42,6 +43,7 @@ public class SecurityConfigurer {
         private final RestAuthenticationFailureHandler restAuthenticationFailureHandler;
         private final RestLogoutSuccessHandler restLogoutSuccessHandler;
         private final RestAccessDeniedHandler restAccessDeniedHandler;
+        private final WebTokenAuthenticationFilter webTokenAuthenticationFilter;
 
         /**
          * Instantiates a new Form login web security configurer adapter.
@@ -56,7 +58,7 @@ public class SecurityConfigurer {
          * @param restAccessDeniedHandler          the rest access denied handler
          */
         @Autowired
-        public FormLoginWebSecurityConfigurerAdapter(SystemConfig systemConfig, LoginAuthenticationEntryPoint restAuthenticationEntryPoint, RestAuthenticationProvider restAuthenticationProvider, RestDetailsServiceImpl formDetailsService, RestAuthenticationSuccessHandler restAuthenticationSuccessHandler, RestAuthenticationFailureHandler restAuthenticationFailureHandler, RestLogoutSuccessHandler restLogoutSuccessHandler, RestAccessDeniedHandler restAccessDeniedHandler) {
+        public FormLoginWebSecurityConfigurerAdapter(SystemConfig systemConfig, LoginAuthenticationEntryPoint restAuthenticationEntryPoint, RestAuthenticationProvider restAuthenticationProvider, RestDetailsServiceImpl formDetailsService, RestAuthenticationSuccessHandler restAuthenticationSuccessHandler, RestAuthenticationFailureHandler restAuthenticationFailureHandler, RestLogoutSuccessHandler restLogoutSuccessHandler, RestAccessDeniedHandler restAccessDeniedHandler, WebTokenAuthenticationFilter webTokenAuthenticationFilter) {
             this.systemConfig = systemConfig;
             this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
             this.restAuthenticationProvider = restAuthenticationProvider;
@@ -65,6 +67,7 @@ public class SecurityConfigurer {
             this.restAuthenticationFailureHandler = restAuthenticationFailureHandler;
             this.restLogoutSuccessHandler = restLogoutSuccessHandler;
             this.restAccessDeniedHandler = restAccessDeniedHandler;
+            this.webTokenAuthenticationFilter = webTokenAuthenticationFilter;
         }
 
         /**
@@ -80,10 +83,12 @@ public class SecurityConfigurer {
             String[] ignores = new String[securityIgnoreUrls.size()];
             http
                     .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(webTokenAuthenticationFilter, RememberMeAuthenticationFilter.class)
                     .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
                     .and().authenticationProvider(restAuthenticationProvider)
                     .authorizeRequests()
                     .antMatchers(securityIgnoreUrls.toArray(ignores)).permitAll()
+                    .antMatchers("/api/admin/auth/**", "/api/student/auth/**").permitAll()
                     .antMatchers("/api/admin/**").hasRole(RoleEnum.ADMIN.getName())
                     .antMatchers("/api/student/**").hasRole(RoleEnum.STUDENT.getName())
                     .anyRequest().permitAll()

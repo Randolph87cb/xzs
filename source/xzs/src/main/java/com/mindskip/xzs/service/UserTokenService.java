@@ -38,6 +38,21 @@ public interface UserTokenService extends BaseService<UserToken> {
     UserToken insertUserToken(User user);
 
     /**
+     * 插入 Web 端持久登录 Token
+     *
+     * @param user user
+     * @return UserToken
+     */
+    UserToken insertWebUserToken(User user);
+
+    /**
+     * 根据 token 删除用户 Token
+     *
+     * @param token token
+     */
+    void deleteByToken(String token);
+
+    /**
      * 微信小程序退出，清除缓存
      *
      * @param userToken userToken

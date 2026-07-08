@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
-import { getCurrentAdminUser, login, logout, type AdminUserInfo } from '@xzs/api-client'
+import { adminLogin, adminLogout, getCurrentAdminUser, type AdminUserInfo } from '@xzs/api-client'
 
 const adminUserNameKey = 'adminUserName'
 
@@ -15,7 +15,7 @@ export const useUserStore = defineStore('adminUser', {
   },
   actions: {
     async login(payload: { userName: string; password: string; remember: boolean }) {
-      const result = await login(payload)
+      const result = await adminLogin(payload)
       if (result.code === 1) {
         this.userName = payload.userName
         Cookies.set(adminUserNameKey, payload.userName, { expires: payload.remember ? 30 : undefined })
@@ -34,7 +34,7 @@ export const useUserStore = defineStore('adminUser', {
       return result
     },
     async logout() {
-      await logout().catch(() => undefined)
+      await adminLogout().catch(() => undefined)
       this.clear()
     },
     clear() {

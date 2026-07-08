@@ -15,7 +15,7 @@
           @keyup.enter="handleLogin"
         />
       </el-form-item>
-      <el-checkbox v-model="form.remember">记住密码</el-checkbox>
+      <el-checkbox v-model="form.remember">保持登录</el-checkbox>
       <el-button class="admin-login__button" type="primary" native-type="submit" :loading="loading" @click="handleLogin">
         登录
       </el-button>
@@ -37,7 +37,7 @@ const loading = ref(false)
 const form = reactive({
   userName: '',
   password: '',
-  remember: false
+  remember: true
 })
 const rules: FormRules = {
   userName: [

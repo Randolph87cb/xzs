@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.UUID;
 
 @Service
 public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements UserTokenService {
+
+    private static final int WEB_TOKEN_VALID_DAYS = 30;
 
     private final UserTokenMapper userTokenMapper;
     private final UserService userService;
@@ -67,6 +70,24 @@ public class UserTokenServiceImpl extends BaseServiceImpl<UserToken> implements 
         userService.updateByIdFilter(user);
         userTokenMapper.insertSelective(userToken);
         return userToken;
+    }
+
+    @Override
+    public UserToken insertWebUserToken(User user) {
+        Date startTime = new Date();
+        UserToken userToken = new UserToken();
+        userToken.setToken(UUID.randomUUID().toString());
+        userToken.setUserId(user.getId());
+        userToken.setCreateTime(startTime);
+        userToken.setEndTime(DateTimeUtil.addDuration(startTime, Duration.ofDays(WEB_TOKEN_VALID_DAYS)));
+        userToken.setUserName(user.getUserName());
+        userTokenMapper.insertSelective(userToken);
+        return userToken;
+    }
+
+    @Override
+    public void deleteByToken(String token) {
+        userTokenMapper.deleteByToken(token);
     }
 
     @Override
