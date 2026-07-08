@@ -315,6 +315,75 @@ CREATE TABLE "public"."t_smart_training_config" (
 ;
 
 -- ----------------------------
+-- Table structure for t_question_review_record
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_question_review_record";
+CREATE TABLE "public"."t_question_review_record" (
+  "id" serial PRIMARY KEY,
+  "question_id" int4 NOT NULL,
+  "review_type" varchar(32) COLLATE "pg_catalog"."default" NOT NULL,
+  "review_round" int4 NOT NULL,
+  "before_value" text COLLATE "pg_catalog"."default",
+  "after_value" text COLLATE "pg_catalog"."default",
+  "reviewer_id" int4,
+  "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "review_comment" text COLLATE "pg_catalog"."default",
+  "create_time" timestamp(6),
+  "deleted" bool DEFAULT false
+)
+;
+
+-- ----------------------------
+-- Table structure for t_question_correction_record
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_question_correction_record";
+CREATE TABLE "public"."t_question_correction_record" (
+  "id" serial PRIMARY KEY,
+  "user_id" int4 NOT NULL,
+  "question_id" int4 NOT NULL,
+  "exam_paper_answer_id" int4,
+  "customer_answer_id" int4 NOT NULL,
+  "student_wrong_reason" text COLLATE "pg_catalog"."default",
+  "student_correct_thinking" text COLLATE "pg_catalog"."default",
+  "reviewed_wrong_reason" text COLLATE "pg_catalog"."default",
+  "reviewed_correct_thinking" text COLLATE "pg_catalog"."default",
+  "review_status" varchar(32) COLLATE "pg_catalog"."default",
+  "reviewer_id" int4,
+  "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "review_comment" text COLLATE "pg_catalog"."default",
+  "submit_time" timestamp(6),
+  "review_time" timestamp(6),
+  "deleted" bool DEFAULT false
+)
+;
+
+-- ----------------------------
+-- Table structure for t_question_correction_review_record
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_question_correction_review_record";
+CREATE TABLE "public"."t_question_correction_review_record" (
+  "id" serial PRIMARY KEY,
+  "correction_id" int4 NOT NULL,
+  "review_round" int4 NOT NULL,
+  "before_wrong_reason" text COLLATE "pg_catalog"."default",
+  "before_correct_thinking" text COLLATE "pg_catalog"."default",
+  "after_wrong_reason" text COLLATE "pg_catalog"."default",
+  "after_correct_thinking" text COLLATE "pg_catalog"."default",
+  "reviewer_id" int4,
+  "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "review_comment" text COLLATE "pg_catalog"."default",
+  "create_time" timestamp(6)
+)
+;
+
+CREATE UNIQUE INDEX "uk_question_correction_customer_answer"
+  ON "public"."t_question_correction_record" ("customer_answer_id", "user_id")
+  WHERE "deleted" = false;
+
+CREATE INDEX "idx_question_correction_review_record_correction"
+  ON "public"."t_question_correction_review_record" ("correction_id", "review_round");
+
+-- ----------------------------
 -- Records of t_smart_training_config
 -- ----------------------------
 INSERT INTO "public"."t_smart_training_config" ("id", "subject_id", "question_count", "rule_json", "create_time", "modify_time", "deleted") VALUES (1, 1, 25, '[{"knowledgePoint":"GESP1级/运算符与表达式","minCount":2,"maxCount":6,"weight":128,"enabled":true},{"knowledgePoint":"GESP1级/循环结构","minCount":2,"maxCount":6,"weight":105,"enabled":true},{"knowledgePoint":"GESP1级/分支结构","minCount":1,"maxCount":3,"weight":16,"enabled":true},{"knowledgePoint":"GESP1级/计算机基础","minCount":1,"maxCount":3,"weight":12,"enabled":true},{"knowledgePoint":"GESP1级/变量与数据类型","minCount":1,"maxCount":3,"weight":11,"enabled":true},{"knowledgePoint":"GESP1级/输入输出","minCount":0,"maxCount":2,"weight":7,"enabled":true},{"knowledgePoint":"GESP1级/算法基础","minCount":0,"maxCount":2,"weight":6,"enabled":true},{"knowledgePoint":"GESP1级/字符串","minCount":0,"maxCount":2,"weight":4,"enabled":true},{"knowledgePoint":"GESP1级/综合","minCount":0,"maxCount":2,"weight":4,"enabled":true},{"knowledgePoint":"GESP1级/概念判断","minCount":0,"maxCount":1,"weight":3,"enabled":true},{"knowledgePoint":"GESP1级/函数","minCount":0,"maxCount":1,"weight":1,"enabled":true},{"knowledgePoint":"GESP1级/结构体与类","minCount":0,"maxCount":1,"weight":1,"enabled":true},{"knowledgePoint":"GESP1级/数学与进制","minCount":0,"maxCount":1,"weight":1,"enabled":true},{"knowledgePoint":"GESP1级/数组","minCount":0,"maxCount":1,"weight":1,"enabled":true}]', now(), now(), false);

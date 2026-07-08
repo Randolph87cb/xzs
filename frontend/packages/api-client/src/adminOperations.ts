@@ -152,6 +152,58 @@ export interface AdminSmartTrainingConfig {
   rules: AdminSmartTrainingRule[]
 }
 
+export interface AdminQuestionCorrectionPageRequest {
+  reviewStatus?: string | null
+  pageIndex: number
+  pageSize: number
+}
+
+export interface AdminQuestionCorrectionItem {
+  id: number
+  user_id: number
+  user_name?: string
+  real_name?: string
+  question_id: number
+  customer_answer_id: number
+  title?: string
+  student_wrong_reason?: string
+  student_correct_thinking?: string
+  reviewed_wrong_reason?: string
+  reviewed_correct_thinking?: string
+  review_status?: 'SUBMITTED' | 'REVIEWED_ONCE' | 'REVIEWED_TWICE'
+  reviewer_name?: string
+  review_comment?: string
+  submit_time?: string
+  review_time?: string
+  reviewRecords?: AdminQuestionCorrectionReviewRecord[]
+}
+
+export interface AdminQuestionCorrectionReviewRecord {
+  id: number
+  correction_id: number
+  review_round: number
+  after_wrong_reason?: string
+  after_correct_thinking?: string
+  reviewer_name?: string
+  review_comment?: string
+  create_time?: string
+}
+
+export interface AdminQuestionCorrectionPageResponse {
+  list: AdminQuestionCorrectionItem[]
+  total: number
+  pageIndex: number
+  pageSize: number
+}
+
+export interface AdminQuestionCorrectionReviewRequest {
+  id: number
+  reviewRound: number
+  reviewedWrongReason: string
+  reviewedCorrectThinking: string
+  reviewComment?: string
+}
+
 export interface AdminUserProfileUpdate {
   realName?: string
   phone?: string
@@ -270,6 +322,22 @@ export function saveAdminSmartTrainingConfig(request: AdminSmartTrainingConfig):
 
 export function getAdminSmartTrainingKnowledgePoints(subjectId: number): Promise<ApiResponse<string[]>> {
   return post<string[]>(`/api/admin/smartTraining/knowledgePoints/${subjectId}`)
+}
+
+export function getAdminQuestionCorrectionPage(
+  request: AdminQuestionCorrectionPageRequest
+): Promise<ApiResponse<AdminQuestionCorrectionPageResponse>> {
+  return post<AdminQuestionCorrectionPageResponse>('/api/admin/questionCorrection/page', request)
+}
+
+export function getAdminQuestionCorrection(id: number): Promise<ApiResponse<AdminQuestionCorrectionItem>> {
+  return post<AdminQuestionCorrectionItem>(`/api/admin/questionCorrection/select/${id}`)
+}
+
+export function saveAdminQuestionCorrectionReview(
+  request: AdminQuestionCorrectionReviewRequest
+): Promise<ApiResponse<void>> {
+  return post<void>('/api/admin/questionCorrection/review/edit', request)
 }
 
 export function updateCurrentAdminUser(request: AdminUserProfileUpdate): Promise<ApiResponse<void>> {

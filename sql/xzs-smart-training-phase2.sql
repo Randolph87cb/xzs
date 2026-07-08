@@ -60,3 +60,60 @@ ON CONFLICT ("subject_id") DO UPDATE SET
   "rule_json" = EXCLUDED."rule_json",
   "modify_time" = now(),
   "deleted" = false;
+
+CREATE TABLE IF NOT EXISTS "public"."t_question_review_record" (
+  "id" serial PRIMARY KEY,
+  "question_id" int4 NOT NULL,
+  "review_type" varchar(32) COLLATE "pg_catalog"."default" NOT NULL,
+  "review_round" int4 NOT NULL,
+  "before_value" text COLLATE "pg_catalog"."default",
+  "after_value" text COLLATE "pg_catalog"."default",
+  "reviewer_id" int4,
+  "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "review_comment" text COLLATE "pg_catalog"."default",
+  "create_time" timestamp(6),
+  "deleted" bool DEFAULT false
+);
+
+CREATE INDEX IF NOT EXISTS "idx_question_review_record_question_type"
+  ON "public"."t_question_review_record" ("question_id", "review_type", "review_round");
+
+CREATE TABLE IF NOT EXISTS "public"."t_question_correction_record" (
+  "id" serial PRIMARY KEY,
+  "user_id" int4 NOT NULL,
+  "question_id" int4 NOT NULL,
+  "exam_paper_answer_id" int4,
+  "customer_answer_id" int4 NOT NULL,
+  "student_wrong_reason" text COLLATE "pg_catalog"."default",
+  "student_correct_thinking" text COLLATE "pg_catalog"."default",
+  "reviewed_wrong_reason" text COLLATE "pg_catalog"."default",
+  "reviewed_correct_thinking" text COLLATE "pg_catalog"."default",
+  "review_status" varchar(32) COLLATE "pg_catalog"."default",
+  "reviewer_id" int4,
+  "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "review_comment" text COLLATE "pg_catalog"."default",
+  "submit_time" timestamp(6),
+  "review_time" timestamp(6),
+  "deleted" bool DEFAULT false
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS "uk_question_correction_customer_answer"
+  ON "public"."t_question_correction_record" ("customer_answer_id", "user_id")
+  WHERE "deleted" = false;
+
+CREATE TABLE IF NOT EXISTS "public"."t_question_correction_review_record" (
+  "id" serial PRIMARY KEY,
+  "correction_id" int4 NOT NULL,
+  "review_round" int4 NOT NULL,
+  "before_wrong_reason" text COLLATE "pg_catalog"."default",
+  "before_correct_thinking" text COLLATE "pg_catalog"."default",
+  "after_wrong_reason" text COLLATE "pg_catalog"."default",
+  "after_correct_thinking" text COLLATE "pg_catalog"."default",
+  "reviewer_id" int4,
+  "reviewer_name" varchar(255) COLLATE "pg_catalog"."default",
+  "review_comment" text COLLATE "pg_catalog"."default",
+  "create_time" timestamp(6)
+);
+
+CREATE INDEX IF NOT EXISTS "idx_question_correction_review_record_correction"
+  ON "public"."t_question_correction_review_record" ("correction_id", "review_round");

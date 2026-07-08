@@ -144,6 +144,26 @@ export interface QuestionAnswerDetail {
   questionAnswerVM: AnswerItem
 }
 
+export interface QuestionCorrectionRecord {
+  id?: number
+  user_id?: number
+  question_id?: number
+  customer_answer_id?: number
+  student_wrong_reason?: string
+  student_correct_thinking?: string
+  reviewed_wrong_reason?: string
+  reviewed_correct_thinking?: string
+  review_status?: 'SUBMITTED' | 'REVIEWED_ONCE' | 'REVIEWED_TWICE'
+  reviewer_name?: string
+  review_comment?: string
+}
+
+export interface QuestionCorrectionSubmitRequest {
+  customerAnswerId: number
+  wrongReason: string
+  correctThinking: string
+}
+
 export interface SmartTrainingCreateRequest {
   subjectId: number
 }
@@ -202,4 +222,12 @@ export function getQuestionAnswerPage(request: PageRequest): Promise<ApiResponse
 
 export function getQuestionAnswerDetail(id: number): Promise<ApiResponse<QuestionAnswerDetail>> {
   return post<QuestionAnswerDetail>(`/api/student/question/answer/select/${id}`)
+}
+
+export function getQuestionCorrection(customerAnswerId: number): Promise<ApiResponse<QuestionCorrectionRecord | null>> {
+  return post<QuestionCorrectionRecord | null>(`/api/student/question/correction/select/${customerAnswerId}`)
+}
+
+export function submitQuestionCorrection(request: QuestionCorrectionSubmitRequest): Promise<ApiResponse<void>> {
+  return post<void>('/api/student/question/correction/submit', request)
 }
