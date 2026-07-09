@@ -44,6 +44,26 @@ public class Question implements Serializable {
     private String knowledgePoint;
 
     /**
+     * 稳定题号
+     */
+    private String questionCode;
+
+    /**
+     * 导入批次
+     */
+    private String importBatch;
+
+    /**
+     * 导入来源
+     */
+    private String importSource;
+
+    /**
+     * 导入来源内题目序号
+     */
+    private Integer importQuestionOrder;
+
+    /**
      * 正确答案
      */
     private String correct;
@@ -128,6 +148,38 @@ public class Question implements Serializable {
 
     public void setKnowledgePoint(String knowledgePoint) {
         this.knowledgePoint = knowledgePoint == null ? null : knowledgePoint.trim();
+    }
+
+    public String getQuestionCode() {
+        return questionCode;
+    }
+
+    public void setQuestionCode(String questionCode) {
+        this.questionCode = questionCode == null ? null : questionCode.trim();
+    }
+
+    public String getImportBatch() {
+        return importBatch;
+    }
+
+    public void setImportBatch(String importBatch) {
+        this.importBatch = importBatch == null ? null : importBatch.trim();
+    }
+
+    public String getImportSource() {
+        return importSource;
+    }
+
+    public void setImportSource(String importSource) {
+        this.importSource = importSource == null ? null : importSource.trim();
+    }
+
+    public Integer getImportQuestionOrder() {
+        return importQuestionOrder;
+    }
+
+    public void setImportQuestionOrder(Integer importQuestionOrder) {
+        this.importQuestionOrder = importQuestionOrder;
     }
 
     public void setCorrect(String correct) {

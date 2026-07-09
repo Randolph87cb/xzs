@@ -81,6 +81,10 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setScore(ExamUtil.scoreFromVM(model.getScore()));
         question.setDifficult(model.getDifficult());
         question.setKnowledgePoint(normalizeKnowledgePoint(model.getKnowledgePoint()));
+        question.setQuestionCode(model.getQuestionCode());
+        question.setImportBatch(model.getImportBatch());
+        question.setImportSource(model.getImportSource());
+        question.setImportQuestionOrder(model.getImportQuestionOrder());
         question.setInfoTextContentId(infoTextContent.getId());
         question.setCreateUser(userId);
         question.setDeleted(false);
@@ -98,6 +102,10 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         question.setScore(ExamUtil.scoreFromVM(model.getScore()));
         question.setDifficult(model.getDifficult());
         question.setKnowledgePoint(normalizeKnowledgePoint(model.getKnowledgePoint()));
+        question.setQuestionCode(model.getQuestionCode());
+        question.setImportBatch(model.getImportBatch());
+        question.setImportSource(model.getImportSource());
+        question.setImportQuestionOrder(model.getImportQuestionOrder());
         question.setCorrectFromVM(model.getCorrect(), model.getCorrectArray());
         questionMapper.updateByPrimaryKeySelective(question);
 
@@ -165,10 +173,10 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
     public Map<String, Object> normalizeGespKnowledgePointsBySubject() {
         String importedQuestionCte = "WITH imported AS ( " +
                 "select q.id, q.info_text_content_id, " +
-                "(regexp_match(translate(tc.content::jsonb ->> 'importSource', chr(92), '/'), '^([0-9]{4})-([0-9]{2})/C\\+\\+-([0-9]+)/(选择题|判断题)\\.md$'))[3] as gesp_level, " +
+                "(regexp_match(translate(q.import_source, chr(92), '/'), '^([0-9]{4})-([0-9]{2})/C\\+\\+-([0-9]+)/(选择题|判断题)\\.md$'))[3] as gesp_level, " +
                 "regexp_replace(coalesce(nullif(q.knowledge_point, ''), '综合'), '^GESP[1-8]级/', '') as base_knowledge_point " +
                 "from t_question q join t_text_content tc on tc.id = q.info_text_content_id " +
-                "where q.deleted = false and tc.content::jsonb ->> 'importBatch' = 'GESP_OBJECTIVE_MD' " +
+                "where q.deleted = false and q.import_batch = 'GESP_OBJECTIVE_MD' " +
                 "), normalized AS ( " +
                 "select id, info_text_content_id, 'GESP' || gesp_level || '级/' || base_knowledge_point as scoped_knowledge_point " +
                 "from imported where gesp_level is not null " +

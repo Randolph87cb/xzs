@@ -37,6 +37,14 @@ public class QuestionEditRequestVM {
     @NotBlank
     private String knowledgePoint;
 
+    private String questionCode;
+
+    private String importBatch;
+
+    private String importSource;
+
+    private Integer importQuestionOrder;
+
     private Integer itemOrder;
 
     public Integer getId() {
@@ -133,6 +141,38 @@ public class QuestionEditRequestVM {
 
     public void setKnowledgePoint(String knowledgePoint) {
         this.knowledgePoint = knowledgePoint;
+    }
+
+    public String getQuestionCode() {
+        return questionCode;
+    }
+
+    public void setQuestionCode(String questionCode) {
+        this.questionCode = questionCode;
+    }
+
+    public String getImportBatch() {
+        return importBatch;
+    }
+
+    public void setImportBatch(String importBatch) {
+        this.importBatch = importBatch;
+    }
+
+    public String getImportSource() {
+        return importSource;
+    }
+
+    public void setImportSource(String importSource) {
+        this.importSource = importSource;
+    }
+
+    public Integer getImportQuestionOrder() {
+        return importQuestionOrder;
+    }
+
+    public void setImportQuestionOrder(Integer importQuestionOrder) {
+        this.importQuestionOrder = importQuestionOrder;
     }
 
     public Integer getItemOrder() {

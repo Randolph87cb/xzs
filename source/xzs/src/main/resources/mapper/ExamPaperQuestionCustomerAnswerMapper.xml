@@ -10,7 +10,6 @@
     <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
     <result column="customer_score" jdbcType="INTEGER" property="customerScore" />
     <result column="question_score" jdbcType="INTEGER" property="questionScore" />
-    <result column="question_text_content_id" jdbcType="INTEGER" property="questionTextContentId" />
     <result column="answer" jdbcType="VARCHAR" property="answer" />
     <result column="text_content_id" jdbcType="INTEGER" property="textContentId" />
     <result column="do_right" jdbcType="BIT" property="doRight" />
@@ -21,7 +20,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, question_id, exam_paper_id, exam_paper_answer_id, question_type, subject_id,
-    customer_score, question_score, question_text_content_id, answer, text_content_id,
+    customer_score, question_score, answer, text_content_id,
     do_right, create_user, create_time, item_order, class_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -37,14 +36,13 @@
   <insert id="insert" parameterType="com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer" useGeneratedKeys="true" keyProperty="id">
     insert into t_exam_paper_question_customer_answer (id, question_id, exam_paper_id,
       exam_paper_answer_id, question_type, subject_id,
-      customer_score, question_score, question_text_content_id,
-      answer, text_content_id, do_right,
+      customer_score, question_score, answer, text_content_id, do_right,
       create_user, create_time, item_order, class_id
       )
     values (#{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{examPaperId,jdbcType=INTEGER},
       #{examPaperAnswerId,jdbcType=INTEGER}, #{questionType,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER},
-      #{customerScore,jdbcType=INTEGER}, #{questionScore,jdbcType=INTEGER}, #{questionTextContentId,jdbcType=INTEGER},
-      #{answer,jdbcType=VARCHAR}, #{textContentId,jdbcType=INTEGER}, #{doRight,jdbcType=BIT},
+      #{customerScore,jdbcType=INTEGER}, #{questionScore,jdbcType=INTEGER}, #{answer,jdbcType=VARCHAR},
+      #{textContentId,jdbcType=INTEGER}, #{doRight,jdbcType=BIT},
       #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{itemOrder,jdbcType=INTEGER},
       #{classId,jdbcType=INTEGER}
       )
@@ -75,9 +73,6 @@
       </if>
       <if test="questionScore != null">
         question_score,
-      </if>
-      <if test="questionTextContentId != null">
-        question_text_content_id,
       </if>
       <if test="answer != null">
         answer,
@@ -126,9 +121,6 @@
       <if test="questionScore != null">
         #{questionScore,jdbcType=INTEGER},
       </if>
-      <if test="questionTextContentId != null">
-        #{questionTextContentId,jdbcType=INTEGER},
-      </if>
       <if test="answer != null">
         #{answer,jdbcType=VARCHAR},
       </if>
@@ -176,9 +168,6 @@
       <if test="questionScore != null">
         question_score = #{questionScore,jdbcType=INTEGER},
       </if>
-      <if test="questionTextContentId != null">
-        question_text_content_id = #{questionTextContentId,jdbcType=INTEGER},
-      </if>
       <if test="answer != null">
         answer = #{answer,jdbcType=VARCHAR},
       </if>
@@ -212,7 +201,6 @@
       subject_id = #{subjectId,jdbcType=INTEGER},
       customer_score = #{customerScore,jdbcType=INTEGER},
       question_score = #{questionScore,jdbcType=INTEGER},
-      question_text_content_id = #{questionTextContentId,jdbcType=INTEGER},
       answer = #{answer,jdbcType=VARCHAR},
       text_content_id = #{textContentId,jdbcType=INTEGER},
       do_right = #{doRight,jdbcType=BIT},
@@ -256,7 +244,7 @@
     subject_id, create_time, create_user,
     text_content_id, exam_paper_id, question_type,
     answer, customer_score, exam_paper_answer_id ,
-    do_right,question_text_content_id,item_order,class_id)
+    do_right,item_order,class_id)
     values
     <foreach collection="list" item="item" index="index"
              separator=",">
@@ -264,8 +252,7 @@
       #{item.subjectId,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.createUser,jdbcType=INTEGER},
       #{item.textContentId,jdbcType=INTEGER}, #{item.examPaperId,jdbcType=INTEGER}, #{item.questionType,jdbcType=INTEGER},
       #{item.answer,jdbcType=VARCHAR}, #{item.customerScore,jdbcType=INTEGER}, #{item.examPaperAnswerId,jdbcType=INTEGER},
-      #{item.doRight,jdbcType=BIT},#{item.questionTextContentId,jdbcType=INTEGER},#{item.itemOrder,jdbcType=INTEGER},
-      #{item.classId,jdbcType=INTEGER})
+      #{item.doRight,jdbcType=BIT},#{item.itemOrder,jdbcType=INTEGER},#{item.classId,jdbcType=INTEGER})
     </foreach>
   </insert>
 

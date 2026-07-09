@@ -435,6 +435,7 @@ function New-QuestionInsertSql {
         analyze = $Question.Analyze
         questionItemObjects = $Question.Items
         correct = $Question.Correct
+        questionCode = $Question.QuestionCode
         knowledgePoint = $Question.KnowledgePoint
         importBatch = $ImportBatch
         importSource = $Question.Source
@@ -445,6 +446,9 @@ function New-QuestionInsertSql {
     $contentLiteral = New-DollarQuotedSqlLiteral $json
     $correctLiteral = New-DollarQuotedSqlLiteral $Question.Correct
     $knowledgePointLiteral = New-DollarQuotedSqlLiteral $Question.KnowledgePoint
+    $questionCodeLiteral = New-DollarQuotedSqlLiteral $Question.QuestionCode
+    $importBatchLiteral = New-DollarQuotedSqlLiteral $ImportBatch
+    $importSourceLiteral = New-DollarQuotedSqlLiteral $Question.Source
 
     return @"
 WITH content_row AS (
@@ -453,11 +457,13 @@ WITH content_row AS (
     RETURNING id
 )
 INSERT INTO t_question (
-    question_type, subject_id, score, grade_level, difficult, knowledge_point, correct,
+    question_type, subject_id, score, grade_level, difficult, knowledge_point,
+    question_code, import_batch, import_source, import_question_order, correct,
     info_text_content_id, create_user, status, create_time, deleted
 )
 SELECT
-    $($Question.QuestionType), $($Question.SubjectId), 10, $($Question.Level), 1, $knowledgePointLiteral, $correctLiteral,
+    $($Question.QuestionType), $($Question.SubjectId), 10, $($Question.Level), 1, $knowledgePointLiteral,
+    $questionCodeLiteral, $importBatchLiteral, $importSourceLiteral, $($Question.Order), $correctLiteral,
     content_row.id, COALESCE((SELECT id FROM t_user WHERE user_name = 'admin' ORDER BY id LIMIT 1), 1),
     1, now(), false
 FROM content_row;
@@ -486,6 +492,8 @@ foreach ($file in $files) {
     if ($level -lt 1 -or $level -gt 8) {
         throw "Unexpected GESP level in path: $relativePath"
     }
+    $yearMonth = $Matches[1]
+    $kindCode = if ($kind -eq "选择题") { "choice" } else { "truefalse" }
 
     $markdown = Repair-MarkdownDocument (Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8)
     $blocks = Split-QuestionBlocks $markdown
@@ -504,6 +512,7 @@ foreach ($file in $files) {
         $questions.Add([pscustomobject]@{
             Source = $relativePath
             Order = $block.Order
+            QuestionCode = "GESP-$yearMonth-L$level-$kindCode-$($block.Order.ToString('00'))"
             Level = $level
             SubjectId = $level
             QuestionType = $parsed.questionType
@@ -562,7 +571,10 @@ FROM t_question q
 JOIN t_text_content tc ON tc.id = q.info_text_content_id
 WHERE q.subject_id BETWEEN 1 AND 8
   AND q.question_type IN (1, 3)
-  AND tc.content LIKE '%"importBatch":"$ImportBatch"%';
+  AND (
+    q.import_batch = '$ImportBatch'
+    OR tc.content LIKE '%"importBatch":"$ImportBatch"%'
+  );
 
 DELETE FROM t_question
 WHERE id IN (SELECT id FROM xzs_imported_question_to_delete);

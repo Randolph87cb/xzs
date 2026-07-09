@@ -3,6 +3,7 @@ package com.mindskip.xzs.controller.student;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
+import com.mindskip.xzs.domain.Question;
 import com.mindskip.xzs.domain.Subject;
 import com.mindskip.xzs.domain.TextContent;
 import com.mindskip.xzs.domain.question.QuestionObject;
@@ -54,7 +55,8 @@ public class QuestionAnswerController extends BaseApiController {
             Subject subject = subjectService.selectById(q.getSubjectId());
             QuestionPageStudentResponseVM vm = modelMapper.map(q, QuestionPageStudentResponseVM.class);
             vm.setCreateTime(DateTimeUtil.dateFormat(q.getCreateTime()));
-            TextContent textContent = textContentService.selectById(q.getQuestionTextContentId());
+            Question question = questionService.selectById(q.getQuestionId());
+            TextContent textContent = textContentService.selectById(question.getInfoTextContentId());
             QuestionObject questionObject = JsonUtil.toJsonObject(textContent.getContent(), QuestionObject.class);
             String clearHtml = HtmlUtil.clear(questionObject.getTitleContent());
             vm.setShortTitle(clearHtml);

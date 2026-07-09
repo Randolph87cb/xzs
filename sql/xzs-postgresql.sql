@@ -243,7 +243,6 @@ CREATE TABLE "public"."t_exam_paper_question_customer_answer" (
   "subject_id" int4,
   "customer_score" int4,
   "question_score" int4,
-  "question_text_content_id" int4,
   "answer" varchar(255) COLLATE "pg_catalog"."default",
   "text_content_id" int4,
   "do_right" bool,
@@ -311,6 +310,10 @@ CREATE TABLE "public"."t_question" (
   "grade_level" int4,
   "difficult" int4,
   "knowledge_point" varchar(255) COLLATE "pg_catalog"."default",
+  "question_code" varchar(255) COLLATE "pg_catalog"."default",
+  "import_batch" varchar(255) COLLATE "pg_catalog"."default",
+  "import_source" varchar(500) COLLATE "pg_catalog"."default",
+  "import_question_order" int4,
   "correct" text COLLATE "pg_catalog"."default",
   "info_text_content_id" int4,
   "create_user" int4,
@@ -717,6 +720,8 @@ ALTER TABLE "public"."t_message_user" ADD CONSTRAINT "t_message_user_pkey" PRIMA
 -- Primary Key structure for table t_question
 -- ----------------------------
 ALTER TABLE "public"."t_question" ADD CONSTRAINT "t_question_pkey" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "uk_question_import_source_order"
+  ON "public"."t_question" ("import_batch", "import_source", "import_question_order");
 
 -- ----------------------------
 -- Primary Key structure for table t_smart_training_config

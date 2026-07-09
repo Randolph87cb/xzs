@@ -207,7 +207,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperQuestionCustomerAnswer.setCreateUser(user.getId());
         examPaperQuestionCustomerAnswer.setClassId(user.getClassId());
         examPaperQuestionCustomerAnswer.setQuestionType(question.getQuestionType());
-        examPaperQuestionCustomerAnswer.setQuestionTextContentId(question.getInfoTextContentId());
         if (null == customerQuestionAnswer) {
             examPaperQuestionCustomerAnswer.setCustomerScore(0);
         } else {
