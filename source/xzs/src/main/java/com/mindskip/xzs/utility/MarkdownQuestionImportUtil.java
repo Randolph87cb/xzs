@@ -70,6 +70,7 @@ public final class MarkdownQuestionImportUtil {
         String correct = null;
         QuestionEditItemVM currentItem = null;
         boolean inFence = false;
+        boolean inMathBlock = false;
         boolean answerSeen = false;
 
         for (String rawLine : block.lines) {
@@ -77,8 +78,12 @@ public final class MarkdownQuestionImportUtil {
             if (line.startsWith("```")) {
                 inFence = !inFence;
             }
+            if (!inFence && isMathBlockDelimiter(line)) {
+                inMathBlock = !inMathBlock;
+            }
 
-            if (!inFence && !answerSeen) {
+            boolean canParseStructure = !inFence && !inMathBlock;
+            if (canParseStructure && !answerSeen) {
                 Matcher answerMatcher = ANSWER_LINE.matcher(line);
                 if (answerMatcher.matches()) {
                     correct = answerMatcher.group(1);
@@ -91,7 +96,7 @@ public final class MarkdownQuestionImportUtil {
                 if (optionMatcher.matches()) {
                     currentItem = new QuestionEditItemVM();
                     currentItem.setPrefix(optionMatcher.group(1));
-                    currentItem.setContent(markdownToHtml(optionMatcher.group(2)));
+                    currentItem.setContent(optionMatcher.group(2));
                     items.add(currentItem);
                     continue;
                 }
@@ -99,7 +104,7 @@ public final class MarkdownQuestionImportUtil {
 
             if (answerSeen) {
                 Matcher analyzeMatcher = ANALYZE_LINE.matcher(line);
-                if (analyzeMatcher.matches()) {
+                if (canParseStructure && analyzeMatcher.matches()) {
                     analyzeLines.add(analyzeMatcher.group(1));
                 } else {
                     analyzeLines.add(rawLine);
@@ -108,7 +113,7 @@ public final class MarkdownQuestionImportUtil {
                 titleLines.add(rawLine);
             } else {
                 String existing = currentItem.getContent();
-                currentItem.setContent(existing + markdownToHtml("\n" + rawLine));
+                currentItem.setContent(existing + "\n" + rawLine);
             }
         }
 
@@ -129,10 +134,21 @@ public final class MarkdownQuestionImportUtil {
 
         String analyzeMarkdown = trimBlankLines(analyzeLines);
         if (analyzeMarkdown.isEmpty()) {
-            analyzeMarkdown = defaultAnalyze;
+            analyzeMarkdown = defaultAnalyze(defaultAnalyze);
         }
 
-        return new MarkdownQuestion(block.order, markdownToHtml(titleMarkdown), items, correct, markdownToHtml(analyzeMarkdown));
+        return new MarkdownQuestion(block.order, titleMarkdown, items, correct, analyzeMarkdown);
+    }
+
+    private static boolean isMathBlockDelimiter(String line) {
+        return "$$".equals(line) || "\\[".equals(line) || "\\]".equals(line);
+    }
+
+    private static String defaultAnalyze(String defaultAnalyze) {
+        if (defaultAnalyze == null || defaultAnalyze.trim().isEmpty()) {
+            return "暂无解析";
+        }
+        return defaultAnalyze.trim();
     }
 
     private static boolean containsPrefix(List<QuestionEditItemVM> items, String prefix) {
@@ -170,87 +186,6 @@ public final class MarkdownQuestionImportUtil {
             builder.append(lines.get(i));
         }
         return builder.toString().trim();
-    }
-
-    private static String markdownToHtml(String markdown) {
-        if (markdown == null || markdown.trim().isEmpty()) {
-            return "";
-        }
-
-        String normalized = markdown.replace("\r\n", "\n").replace("\r", "\n");
-        String[] lines = normalized.split("\n", -1);
-        StringBuilder html = new StringBuilder();
-        StringBuilder paragraph = new StringBuilder();
-        boolean inFence = false;
-
-        for (String line : lines) {
-            String trimmed = line.trim();
-            if (trimmed.startsWith("```")) {
-                flushParagraph(html, paragraph);
-                if (inFence) {
-                    html.append("</code></pre>");
-                } else {
-                    String language = fenceLanguage(trimmed);
-                    if (language.isEmpty()) {
-                        html.append("<pre><code>");
-                    } else {
-                        html.append("<pre><code class=\"language-").append(escapeHtml(language)).append("\">");
-                    }
-                }
-                inFence = !inFence;
-                continue;
-            }
-
-            if (inFence) {
-                html.append(escapeHtml(line)).append('\n');
-                continue;
-            }
-
-            if (trimmed.isEmpty()) {
-                flushParagraph(html, paragraph);
-            } else {
-                if (paragraph.length() > 0) {
-                    paragraph.append("<br/>");
-                }
-                paragraph.append(formatInline(trimmed));
-            }
-        }
-
-        flushParagraph(html, paragraph);
-        if (inFence) {
-            html.append("</code></pre>");
-        }
-        return html.toString();
-    }
-
-    private static String fenceLanguage(String line) {
-        Matcher matcher = Pattern.compile("^```\\s*([A-Za-z0-9_+#.+-]+)?\\s*$").matcher(line);
-        if (!matcher.matches() || matcher.group(1) == null) {
-            return "";
-        }
-        return matcher.group(1);
-    }
-
-    private static void flushParagraph(StringBuilder html, StringBuilder paragraph) {
-        if (paragraph.length() == 0) {
-            return;
-        }
-        html.append("<p>").append(paragraph).append("</p>");
-        paragraph.setLength(0);
-    }
-
-    private static String formatInline(String text) {
-        String html = escapeHtml(text);
-        html = html.replaceAll("`([^`]+)`", "<code>$1</code>");
-        html = html.replaceAll("\\*\\*([^*]+)\\*\\*", "<strong>$1</strong>");
-        return html;
-    }
-
-    private static String escapeHtml(String text) {
-        return text.replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("\"", "&quot;");
     }
 
     private static class QuestionBlock {

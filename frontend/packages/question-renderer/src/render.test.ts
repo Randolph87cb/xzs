@@ -67,12 +67,28 @@ describe('question renderer', () => {
     expect(html).not.toContain('katex')
   })
 
+  it('highlights untyped markdown code blocks with the default language', () => {
+    const html = renderQuestionContent('```\nint main() { return 0; }\n```', { defaultLanguage: 'c++' })
+
+    expect(html).toContain('class="language-cpp"')
+    expect(html).toContain('class="hljs')
+    expect(html).toContain('hljs-')
+  })
+
   it('keeps legacy HTML code blocks styled without a language', () => {
     const html = renderQuestionContent('<pre><code>if ($N$ &lt; 10) cout &lt;&lt; "x";</code></pre>')
 
     expect(html).toContain('<pre class="hljs">')
     expect(html).toContain('if ($N$ &lt; 10)')
     expect(html).not.toContain('katex')
+  })
+
+  it('highlights legacy HTML code blocks with the default language', () => {
+    const html = renderQuestionContent('<pre><code>int main() { return 0; }</code></pre>', { defaultLanguage: 'cpp' })
+
+    expect(html).toContain('class="language-cpp"')
+    expect(html).toContain('class="hljs')
+    expect(html).toContain('hljs-')
   })
 
   it('highlights legacy HTML code blocks with a language class', () => {

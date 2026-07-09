@@ -14,15 +14,22 @@ const props = withDefaults(
     content?: QuestionContent
     tag?: string
     inline?: boolean
+    defaultLanguage?: string
   }>(),
   {
     content: '',
     tag: 'div',
-    inline: false
+    inline: false,
+    defaultLanguage: ''
   }
 )
 
-const html = computed(() => renderQuestionContent(props.content, { inline: props.inline }))
+const html = computed(() =>
+  renderQuestionContent(props.content, {
+    inline: props.inline,
+    defaultLanguage: props.defaultLanguage
+  })
+)
 </script>
 
 <style scoped lang="scss">

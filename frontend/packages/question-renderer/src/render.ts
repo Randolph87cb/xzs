@@ -22,6 +22,7 @@ export type QuestionContent = string | number | unknown[] | Record<string, unkno
 
 export interface RenderQuestionOptions {
   inline?: boolean
+  defaultLanguage?: string
 }
 
 const htmlEscapeMap: Record<string, string> = {
@@ -33,35 +34,24 @@ const htmlEscapeMap: Record<string, string> = {
 }
 const skipMathTags = new Set(['code', 'pre', 'script', 'style', 'textarea'])
 const renderCache = new Map<string, string>()
+const markdownCache = new Map<string, MarkdownIt>()
 
 registerLanguages()
 
-const markdown = new MarkdownIt({
-  html: true,
-  linkify: true,
-  breaks: true,
-  highlight: highlightCode
-}).use(texmath, {
-  engine: katex,
-  delimiters: ['dollars', 'brackets', 'beg_end'],
-  katexOptions: {
-    throwOnError: false,
-    strict: false
-  }
-})
-
 export function renderQuestionContent(content: QuestionContent, options: RenderQuestionOptions = {}) {
   const source = normalizeContent(content)
-  const cacheKey = `${options.inline ? 'inline' : 'block'}:${source}`
+  const defaultLanguage = normalizeCodeLanguage(options.defaultLanguage)
+  const cacheKey = `${options.inline ? 'inline' : 'block'}:${defaultLanguage}:${source}`
   const cached = renderCache.get(cacheKey)
 
   if (cached !== undefined) {
     return cached
   }
 
+  const markdown = getMarkdownRenderer(defaultLanguage)
   const rendered = options.inline ? markdown.renderInline(source) : markdown.render(source)
   const withMath = renderMathInsideHtmlText(rendered)
-  const withCodeBlocks = enhanceLegacyCodeBlocks(withMath)
+  const withCodeBlocks = enhanceLegacyCodeBlocks(withMath, defaultLanguage)
   const sanitized = DOMPurify.sanitize(withCodeBlocks, {
     ADD_TAGS: ['eq', 'eqn'],
     ADD_ATTR: ['encoding', 'display']
@@ -165,9 +155,9 @@ export function renderMathInsideHtmlText(html: string) {
   return result
 }
 
-export function enhanceLegacyCodeBlocks(html: string) {
+export function enhanceLegacyCodeBlocks(html: string, defaultLanguage = '') {
   return html.replace(/<pre\b([^>]*)>\s*<code\b([^>]*)>([\s\S]*?)<\/code>\s*<\/pre>/gi, (_match, preAttrs, codeAttrs, codeHtml) => {
-    const language = getCodeLanguage(String(codeAttrs))
+    const language = getCodeLanguage(String(codeAttrs)) || normalizeCodeLanguage(defaultLanguage)
     const preAttributes = ensureClass(String(preAttrs), 'hljs')
     const codeAttributes = language ? ensureClass(String(codeAttrs), `language-${language}`) : String(codeAttrs)
 
@@ -187,6 +177,30 @@ export function enhanceLegacyCodeBlocks(html: string) {
   })
 }
 
+function getMarkdownRenderer(defaultLanguage: string) {
+  const cached = markdownCache.get(defaultLanguage)
+  if (cached) {
+    return cached
+  }
+
+  const markdown = new MarkdownIt({
+    html: true,
+    linkify: true,
+    breaks: true,
+    highlight: (content, lang) => highlightCode(content, lang, defaultLanguage)
+  }).use(texmath, {
+    engine: katex,
+    delimiters: ['dollars', 'brackets', 'beg_end'],
+    katexOptions: {
+      throwOnError: false,
+      strict: false
+    }
+  })
+
+  markdownCache.set(defaultLanguage, markdown)
+  return markdown
+}
+
 function normalizeContent(content: QuestionContent): string {
   if (content === null || content === undefined) {
     return ''
@@ -203,12 +217,14 @@ function normalizeContent(content: QuestionContent): string {
   return String(content)
 }
 
-function highlightCode(content: string, lang: string) {
-  if (lang && hljs.getLanguage(lang)) {
+function highlightCode(content: string, lang: string, defaultLanguage = '') {
+  const language = normalizeCodeLanguage(lang) || normalizeCodeLanguage(defaultLanguage)
+
+  if (language && hljs.getLanguage(language)) {
     try {
-      return `<pre class="hljs"><code>${hljs.highlight(content, { language: lang, ignoreIllegals: true }).value}</code></pre>`
+      return `<pre class="hljs"><code class="language-${language}">${hljs.highlight(content, { language, ignoreIllegals: true }).value}</code></pre>`
     } catch {
-      return `<pre class="hljs"><code>${escapeHtml(content)}</code></pre>`
+      return `<pre class="hljs"><code class="language-${language}">${escapeHtml(content)}</code></pre>`
     }
   }
 
@@ -291,7 +307,27 @@ function getCodeLanguage(attributes: string) {
   const classMatch = attributes.match(/\bclass\s*=\s*(["'])(.*?)\1/i)
   const className = classMatch?.[2] ?? ''
   const languageMatch = className.match(/(?:^|\s)(?:language|lang)-([A-Za-z0-9_+#.-]+)/)
-  return languageMatch?.[1] ?? ''
+  return normalizeCodeLanguage(languageMatch?.[1] ?? '')
+}
+
+function normalizeCodeLanguage(language = '') {
+  const normalized = language.trim().toLowerCase()
+  const aliases: Record<string, string> = {
+    'c++': 'cpp',
+    cxx: 'cpp',
+    cc: 'cpp',
+    'c#': 'csharp',
+    cs: 'csharp',
+    shell: 'bash',
+    sh: 'bash',
+    js: 'javascript',
+    md: 'markdown',
+    py: 'python',
+    ts: 'typescript',
+    html: 'xml'
+  }
+
+  return aliases[normalized] ?? normalized
 }
 
 function ensureClass(attributes: string, className: string) {

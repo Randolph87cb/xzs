@@ -3,7 +3,7 @@
     <header class="admin-page__header">
       <div>
         <h1>题目编辑</h1>
-        <p>使用 Vue 3 UEditor wrapper 编辑历史 HTML，并复用学生端 renderer 预览。</p>
+        <p>默认使用 Markdown 编辑题目内容，历史 HTML 会作为 Markdown 兼容语法预览。</p>
       </div>
       <div class="admin-page__actions">
         <el-button data-testid="question-edit-back" @click="router.push('/exam/question/list')">返回列表</el-button>
@@ -35,14 +35,20 @@
       </section>
 
       <section class="question-edit__grid">
-        <article>
+        <article class="question-edit__editor-panel">
           <h2>题干</h2>
-          <UeditorField v-model="form.title" />
+          <el-input
+            v-model="form.title"
+            data-testid="question-edit-title"
+            type="textarea"
+            :autosize="{ minRows: 8, maxRows: 18 }"
+            placeholder="请输入题干，支持 Markdown、公式和 ```cpp 代码块"
+          />
         </article>
-        <article>
+        <article class="question-edit__preview-panel">
           <h2>题干预览</h2>
           <div class="question-edit__preview">
-            <QuestionMarkdown :content="form.title" />
+            <QuestionMarkdown :content="form.title" :default-language="defaultCodeLanguage" />
           </div>
         </article>
       </section>
@@ -53,21 +59,37 @@
           <el-button size="small" @click="addOption">添加选项</el-button>
         </header>
         <div v-for="(item, index) in form.items" :key="item.itemUuid ?? item.prefix" class="question-edit__option">
-          <el-input v-model="item.prefix" style="width: 72px" />
-          <el-input v-model="item.content" type="textarea" :rows="2" />
-          <el-button text type="danger" @click="removeOption(index)">删除</el-button>
+          <el-input v-model="item.prefix" class="question-edit__option-prefix" />
+          <div class="question-edit__option-body">
+            <el-input
+              v-model="item.content"
+              type="textarea"
+              :autosize="{ minRows: 3, maxRows: 10 }"
+              placeholder="选项内容支持 Markdown"
+            />
+            <div class="question-edit__option-preview">
+              <QuestionMarkdown :content="item.content" :default-language="defaultCodeLanguage" />
+            </div>
+          </div>
+          <el-button class="question-edit__option-delete" text type="danger" @click="removeOption(index)">删除</el-button>
         </div>
       </section>
 
       <section class="question-edit__grid">
-        <article>
+        <article class="question-edit__editor-panel">
           <h2>解析</h2>
-          <UeditorField v-model="form.analyze" />
+          <el-input
+            v-model="form.analyze"
+            data-testid="question-edit-analyze"
+            type="textarea"
+            :autosize="{ minRows: 8, maxRows: 18 }"
+            placeholder="请输入解析，支持 Markdown、公式和 ```cpp 代码块"
+          />
         </article>
-        <article>
+        <article class="question-edit__preview-panel">
           <h2>解析预览</h2>
           <div class="question-edit__preview">
-            <QuestionMarkdown :content="form.analyze" />
+            <QuestionMarkdown :content="form.analyze" :default-language="defaultCodeLanguage" />
           </div>
         </article>
       </section>
@@ -100,7 +122,6 @@ import {
   type AdminQuestionEditModel,
   type AdminSubjectListItem
 } from '@xzs/api-client'
-import UeditorField from '@/components/UeditorField.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -108,13 +129,14 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const saving = ref(false)
 const subjects = ref<AdminSubjectListItem[]>([])
+const defaultCodeLanguage = 'cpp'
 const form = reactive<AdminQuestionEditModel>({
   id: null,
   questionType: 1,
   subjectId: 1,
-  title: '<p>请输入题干</p>',
+  title: '请输入题干',
   items: createDefaultOptions(),
-  analyze: '<p>暂无解析</p>',
+  analyze: '暂无解析',
   correctArray: [],
   correct: 'A',
   score: '5',
@@ -235,3 +257,109 @@ function normalizeForSubmit(question: AdminQuestionEditModel): AdminQuestionEdit
   return payload
 }
 </script>
+
+<style scoped lang="scss">
+.question-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.question-edit__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 12px;
+}
+
+.question-edit__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+  gap: 16px;
+  align-items: stretch;
+
+  h2 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.question-edit__editor-panel,
+.question-edit__preview-panel,
+.question-edit__options,
+.question-edit__answer {
+  min-width: 0;
+}
+
+.question-edit__preview {
+  min-height: 206px;
+  padding: 10px 12px;
+  border: 1px solid var(--el-border-color);
+  border-radius: 4px;
+  background: var(--el-fill-color-blank);
+}
+
+.question-edit__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}
+
+.question-edit__option {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: 4px;
+  background: var(--el-fill-color-extra-light);
+}
+
+.question-edit__option-prefix {
+  width: 72px;
+}
+
+.question-edit__option-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.8fr);
+  gap: 12px;
+  min-width: 0;
+}
+
+.question-edit__option-preview {
+  min-height: 78px;
+  padding: 8px 10px;
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: 4px;
+  background: var(--el-bg-color);
+}
+
+.question-edit__option-delete {
+  align-self: start;
+}
+
+@media (max-width: 960px) {
+  .question-edit__grid,
+  .question-edit__option,
+  .question-edit__option-body {
+    grid-template-columns: 1fr;
+  }
+
+  .question-edit__option-prefix {
+    width: 100%;
+  }
+}
+</style>

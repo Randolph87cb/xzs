@@ -42,6 +42,10 @@ export interface AdminQuestionEditModel {
   score: string
   difficult: number
   knowledgePoint: string
+  questionCode?: string | null
+  importBatch?: string | null
+  importSource?: string | null
+  importQuestionOrder?: number | null
   itemOrder?: number | null
 }
 
