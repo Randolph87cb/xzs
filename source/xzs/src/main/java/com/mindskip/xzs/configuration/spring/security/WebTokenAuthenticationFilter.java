@@ -43,15 +43,16 @@ public class WebTokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getServletPath();
-        RoleEnum role = path.startsWith("/api/admin/") ? RoleEnum.ADMIN : RoleEnum.STUDENT;
-        String cookieName = RoleEnum.ADMIN == role ? WebAuthCookie.ADMIN_COOKIE_NAME : WebAuthCookie.STUDENT_COOKIE_NAME;
+        boolean adminPath = path.startsWith("/api/admin/");
+        String cookieName = adminPath ? WebAuthCookie.ADMIN_COOKIE_NAME : WebAuthCookie.STUDENT_COOKIE_NAME;
         String token = WebAuthCookie.read(request, cookieName);
 
         SecurityContextHolder.clearContext();
         if (isUuid(token)) {
             UserToken userToken = userTokenService.getToken(token);
-            User user = resolveUser(userToken, role);
+            User user = resolveUser(userToken, adminPath);
             if (null != user) {
+                RoleEnum role = RoleEnum.fromCode(user.getRole());
                 org.springframework.security.core.userdetails.User springUser =
                         new org.springframework.security.core.userdetails.User(
                                 user.getUserName(),
@@ -66,7 +67,7 @@ public class WebTokenAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private User resolveUser(UserToken userToken, RoleEnum role) {
+    private User resolveUser(UserToken userToken, boolean adminPath) {
         if (null == userToken || null == userToken.getEndTime() || !new Date().before(userToken.getEndTime())) {
             return null;
         }
@@ -77,7 +78,12 @@ public class WebTokenAuthenticationFilter extends OncePerRequestFilter {
         if (UserStatusEnum.Enable != UserStatusEnum.fromCode(user.getStatus())) {
             return null;
         }
-        if (RoleEnum.fromCode(user.getRole()) != role) {
+        RoleEnum role = RoleEnum.fromCode(user.getRole());
+        if (adminPath) {
+            if (RoleEnum.ADMIN != role && RoleEnum.TEACHER != role) {
+                return null;
+            }
+        } else if (RoleEnum.STUDENT != role) {
             return null;
         }
         return user;

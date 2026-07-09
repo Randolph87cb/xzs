@@ -44,12 +44,12 @@ public class WebAuthController {
 
     @RequestMapping(value = "/admin/auth/login", method = RequestMethod.POST)
     public RestResponse<User> adminLogin(@RequestBody AuthenticationBean model, HttpServletRequest request, HttpServletResponse response) {
-        return login(model, RoleEnum.ADMIN, WebAuthCookie.ADMIN_COOKIE_NAME, WebAuthCookie.ADMIN_COOKIE_PATH, request, response);
+        return login(model, WebAuthCookie.ADMIN_COOKIE_NAME, WebAuthCookie.ADMIN_COOKIE_PATH, request, response, RoleEnum.ADMIN, RoleEnum.TEACHER);
     }
 
     @RequestMapping(value = "/student/auth/login", method = RequestMethod.POST)
     public RestResponse<User> studentLogin(@RequestBody AuthenticationBean model, HttpServletRequest request, HttpServletResponse response) {
-        return login(model, RoleEnum.STUDENT, WebAuthCookie.STUDENT_COOKIE_NAME, WebAuthCookie.STUDENT_COOKIE_PATH, request, response);
+        return login(model, WebAuthCookie.STUDENT_COOKIE_NAME, WebAuthCookie.STUDENT_COOKIE_PATH, request, response, RoleEnum.STUDENT);
     }
 
     @RequestMapping(value = "/admin/auth/logout", method = RequestMethod.POST)
@@ -62,7 +62,7 @@ public class WebAuthController {
         return logout(WebAuthCookie.STUDENT_COOKIE_NAME, WebAuthCookie.STUDENT_COOKIE_PATH, request, response);
     }
 
-    private RestResponse<User> login(AuthenticationBean model, RoleEnum role, String cookieName, String cookiePath, HttpServletRequest request, HttpServletResponse response) {
+    private RestResponse<User> login(AuthenticationBean model, String cookieName, String cookiePath, HttpServletRequest request, HttpServletResponse response, RoleEnum... allowedRoles) {
         if (null == model) {
             return RestResponse.fail(SystemCode.AuthError.getCode(), SystemCode.AuthError.getMessage());
         }
@@ -73,7 +73,7 @@ public class WebAuthController {
         if (Boolean.TRUE.equals(user.getDeleted()) || UserStatusEnum.Enable != UserStatusEnum.fromCode(user.getStatus())) {
             return RestResponse.fail(SystemCode.AccessDenied.getCode(), "用户被禁用");
         }
-        if (RoleEnum.fromCode(user.getRole()) != role) {
+        if (!isAllowedRole(RoleEnum.fromCode(user.getRole()), allowedRoles)) {
             return RestResponse.fail(SystemCode.AccessDenied.getCode(), "账号类型不匹配");
         }
 
@@ -85,6 +85,18 @@ public class WebAuthController {
         responseUser.setUserName(user.getUserName());
         responseUser.setImagePath(user.getImagePath());
         return RestResponse.ok(responseUser);
+    }
+
+    private boolean isAllowedRole(RoleEnum role, RoleEnum... allowedRoles) {
+        if (null == role || null == allowedRoles) {
+            return false;
+        }
+        for (RoleEnum allowedRole : allowedRoles) {
+            if (role == allowedRole) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private RestResponse logout(String cookieName, String cookiePath, HttpServletRequest request, HttpServletResponse response) {

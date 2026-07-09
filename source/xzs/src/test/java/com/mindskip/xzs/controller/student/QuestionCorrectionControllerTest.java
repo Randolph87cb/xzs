@@ -55,7 +55,7 @@ public class QuestionCorrectionControllerTest {
         RecordingJdbcTemplate.Call update = jdbcTemplate.getCalls("update").get(0);
         assertTrue(update.getSql().contains("review_status = 'SUBMITTED'"));
         assertTrue(update.getSql().contains("resubmit_count = coalesce(resubmit_count, 0) + 1"));
-        assertArrayEquals(new Object[]{"new wrong", "new thinking", 41}, update.getArgs());
+        assertArrayEquals(new Object[]{"new wrong", "new thinking", 7, 41}, update.getArgs());
     }
 
     @Test
@@ -98,6 +98,7 @@ public class QuestionCorrectionControllerTest {
         user.setId(id);
         user.setUserName("student");
         user.setRealName("Student User");
+        user.setClassId(7);
         return user;
     }
 }
