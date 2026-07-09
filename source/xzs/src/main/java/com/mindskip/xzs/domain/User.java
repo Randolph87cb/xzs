@@ -40,9 +40,14 @@ public class User implements Serializable {
     private String phone;
 
     /**
-     * 1.学生  3.管理员
+     * 1.学生  2.老师  3.管理员
      */
     private Integer role;
+
+    /**
+     * 学生所属班级
+     */
+    private Integer classId;
 
     /**
      * 1.启用 2禁用
@@ -156,6 +161,14 @@ public class User implements Serializable {
 
     public void setRole(Integer role) {
         this.role = role;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public Integer getStatus() {

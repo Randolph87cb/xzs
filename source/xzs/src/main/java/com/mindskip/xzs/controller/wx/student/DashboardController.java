@@ -72,7 +72,7 @@ public class DashboardController extends BaseWXApiController {
     @RequestMapping(value = "/task", method = RequestMethod.POST)
     public RestResponse<List<TaskItemVm>> task() {
         User user = getCurrentUser();
-        List<TaskExam> taskExams = taskExamService.getByGradeLevel(null);
+        List<TaskExam> taskExams = taskExamService.getByGradeLevelOrClass(user.getUserLevel(), user.getClassId());
         if (taskExams.size() == 0) {
             return RestResponse.ok(new ArrayList<>());
         }

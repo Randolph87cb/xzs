@@ -18,6 +18,11 @@
           <el-option label="未通过" value="REJECTED" />
         </el-select>
       </el-form-item>
+      <el-form-item label="班级">
+        <el-select v-model="query.classId" clearable placeholder="全部" style="width: 180px">
+          <el-option v-for="item in classOptions" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
     </el-form>
 
     <el-table :data="records" border>
@@ -107,9 +112,11 @@ import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { QuestionMarkdown } from '@xzs/question-renderer'
 import {
+  getAdminClassOptions,
   getAdminQuestionCorrection,
   getAdminQuestionCorrectionPage,
   saveAdminQuestionCorrectionReview,
+  type AdminClassListItem,
   type AdminQuestionCorrectionItem,
   type AdminQuestionCorrectionPageRequest,
   type AdminQuestionCorrectionReviewRequest,
@@ -120,9 +127,11 @@ const loading = ref(false)
 const reviewVisible = ref(false)
 const records = ref<AdminQuestionCorrectionItem[]>([])
 const detail = ref<AdminQuestionCorrectionItem | null>(null)
+const classOptions = ref<AdminClassListItem[]>([])
 const total = ref(0)
 const query = reactive<AdminQuestionCorrectionPageRequest>({
   reviewStatus: 'SUBMITTED',
+  classId: null,
   pageIndex: 1,
   pageSize: 10
 })
@@ -133,7 +142,13 @@ const reviewForm = reactive<AdminQuestionCorrectionReviewRequest>({
 })
 const questionItems = computed(() => normalizeQuestionItems(detail.value?.items))
 
-loadData()
+init()
+
+async function init() {
+  const classResult = await getAdminClassOptions()
+  classOptions.value = classResult.response ?? []
+  await loadData()
+}
 
 async function loadData() {
   loading.value = true

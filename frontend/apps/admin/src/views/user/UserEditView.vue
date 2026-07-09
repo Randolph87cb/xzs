@@ -29,6 +29,11 @@
       <el-form-item v-if="role === 1" label="出生日期">
         <el-date-picker v-model="form.birthDay" type="date" value-format="YYYY-MM-DD" placeholder="选择日期" />
       </el-form-item>
+      <el-form-item v-if="role === 1" label="班级" prop="classId">
+        <el-select v-model="form.classId" filterable placeholder="选择班级">
+          <el-option v-for="item in classOptions" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="手机">
         <el-input v-model="form.phone" />
       </el-form-item>
@@ -50,25 +55,40 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-import { getAdminUser, saveAdminUser, type AdminUserEditModel } from '@xzs/api-client'
+import { getAdminClassOptions, getAdminUser, saveAdminUser, type AdminClassListItem, type AdminUserEditModel } from '@xzs/api-client'
 
 const props = defineProps<{
-  role: 1 | 3
+  role: 1 | 2 | 3
 }>()
 
 const route = useRoute()
 const router = useRouter()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
-const roleTitle = computed(() => (props.role === 1 ? '学生' : '管理员'))
-const listPath = computed(() => (props.role === 1 ? '/user/student/list' : '/user/admin/list'))
+const classOptions = ref<AdminClassListItem[]>([])
+const roleTitle = computed(() => {
+  if (props.role === 1) return '学生'
+  if (props.role === 2) return '老师'
+  return '管理员'
+})
+const listPath = computed(() => {
+  if (props.role === 1) return '/user/student/list'
+  if (props.role === 2) return '/user/teacher/list'
+  return '/user/admin/list'
+})
 const form = reactive<AdminUserEditModel>(createEmptyForm())
 const rules: FormRules = {
   userName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }]
+  realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
+  classId: [{ required: props.role === 1, message: '请选择班级', trigger: 'change' }]
 }
 
 onMounted(async () => {
+  if (props.role === 1) {
+    const classResult = await getAdminClassOptions()
+    classOptions.value = classResult.response ?? []
+  }
+
   const id = Number(route.query.id || 0)
   if (!id) {
     return
@@ -121,7 +141,8 @@ function createEmptyForm(): AdminUserEditModel {
     sex: undefined,
     birthDay: null,
     phone: '',
-    userLevel: 1
+    userLevel: 1,
+    classId: null
   }
 }
 </script>

@@ -198,6 +198,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperQuestionCustomerAnswer.setItemOrder(itemOrder);
         examPaperQuestionCustomerAnswer.setCreateTime(now);
         examPaperQuestionCustomerAnswer.setCreateUser(user.getId());
+        examPaperQuestionCustomerAnswer.setClassId(user.getClassId());
         examPaperQuestionCustomerAnswer.setQuestionType(question.getQuestionType());
         examPaperQuestionCustomerAnswer.setQuestionTextContentId(question.getInfoTextContentId());
         if (null == customerQuestionAnswer) {
@@ -250,6 +251,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperAnswer.setExamPaperId(examPaper.getId());
         examPaperAnswer.setCreateUser(user.getId());
         examPaperAnswer.setCreateTime(now);
+        examPaperAnswer.setClassId(user.getClassId());
         examPaperAnswer.setSubjectId(examPaper.getSubjectId());
         examPaperAnswer.setQuestionCount(examPaper.getQuestionCount());
         examPaperAnswer.setPaperScore(examPaper.getScore());

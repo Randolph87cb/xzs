@@ -36,6 +36,10 @@ public class TaskExam implements Serializable {
 
     private Boolean deleted;
 
+    private Integer classId;
+
+    private String className;
+
     /**
      * 创建人用户名
      */
@@ -95,6 +99,22 @@ public class TaskExam implements Serializable {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className == null ? null : className.trim();
     }
 
     public String getCreateUserName() {

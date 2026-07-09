@@ -6,6 +6,7 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.Subject;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.service.ClassScopeService;
 import com.mindskip.xzs.service.ExamPaperAnswerService;
 import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.service.UserService;
@@ -27,17 +28,23 @@ public class ExamPaperAnswerController extends BaseApiController {
     private final ExamPaperAnswerService examPaperAnswerService;
     private final SubjectService subjectService;
     private final UserService userService;
+    private final ClassScopeService classScopeService;
 
     @Autowired
-    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, UserService userService) {
+    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, UserService userService, ClassScopeService classScopeService) {
         this.examPaperAnswerService = examPaperAnswerService;
         this.subjectService = subjectService;
         this.userService = userService;
+        this.classScopeService = classScopeService;
     }
 
 
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> pageJudgeList(@RequestBody ExamPaperAnswerPageRequestVM model) {
+        User currentUser = getCurrentUser();
+        if (classScopeService.isTeacher(currentUser)) {
+            model.setClassIds(classScopeService.teacherClassIds(currentUser));
+        }
         PageInfo<ExamPaperAnswer> pageInfo = examPaperAnswerService.adminPage(model);
         PageInfo<ExamPaperAnswerPageResponseVM> page = PageInfoHelper.copyMap(pageInfo, e -> {
             ExamPaperAnswerPageResponseVM vm = modelMapper.map(e, ExamPaperAnswerPageResponseVM.class);

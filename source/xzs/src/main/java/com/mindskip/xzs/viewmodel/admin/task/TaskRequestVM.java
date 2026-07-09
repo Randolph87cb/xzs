@@ -16,6 +16,8 @@ public class TaskRequestVM {
     @NotNull
     private Integer gradeLevel;
 
+    private Integer classId;
+
     @NotNull
     private String title;
 
@@ -37,6 +39,14 @@ public class TaskRequestVM {
 
     public void setGradeLevel(Integer gradeLevel) {
         this.gradeLevel = gradeLevel;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public String getTitle() {

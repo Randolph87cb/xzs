@@ -30,8 +30,37 @@ export interface AdminUserOption {
   value: number
 }
 
+export interface AdminClassPageRequest {
+  name?: string | null
+  gradeLevel?: number | null
+  teacherId?: number | null
+  classId?: number | null
+  pageIndex: number
+  pageSize: number
+}
+
+export interface AdminClassListItem {
+  id: number
+  name: string
+  gradeLevel?: number | null
+  teacherId: number
+  teacherName?: string
+  status?: number
+  createTime?: string
+  modifyTime?: string
+}
+
+export interface AdminClassEditModel {
+  id?: number | null
+  name: string
+  gradeLevel?: number | null
+  teacherId?: number | null
+  status?: number
+}
+
 export interface AdminAnswerPageRequest {
   subjectId?: number | null
+  classId?: number | null
   pageIndex: number
   pageSize: number
 }
@@ -70,6 +99,7 @@ export interface AdminUserEditModel extends Omit<AdminUserListItem, 'id'> {
   age?: number | string
   birthDay?: string | null
   userLevel?: number
+  classId?: number | null
 }
 
 export interface AdminSubjectEditModel {
@@ -117,6 +147,7 @@ export interface AdminExamPaperEditModel {
 }
 
 export interface AdminTaskPageRequest {
+  classId?: number | null
   pageIndex: number
   pageSize: number
 }
@@ -125,6 +156,8 @@ export interface AdminTaskListItem {
   id: number
   title: string
   gradeLevel?: number
+  classId?: number | null
+  className?: string
   createUserName?: string
   createTime?: string
 }
@@ -132,6 +165,7 @@ export interface AdminTaskListItem {
 export interface AdminTaskEditModel {
   id?: number | null
   gradeLevel: number
+  classId?: number | null
   title: string
   paperItems: AdminExamPaperListItem[]
 }
@@ -154,6 +188,7 @@ export interface AdminSmartTrainingConfig {
 
 export interface AdminQuestionCorrectionPageRequest {
   reviewStatus?: 'SUBMITTED' | 'APPROVED' | 'REJECTED' | null
+  classId?: number | null
   pageIndex: number
   pageSize: number
 }
@@ -224,6 +259,30 @@ export function sendAdminMessage(request: AdminMessageSendRequest): Promise<ApiR
 
 export function selectAdminUsersByName(query: string): Promise<ApiResponse<AdminUserOption[]>> {
   return post<AdminUserOption[]>('/api/admin/user/selectByUserName', query)
+}
+
+export function getAdminClassPage(
+  request: AdminClassPageRequest
+): Promise<ApiResponse<AdminPageResponse<AdminClassListItem>>> {
+  return post<AdminPageResponse<AdminClassListItem>>('/api/admin/class/page', request)
+}
+
+export function getAdminClassOptions(
+  request: Partial<AdminClassPageRequest> = {}
+): Promise<ApiResponse<AdminClassListItem[]>> {
+  return post<AdminClassListItem[]>('/api/admin/class/options', request)
+}
+
+export function getAdminClass(id: number): Promise<ApiResponse<AdminClassEditModel>> {
+  return post<AdminClassEditModel>(`/api/admin/class/select/${id}`)
+}
+
+export function saveAdminClass(request: AdminClassEditModel): Promise<ApiResponse<AdminClassEditModel>> {
+  return post<AdminClassEditModel>('/api/admin/class/edit', request)
+}
+
+export function deleteAdminClass(id: number): Promise<ApiResponse<void>> {
+  return post<void>(`/api/admin/class/delete/${id}`)
 }
 
 export function getAdminAnswerPage(

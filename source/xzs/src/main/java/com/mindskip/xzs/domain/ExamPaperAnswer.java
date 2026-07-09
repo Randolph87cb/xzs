@@ -73,6 +73,8 @@ public class ExamPaperAnswer implements Serializable {
 
     private Integer taskExamId;
 
+    private Integer classId;
+
     public Integer getId() {
         return id;
     }
@@ -191,5 +193,13 @@ public class ExamPaperAnswer implements Serializable {
 
     public void setTaskExamId(Integer taskExamId) {
         this.taskExamId = taskExamId;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 }

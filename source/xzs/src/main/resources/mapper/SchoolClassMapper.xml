@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.repository.SchoolClassMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.domain.SchoolClass">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="teacher_name" jdbcType="VARCHAR" property="teacherName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    c.id, c.name, c.grade_level, c.teacher_id, c.status, c.create_time, c.modify_time,
+    c.deleted, u.real_name as teacher_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_class c
+    left join t_user u on u.id = c.teacher_id
+    where c.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_class
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mindskip.xzs.domain.SchoolClass" useGeneratedKeys="true" keyProperty="id">
+    insert into t_class (id, name, grade_level, teacher_id, status, create_time, modify_time, deleted)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gradeLevel,jdbcType=INTEGER},
+      #{teacherId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+      #{modifyTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mindskip.xzs.domain.SchoolClass" useGeneratedKeys="true" keyProperty="id">
+    insert into t_class
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">id,</if>
+      <if test="name != null">name,</if>
+      <if test="gradeLevel != null">grade_level,</if>
+      <if test="teacherId != null">teacher_id,</if>
+      <if test="status != null">status,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="modifyTime != null">modify_time,</if>
+      <if test="deleted != null">deleted,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">#{id,jdbcType=INTEGER},</if>
+      <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+      <if test="gradeLevel != null">#{gradeLevel,jdbcType=INTEGER},</if>
+      <if test="teacherId != null">#{teacherId,jdbcType=INTEGER},</if>
+      <if test="status != null">#{status,jdbcType=INTEGER},</if>
+      <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+      <if test="modifyTime != null">#{modifyTime,jdbcType=TIMESTAMP},</if>
+      <if test="deleted != null">#{deleted,jdbcType=BIT},</if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mindskip.xzs.domain.SchoolClass">
+    update t_class
+    <set>
+      <if test="name != null">name = #{name,jdbcType=VARCHAR},</if>
+      <if test="gradeLevel != null">grade_level = #{gradeLevel,jdbcType=INTEGER},</if>
+      <if test="teacherId != null">teacher_id = #{teacherId,jdbcType=INTEGER},</if>
+      <if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+      <if test="createTime != null">create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+      <if test="modifyTime != null">modify_time = #{modifyTime,jdbcType=TIMESTAMP},</if>
+      <if test="deleted != null">deleted = #{deleted,jdbcType=BIT},</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mindskip.xzs.domain.SchoolClass">
+    update t_class
+    set name = #{name,jdbcType=VARCHAR},
+      grade_level = #{gradeLevel,jdbcType=INTEGER},
+      teacher_id = #{teacherId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <sql id="Scope_Where">
+    <if test="name != null and name != ''">
+      and c.name like concat('%', #{name}, '%')
+    </if>
+    <if test="gradeLevel != null">
+      and c.grade_level = #{gradeLevel}
+    </if>
+    <if test="teacherId != null">
+      and c.teacher_id = #{teacherId}
+    </if>
+    <if test="classId != null">
+      and c.id = #{classId}
+    </if>
+    <if test="classIds != null">
+      <choose>
+        <when test="classIds.size > 0">
+          and c.id in
+          <foreach collection="classIds" item="id" open="(" separator="," close=")">
+            #{id}
+          </foreach>
+        </when>
+        <otherwise>
+          and 1 = 0
+        </otherwise>
+      </choose>
+    </if>
+  </sql>
+
+  <select id="page" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.clazz.ClassPageRequestVM">
+    select
+    <include refid="Base_Column_List" />
+    from t_class c
+    left join t_user u on u.id = c.teacher_id
+    <where>
+      and c.deleted = false
+      <include refid="Scope_Where" />
+    </where>
+  </select>
+
+  <select id="selectOptions" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.clazz.ClassPageRequestVM">
+    select
+    <include refid="Base_Column_List" />
+    from t_class c
+    left join t_user u on u.id = c.teacher_id
+    <where>
+      and c.deleted = false
+      and c.status = 1
+      <include refid="Scope_Where" />
+    </where>
+    order by c.id desc
+  </select>
+
+  <select id="selectIdsByTeacherId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select id
+    from t_class
+    where deleted = false and teacher_id = #{teacherId}
+  </select>
+</mapper>

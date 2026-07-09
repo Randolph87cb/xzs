@@ -5,8 +5,10 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.UserEventLog;
+import com.mindskip.xzs.domain.enums.RoleEnum;
 import com.mindskip.xzs.domain.enums.UserStatusEnum;
 import com.mindskip.xzs.service.AuthenticationService;
+import com.mindskip.xzs.service.ClassScopeService;
 import com.mindskip.xzs.service.UserEventLogService;
 import com.mindskip.xzs.service.UserService;
 import com.mindskip.xzs.utility.DateTimeUtil;
@@ -31,17 +33,24 @@ public class UserController extends BaseApiController {
     private final UserService userService;
     private final UserEventLogService userEventLogService;
     private final AuthenticationService authenticationService;
+    private final ClassScopeService classScopeService;
 
     @Autowired
-    public UserController(UserService userService, UserEventLogService userEventLogService, AuthenticationService authenticationService) {
+    public UserController(UserService userService, UserEventLogService userEventLogService, AuthenticationService authenticationService, ClassScopeService classScopeService) {
         this.userService = userService;
         this.userEventLogService = userEventLogService;
         this.authenticationService = authenticationService;
+        this.classScopeService = classScopeService;
     }
 
 
     @RequestMapping(value = "/page/list", method = RequestMethod.POST)
     public RestResponse<PageInfo<UserResponseVM>> pageList(@RequestBody UserPageRequestVM model) {
+        User currentUser = getCurrentUser();
+        if (classScopeService.isTeacher(currentUser)) {
+            model.setRole(RoleEnum.STUDENT.getCode());
+            model.setClassIds(classScopeService.teacherClassIds(currentUser));
+        }
         PageInfo<User> pageInfo = userService.userPage(model);
         PageInfo<UserResponseVM> page = PageInfoHelper.copyMap(pageInfo, d -> UserResponseVM.from(d));
         return RestResponse.ok(page);
@@ -62,6 +71,9 @@ public class UserController extends BaseApiController {
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
     public RestResponse<UserResponseVM> select(@PathVariable Integer id) {
         User user = userService.getUserById(id);
+        if (classScopeService.isTeacher(getCurrentUser())) {
+            classScopeService.requireStudentAccess(getCurrentUser(), id);
+        }
         UserResponseVM userVm = UserResponseVM.from(user);
         return RestResponse.ok(userVm);
     }
@@ -76,6 +88,12 @@ public class UserController extends BaseApiController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public RestResponse<User> edit(@RequestBody @Valid UserCreateVM model) {
+        User currentUser = getCurrentUser();
+        User before = model.getId() == null ? null : userService.getUserById(model.getId());
+        RestResponse<User> scopeError = validateUserScope(currentUser, model, before);
+        if (scopeError != null) {
+            return scopeError;
+        }
         if (model.getId() == null) {  //create
             User existUser = userService.getUserByUserName(model.getUserName());
             if (null != existUser) {
@@ -89,7 +107,13 @@ public class UserController extends BaseApiController {
         if (StringUtils.isBlank(model.getBirthDay())) {
             model.setBirthDay(null);
         }
+        if (classScopeService.isTeacher(currentUser)) {
+            model.setRole(RoleEnum.STUDENT.getCode());
+        }
         User user = modelMapper.map(model, User.class);
+        if (user.getRole() == null || RoleEnum.STUDENT.getCode() != user.getRole()) {
+            user.setClassId(null);
+        }
 
         if (model.getId() == null) {
             String encodePwd = authenticationService.pwdEncode(model.getPassword());
@@ -123,6 +147,9 @@ public class UserController extends BaseApiController {
 
     @RequestMapping(value = "/changeStatus/{id}", method = RequestMethod.POST)
     public RestResponse<Integer> changeStatus(@PathVariable Integer id) {
+        if (classScopeService.isTeacher(getCurrentUser())) {
+            classScopeService.requireStudentAccess(getCurrentUser(), id);
+        }
         User user = userService.getUserById(id);
         UserStatusEnum userStatusEnum = UserStatusEnum.fromCode(user.getStatus());
         Integer newStatus = userStatusEnum == UserStatusEnum.Enable ? UserStatusEnum.Disable.getCode() : UserStatusEnum.Enable.getCode();
@@ -135,6 +162,9 @@ public class UserController extends BaseApiController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public RestResponse delete(@PathVariable Integer id) {
+        if (classScopeService.isTeacher(getCurrentUser())) {
+            classScopeService.requireStudentAccess(getCurrentUser(), id);
+        }
         User user = userService.getUserById(id);
         user.setDeleted(true);
         userService.updateByIdFilter(user);
@@ -144,8 +174,41 @@ public class UserController extends BaseApiController {
 
     @RequestMapping(value = "/selectByUserName", method = RequestMethod.POST)
     public RestResponse<List<KeyValue>> selectByUserName(@RequestBody String userName) {
-        List<KeyValue> keyValues = userService.selectByUserName(userName);
+        User currentUser = getCurrentUser();
+        List<KeyValue> keyValues = classScopeService.isTeacher(currentUser) ?
+                userService.selectStudentByUserNameInClasses(userName, classScopeService.teacherClassIds(currentUser)) :
+                userService.selectByUserName(userName);
         return RestResponse.ok(keyValues);
+    }
+
+    private RestResponse<User> validateUserScope(User currentUser, UserCreateVM model, User before) {
+        if (classScopeService.isTeacher(currentUser)) {
+            if (model.getRole() != null && RoleEnum.STUDENT.getCode() != model.getRole()) {
+                return RestResponse.fail(2, "老师只能管理学生账号");
+            }
+            if (before != null) {
+                classScopeService.requireStudentAccess(currentUser, before.getId());
+            }
+            Integer classId = model.getClassId();
+            if (classId == null && before != null) {
+                classId = before.getClassId();
+                model.setClassId(classId);
+            }
+            if (classId == null) {
+                return RestResponse.fail(2, "学生班级不能为空");
+            }
+            if (!classScopeService.canManageClass(currentUser, classId)) {
+                return RestResponse.fail(2, "没有该班级的管理权限");
+            }
+            return null;
+        }
+        if (before != null && RoleEnum.STUDENT.getCode() == before.getRole() && model.getClassId() != null && !classScopeService.canManageClass(currentUser, model.getClassId())) {
+            return RestResponse.fail(2, "班级不存在");
+        }
+        if (model.getRole() != null && RoleEnum.STUDENT.getCode() == model.getRole() && model.getClassId() == null && before == null) {
+            return RestResponse.fail(2, "学生班级不能为空");
+        }
+        return null;
     }
 
 }

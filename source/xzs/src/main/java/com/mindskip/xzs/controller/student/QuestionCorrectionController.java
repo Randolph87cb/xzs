@@ -45,7 +45,7 @@ public class QuestionCorrectionController extends BaseApiController {
         }
         List<Map<String, Object>> answerRows = jdbcTemplate.queryForList(
                 "select id, question_id, exam_paper_answer_id, create_user from t_exam_paper_question_customer_answer " +
-                        "where id = ? and create_user = ? and do_right = false",
+                "where id = ? and create_user = ? and do_right = false",
                 request.getCustomerAnswerId(),
                 getCurrentUser().getId());
         if (answerRows.isEmpty()) {
@@ -59,14 +59,15 @@ public class QuestionCorrectionController extends BaseApiController {
                 getCurrentUser().getId());
         if (existingRows.isEmpty()) {
             jdbcTemplate.update(
-                    "insert into t_question_correction_record (user_id, question_id, exam_paper_answer_id, customer_answer_id, student_wrong_reason, student_correct_thinking, review_status, resubmit_count, submit_time, deleted) " +
-                            "values (?, ?, ?, ?, ?, ?, 'SUBMITTED', 0, now(), false)",
+                    "insert into t_question_correction_record (user_id, question_id, exam_paper_answer_id, customer_answer_id, student_wrong_reason, student_correct_thinking, review_status, resubmit_count, submit_time, deleted, class_id) " +
+                            "values (?, ?, ?, ?, ?, ?, 'SUBMITTED', 0, now(), false, ?)",
                     getCurrentUser().getId(),
                     answer.get("question_id"),
                     answer.get("exam_paper_answer_id"),
                     request.getCustomerAnswerId(),
                     request.getWrongReason().trim(),
-                    request.getCorrectThinking().trim());
+                    request.getCorrectThinking().trim(),
+                    getCurrentUser().getClassId());
             return RestResponse.ok();
         }
 
@@ -85,9 +86,10 @@ public class QuestionCorrectionController extends BaseApiController {
         jdbcTemplate.update(
                 "update t_question_correction_record set student_wrong_reason = ?, student_correct_thinking = ?, review_status = 'SUBMITTED', " +
                         "reviewer_id = null, reviewer_name = null, review_comment = null, review_time = null, " +
-                        "resubmit_count = coalesce(resubmit_count, 0) + 1, submit_time = now() where id = ?",
+                        "resubmit_count = coalesce(resubmit_count, 0) + 1, submit_time = now(), class_id = coalesce(class_id, ?) where id = ?",
                 request.getWrongReason().trim(),
                 request.getCorrectThinking().trim(),
+                getCurrentUser().getClassId(),
                 existing.get("id"));
         return RestResponse.ok();
     }

@@ -66,7 +66,7 @@ import {
 } from '@xzs/api-client'
 
 const props = defineProps<{
-  role: 1 | 3
+  role: 1 | 2 | 3
 }>()
 
 const route = useRoute()
@@ -80,8 +80,16 @@ const query = reactive({
   pageIndex: 1,
   pageSize: 10
 })
-const roleTitle = computed(() => (props.role === 1 ? '学生' : '管理员'))
-const editPath = computed(() => (props.role === 1 ? '/user/student/edit' : '/user/admin/edit'))
+const roleTitle = computed(() => {
+  if (props.role === 1) return '学生'
+  if (props.role === 2) return '老师'
+  return '管理员'
+})
+const editPath = computed(() => {
+  if (props.role === 1) return '/user/student/edit'
+  if (props.role === 2) return '/user/teacher/edit'
+  return '/user/admin/edit'
+})
 
 onMounted(loadData)
 watch(

@@ -73,6 +73,8 @@ public class ExamPaperQuestionCustomerAnswer implements Serializable {
 
     private Integer itemOrder;
 
+    private Integer classId;
+
     public Integer getId() {
         return id;
     }
@@ -191,5 +193,13 @@ public class ExamPaperQuestionCustomerAnswer implements Serializable {
 
     public void setItemOrder(Integer itemOrder) {
         this.itemOrder = itemOrder;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 }

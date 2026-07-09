@@ -24,8 +24,15 @@ export const adminMenus: AdminMenuItem[] = [
     icon: 'Collection',
     children: [
       { path: '/user/student/list', title: '学生列表', icon: 'Collection' },
+      { path: '/user/teacher/list', title: '老师列表', icon: 'Collection' },
       { path: '/user/admin/list', title: '管理员列表', icon: 'Collection' }
     ]
+  },
+  {
+    path: '/class',
+    title: '班级管理',
+    icon: 'Collection',
+    children: [{ path: '/class/list', title: '班级列表', icon: 'Collection' }]
   },
   {
     path: '/education',
@@ -131,11 +138,37 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '管理员列表' }
       },
       {
+        path: 'user/teacher/list',
+        name: 'UserTeacherList',
+        component: () => import('@/views/user/UserListView.vue'),
+        props: { role: 2 },
+        meta: { title: '老师列表' }
+      },
+      {
+        path: 'user/teacher/edit',
+        name: 'UserTeacherEdit',
+        component: () => import('@/views/user/UserEditView.vue'),
+        props: { role: 2 },
+        meta: { title: '老师编辑' }
+      },
+      {
         path: 'user/admin/edit',
         name: 'UserAdminEdit',
         component: () => import('@/views/user/UserEditView.vue'),
         props: { role: 3 },
         meta: { title: '管理员编辑' }
+      },
+      {
+        path: 'class/list',
+        name: 'ClassList',
+        component: () => import('@/views/class/ClassListView.vue'),
+        meta: { title: '班级列表' }
+      },
+      {
+        path: 'class/edit',
+        name: 'ClassEdit',
+        component: () => import('@/views/class/ClassEditView.vue'),
+        meta: { title: '班级编辑' }
       },
       {
         path: 'exam/paper/list',
@@ -256,6 +289,9 @@ router.beforeEach(async (to) => {
     }
 
     if (userStore.isAuthenticated) {
+      if (userStore.userInfo?.role === 2 && !isTeacherRouteAllowed(to.path)) {
+        return '/class/list'
+      }
       return
     }
   } catch {
@@ -271,3 +307,17 @@ router.beforeEach(async (to) => {
 router.afterEach(() => {
   NProgress.done()
 })
+
+function isTeacherRouteAllowed(path: string) {
+  return [
+    '/class/list',
+    '/class/edit',
+    '/user/student/list',
+    '/user/student/edit',
+    '/task/list',
+    '/task/edit',
+    '/answer/list',
+    '/exam/question/correction',
+    '/profile/index'
+  ].some((allowedPath) => path === allowedPath || path.startsWith(`${allowedPath}?`))
+}

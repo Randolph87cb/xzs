@@ -31,6 +31,8 @@ public class UserCreateVM {
 
     private Integer userLevel;
 
+    private Integer classId;
+
     public Integer getId() {
         return id;
     }
@@ -117,5 +119,13 @@ public class UserCreateVM {
 
     public void setUserLevel(Integer userLevel) {
         this.userLevel = userLevel;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 }

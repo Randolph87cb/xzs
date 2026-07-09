@@ -3,12 +3,14 @@ package com.mindskip.xzs.controller.admin;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.service.ClassScopeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +20,12 @@ import java.util.Map;
 public class QuestionCorrectionController extends BaseApiController {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ClassScopeService classScopeService;
 
     @Autowired
-    public QuestionCorrectionController(JdbcTemplate jdbcTemplate) {
+    public QuestionCorrectionController(JdbcTemplate jdbcTemplate, ClassScopeService classScopeService) {
         this.jdbcTemplate = jdbcTemplate;
+        this.classScopeService = classScopeService;
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.POST)
@@ -29,14 +33,14 @@ public class QuestionCorrectionController extends BaseApiController {
         int pageIndex = request.getPageIndex() == null || request.getPageIndex() < 1 ? 1 : request.getPageIndex();
         int pageSize = request.getPageSize() == null || request.getPageSize() < 1 ? 20 : request.getPageSize();
         int offset = (pageIndex - 1) * pageSize;
-        String statusFilter = StringUtils.isBlank(request.getReviewStatus()) ? "" : " and c.review_status = ? ";
-        Integer total = StringUtils.isBlank(request.getReviewStatus()) ?
-                jdbcTemplate.queryForObject("select count(*) from t_question_correction_record c where c.deleted = false", Integer.class) :
-                jdbcTemplate.queryForObject("select count(*) from t_question_correction_record c where c.deleted = false and c.review_status = ?", Integer.class, request.getReviewStatus());
+        User currentUser = getCurrentUser();
+        List<Object> args = new ArrayList<>();
+        String filter = pageFilterSql(request, currentUser, args);
 
-        List<Map<String, Object>> list = StringUtils.isBlank(request.getReviewStatus()) ?
-                jdbcTemplate.queryForList(pageSql(""), pageSize, offset) :
-                jdbcTemplate.queryForList(pageSql(statusFilter), request.getReviewStatus(), pageSize, offset);
+        Integer total = jdbcTemplate.queryForObject(countBaseSql() + filter, Integer.class, args.toArray());
+        args.add(pageSize);
+        args.add(offset);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(pageSql(filter), args.toArray());
 
         Map<String, Object> result = new HashMap<>();
         result.put("list", list);
@@ -48,7 +52,11 @@ public class QuestionCorrectionController extends BaseApiController {
 
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
     public RestResponse<Map<String, Object>> select(@PathVariable Integer id) {
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(pageBaseSql() + " and c.id = ?", id);
+        List<Object> args = new ArrayList<>();
+        QuestionCorrectionPageRequest request = new QuestionCorrectionPageRequest();
+        String filter = pageFilterSql(request, getCurrentUser(), args);
+        args.add(id);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(pageBaseSql() + filter + " and c.id = ?", args.toArray());
         if (rows.isEmpty()) {
             return RestResponse.fail(2, "改错记录不存在");
         }
@@ -71,9 +79,12 @@ public class QuestionCorrectionController extends BaseApiController {
         if ("REJECTED".equals(request.getReviewResult()) && StringUtils.isBlank(request.getReviewComment())) {
             return RestResponse.fail(2, "审核意见不能为空");
         }
+        List<Object> args = new ArrayList<>();
+        String filter = correctionScopeSql(getCurrentUser(), args);
+        args.add(request.getId());
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
-                "select * from t_question_correction_record where deleted = false and id = ?",
-                request.getId());
+                "select c.* from t_question_correction_record c join t_user u on u.id = c.user_id where c.deleted = false " + filter + " and c.id = ?",
+                args.toArray());
         if (rows.isEmpty()) {
             return RestResponse.fail(2, "改错记录不存在");
         }
@@ -113,6 +124,13 @@ public class QuestionCorrectionController extends BaseApiController {
         return pageBaseSql() + statusFilter + " order by c.submit_time desc, c.id desc limit ? offset ?";
     }
 
+    private String countBaseSql() {
+        return "select count(*) " +
+                "from t_question_correction_record c " +
+                "join t_user u on u.id = c.user_id " +
+                "where c.deleted = false ";
+    }
+
     private String pageBaseSql() {
         return "select c.*, u.user_name, u.real_name, q.question_type, q.correct, a.answer as student_answer, " +
                 "tc.content::jsonb ->> 'titleContent' as title, " +
@@ -125,10 +143,45 @@ public class QuestionCorrectionController extends BaseApiController {
                 "where c.deleted = false ";
     }
 
+    private String pageFilterSql(QuestionCorrectionPageRequest request, User currentUser, List<Object> args) {
+        StringBuilder sql = new StringBuilder();
+        if (!StringUtils.isBlank(request.getReviewStatus())) {
+            sql.append(" and c.review_status = ? ");
+            args.add(request.getReviewStatus());
+        }
+        if (request.getClassId() != null) {
+            sql.append(" and coalesce(c.class_id, u.class_id) = ? ");
+            args.add(request.getClassId());
+        }
+        sql.append(correctionScopeSql(currentUser, args));
+        return sql.toString();
+    }
+
+    private String correctionScopeSql(User currentUser, List<Object> args) {
+        if (!classScopeService.isTeacher(currentUser)) {
+            return "";
+        }
+        List<Integer> classIds = classScopeService.teacherClassIds(currentUser);
+        if (classIds.isEmpty()) {
+            return " and 1 = 0 ";
+        }
+        StringBuilder sql = new StringBuilder(" and coalesce(c.class_id, u.class_id) in (");
+        for (int i = 0; i < classIds.size(); i++) {
+            if (i > 0) {
+                sql.append(",");
+            }
+            sql.append("?");
+            args.add(classIds.get(i));
+        }
+        sql.append(") ");
+        return sql.toString();
+    }
+
     public static class QuestionCorrectionPageRequest {
         private String reviewStatus;
         private Integer pageIndex;
         private Integer pageSize;
+        private Integer classId;
 
         public String getReviewStatus() {
             return reviewStatus;
@@ -152,6 +205,14 @@ public class QuestionCorrectionController extends BaseApiController {
 
         public void setPageSize(Integer pageSize) {
             this.pageSize = pageSize;
+        }
+
+        public Integer getClassId() {
+            return classId;
+        }
+
+        public void setClassId(Integer classId) {
+            this.classId = classId;
         }
     }
 

@@ -35,6 +35,8 @@ public class UserResponseVM extends BaseVM {
 
     private Integer userLevel;
 
+    private Integer classId;
+
     private String imagePath;
 
     public static UserResponseVM from(User user) {
@@ -156,6 +158,14 @@ public class UserResponseVM extends BaseVM {
 
     public void setUserLevel(Integer userLevel) {
         this.userLevel = userLevel;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public String getImagePath() {

@@ -180,6 +180,29 @@ CREATE TABLE "public"."t_exam_paper" (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for t_class
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_class";
+CREATE TABLE "public"."t_class" (
+  "id" serial PRIMARY KEY,
+  "name" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
+  "grade_level" int4,
+  "teacher_id" int4 NOT NULL,
+  "status" int4 NOT NULL DEFAULT 1,
+  "create_time" timestamp(6),
+  "modify_time" timestamp(6),
+  "deleted" bool NOT NULL DEFAULT false
+)
+;
+
+-- ----------------------------
+-- Records of t_class
+-- ----------------------------
+
+CREATE INDEX "idx_class_teacher" ON "public"."t_class" ("teacher_id", "deleted");
+CREATE INDEX "idx_class_grade" ON "public"."t_class" ("grade_level", "deleted");
+
+-- ----------------------------
 -- Table structure for t_exam_paper_answer
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."t_exam_paper_answer";
@@ -198,7 +221,8 @@ CREATE TABLE "public"."t_exam_paper_answer" (
   "status" int4,
   "create_user" int4,
   "create_time" timestamp(6),
-  "task_exam_id" int4
+  "task_exam_id" int4,
+  "class_id" int4
 )
 ;
 
@@ -225,7 +249,8 @@ CREATE TABLE "public"."t_exam_paper_question_customer_answer" (
   "do_right" bool,
   "create_user" int4,
   "create_time" timestamp(6),
-  "item_order" int4
+  "item_order" int4,
+  "class_id" int4
 )
 ;
 
@@ -357,7 +382,8 @@ CREATE TABLE "public"."t_question_correction_record" (
   "resubmit_count" int4 DEFAULT 0,
   "submit_time" timestamp(6),
   "review_time" timestamp(6),
-  "deleted" bool DEFAULT false
+  "deleted" bool DEFAULT false,
+  "class_id" int4
 )
 ;
 
@@ -389,6 +415,8 @@ CREATE UNIQUE INDEX "uk_question_correction_customer_answer"
 
 CREATE INDEX "idx_question_correction_record_status_submit"
   ON "public"."t_question_correction_record" ("review_status", "submit_time");
+CREATE INDEX "idx_question_correction_class_status"
+  ON "public"."t_question_correction_record" ("class_id", "review_status", "submit_time");
 
 CREATE INDEX "idx_question_correction_review_record_correction"
   ON "public"."t_question_correction_review_record" ("correction_id", "review_round");
@@ -449,7 +477,8 @@ CREATE TABLE "public"."t_task_exam" (
   "create_user" int4,
   "create_user_name" varchar(255) COLLATE "pg_catalog"."default",
   "create_time" timestamp(6),
-  "deleted" bool
+  "deleted" bool,
+  "class_id" int4
 )
 ;
 
@@ -511,15 +540,16 @@ CREATE TABLE "public"."t_user" (
   "modify_time" timestamp(6),
   "last_active_time" timestamp(6),
   "deleted" bool,
-  "wx_open_id" varchar COLLATE "pg_catalog"."default"
+  "wx_open_id" varchar COLLATE "pg_catalog"."default",
+  "class_id" int4
 )
 ;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO "public"."t_user" VALUES (2, '55bad52c-cdf7-4321-87b8-e37d958b24cf', 'admin', 'D1AGFL+Gx37t0NPG4d6biYP5Z31cNbwhK5w1lUeiHB2zagqbk8efYfSjYoh1Z/j1dkiRjHU+b0EpwzCh8IGsksJjzD65ci5LsnodQVf4Uj6D3pwoscXGqmkjjpzvSJbx42swwNTA+QoDU8YLo7JhtbUK2X0qCjFGpd+8eJ5BGvk=', '管理员', 18, 1, '2019-09-02 00:00:00', 13, '1561651651616156', 3, 1, NULL, '2019-07-23 07:17:16.923', '2020-02-08 10:52:42.234', '2019-07-23 07:17:16.923', 'f', NULL);
-INSERT INTO "public"."t_user" VALUES (1, 'b41eaab1-926a-4824-94e8-da9259986ab6', 'student', 'RA6atJcbedAQUA/3jTcC85RuVuedZEgkeWUCiagtwhz6SjEKerC4IvFQe1OGSvbk+tPZGfkInRrmipPgHU6tzcpaQfdJkV9cXSGoxyldrWSFxblfpGGDxVisQrtrH7N1AEyi6u3h4iYrwkf4sPV8xoU8ZpOhlKmLEjDEq/an6rQ=', '学生', 16, 2, '1979-06-05 00:00:00', 1, '19171171610', 1, 1, 'https://www.mindskip.net:9008/image/ba607a75-83ba-4530-8e23-660b72dc4953/头像.jpg', '2019-07-23 05:02:29.027', '2020-02-05 09:36:52.138', '2019-07-23 05:02:29.027', 'f', NULL);
+INSERT INTO "public"."t_user" VALUES (2, '55bad52c-cdf7-4321-87b8-e37d958b24cf', 'admin', 'D1AGFL+Gx37t0NPG4d6biYP5Z31cNbwhK5w1lUeiHB2zagqbk8efYfSjYoh1Z/j1dkiRjHU+b0EpwzCh8IGsksJjzD65ci5LsnodQVf4Uj6D3pwoscXGqmkjjpzvSJbx42swwNTA+QoDU8YLo7JhtbUK2X0qCjFGpd+8eJ5BGvk=', '管理员', 18, 1, '2019-09-02 00:00:00', 13, '1561651651616156', 3, 1, NULL, '2019-07-23 07:17:16.923', '2020-02-08 10:52:42.234', '2019-07-23 07:17:16.923', 'f', NULL, NULL);
+INSERT INTO "public"."t_user" VALUES (1, 'b41eaab1-926a-4824-94e8-da9259986ab6', 'student', 'RA6atJcbedAQUA/3jTcC85RuVuedZEgkeWUCiagtwhz6SjEKerC4IvFQe1OGSvbk+tPZGfkInRrmipPgHU6tzcpaQfdJkV9cXSGoxyldrWSFxblfpGGDxVisQrtrH7N1AEyi6u3h4iYrwkf4sPV8xoU8ZpOhlKmLEjDEq/an6rQ=', '学生', 16, 2, '1979-06-05 00:00:00', 1, '19171171610', 1, 1, 'https://www.mindskip.net:9008/image/ba607a75-83ba-4530-8e23-660b72dc4953/头像.jpg', '2019-07-23 05:02:29.027', '2020-02-05 09:36:52.138', '2019-07-23 05:02:29.027', 'f', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_user_event_log
@@ -665,11 +695,13 @@ ALTER TABLE "public"."t_exam_paper" ADD CONSTRAINT "t_exam_paper_pkey" PRIMARY K
 -- Primary Key structure for table t_exam_paper_answer
 -- ----------------------------
 ALTER TABLE "public"."t_exam_paper_answer" ADD CONSTRAINT "t_exam_paper_answer_pkey" PRIMARY KEY ("id");
+CREATE INDEX "idx_exam_paper_answer_class" ON "public"."t_exam_paper_answer" ("class_id", "create_time");
 
 -- ----------------------------
 -- Primary Key structure for table t_exam_paper_question_customer_answer
 -- ----------------------------
 ALTER TABLE "public"."t_exam_paper_question_customer_answer" ADD CONSTRAINT "t_exam_paper_question_customer_answer_pkey" PRIMARY KEY ("id");
+CREATE INDEX "idx_customer_answer_class" ON "public"."t_exam_paper_question_customer_answer" ("class_id", "create_time");
 
 -- ----------------------------
 -- Primary Key structure for table t_message
@@ -701,6 +733,7 @@ ALTER TABLE "public"."t_subject" ADD CONSTRAINT "t_subject_pkey" PRIMARY KEY ("i
 -- Primary Key structure for table t_task_exam
 -- ----------------------------
 ALTER TABLE "public"."t_task_exam" ADD CONSTRAINT "t_task_exam_pkey" PRIMARY KEY ("id");
+CREATE INDEX "idx_task_exam_class" ON "public"."t_task_exam" ("class_id", "deleted");
 
 -- ----------------------------
 -- Primary Key structure for table t_task_exam_customer_answer
@@ -716,6 +749,7 @@ ALTER TABLE "public"."t_text_content" ADD CONSTRAINT "t_text_content_pkey" PRIMA
 -- Primary Key structure for table t_user
 -- ----------------------------
 ALTER TABLE "public"."t_user" ADD CONSTRAINT "t_user_pkey" PRIMARY KEY ("id");
+CREATE INDEX "idx_user_class_role" ON "public"."t_user" ("class_id", "role", "deleted");
 
 -- ----------------------------
 -- Primary Key structure for table t_user_event_log

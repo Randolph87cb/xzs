@@ -119,6 +119,8 @@ public interface UserService extends BaseService<User> {
 
     List<KeyValue> selectByUserName(String userName);
 
+    List<KeyValue> selectStudentByUserNameInClasses(String userName, List<Integer> classIds);
+
 
     List<User> selectByIds(List<Integer> ids);
 

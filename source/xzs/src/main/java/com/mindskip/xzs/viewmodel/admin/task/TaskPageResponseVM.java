@@ -2,9 +2,6 @@ package com.mindskip.xzs.viewmodel.admin.task;
 
 
 
-import java.util.Date;
-
-
 public class TaskPageResponseVM {
 
     private Integer id;
@@ -16,6 +13,10 @@ public class TaskPageResponseVM {
     private String createUserName;
 
     private String createTime;
+
+    private Integer classId;
+
+    private String className;
 
     private Boolean deleted;
 
@@ -57,6 +58,22 @@ public class TaskPageResponseVM {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public Boolean getDeleted() {

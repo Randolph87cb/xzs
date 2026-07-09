@@ -17,11 +17,12 @@
     <result column="create_user" jdbcType="INTEGER" property="createUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="item_order" jdbcType="INTEGER" property="itemOrder" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, question_id, exam_paper_id, exam_paper_answer_id, question_type, subject_id,
     customer_score, question_score, question_text_content_id, answer, text_content_id,
-    do_right, create_user, create_time, item_order
+    do_right, create_user, create_time, item_order, class_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -38,13 +39,14 @@
       exam_paper_answer_id, question_type, subject_id,
       customer_score, question_score, question_text_content_id,
       answer, text_content_id, do_right,
-      create_user, create_time, item_order
+      create_user, create_time, item_order, class_id
       )
     values (#{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{examPaperId,jdbcType=INTEGER},
       #{examPaperAnswerId,jdbcType=INTEGER}, #{questionType,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER},
       #{customerScore,jdbcType=INTEGER}, #{questionScore,jdbcType=INTEGER}, #{questionTextContentId,jdbcType=INTEGER},
       #{answer,jdbcType=VARCHAR}, #{textContentId,jdbcType=INTEGER}, #{doRight,jdbcType=BIT},
-      #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{itemOrder,jdbcType=INTEGER}
+      #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{itemOrder,jdbcType=INTEGER},
+      #{classId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer" useGeneratedKeys="true" keyProperty="id">
@@ -95,6 +97,9 @@
       <if test="itemOrder != null">
         item_order,
       </if>
+      <if test="classId != null">
+        class_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -141,6 +146,9 @@
       </if>
       <if test="itemOrder != null">
         #{itemOrder,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -189,6 +197,9 @@
       <if test="itemOrder != null">
         item_order = #{itemOrder,jdbcType=INTEGER},
       </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -207,7 +218,8 @@
       do_right = #{doRight,jdbcType=BIT},
       create_user = #{createUser,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      item_order = #{itemOrder,jdbcType=INTEGER}
+      item_order = #{itemOrder,jdbcType=INTEGER},
+      class_id = #{classId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -244,7 +256,7 @@
     subject_id, create_time, create_user,
     text_content_id, exam_paper_id, question_type,
     answer, customer_score, exam_paper_answer_id ,
-    do_right,question_text_content_id,item_order)
+    do_right,question_text_content_id,item_order,class_id)
     values
     <foreach collection="list" item="item" index="index"
              separator=",">
@@ -252,7 +264,8 @@
       #{item.subjectId,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.createUser,jdbcType=INTEGER},
       #{item.textContentId,jdbcType=INTEGER}, #{item.examPaperId,jdbcType=INTEGER}, #{item.questionType,jdbcType=INTEGER},
       #{item.answer,jdbcType=VARCHAR}, #{item.customerScore,jdbcType=INTEGER}, #{item.examPaperAnswerId,jdbcType=INTEGER},
-      #{item.doRight,jdbcType=BIT},#{item.questionTextContentId,jdbcType=INTEGER},#{item.itemOrder,jdbcType=INTEGER})
+      #{item.doRight,jdbcType=BIT},#{item.questionTextContentId,jdbcType=INTEGER},#{item.itemOrder,jdbcType=INTEGER},
+      #{item.classId,jdbcType=INTEGER})
     </foreach>
   </insert>
 

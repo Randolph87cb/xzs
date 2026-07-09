@@ -123,6 +123,8 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<KeyValue> selectByUserName(String userName);
 
+    List<KeyValue> selectStudentByUserNameInClasses(@Param("userName") String userName, @Param("classIds") List<Integer> classIds);
+
     List<User> selectByIds(List<Integer> ids);
 
 

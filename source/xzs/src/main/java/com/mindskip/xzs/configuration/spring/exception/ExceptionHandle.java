@@ -2,6 +2,7 @@ package com.mindskip.xzs.configuration.spring.exception;
 
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.base.SystemCode;
+import com.mindskip.xzs.exception.BusinessException;
 import com.mindskip.xzs.utility.ErrorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,13 @@ public class ExceptionHandle {
     public RestResponse handler(Exception e) {
         logger.error(e.getMessage(), e);
         return new RestResponse<>(SystemCode.InnerError.getCode(), SystemCode.InnerError.getMessage());
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseBody
+    public RestResponse handler(BusinessException e) {
+        int code = e.isUnknown() ? SystemCode.AccessDenied.getCode() : e.getCode();
+        return new RestResponse<>(code, e.getMessage());
     }
 
     /**

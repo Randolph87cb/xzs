@@ -7,6 +7,7 @@ import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.task.TaskItemObject;
 import com.mindskip.xzs.repository.ExamPaperMapper;
 import com.mindskip.xzs.repository.TaskExamMapper;
+import com.mindskip.xzs.service.ClassScopeService;
 import com.mindskip.xzs.service.TaskExamService;
 import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.service.enums.ActionEnum;
@@ -34,13 +35,15 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
     private final TaskExamMapper taskExamMapper;
     private final TextContentService textContentService;
     private final ExamPaperMapper examPaperMapper;
+    private final ClassScopeService classScopeService;
 
     @Autowired
-    public TaskExamServiceImpl(TaskExamMapper taskExamMapper, TextContentService textContentService, ExamPaperMapper examPaperMapper) {
+    public TaskExamServiceImpl(TaskExamMapper taskExamMapper, TextContentService textContentService, ExamPaperMapper examPaperMapper, ClassScopeService classScopeService) {
         super(taskExamMapper);
         this.taskExamMapper = taskExamMapper;
         this.textContentService = textContentService;
         this.examPaperMapper = examPaperMapper;
+        this.classScopeService = classScopeService;
     }
 
     @Override
@@ -55,6 +58,12 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
     public void edit(TaskRequestVM model, User user) {
         ActionEnum actionEnum = (model.getId() == null) ? ActionEnum.ADD : ActionEnum.UPDATE;
         TaskExam taskExam = null;
+        if (classScopeService.isTeacher(user)) {
+            if (model.getClassId() == null) {
+                throw new com.mindskip.xzs.exception.BusinessException(com.mindskip.xzs.base.SystemCode.AccessDenied.getCode(), "老师必须选择负责班级");
+            }
+            classScopeService.requireClassAccess(user, model.getClassId());
+        }
         if (actionEnum == ActionEnum.ADD) {
             Date now = new Date();
             taskExam = modelMapper.map(model, TaskExam.class);
@@ -76,6 +85,9 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
 
         } else {
             taskExam = taskExamMapper.selectByPrimaryKey(model.getId());
+            if (classScopeService.isTeacher(user)) {
+                classScopeService.requireClassAccess(user, taskExam.getClassId());
+            }
             modelMapper.map(model, taskExam);
 
             TextContent textContent = textContentService.selectById(taskExam.getFrameTextContentId());
@@ -121,5 +133,10 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
     @Override
     public List<TaskExam> getByGradeLevel(Integer gradeLevel) {
         return taskExamMapper.getByGradeLevel(gradeLevel);
+    }
+
+    @Override
+    public List<TaskExam> getByGradeLevelOrClass(Integer gradeLevel, Integer classId) {
+        return taskExamMapper.getByGradeLevelOrClass(gradeLevel, classId);
     }
 }

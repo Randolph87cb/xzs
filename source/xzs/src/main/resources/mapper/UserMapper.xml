@@ -13,6 +13,7 @@
     <result column="user_level" jdbcType="INTEGER" property="userLevel" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="role" jdbcType="INTEGER" property="role" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="image_path" jdbcType="VARCHAR" property="imagePath" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -23,7 +24,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     id, user_uuid, user_name, password, real_name, age, sex, birth_day, user_level, phone,
-    role, status, image_path, create_time, modify_time, last_active_time, deleted, wx_open_id
+    role, class_id, status, image_path, create_time, modify_time, last_active_time, deleted, wx_open_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -39,14 +40,14 @@
     insert into t_user (id, user_uuid, user_name,
       password, real_name, age,
       sex, birth_day, user_level,
-      phone, role, status,
+      phone, role, class_id, status,
       image_path, create_time, modify_time,
       last_active_time, deleted, wx_open_id
       )
     values (#{id,jdbcType=INTEGER}, #{userUuid}::uuid, #{userName,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
       #{sex,jdbcType=INTEGER}, #{birthDay,jdbcType=TIMESTAMP}, #{userLevel,jdbcType=INTEGER},
-      #{phone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+      #{phone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
       #{imagePath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP},
       #{lastActiveTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{wxOpenId,jdbcType=VARCHAR}
       )
@@ -86,6 +87,9 @@
       </if>
       <if test="role != null">
         role,
+      </if>
+      <if test="classId != null">
+        class_id,
       </if>
       <if test="status != null">
         status,
@@ -143,6 +147,9 @@
       <if test="role != null">
         #{role,jdbcType=INTEGER},
       </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
@@ -199,6 +206,9 @@
       <if test="role != null">
         role = #{role,jdbcType=INTEGER},
       </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -235,6 +245,7 @@
       user_level = #{userLevel,jdbcType=INTEGER},
       phone = #{phone,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
+      class_id = #{classId,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       image_path = #{imagePath,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -323,6 +334,22 @@
       <if test="role != null ">
         and role= #{role}
       </if>
+      <if test="classId != null">
+        and class_id = #{classId}
+      </if>
+      <if test="classIds != null">
+        <choose>
+          <when test="classIds.size > 0">
+            and class_id in
+            <foreach collection="classIds" item="id" open="(" separator="," close=")">
+              #{id}
+            </foreach>
+          </when>
+          <otherwise>
+            and 1 = 0
+          </otherwise>
+        </choose>
+      </if>
     </where>
   </select>
 
@@ -386,6 +413,24 @@
 		SELECT  id as value,user_name as name
 		from t_user
 		where deleted='f' and user_name like concat('%',#{value},'%')
+		limit 5
+  </select>
+
+  <select id="selectStudentByUserNameInClasses" resultType="com.mindskip.xzs.domain.other.KeyValue">
+		SELECT id as value,user_name as name
+		from t_user
+		where deleted='f' and role = 1 and user_name like concat('%',#{userName},'%')
+    <choose>
+      <when test="classIds != null and classIds.size > 0">
+        and class_id in
+        <foreach collection="classIds" item="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
+      </when>
+      <otherwise>
+        and 1 = 0
+      </otherwise>
+    </choose>
 		limit 5
   </select>
 

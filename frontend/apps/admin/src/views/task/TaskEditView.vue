@@ -11,6 +11,11 @@
       <el-form-item label="标题" prop="title">
         <el-input v-model="form.title" />
       </el-form-item>
+      <el-form-item label="发布班级" prop="classId">
+        <el-select v-model="form.classId" :clearable="!isTeacher" filterable placeholder="选择班级">
+          <el-option v-for="item in classOptions" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="试卷">
         <el-table :data="form.paperItems" border>
           <el-table-column prop="id" label="Id" width="90" />
@@ -56,30 +61,48 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import {
+  getAdminClassOptions,
   getAdminSubjectPage,
   getAdminTask,
   getAdminTaskExamPaperPage,
   saveAdminTask,
+  type AdminClassListItem,
   type AdminExamPaperListItem,
   type AdminSubjectListItem,
   type AdminTaskEditModel
 } from '@xzs/api-client'
+import { useUserStore } from '@/stores/user'
 
 const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 const subjects = ref<AdminSubjectListItem[]>([])
+const classOptions = ref<AdminClassListItem[]>([])
 const paperDialogVisible = ref(false)
 const paperRows = ref<AdminExamPaperListItem[]>([])
 const selectedPapers = ref<AdminExamPaperListItem[]>([])
-const form = reactive<AdminTaskEditModel>({ id: null, gradeLevel: 1, title: '', paperItems: [] })
+const form = reactive<AdminTaskEditModel>({ id: null, gradeLevel: 1, classId: null, title: '', paperItems: [] })
+const isTeacher = computed(() => userStore.userInfo?.role === 2)
 const rules: FormRules = {
-  title: [{ required: true, message: '请输入任务标题', trigger: 'blur' }]
+  title: [{ required: true, message: '请输入任务标题', trigger: 'blur' }],
+  classId: [
+    {
+      validator: (_rule, value, callback) => {
+        if (isTeacher.value && !value) {
+          callback(new Error('请选择发布班级'))
+          return
+        }
+        callback()
+      },
+      trigger: 'change'
+    }
+  ]
 }
 const paperQuery = reactive({
   subjectId: null as number | null,
@@ -91,6 +114,11 @@ const paperQuery = reactive({
 onMounted(async () => {
   const subjectResult = await getAdminSubjectPage({ pageIndex: 1, pageSize: 100 })
   subjects.value = subjectResult.response?.list ?? []
+  const classResult = await getAdminClassOptions()
+  classOptions.value = classResult.response ?? []
+  if (isTeacher.value && classOptions.value.length === 1) {
+    form.classId = classOptions.value[0].id
+  }
 
   const id = Number(route.query.id || 0)
   if (!id) return
@@ -98,6 +126,9 @@ onMounted(async () => {
   try {
     const result = await getAdminTask(id)
     Object.assign(form, result.response)
+    if (isTeacher.value && !form.classId && classOptions.value.length === 1) {
+      form.classId = classOptions.value[0].id
+    }
   } finally {
     loading.value = false
   }
@@ -123,6 +154,10 @@ async function submit() {
   if (!valid) return
   if (form.paperItems.length === 0) {
     ElMessage.error('请添加试卷')
+    return
+  }
+  if (isTeacher.value && !form.classId) {
+    ElMessage.error('请选择发布班级')
     return
   }
   loading.value = true

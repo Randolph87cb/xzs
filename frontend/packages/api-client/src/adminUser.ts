@@ -5,6 +5,7 @@ export interface AdminUserInfo {
   userName: string
   realName?: string
   role?: number
+  classId?: number | null
   status?: number
   phone?: string
   imagePath?: string
@@ -26,6 +27,8 @@ export interface AdminUserListItem {
   phone?: string
   createTime?: string
   status?: number
+  role?: number
+  classId?: number | null
 }
 
 export interface AdminPageResponse<T> {

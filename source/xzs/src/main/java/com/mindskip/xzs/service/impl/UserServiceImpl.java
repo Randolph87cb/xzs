@@ -140,6 +140,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
+    public List<KeyValue> selectStudentByUserNameInClasses(String userName, List<Integer> classIds) {
+        return userMapper.selectStudentByUserNameInClasses(userName, classIds);
+    }
+
+    @Override
     public List<User> selectByIds(List<Integer> ids) {
         return userMapper.selectByIds(ids);
     }

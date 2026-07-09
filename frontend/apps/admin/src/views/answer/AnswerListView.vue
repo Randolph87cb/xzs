@@ -12,6 +12,9 @@
       <el-select v-model="query.subjectId" clearable placeholder="学科">
         <el-option v-for="item in subjects" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
+      <el-select v-model="query.classId" clearable placeholder="班级">
+        <el-option v-for="item in classOptions" :key="item.id" :label="item.name" :value="item.id" />
+      </el-select>
     </section>
 
     <el-table :data="answers" border>
@@ -47,7 +50,9 @@
 import { onMounted, reactive, ref } from 'vue'
 import {
   getAdminAnswerPage,
+  getAdminClassOptions,
   getAdminSubjectPage,
+  type AdminClassListItem,
   type AdminAnswerListItem,
   type AdminSubjectListItem
 } from '@xzs/api-client'
@@ -55,15 +60,18 @@ import {
 const loading = ref(false)
 const answers = ref<AdminAnswerListItem[]>([])
 const subjects = ref<AdminSubjectListItem[]>([])
+const classOptions = ref<AdminClassListItem[]>([])
 const total = ref(0)
 const query = reactive({
   subjectId: null as number | null,
+  classId: null as number | null,
   pageIndex: 1,
   pageSize: 10
 })
 
 onMounted(async () => {
   await loadSubjects()
+  await loadClasses()
   await loadData()
 })
 
@@ -75,6 +83,11 @@ function search() {
 async function loadSubjects() {
   const result = await getAdminSubjectPage({ pageIndex: 1, pageSize: 100 })
   subjects.value = result.response?.list ?? []
+}
+
+async function loadClasses() {
+  const result = await getAdminClassOptions()
+  classOptions.value = result.response ?? []
 }
 
 async function loadData() {

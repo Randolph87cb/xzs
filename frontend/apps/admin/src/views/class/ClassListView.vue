@@ -2,28 +2,31 @@
   <section class="admin-page" v-loading="loading">
     <header class="admin-page__header">
       <div>
-        <h1>任务列表</h1>
-        <p>管理下发给学生的试卷任务。</p>
+        <h1>班级列表</h1>
+        <p>维护班级和负责老师。</p>
       </div>
-      <el-button type="primary" @click="router.push('/task/edit')">添加</el-button>
+      <el-button type="primary" @click="router.push('/class/edit')">添加</el-button>
     </header>
 
     <section class="admin-page__filters">
-      <el-select v-model="query.classId" clearable placeholder="班级" @change="search">
-        <el-option v-for="item in classOptions" :key="item.id" :label="item.name" :value="item.id" />
-      </el-select>
+      <el-input v-model="query.name" clearable placeholder="班级名称" @keyup.enter="search" />
       <el-button type="primary" @click="search">查询</el-button>
     </section>
 
-    <el-table :data="tasks" border>
+    <el-table :data="classes" border>
       <el-table-column prop="id" label="Id" width="90" />
-      <el-table-column prop="title" label="标题" min-width="220" show-overflow-tooltip />
-      <el-table-column prop="className" label="班级" min-width="140" />
-      <el-table-column prop="createUserName" label="发送人" width="140" />
-      <el-table-column prop="createTime" label="创建时间" width="170" />
-      <el-table-column label="操作" width="170" fixed="right">
+      <el-table-column prop="name" label="班级名称" min-width="180" />
+      <el-table-column prop="gradeLevel" label="年级" width="100" />
+      <el-table-column prop="teacherName" label="负责老师" min-width="150" />
+      <el-table-column label="状态" width="90">
         <template #default="{ row }">
-          <el-button size="small" @click="router.push(`/task/edit?id=${row.id}`)">编辑</el-button>
+          <el-tag :type="row.status === 1 ? 'success' : 'info'">{{ row.status === 1 ? '启用' : '禁用' }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="170" />
+      <el-table-column label="操作" width="150" fixed="right">
+        <template #default="{ row }">
+          <el-button size="small" @click="router.push(`/class/edit?id=${row.id}`)">编辑</el-button>
           <el-button size="small" type="danger" @click="remove(row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -48,20 +51,19 @@
 import { onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { deleteAdminTask, getAdminClassOptions, getAdminTaskPage, type AdminClassListItem, type AdminTaskListItem } from '@xzs/api-client'
+import { deleteAdminClass, getAdminClassPage, type AdminClassListItem } from '@xzs/api-client'
 
 const router = useRouter()
 const loading = ref(false)
-const tasks = ref<AdminTaskListItem[]>([])
-const classOptions = ref<AdminClassListItem[]>([])
+const classes = ref<AdminClassListItem[]>([])
 const total = ref(0)
-const query = reactive({ classId: null as number | null, pageIndex: 1, pageSize: 10 })
-
-onMounted(async () => {
-  const classResult = await getAdminClassOptions()
-  classOptions.value = classResult.response ?? []
-  await loadData()
+const query = reactive({
+  name: '',
+  pageIndex: 1,
+  pageSize: 10
 })
+
+onMounted(loadData)
 
 function search() {
   query.pageIndex = 1
@@ -71,9 +73,9 @@ function search() {
 async function loadData() {
   loading.value = true
   try {
-    const result = await getAdminTaskPage(query)
+    const result = await getAdminClassPage(query)
     const page = result.response
-    tasks.value = page?.list ?? []
+    classes.value = page?.list ?? []
     total.value = page?.total ?? 0
     query.pageIndex = page?.pageNum ?? query.pageIndex
   } finally {
@@ -82,8 +84,8 @@ async function loadData() {
 }
 
 async function remove(id: number) {
-  await ElMessageBox.confirm('确认删除该任务？', '删除任务', { type: 'warning' })
-  const result = await deleteAdminTask(id)
+  await ElMessageBox.confirm('确认删除该班级？', '删除班级', { type: 'warning' })
+  const result = await deleteAdminClass(id)
   ElMessage.success(result.message || '删除成功')
   loadData()
 }
