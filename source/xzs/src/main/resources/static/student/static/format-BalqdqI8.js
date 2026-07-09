@@ -1,1 +1,0 @@
-function e(e){let t=Math.max(0,Math.floor(e));return[Math.floor(t/3600),Math.floor(t%3600/60),t%60].map(e=>e.toString().padStart(2,`0`)).join(`:`)}function t(e){return e===1?`待批改`:e===2?`完成`:`未知`}function n(e){return e===1?`warning`:e===2?`success`:`info`}export{n,e as r,t};
