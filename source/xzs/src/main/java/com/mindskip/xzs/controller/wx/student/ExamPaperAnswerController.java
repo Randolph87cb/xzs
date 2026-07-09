@@ -92,6 +92,10 @@ public class ExamPaperAnswerController extends BaseWXApiController {
         ExamPaperSubmitVM examPaperSubmitVM = new ExamPaperSubmitVM();
         examPaperSubmitVM.setId(Integer.parseInt(request.getParameter("id")));
         examPaperSubmitVM.setDoTime(Integer.parseInt(request.getParameter("doTime")));
+        String taskId = request.getParameter("taskId");
+        if (null != taskId && !taskId.isEmpty()) {
+            examPaperSubmitVM.setTaskId(Integer.parseInt(taskId));
+        }
         List<String> parameterNames = Collections.list(request.getParameterNames()).stream()
                 .filter(n -> n.contains("_"))
                 .collect(Collectors.toList());

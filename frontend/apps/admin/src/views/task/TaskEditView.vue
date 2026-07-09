@@ -106,7 +106,8 @@ const rules: FormRules = {
 }
 const paperQuery = reactive({
   subjectId: null as number | null,
-  paperType: 6,
+  paperType: 1 as number | null,
+  level: null as number | null,
   pageIndex: 1,
   pageSize: 8
 })

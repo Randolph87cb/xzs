@@ -1,6 +1,5 @@
 package com.mindskip.xzs.service.impl;
 
-import com.mindskip.xzs.domain.ExamPaper;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.TaskExamCustomerAnswer;
 import com.mindskip.xzs.domain.TextContent;
@@ -30,8 +29,7 @@ public class TaskExamCustomerAnswerImpl extends BaseServiceImpl<TaskExamCustomer
     }
 
     @Override
-    public void insertOrUpdate(ExamPaper examPaper, ExamPaperAnswer examPaperAnswer, Date now) {
-        Integer taskId = examPaper.getTaskExamId();
+    public void insertOrUpdate(Integer taskId, ExamPaperAnswer examPaperAnswer, Date now) {
         Integer userId = examPaperAnswer.getCreateUser();
         TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswerMapper.getByTUid(taskId, userId);
         if (null == taskExamCustomerAnswer) {
@@ -47,7 +45,16 @@ public class TaskExamCustomerAnswerImpl extends BaseServiceImpl<TaskExamCustomer
         } else {
             TextContent textContent = textContentService.selectById(taskExamCustomerAnswer.getTextContentId());
             List<TaskItemAnswerObject> taskItemAnswerObjects = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemAnswerObject.class);
-            taskItemAnswerObjects.add(new TaskItemAnswerObject(examPaperAnswer.getExamPaperId(), examPaperAnswer.getId(), examPaperAnswer.getStatus()));
+            TaskItemAnswerObject taskItemAnswerObject = taskItemAnswerObjects.stream()
+                    .filter(d -> d.getExamPaperId().equals(examPaperAnswer.getExamPaperId()))
+                    .findFirst()
+                    .orElse(null);
+            if (null == taskItemAnswerObject) {
+                taskItemAnswerObjects.add(new TaskItemAnswerObject(examPaperAnswer.getExamPaperId(), examPaperAnswer.getId(), examPaperAnswer.getStatus()));
+            } else {
+                taskItemAnswerObject.setExamPaperAnswerId(examPaperAnswer.getId());
+                taskItemAnswerObject.setStatus(examPaperAnswer.getStatus());
+            }
             textContentService.jsonConvertUpdate(textContent, taskItemAnswerObjects, null);
             textContentService.updateByIdFilter(textContent);
         }

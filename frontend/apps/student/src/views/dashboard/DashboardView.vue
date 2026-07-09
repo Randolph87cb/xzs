@@ -26,7 +26,7 @@
           <el-collapse-item v-for="task in tasks" :key="task.id" :title="task.title" :name="task.id">
             <div v-for="paper in task.paperItems" :key="paper.examPaperId" class="dashboard__task-paper">
               <span>{{ paper.examPaperName }}</span>
-              <el-button v-if="paper.status === null" type="primary" link @click="router.push({ path: '/do', query: { id: paper.examPaperId } })">
+              <el-button v-if="paper.status === null" type="primary" link @click="router.push({ path: '/do', query: { id: paper.examPaperId, taskId: task.id } })">
                 开始答题
               </el-button>
               <el-button

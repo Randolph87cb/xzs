@@ -257,9 +257,18 @@
     FROM t_exam_paper
     <where>
       and deleted='f'
-      and task_exam_id is null
-      and grade_level= #{level}
-      and paper_type=#{paperType}
+      <if test="id != null ">
+        and id= #{id}
+      </if>
+      <if test="level != null ">
+        and grade_level= #{level}
+      </if>
+      <if test="subjectId != null ">
+        and subject_id= #{subjectId}
+      </if>
+      <if test="paperType != null ">
+        and paper_type=#{paperType}
+      </if>
     </where>
   </select>
 

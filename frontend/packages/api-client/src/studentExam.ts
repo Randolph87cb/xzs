@@ -80,6 +80,7 @@ export interface AnswerItem {
 export interface ExamPaperSubmit {
   id: number
   doTime: number
+  taskId?: number | null
   answerItems: AnswerItem[]
 }
 

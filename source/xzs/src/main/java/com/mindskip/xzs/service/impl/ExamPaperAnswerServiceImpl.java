@@ -1,14 +1,15 @@
 package com.mindskip.xzs.service.impl;
 
-import com.mindskip.xzs.domain.*;
+import com.mindskip.xzs.base.SystemCode;
 import com.mindskip.xzs.domain.*;
 import com.mindskip.xzs.domain.enums.ExamPaperAnswerStatusEnum;
-import com.mindskip.xzs.domain.enums.ExamPaperTypeEnum;
 import com.mindskip.xzs.domain.enums.QuestionTypeEnum;
 import com.mindskip.xzs.domain.exam.ExamPaperTitleItemObject;
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerUpdate;
 import com.mindskip.xzs.domain.task.TaskItemAnswerObject;
+import com.mindskip.xzs.domain.task.TaskItemObject;
+import com.mindskip.xzs.exception.BusinessException;
 import com.mindskip.xzs.repository.*;
 import com.mindskip.xzs.repository.ExamPaperAnswerMapper;
 import com.mindskip.xzs.repository.ExamPaperMapper;
@@ -43,9 +44,10 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
     private final QuestionMapper questionMapper;
     private final ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper;
+    private final TaskExamMapper taskExamMapper;
 
     @Autowired
-    public ExamPaperAnswerServiceImpl(ExamPaperAnswerMapper examPaperAnswerMapper, ExamPaperMapper examPaperMapper, TextContentService textContentService, QuestionMapper questionMapper, ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper) {
+    public ExamPaperAnswerServiceImpl(ExamPaperAnswerMapper examPaperAnswerMapper, ExamPaperMapper examPaperMapper, TextContentService textContentService, QuestionMapper questionMapper, ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper, TaskExamMapper taskExamMapper) {
         super(examPaperAnswerMapper);
         this.examPaperAnswerMapper = examPaperAnswerMapper;
         this.examPaperMapper = examPaperMapper;
@@ -53,6 +55,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         this.questionMapper = questionMapper;
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
         this.taskExamCustomerAnswerMapper = taskExamCustomerAnswerMapper;
+        this.taskExamMapper = taskExamMapper;
     }
 
     @Override
@@ -67,12 +70,21 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         ExamPaperAnswerInfo examPaperAnswerInfo = new ExamPaperAnswerInfo();
         Date now = new Date();
         ExamPaper examPaper = examPaperMapper.selectByPrimaryKey(examPaperSubmitVM.getId());
-        ExamPaperTypeEnum paperTypeEnum = ExamPaperTypeEnum.fromCode(examPaper.getPaperType());
-        //任务试卷只能做一次
-        if (paperTypeEnum == ExamPaperTypeEnum.Task) {
-            ExamPaperAnswer examPaperAnswer = examPaperAnswerMapper.getByPidUid(examPaperSubmitVM.getId(), user.getId());
-            if (null != examPaperAnswer)
+        Integer taskId = examPaperSubmitVM.getTaskId();
+        if (null != taskId) {
+            TaskExam taskExam = taskExamMapper.selectByPrimaryKey(taskId);
+            if (null == taskExam || Boolean.TRUE.equals(taskExam.getDeleted())) {
+                throw new BusinessException(SystemCode.ParameterValidError.getCode(), "任务不存在或已删除");
+            }
+            if (!taskVisibleToUser(taskExam, user)) {
+                throw new BusinessException(SystemCode.ParameterValidError.getCode(), "当前用户不能提交该任务");
+            }
+            if (!taskContainsPaper(taskExam, examPaper.getId())) {
+                throw new BusinessException(SystemCode.ParameterValidError.getCode(), "任务未引用该试卷");
+            }
+            if (taskPaperAnswered(taskId, user.getId(), examPaper.getId())) {
                 return null;
+            }
         }
         String frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId()).getContent();
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtil.toJsonListObject(frameTextContent, ExamPaperTitleItemObject.class);
@@ -124,14 +136,11 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperAnswerMapper.updateByPrimaryKeySelective(examPaperAnswer);
         examPaperQuestionCustomerAnswerService.updateScore(examPaperAnswerUpdates);
 
-        ExamPaperTypeEnum examPaperTypeEnum = ExamPaperTypeEnum.fromCode(examPaperAnswer.getPaperType());
-        switch (examPaperTypeEnum) {
-            case Task:
-                //任务试卷批改完成后，需要更新任务的状态
-                ExamPaper examPaper = examPaperMapper.selectByPrimaryKey(examPaperAnswer.getExamPaperId());
-                Integer taskId = examPaper.getTaskExamId();
-                Integer userId = examPaperAnswer.getCreateUser();
-                TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswerMapper.getByTUid(taskId, userId);
+        if (null != examPaperAnswer.getTaskExamId()) {
+            Integer taskId = examPaperAnswer.getTaskExamId();
+            Integer userId = examPaperAnswer.getCreateUser();
+            TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswerMapper.getByTUid(taskId, userId);
+            if (null != taskExamCustomerAnswer) {
                 TextContent textContent = textContentService.selectById(taskExamCustomerAnswer.getTextContentId());
                 List<TaskItemAnswerObject> taskItemAnswerObjects = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemAnswerObject.class);
                 taskItemAnswerObjects.stream()
@@ -139,9 +148,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
                         .findFirst().ifPresent(taskItemAnswerObject -> taskItemAnswerObject.setStatus(examPaperAnswer.getStatus()));
                 textContentService.jsonConvertUpdate(textContent, taskItemAnswerObjects, null);
                 textContentService.updateByIdFilter(textContent);
-                break;
-            default:
-                break;
+            }
         }
         return ExamUtil.scoreToVM(customerScore);
     }
@@ -258,7 +265,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperAnswer.setPaperType(examPaper.getPaperType());
         examPaperAnswer.setSystemScore(systemScore);
         examPaperAnswer.setUserScore(systemScore);
-        examPaperAnswer.setTaskExamId(examPaper.getTaskExamId());
+        examPaperAnswer.setTaskExamId(examPaperSubmitVM.getTaskId());
         examPaperAnswer.setQuestionCorrect((int) questionCorrect);
         boolean needJudge = examPaperQuestionCustomerAnswers.stream().anyMatch(d -> QuestionTypeEnum.needSaveTextContent(d.getQuestionType()));
         if (needJudge) {
@@ -267,6 +274,38 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
             examPaperAnswer.setStatus(ExamPaperAnswerStatusEnum.Complete.getCode());
         }
         return examPaperAnswer;
+    }
+
+    private boolean taskVisibleToUser(TaskExam taskExam, User user) {
+        if (null != taskExam.getClassId()) {
+            return taskExam.getClassId().equals(user.getClassId());
+        }
+        if (null == user.getUserLevel()) {
+            return true;
+        }
+        return user.getUserLevel().equals(taskExam.getGradeLevel());
+    }
+
+    private boolean taskContainsPaper(TaskExam taskExam, Integer examPaperId) {
+        TextContent textContent = textContentService.selectById(taskExam.getFrameTextContentId());
+        if (null == textContent) {
+            return false;
+        }
+        List<TaskItemObject> taskItemObjects = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemObject.class);
+        return taskItemObjects.stream().anyMatch(d -> d.getExamPaperId().equals(examPaperId));
+    }
+
+    private boolean taskPaperAnswered(Integer taskId, Integer userId, Integer examPaperId) {
+        TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswerMapper.getByTUid(taskId, userId);
+        if (null == taskExamCustomerAnswer) {
+            return false;
+        }
+        TextContent textContent = textContentService.selectById(taskExamCustomerAnswer.getTextContentId());
+        if (null == textContent) {
+            return false;
+        }
+        List<TaskItemAnswerObject> taskItemAnswerObjects = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemAnswerObject.class);
+        return taskItemAnswerObjects.stream().anyMatch(d -> d.getExamPaperId().equals(examPaperId));
     }
 
     @Override

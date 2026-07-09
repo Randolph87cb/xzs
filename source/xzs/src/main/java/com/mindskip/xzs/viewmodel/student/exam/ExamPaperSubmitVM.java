@@ -14,6 +14,8 @@ public class ExamPaperSubmitVM {
     @NotNull
     private Integer doTime;
 
+    private Integer taskId;
+
     private String score;
 
     @NotNull
@@ -34,6 +36,14 @@ public class ExamPaperSubmitVM {
 
     public void setDoTime(Integer doTime) {
         this.doTime = doTime;
+    }
+
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
     }
 
     public String getScore() {

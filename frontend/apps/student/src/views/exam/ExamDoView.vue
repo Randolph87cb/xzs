@@ -85,6 +85,7 @@ let timer: number | undefined
 let renderBatchTimer: number | undefined
 let renderIdleHandle: number | undefined
 const paperId = computed(() => Number(route.query.id))
+const taskId = computed(() => (route.query.taskId ? Number(route.query.taskId) : null))
 const totalQuestionCount = computed(() => answer.answerItems.length)
 const visibleTitleItems = computed(() =>
   (paper.value?.titleItems ?? [])
@@ -95,7 +96,7 @@ const visibleTitleItems = computed(() =>
     .filter((titleItem) => titleItem.questionItems.length > 0)
 )
 
-watch(paperId, loadPaper, { immediate: true })
+watch([paperId, taskId], loadPaper, { immediate: true })
 onUnmounted(() => {
   if (timer) {
     window.clearInterval(timer)
@@ -129,6 +130,7 @@ async function loadPaper() {
 
     paper.value = result.response
     answer.id = result.response.id
+    answer.taskId = taskId.value
     answer.doTime = 0
     answer.answerItems.splice(0, answer.answerItems.length, ...createAnswerItems(result.response))
     remainTime.value = result.response.suggestTime * 60

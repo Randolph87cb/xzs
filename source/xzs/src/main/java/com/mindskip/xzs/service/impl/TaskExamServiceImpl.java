@@ -91,13 +91,6 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
             modelMapper.map(model, taskExam);
 
             TextContent textContent = textContentService.selectById(taskExam.getFrameTextContentId());
-            //清空试卷任务的试卷Id，后面会统一设置
-            List<Integer> paperIds = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemObject.class)
-                    .stream()
-                    .map(d -> d.getExamPaperId())
-                    .collect(Collectors.toList());
-            examPaperMapper.clearTaskPaper(paperIds);
-
             //更新任务结构
             textContentService.jsonConvertUpdate(textContent, model.getPaperItems(), p -> {
                 TaskItemObject taskItemObject = new TaskItemObject();
@@ -109,9 +102,6 @@ public class TaskExamServiceImpl extends BaseServiceImpl<TaskExam> implements Ta
             taskExamMapper.updateByPrimaryKeySelective(taskExam);
         }
 
-        //更新试卷的taskId
-        List<Integer> paperIds = model.getPaperItems().stream().map(d -> d.getId()).collect(Collectors.toList());
-        examPaperMapper.updateTaskPaper(taskExam.getId(), paperIds);
         model.setId(taskExam.getId());
     }
 
