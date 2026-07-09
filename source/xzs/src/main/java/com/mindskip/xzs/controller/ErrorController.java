@@ -21,9 +21,6 @@ import java.util.Map;
 @RestController
 public class ErrorController extends BasicErrorController {
 
-    private static final String PATH = "/error";
-
-
     public ErrorController() {
         super(new DefaultErrorAttributes(), new ErrorProperties());
     }
@@ -35,10 +32,5 @@ public class ErrorController extends BasicErrorController {
         error.put("code", SystemCode.InnerError.getCode());
         error.put("message", SystemCode.InnerError.getMessage());
         return new ResponseEntity<>(error, HttpStatus.OK);
-    }
-
-    @Override
-    public String getErrorPath() {
-        return PATH;
     }
 }

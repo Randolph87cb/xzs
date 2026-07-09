@@ -1,0 +1,42 @@
+[Unit]
+Description=XZS exam system
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=xzs
+Group=xzs
+WorkingDirectory=/opt/xzs
+
+Environment=SPRING_PROFILES_ACTIVE=prod
+Environment=SERVER_PORT=8000
+Environment=XZS_LOG_PATH=/var/log/xzs
+
+Environment=SPRING_DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/xzs
+Environment=SPRING_DATASOURCE_USERNAME=xzs
+Environment=SPRING_DATASOURCE_PASSWORD=REPLACE_WITH_XZS_DB_PASSWORD
+
+Environment=SERVER_UNDERTOW_IO_THREADS=2
+Environment=SERVER_UNDERTOW_WORKER_THREADS=16
+Environment=SERVER_UNDERTOW_BUFFER_SIZE=512
+Environment=SERVER_UNDERTOW_DIRECT_BUFFERS=false
+Environment=SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=4
+Environment=SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=1
+Environment=SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT=30000
+Environment=SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT=600000
+Environment=SPRING_DATASOURCE_HIKARI_MAX_LIFETIME=1800000
+
+ExecStart=/usr/bin/java -Xms128m -Xmx512m -XX:+UseSerialGC -XX:MaxMetaspaceSize=192m -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/urandom -Duser.timezone=Asia/Shanghai -jar /opt/xzs/xzs-3.9.0.jar
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=30
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/xzs /var/log/xzs
+
+[Install]
+WantedBy=multi-user.target

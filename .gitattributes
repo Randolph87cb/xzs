@@ -2,3 +2,5 @@
 *.css linguist-language=css
 *.java linguist-language=java
 *.vue linguist-language=vue
+deploy/raspberry-pi/*.sh text eol=lf
+deploy/raspberry-pi/*.service text eol=lf

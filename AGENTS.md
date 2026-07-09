@@ -9,12 +9,13 @@
 - 学生端 Web 源码和默认构建来源在 `frontend/apps/student`。
 - 现代前端工作区在 `frontend`，承载 Vue 3 + Vite 学生端、管理端和共享包；旧 Vue 2 Web 目录已删除，不再保留新旧并行入口。
 - 微信小程序学生端在 `source/wx/xzs-student`。
-- PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`。
+- PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`；后端 Flyway 迁移脚本在 `source/xzs/src/main/resources/db/migration`。
 - 真题题库 Markdown 资料在 `docs/question-bank`。
 - 本地构建、测量、静态资源同步、维护和数据导入脚本在 `scripts`。
 - 构建性能优化方案和迁移评估文档在 `docs/build-performance-optimization-plan.md`、`docs/vue3-vite-migration-roadmap.md`、`docs/frontend-modernization-migration-roadmap.md`。
 - Fly.io 冷启动按量部署说明在 `docs/fly-managed-postgres-deployment.md`；根目录 `Dockerfile` 和 `fly.toml` 是 Fly 部署入口。
-- 发布包与部署材料分别在 `release` 和 `docker`。
+- 树莓派部署说明在 `docs/raspberry-pi-deployment.md`；对应 systemd 服务模板和数据库初始化、备份、恢复脚本在 `deploy/raspberry-pi`。
+- 发布包与部署材料分别在 `release`、`docker` 和 `deploy`。
 
 ## 项目结构文档
 

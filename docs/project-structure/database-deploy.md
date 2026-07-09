@@ -2,6 +2,15 @@
 
 `sql/xzs-postgresql.sql` 是 PostgreSQL 初始化脚本，包含序列、表结构和初始化数据。`sql/README.md` 只保留数据库下载地址说明。
 
+## Flyway 迁移
+
+后端已引入 Flyway 管理 PostgreSQL schema 迁移：
+
+- `source/xzs/src/main/resources/db/migration/V1__baseline_schema.sql`：当前基线迁移，内容来自 `sql/xzs-postgresql.sql`，用于全新空库初始化。
+- `docs/database-migration-flyway.md`：Flyway 配置策略、空库初始化、已有库接入、备份要求、失败处理和后续迁移命名规范。
+
+已有非空数据库接入 Flyway 前必须先备份；后续业务 schema 变更应新增递增版本迁移文件，不再直接改写已发布迁移。
+
 ## 发布包
 
 `release` 目录保存已构建产物：
@@ -29,6 +38,18 @@
 - `docs/fly-managed-postgres-deployment.md`：Fly.io 冷启动按量部署、Postgres 挂载、初始化和日常停机步骤。
 
 当前低成本部署使用可冷启动的 Fly Postgres App + Volume；如果需要托管运维和更高可靠性，再改用 Fly Managed Postgres。后端 `application-prod.yml` 支持 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD`，并兼容 Fly 默认注入的 `DATABASE_URL=postgres://...`。
+
+## 树莓派部署
+
+`deploy/raspberry-pi` 保存树莓派运行环境专用部署资产：
+
+- `deploy/raspberry-pi/xzs.service`：systemd 服务模板，包含低资源设备适配的 JVM、Undertow、Hikari 参数和生产环境变量占位符。
+- `deploy/raspberry-pi/init-db.sh`：在树莓派 PostgreSQL 上创建或更新应用数据库用户、数据库并导入初始化脚本。
+- `deploy/raspberry-pi/backup-db.sh`：使用 `pg_dump --format custom` 生成带时间戳的数据库备份，并按保留数量清理旧备份。
+- `deploy/raspberry-pi/restore-db.sh`：从指定备份恢复数据库，要求显式确认后执行。
+- `docs/raspberry-pi-deployment.md`：树莓派运行目录、部署资产安装、数据库初始化、systemd 启停、备份、恢复和健康检查说明。
+
+树莓派普通运行时不承担 Maven 或前端构建任务；应在开发机或 CI 构建完成后，只复制后端 jar、SQL 脚本和运行所需部署资产。
 
 ## 集成部署提示
 
