@@ -667,9 +667,6 @@ FROM matched
 JOIN t_text_content tc ON tc.id = matched.info_text_content_id
 WHERE tc.content IS DISTINCT FROM matched.content;
 
-\echo 'Legacy JSON duplicate candidates, not deleted by this migration:'
-$(New-LegacyJsonDuplicateStatsSql)
-
 \echo 'Updating matched t_text_content rows to Markdown JSON:'
 WITH matched AS (
     SELECT DISTINCT ON (i.question_code)
@@ -700,7 +697,7 @@ updated AS (
     FROM matched
     WHERE tc.id = matched.info_text_content_id
       AND tc.content IS DISTINCT FROM matched.content
-    RETURNING id
+    RETURNING tc.id
 )
 SELECT count(*) AS updated_text_content_rows FROM updated;
 
@@ -805,7 +802,7 @@ New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 if ($MigrationSqlOnly) {
     Set-Content -LiteralPath $MigrationSqlFile -Value (New-MigrationSql -Questions $questions) -Encoding UTF8
     Write-Output "Generated migration SQL: $MigrationSqlFile"
-    Write-Output "Migration SQL reports matched_questions, content_rows_to_update, and legacy_json_duplicate_candidates."
+    Write-Output "Migration SQL reports generated_questions, matched_questions, content_rows_to_update, and updated_text_content_rows."
     Write-Output "This script did not execute remote writes. Review the SQL, then run it manually against the target database."
     exit 0
 }
