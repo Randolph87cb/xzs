@@ -4,6 +4,7 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.context.WebContext;
 import com.mindskip.xzs.controller.support.RecordingJdbcTemplate;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.service.ClassScopeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -26,7 +27,7 @@ public class QuestionCorrectionControllerTest {
     @Before
     public void setUp() {
         jdbcTemplate = new RecordingJdbcTemplate();
-        controller = new QuestionCorrectionController(jdbcTemplate);
+        controller = new QuestionCorrectionController(jdbcTemplate, mock(ClassScopeService.class));
 
         WebContext webContext = mock(WebContext.class);
         when(webContext.getCurrentUser()).thenReturn(user(12, "admin", "Admin User"));
