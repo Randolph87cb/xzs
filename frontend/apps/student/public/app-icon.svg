@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">信息学客观题一本通图标</title>
+  <desc id="desc">圆角底上的信息学客观题试卷、代码括号和审核勾。</desc>
+  <defs>
+    <linearGradient id="bg" x1="10" y1="8" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f766e" />
+      <stop offset="0.56" stop-color="#1769ff" />
+      <stop offset="1" stop-color="#10203f" />
+    </linearGradient>
+    <linearGradient id="sheet" x1="18" y1="13" x2="45" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#eaf3ff" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" />
+  <path d="M17 18.8c0-3 2.4-5.4 5.4-5.4h23.2c3 0 5.4 2.4 5.4 5.4v28.8c0 3-2.4 5.4-5.4 5.4H22.4c-3 0-5.4-2.4-5.4-5.4z" fill="#0b2447" opacity=".22" />
+  <path d="M14 16.7c0-2.6 2.1-4.7 4.7-4.7h24.6c2.6 0 4.7 2.1 4.7 4.7v30.6c0 2.6-2.1 4.7-4.7 4.7H18.7c-2.6 0-4.7-2.1-4.7-4.7z" fill="url(#sheet)" />
+  <path d="M20 12h5v40h-5z" fill="#d7e8ff" />
+  <path d="M27.5 22.2 23.8 26l3.7 3.8M37.5 22.2l3.7 3.8-3.7 3.8" fill="none" stroke="#1769ff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M33.9 20.5 31.1 31" fill="none" stroke="#13a66b" stroke-width="2.4" stroke-linecap="round" />
+  <circle cx="26.5" cy="38" r="2" fill="#1769ff" />
+  <path d="M32 38h9" fill="none" stroke="#88a3c7" stroke-width="2.4" stroke-linecap="round" />
+  <circle cx="26.5" cy="45" r="2" fill="#13a66b" />
+  <path d="M32 45h5.5" fill="none" stroke="#88a3c7" stroke-width="2.4" stroke-linecap="round" />
+  <circle cx="47" cy="46" r="10.5" fill="#f59e0b" />
+  <path d="m42.2 46.2 3 3 6.6-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

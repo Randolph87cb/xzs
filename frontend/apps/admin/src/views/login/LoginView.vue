@@ -2,10 +2,10 @@
   <main class="admin-login">
     <el-form ref="formRef" class="admin-login__form" :model="form" :rules="rules" @submit.prevent="handleLogin">
       <div class="admin-login__brand">
-        <span>S</span>
+        <img class="admin-login__brand-icon" :src="appIconUrl" alt="" />
         <div>
-          <h1>学之思</h1>
-          <p>管理系统</p>
+          <h1>信息学客观题一本通</h1>
+          <p>GESP/CSP 客观题智能组卷与错题审核平台</p>
         </div>
       </div>
       <el-form-item prop="userName">
@@ -40,6 +40,7 @@ const route = useRoute()
 const userStore = useUserStore()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
+const appIconUrl = `${import.meta.env.BASE_URL}app-icon.svg`
 const form = reactive({
   userName: '',
   password: '',

@@ -2,10 +2,10 @@
   <el-container class="admin-layout">
     <el-aside class="admin-layout__aside" width="232px">
       <div class="admin-layout__brand">
-        <span class="admin-layout__mark">S</span>
+        <img class="admin-layout__mark" :src="appIconUrl" alt="" />
         <div class="admin-layout__brand-text">
-          <strong>学之思</strong>
-          <span>考试管理系统</span>
+          <strong>信息学客观题一本通</strong>
+          <span>信息学智能组卷</span>
         </div>
       </div>
       <el-menu router :default-active="route.path" class="admin-layout__menu">
@@ -77,6 +77,7 @@ const iconMap: AdminMenuIconMap = {
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+const appIconUrl = `${import.meta.env.BASE_URL}app-icon.svg`
 const userInitial = computed(() => (userStore.userInfo?.userName ?? userStore.userName ?? 'A').slice(0, 1).toUpperCase())
 const adminHeaderTabs = [
   { title: '数据看板', path: '/dashboard', isActive: (path: string) => path === '/dashboard' },

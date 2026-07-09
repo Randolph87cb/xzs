@@ -102,16 +102,11 @@ body {
   margin-bottom: 28px;
 }
 
-.admin-login__brand span {
-  display: inline-grid;
+.admin-login__brand-icon {
   width: 42px;
   height: 42px;
-  place-items: center;
   border-radius: 8px;
-  color: var(--xzs-surface);
-  font-size: 24px;
-  font-weight: 800;
-  background: var(--xzs-primary);
+  display: block;
   box-shadow: 0 10px 20px rgb(23 105 255 / 24%);
 }
 
@@ -154,7 +149,7 @@ body {
 .admin-layout__brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   height: 64px;
   padding: 0 18px;
   border-bottom: 1px solid var(--xzs-border);
@@ -162,15 +157,10 @@ body {
 }
 
 .admin-layout__mark {
-  display: inline-grid;
   width: 34px;
   height: 34px;
-  place-items: center;
   border-radius: 8px;
-  color: var(--xzs-surface);
-  font-size: 20px;
-  font-weight: 800;
-  background: var(--xzs-primary);
+  display: block;
   box-shadow: 0 10px 20px rgb(23 105 255 / 24%);
 }
 
@@ -180,7 +170,7 @@ body {
 }
 
 .admin-layout__brand strong {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1;
 }
 

@@ -2,10 +2,10 @@
   <main class="login">
     <section class="login__panel">
       <div class="login__brand">
-        <span>S</span>
+        <img class="login__brand-icon" :src="appIconUrl" alt="" />
         <div>
-          <h1>学之思</h1>
-          <p>学生考试系统</p>
+          <h1>信息学客观题一本通</h1>
+          <p>GESP/CSP 客观题训练平台</p>
         </div>
       </div>
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" class="login__form" @keyup.enter="handleLogin">
@@ -33,6 +33,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
+const appIconUrl = `${import.meta.env.BASE_URL}app-icon.svg`
 const form = reactive({
   userName: '',
   password: '',
@@ -101,16 +102,11 @@ async function handleLogin() {
   margin-bottom: 26px;
 }
 
-.login__brand span {
-  display: inline-grid;
+.login__brand-icon {
   width: 42px;
   height: 42px;
-  place-items: center;
   border-radius: 8px;
-  color: var(--xzs-surface);
-  font-size: 24px;
-  font-weight: 800;
-  background: var(--xzs-primary);
+  display: block;
   box-shadow: 0 10px 20px rgb(23 105 255 / 24%);
 }
 

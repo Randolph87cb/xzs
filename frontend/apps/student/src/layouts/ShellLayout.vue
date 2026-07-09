@@ -2,10 +2,10 @@
   <el-container class="shell">
     <el-header class="shell__header">
       <div class="shell__brand">
-        <span class="shell__mark">S</span>
+        <img class="shell__mark" :src="appIconUrl" alt="" />
         <div>
-          <strong>学之思</strong>
-          <span>学生考试系统</span>
+          <strong>信息学客观题一本通</strong>
+          <span>GESP/CSP 客观题训练</span>
         </div>
       </div>
       <el-menu mode="horizontal" router :default-active="$route.path" class="shell__menu">
@@ -36,6 +36,7 @@ import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const userStore = useUserStore()
+const appIconUrl = `${import.meta.env.BASE_URL}app-icon.svg`
 
 async function handleLogout() {
   await userStore.logout()
@@ -65,20 +66,15 @@ async function handleLogout() {
   align-items: center;
   gap: 12px;
   flex: 0 0 auto;
-  min-width: 168px;
+  min-width: 212px;
   color: var(--xzs-text);
 }
 
 .shell__mark {
-  display: inline-grid;
   width: 34px;
   height: 34px;
-  place-items: center;
   border-radius: 8px;
-  color: var(--xzs-surface);
-  font-size: 20px;
-  font-weight: 800;
-  background: var(--xzs-primary);
+  display: block;
   box-shadow: 0 10px 20px rgb(23 105 255 / 24%);
 }
 
@@ -88,7 +84,7 @@ async function handleLogout() {
 }
 
 .shell__brand strong {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1;
 }
 
