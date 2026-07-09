@@ -71,7 +71,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedMethods("*")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("*")
                 .allowedHeaders("*");
         super.addCorsMappings(registry);
     }

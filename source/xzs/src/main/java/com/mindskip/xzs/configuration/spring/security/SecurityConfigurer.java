@@ -110,7 +110,7 @@ public class SecurityConfigurer {
         public CorsConfigurationSource corsConfigurationSource() {
             final CorsConfiguration configuration = new CorsConfiguration();
             configuration.setMaxAge(3600L);
-            configuration.setAllowedOrigins(Collections.singletonList("*"));
+            configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
             configuration.setAllowedMethods(Collections.singletonList("*"));
             configuration.setAllowCredentials(true);
             configuration.setAllowedHeaders(Collections.singletonList("*"));
