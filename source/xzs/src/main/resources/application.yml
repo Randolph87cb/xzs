@@ -56,6 +56,9 @@ spring:
     hikari:
       maximum-pool-size: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:10}
       minimum-idle: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:5}
+      connection-timeout: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:30000}
+      validation-timeout: ${SPRING_DATASOURCE_HIKARI_VALIDATION_TIMEOUT:5000}
+      initialization-fail-timeout: ${SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT:-1}
       idle-timeout: 600000  #10 min
       max-lifetime: 1800000 #30 min
   flyway:
@@ -66,11 +69,15 @@ spring:
     baseline-description: xzs existing schema baseline
     validate-on-migrate: true
     clean-disabled: true
-
-
   #runningtime environment
   profiles:
     active:  dev
+
+xzs:
+  flyway:
+    retry:
+      max-wait: ${XZS_FLYWAY_RETRY_MAX_WAIT:180s}
+      interval: ${XZS_FLYWAY_RETRY_INTERVAL:5s}
 
 management:
   endpoints:
