@@ -219,16 +219,9 @@ function normalizeContent(content: QuestionContent): string {
 
 function highlightCode(content: string, lang: string, defaultLanguage = '') {
   const language = normalizeCodeLanguage(lang) || normalizeCodeLanguage(defaultLanguage)
+  const codeAttributes = language ? ` class="language-${language}"` : ''
 
-  if (language && hljs.getLanguage(language)) {
-    try {
-      return `<pre class="hljs"><code class="language-${language}">${hljs.highlight(content, { language, ignoreIllegals: true }).value}</code></pre>`
-    } catch {
-      return `<pre class="hljs"><code class="language-${language}">${escapeHtml(content)}</code></pre>`
-    }
-  }
-
-  return `<pre class="hljs"><code>${escapeHtml(content)}</code></pre>`
+  return `<pre class="hljs"><code${codeAttributes}>${escapeHtml(content)}</code></pre>`
 }
 
 function renderTex(tex: string, displayMode: boolean) {

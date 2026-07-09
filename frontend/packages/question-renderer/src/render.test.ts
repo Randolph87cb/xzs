@@ -75,6 +75,19 @@ describe('question renderer', () => {
     expect(html).toContain('hljs-')
   })
 
+  it('highlights markdown code fences once without exposing hljs markup as text', () => {
+    const html = renderQuestionContent('```cpp\nint a, b;\n```')
+    const container = document.createElement('div')
+    container.innerHTML = html
+    const codeBlockText = container.querySelector('pre code')?.textContent ?? ''
+
+    expect(html).toContain('class="language-cpp"')
+    expect(html).toMatch(/<span class="hljs-[^"]+"/)
+    expect(html).not.toContain('&lt;span class="hljs')
+    expect(codeBlockText).toContain('int a, b;')
+    expect(codeBlockText).not.toContain('<span class="hljs-')
+  })
+
   it('keeps legacy HTML code blocks styled without a language', () => {
     const html = renderQuestionContent('<pre><code>if ($N$ &lt; 10) cout &lt;&lt; "x";</code></pre>')
 
