@@ -275,7 +275,7 @@ export const router = createRouter({
 
 router.beforeEach(async (to) => {
   NProgress.start()
-  document.title = typeof to.meta.title === 'string' ? `${to.meta.title} - 学之思管理系统` : '学之思管理系统'
+  document.title = typeof to.meta.title === 'string' ? `${to.meta.title} - 信息学客观题一本通管理端` : '信息学客观题一本通管理端'
 
   const userStore = useUserStore()
 

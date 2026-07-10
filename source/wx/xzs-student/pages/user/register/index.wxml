@@ -1,5 +1,5 @@
 <view class="card-image-container">
-  <image src="/assets/logo2.png" style="width:175px;height:147px"></image>
+  <image src="/assets/logo2.png" style="width:320px;height:94px"></image>
 </view>
 
 <form bindsubmit='formSubmit'>

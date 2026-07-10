@@ -26,14 +26,14 @@
 
 信息学客观题一本通是一套面向 GESP/CSP 客观题训练的在线练习系统，提供学生端练习、错题沉淀、考试记录和管理端题库/试卷管理能力。
 
-本项目基于学之思开源考试系统 PostgreSQL 版改造，后端使用 Java + Spring Boot，Web 端使用 Vue 3 + Vite，保留微信小程序学生端源码。项目支持本地构建、Docker 部署、Fly.io 冷启动部署和树莓派部署。
+本项目基于开源考试系统 PostgreSQL 版改造，后端使用 Java + Spring Boot，Web 端使用 Vue 3 + Vite，保留微信小程序学生端源码。项目支持本地构建、Docker 部署、Fly.io 冷启动部署和树莓派部署。
 
 当前 Fly.io 部署应用名建议使用 `gesp-csp-quiz`，默认访问地址为 `https://gesp-csp-quiz.fly.dev`。
 
-### 演示地址
+### 上游参考地址
 
 * 官网：[https://www.mindskip.net](https://www.mindskip.net)
-* 学之思开源考试系统：[https://www.mindskip.net/xzs.html](https://www.mindskip.net/xzs.html)
+* 上游项目页面：[https://www.mindskip.net/xzs.html](https://www.mindskip.net/xzs.html)
 * 维多多培训考试系统：[https://www.mindskip.net/wdd.html](https://www.mindskip.net/wdd.html)
 * 思多多智能考试系统：[https://www.mindskip.net/sdd.html](https://www.mindskip.net/sdd.html)
 
@@ -46,7 +46,7 @@
 * 商务微信：`whmindskip`
 * 商务邮箱：`mindskip@qq.com`
 
-### 上游学之思仓库版本地址
+### 上游项目仓库版本地址
 
 * gitee - postgresql ：[https://gitee.com/mindskip/xzs](https://gitee.com/mindskip/xzs)
 * gitee - mysql ：[https://gitee.com/mindskip/xzs-mysql](https://gitee.com/mindskip/xzs-mysql)
@@ -114,7 +114,7 @@
 
 ### 系统展示
 
-* 学生考试系统
+* 学生训练端
 <table>
     <tr>
         <td><img src="https://www.mindskip.net/style/git/images/student/1.png"/></td>

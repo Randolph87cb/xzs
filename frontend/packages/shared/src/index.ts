@@ -1,4 +1,4 @@
 export const appNames = {
-  student: '学生考试系统',
-  admin: '学之思管理系统'
+  student: 'GESP/CSP 客观题训练',
+  admin: '信息学客观题一本通管理端'
 } as const

@@ -79,7 +79,7 @@ public class WebAuthController {
 
         UserToken userToken = userTokenService.insertWebUserToken(user);
         WebAuthCookie.add(request, response, cookieName, userToken.getToken(), cookiePath, model.isRemember());
-        publishEvent(user, " 登录了学之思开源考试系统");
+        publishEvent(user, " 登录了信息学客观题一本通");
 
         User responseUser = new User();
         responseUser.setUserName(user.getUserName());

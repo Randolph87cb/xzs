@@ -37,7 +37,7 @@ page.on('response', (response) => {
 
 try {
   await page.goto(appUrl('/login'), { waitUntil: 'networkidle' })
-  await page.getByRole('heading', { name: '学之思管理系统' }).waitFor({ timeout: 15000 })
+  await page.getByRole('heading', { name: '信息学客观题一本通管理端' }).waitFor({ timeout: 15000 })
   await capture('01-login.png')
 
   await page.locator('input[autocomplete="username"]').fill(userName)

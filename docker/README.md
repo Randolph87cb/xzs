@@ -21,7 +21,7 @@ chmod +x  /usr/local/bin/docker-compose
 docker-compose --version
 ```
 
-* 执行下面命令，启动学之思网站，有问题可以看下/usr/local/xzs/log中的日志
+* 执行下面命令，启动信息学客观题一本通网站，有问题可以看下/usr/local/xzs/log中的日志
 
 ```docker-xzs
 cd /usr/local/xzs
