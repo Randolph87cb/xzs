@@ -7,6 +7,7 @@
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="age" jdbcType="INTEGER" property="age" />
     <result column="sex" jdbcType="INTEGER" property="sex" />
     <result column="birth_day" jdbcType="TIMESTAMP" property="birthDay" />
@@ -23,8 +24,20 @@
     <result column="deleted" jdbcType="BIT" property="deleted" />
     <result column="wx_open_id" jdbcType="VARCHAR" property="wxOpenId" />
   </resultMap>
+  <resultMap id="ClassRankingItemResultMap" type="com.mindskip.xzs.domain.other.ClassRankingItem">
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="paper_count" jdbcType="INTEGER" property="paperCount" />
+    <result column="question_count" jdbcType="INTEGER" property="questionCount" />
+    <result column="correct_count" jdbcType="INTEGER" property="correctCount" />
+    <result column="correction_count" jdbcType="INTEGER" property="correctionCount" />
+    <result column="resubmit_count" jdbcType="INTEGER" property="resubmitCount" />
+    <result column="last_submit_time" jdbcType="TIMESTAMP" property="lastSubmitTime" />
+  </resultMap>
   <sql id="Base_Column_List">
-    id, user_uuid, user_name, password, real_name, age, sex, birth_day, user_level, phone,
+    id, user_uuid, user_name, password, real_name, nick_name, age, sex, birth_day, user_level, phone,
     role, class_id, target_subject_id, status, image_path, create_time, modify_time, last_active_time, deleted, wx_open_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -39,14 +52,14 @@
   </delete>
   <insert id="insert" parameterType="com.mindskip.xzs.domain.User" useGeneratedKeys="true" keyProperty="id" >
     insert into t_user (id, user_uuid, user_name,
-      password, real_name, age,
+      password, real_name, nick_name, age,
       sex, birth_day, user_level,
       phone, role, class_id, target_subject_id, status,
       image_path, create_time, modify_time,
       last_active_time, deleted, wx_open_id
       )
     values (#{id,jdbcType=INTEGER}, #{userUuid}::uuid, #{userName,jdbcType=VARCHAR},
-      #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
+      #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
       #{sex,jdbcType=INTEGER}, #{birthDay,jdbcType=TIMESTAMP}, #{userLevel,jdbcType=INTEGER},
       #{phone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{targetSubjectId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
       #{imagePath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP},
@@ -70,6 +83,9 @@
       </if>
       <if test="realName != null">
         real_name,
+      </if>
+      <if test="nickName != null">
+        nick_name,
       </if>
       <if test="age != null">
         age,
@@ -133,6 +149,9 @@
       <if test="realName != null">
         #{realName,jdbcType=VARCHAR},
       </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
       <if test="age != null">
         #{age,jdbcType=INTEGER},
       </if>
@@ -195,6 +214,9 @@
       <if test="realName != null">
         real_name = #{realName,jdbcType=VARCHAR},
       </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
       <if test="age != null">
         age = #{age,jdbcType=INTEGER},
       </if>
@@ -249,6 +271,7 @@
       user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       real_name = #{realName,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
       sex = #{sex,jdbcType=INTEGER},
       birth_day = #{birthDay,jdbcType=TIMESTAMP},
@@ -375,19 +398,19 @@
   <insert id="insertUser" parameterType="com.mindskip.xzs.domain.User"
           useGeneratedKeys="true" keyProperty="id">
 		insert into t_user
-		(user_uuid,user_name,password,real_name,age, last_active_time)
+		(user_uuid,user_name,password,real_name,nick_name,age, last_active_time)
 		values
-		(#{userUuid}::uuid,#{userName},#{password},#{realName},#{age},#{lastActiveTime})
+		(#{userUuid}::uuid,#{userName},#{password},#{realName},#{nickName},#{age},#{lastActiveTime})
 	</insert>
 
   <insert id="insertUsers" parameterType="java.util.List"
           useGeneratedKeys="true" keyProperty="id">
     insert into t_user
-    (user_uuid,user_name,password,real_name,age,last_active_time)
+    (user_uuid,user_name,password,real_name,nick_name,age,last_active_time)
     values
     <foreach collection="list" item="item" index="index"
              separator=",">
-      (#{item.userUuid}::uuid,#{item.userName},#{item.password},#{item.realName},#{item.age},
+      (#{item.userUuid}::uuid,#{item.userName},#{item.password},#{item.realName},#{item.nickName},#{item.age},
       #{item.lastActiveTime})
     </foreach>
   </insert>
@@ -470,6 +493,49 @@
     from t_user
     where deleted='f' and  wx_open_id = #{wxOpenId}
     limit 1
+  </select>
+
+  <select id="selectClassRankingBase" resultMap="ClassRankingItemResultMap">
+    WITH answer_stats AS (
+      SELECT
+        a.create_user AS user_id,
+        COUNT(*)::int AS paper_count,
+        COALESCE(SUM(a.question_count), 0)::int AS question_count,
+        COALESCE(SUM(a.question_correct), 0)::int AS correct_count,
+        MAX(a.create_time) AS last_submit_time
+      FROM t_exam_paper_answer a
+      LEFT JOIN t_user answer_user ON answer_user.id = a.create_user
+      WHERE COALESCE(a.class_id, answer_user.class_id) = #{classId}
+      GROUP BY a.create_user
+    ),
+    correction_stats AS (
+      SELECT
+        r.user_id AS user_id,
+        COUNT(*)::int AS correction_count,
+        COALESCE(SUM(COALESCE(r.resubmit_count, 0)), 0)::int AS resubmit_count
+      FROM t_question_correction_record r
+      LEFT JOIN t_user correction_user ON correction_user.id = r.user_id
+      WHERE COALESCE(r.class_id, correction_user.class_id) = #{classId}
+        AND COALESCE(r.deleted, false) = false
+      GROUP BY r.user_id
+    )
+    SELECT
+      u.id AS user_id,
+      u.user_name,
+      u.real_name,
+      u.nick_name,
+      COALESCE(a.paper_count, 0) AS paper_count,
+      COALESCE(a.question_count, 0) AS question_count,
+      COALESCE(a.correct_count, 0) AS correct_count,
+      COALESCE(c.correction_count, 0) AS correction_count,
+      COALESCE(c.resubmit_count, 0) AS resubmit_count,
+      a.last_submit_time
+    FROM t_user u
+    LEFT JOIN answer_stats a ON a.user_id = u.id
+    LEFT JOIN correction_stats c ON c.user_id = u.id
+    WHERE u.deleted='f'
+      AND u.role = 1
+      AND u.class_id = #{classId}
   </select>
 
 

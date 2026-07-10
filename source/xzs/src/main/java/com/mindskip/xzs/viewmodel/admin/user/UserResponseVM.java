@@ -15,6 +15,8 @@ public class UserResponseVM extends BaseVM {
 
     private String realName;
 
+    private String nickName;
+
     private Integer age;
 
     private Integer role;
@@ -80,6 +82,14 @@ public class UserResponseVM extends BaseVM {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public Integer getAge() {

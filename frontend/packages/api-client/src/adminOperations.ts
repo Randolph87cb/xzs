@@ -95,6 +95,7 @@ export interface AdminUserEventListItem {
 export interface AdminUserEditModel extends Omit<AdminUserListItem, 'id'> {
   id?: number | null
   password?: string
+  nickName?: string
   role: number
   age?: number | string
   birthDay?: string | null

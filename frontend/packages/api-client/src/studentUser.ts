@@ -3,50 +3,27 @@ import { post, type ApiResponse } from './request'
 export interface StudentUserInfo {
   id?: number
   userName: string
+  nickName?: string
   realName?: string
   age?: number | string
   sex?: number
   birthDay?: string
   phone?: string
+  classId?: number | null
+  className?: string
   createTime?: string
   imagePath?: string
   userLevel?: number
 }
 
 export interface StudentUserUpdateRequest {
-  realName: string
-  age?: string | number | null
-  sex?: number | null
-  birthDay?: string | null
-  phone?: string | null
-  userLevel: number
+  nickName: string
 }
 
 export interface UserEventLog {
   id: number
   content: string
   createTime: string
-}
-
-export interface StudentMessage {
-  id: number
-  title: string
-  content: string
-  sendUserName: string
-  createTime: string
-  readed: boolean
-}
-
-export interface StudentMessagePageRequest {
-  pageIndex: number
-  pageSize: number
-}
-
-export interface StudentMessagePageResponse<T> {
-  list: T[]
-  total: number
-  pageNum: number
-  pageSize: number
 }
 
 export function getCurrentStudentUser(): Promise<ApiResponse<StudentUserInfo>> {
@@ -57,20 +34,6 @@ export function updateCurrentStudentUser(request: StudentUserUpdateRequest): Pro
   return post<void>('/api/student/user/update', request)
 }
 
-export function getStudentMessageCount(): Promise<ApiResponse<number>> {
-  return post<number>('/api/student/user/message/unreadCount')
-}
-
 export function getStudentUserEvents(): Promise<ApiResponse<UserEventLog[]>> {
   return post<UserEventLog[]>('/api/student/user/log')
-}
-
-export function getStudentMessagePage(
-  request: StudentMessagePageRequest
-): Promise<ApiResponse<StudentMessagePageResponse<StudentMessage>>> {
-  return post<StudentMessagePageResponse<StudentMessage>>('/api/student/user/message/page', request)
-}
-
-export function markStudentMessageRead(id: number): Promise<ApiResponse<void>> {
-  return post<void>(`/api/student/user/message/read/${id}`)
 }

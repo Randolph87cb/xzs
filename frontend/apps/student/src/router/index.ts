@@ -50,10 +50,10 @@ export const router = createRouter({
           meta: { title: '个人中心' }
         },
         {
-          path: 'user/message',
-          name: 'UserMessage',
-          component: () => import('@/views/user/UserMessageView.vue'),
-          meta: { title: '消息中心' }
+          path: 'ranking/class',
+          name: 'ClassRanking',
+          component: () => import('@/views/ranking/ClassRankingView.vue'),
+          meta: { title: '班级排行' }
         },
         {
           path: 'training/index',

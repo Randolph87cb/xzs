@@ -135,6 +135,8 @@ public class UserController extends BaseApiController {
             if (!StringUtils.isBlank(model.getPassword())) {
                 String encodePwd = authenticationService.pwdEncode(model.getPassword());
                 user.setPassword(encodePwd);
+            } else {
+                user.setPassword(null);
             }
             user.setModifyTime(new Date());
             userService.updateByIdFilter(user);

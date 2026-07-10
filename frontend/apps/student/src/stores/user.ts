@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
 import {
   getCurrentStudentUser,
-  getStudentMessageCount,
   studentLogin,
   studentLogout,
   type StudentUserInfo
@@ -12,7 +11,6 @@ interface UserState {
   userName: string
   userInfo: StudentUserInfo | null
   imagePath: string
-  messageCount: number
   hasCheckedSession: boolean
 }
 
@@ -21,11 +19,11 @@ export const useUserStore = defineStore('user', {
     userName: Cookies.get('studentUserName') ?? '',
     userInfo: readUserInfoCookie(),
     imagePath: Cookies.get('studentImagePath') ?? '',
-    messageCount: 0,
     hasCheckedSession: false
   }),
   getters: {
-    isAuthenticated: (state) => state.userName.length > 0
+    isAuthenticated: (state) => state.userName.length > 0,
+    displayName: (state) => state.userInfo?.nickName || state.userInfo?.realName || state.userName
   },
   actions: {
     async login(payload: { userName: string; password: string; remember: boolean }) {
@@ -51,10 +49,6 @@ export const useUserStore = defineStore('user', {
       } finally {
         this.hasCheckedSession = true
       }
-    },
-    async initMessageCount() {
-      const result = await getStudentMessageCount()
-      this.messageCount = result.response ?? 0
     },
     async logout() {
       try {
@@ -83,7 +77,6 @@ export const useUserStore = defineStore('user', {
       this.userName = ''
       this.userInfo = null
       this.imagePath = ''
-      this.messageCount = 0
       this.hasCheckedSession = true
       Cookies.remove('studentUserName')
       Cookies.remove('studentUserInfo')

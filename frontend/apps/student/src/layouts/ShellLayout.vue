@@ -14,12 +14,12 @@
         <el-menu-item index="/training/index">智能训练</el-menu-item>
         <el-menu-item index="/record/index">考试记录</el-menu-item>
         <el-menu-item index="/question/index">错题本</el-menu-item>
+        <el-menu-item index="/ranking/class">班级排行</el-menu-item>
         <el-menu-item index="/user/index">个人中心</el-menu-item>
-        <el-menu-item index="/user/message">消息</el-menu-item>
       </el-menu>
       <div class="shell__tools">
+        <span class="shell__user-name">{{ userStore.displayName }}</span>
         <el-button :icon="Search" circle text aria-label="搜索" />
-        <el-button :icon="Bell" circle text aria-label="消息" />
         <el-button text @click="handleLogout">退出</el-button>
       </div>
     </el-header>
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { Bell, Search } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
@@ -102,6 +102,16 @@ async function handleLogout() {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.shell__user-name {
+  max-width: 140px;
+  overflow: hidden;
+  color: var(--xzs-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .shell__main {

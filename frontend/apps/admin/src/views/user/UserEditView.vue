@@ -12,10 +12,13 @@
         <el-input v-model="form.userName" />
       </el-form-item>
       <el-form-item label="密码">
-        <el-input v-model="form.password" show-password />
+        <el-input v-model="form.password" placeholder="留空则不修改密码" show-password />
       </el-form-item>
       <el-form-item label="真实姓名" prop="realName">
         <el-input v-model="form.realName" />
+      </el-form-item>
+      <el-form-item label="昵称">
+        <el-input v-model="form.nickName" />
       </el-form-item>
       <el-form-item v-if="role === 1" label="年龄">
         <el-input v-model="form.age" />
@@ -130,6 +133,12 @@ async function submit() {
   loading.value = true
   try {
     const payload: AdminUserEditModel = { ...form, role: props.role }
+    if (typeof payload.password === 'string') {
+      payload.password = payload.password.trim()
+    }
+    if (payload.id && !payload.password) {
+      delete payload.password
+    }
     if (props.role === 1 && (payload.userLevel == null || payload.userLevel === 0)) {
       payload.userLevel = 1
     }
@@ -159,6 +168,7 @@ function createEmptyForm(): AdminUserEditModel {
     userName: '',
     password: '',
     realName: '',
+    nickName: '',
     role: props.role,
     status: 1,
     age: '',

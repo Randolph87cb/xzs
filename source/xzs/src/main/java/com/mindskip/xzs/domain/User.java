@@ -23,6 +23,11 @@ public class User implements Serializable {
      */
     private String realName;
 
+    /**
+     * 昵称
+     */
+    private String nickName;
+
     private Integer age;
 
     /**
@@ -118,6 +123,14 @@ public class User implements Serializable {
 
     public void setRealName(String realName) {
         this.realName = realName == null ? null : realName.trim();
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName == null ? null : nickName.trim();
     }
 
     public Integer getAge() {

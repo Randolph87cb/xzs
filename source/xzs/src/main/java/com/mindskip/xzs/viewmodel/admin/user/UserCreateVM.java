@@ -17,6 +17,8 @@ public class UserCreateVM {
     @NotBlank
     private String realName;
 
+    private String nickName;
+
     private String age;
 
     private Integer status;
@@ -65,6 +67,14 @@ public class UserCreateVM {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getAge() {

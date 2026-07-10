@@ -105,6 +105,18 @@ public class DashboardController extends BaseApiController {
         return RestResponse.ok(vm);
     }
 
+    @RequestMapping(value = "/class/ranking", method = RequestMethod.POST)
+    public RestResponse<List<ClassRankingVM>> classRanking() {
+        User user = getCurrentUser();
+        if (user.getClassId() == null) {
+            return RestResponse.ok(Collections.emptyList());
+        }
+        List<ClassRankingVM> ranking = userService.classRanking(user.getClassId()).stream()
+                .map(ClassRankingVM::from)
+                .collect(Collectors.toList());
+        return RestResponse.ok(ranking);
+    }
+
 
     private List<TaskItemObject> getTaskPaperItems(Integer tFrameId) {
         TextContent textContent = textContentService.selectById(tFrameId);

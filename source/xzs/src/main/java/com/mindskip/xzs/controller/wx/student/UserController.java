@@ -17,7 +17,6 @@ import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.PageInfoHelper;
 import com.mindskip.xzs.viewmodel.student.user.*;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -82,16 +81,16 @@ public class UserController extends BaseWXApiController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public RestResponse<UserResponseVM> update(@Valid UserUpdateVM model) {
-        if (StringUtils.isBlank(model.getBirthDay())) {
-            model.setBirthDay(null);
-        }
         User user = userService.selectById(getCurrentUser().getId());
-        modelMapper.map(model, user);
-        user.setModifyTime(new Date());
-        userService.updateByIdFilter(user);
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setNickName(model.getNickName());
+        updateUser.setModifyTime(new Date());
+        userService.updateByIdFilter(updateUser);
         UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUserName(), user.getRealName(), new Date());
         userEventLog.setContent(user.getUserName() + " 更新了个人资料");
         eventPublisher.publishEvent(new UserEvent(userEventLog));
+        user.setNickName(model.getNickName());
         UserResponseVM userVm = UserResponseVM.from(user);
         return RestResponse.ok(userVm);
     }

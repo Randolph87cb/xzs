@@ -1,6 +1,7 @@
 package com.mindskip.xzs.service;
 
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.other.ClassRankingItem;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.viewmodel.admin.user.UserPageRequestVM;
 import com.github.pagehelper.PageInfo;
@@ -127,4 +128,6 @@ public interface UserService extends BaseService<User> {
     User selectByWxOpenId(String wxOpenId);
 
     int updateTargetSubjectId(Integer id, Integer targetSubjectId);
+
+    List<ClassRankingItem> classRanking(Integer classId);
 }

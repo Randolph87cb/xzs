@@ -14,6 +14,8 @@ public class UserResponseVM extends BaseVM {
 
     private String realName;
 
+    private String nickName;
+
     private Integer age;
 
     private Integer role;
@@ -33,6 +35,8 @@ public class UserResponseVM extends BaseVM {
     private Integer status;
 
     private Integer userLevel;
+
+    private Integer classId;
 
     private String imagePath;
 
@@ -75,6 +79,14 @@ public class UserResponseVM extends BaseVM {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public Integer getAge() {
@@ -155,6 +167,14 @@ public class UserResponseVM extends BaseVM {
 
     public void setUserLevel(Integer userLevel) {
         this.userLevel = userLevel;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
     public String getImagePath() {

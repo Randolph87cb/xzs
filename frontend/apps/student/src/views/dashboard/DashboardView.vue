@@ -45,6 +45,23 @@
 
       <section class="dashboard__section">
         <div class="dashboard__section-title">
+          <h2>班级排行</h2>
+          <el-button type="primary" link @click="router.push('/ranking/class')">查看全部</el-button>
+        </div>
+        <div class="dashboard__ranking-list">
+          <article v-for="item in topRanking" :key="item.userId" class="dashboard__ranking-item">
+            <span class="dashboard__ranking-rank" :class="{ 'is-top': item.rank <= 3 }">{{ item.rank }}</span>
+            <div>
+              <strong>{{ displayRankingName(item) }}</strong>
+              <span>{{ formatPercent(item.accuracyRate) }} 正确率 · {{ item.questionCount }} 题</span>
+            </div>
+          </article>
+          <el-empty v-if="topRanking.length === 0" description="暂无排行数据" :image-size="72" />
+        </div>
+      </section>
+
+      <section class="dashboard__section">
+        <div class="dashboard__section-title">
           <h2>固定试卷</h2>
           <el-tag type="success" effect="plain">{{ fixedPapers.length }} 套</el-tag>
         </div>
@@ -94,11 +111,19 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getDashboardIndex, getDashboardTasks, type DashboardIndex, type DashboardTaskItem } from '@xzs/api-client'
+import {
+  getClassRanking,
+  getDashboardIndex,
+  getDashboardTasks,
+  type ClassRankingItem,
+  type DashboardIndex,
+  type DashboardTaskItem
+} from '@xzs/api-client'
 
 const router = useRouter()
 const loading = ref(false)
 const tasks = ref<DashboardTaskItem[]>([])
+const ranking = ref<ClassRankingItem[]>([])
 const dashboard = reactive<DashboardIndex>({
   fixedPaper: [],
   timeLimitPaper: [],
@@ -107,6 +132,7 @@ const dashboard = reactive<DashboardIndex>({
 const fixedPapers = computed(() => dashboard.fixedPaper ?? [])
 const timeLimitPapers = computed(() => dashboard.timeLimitPaper ?? [])
 const pushPapers = computed(() => dashboard.pushPaper ?? [])
+const topRanking = computed(() => ranking.value.slice(0, 5))
 const stats = computed(() => [
   { label: '任务数量', value: tasks.value.length },
   { label: '固定试卷', value: fixedPapers.value.length },
@@ -119,12 +145,26 @@ onMounted(loadDashboard)
 async function loadDashboard() {
   loading.value = true
   try {
-    const [dashboardResult, taskResult] = await Promise.all([getDashboardIndex(), getDashboardTasks()])
+    const [dashboardResult, taskResult, rankingResult] = await Promise.all([
+      getDashboardIndex(),
+      getDashboardTasks(),
+      getClassRanking().catch(() => null)
+    ])
     Object.assign(dashboard, dashboardResult.response ?? { fixedPaper: [], timeLimitPaper: [], pushPaper: [] })
     tasks.value = taskResult.response ?? []
+    ranking.value = rankingResult?.response ?? []
   } finally {
     loading.value = false
   }
+}
+
+function displayRankingName(item: ClassRankingItem) {
+  return item.nickName || item.realName || item.userName
+}
+
+function formatPercent(value: number) {
+  const percent = value > 1 ? value : value * 100
+  return `${percent.toFixed(1)}%`
 }
 </script>
 
@@ -260,6 +300,54 @@ async function loadDashboard() {
 
 .dashboard__paper strong {
   color: var(--xzs-text);
+}
+
+.dashboard__ranking-list {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard__ranking-item {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--xzs-border);
+}
+
+.dashboard__ranking-item strong,
+.dashboard__ranking-item span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard__ranking-item strong {
+  color: var(--xzs-text);
+}
+
+.dashboard__ranking-item span {
+  margin-top: 4px;
+  color: var(--xzs-text-muted);
+  font-size: 13px;
+}
+
+.dashboard__ranking-rank {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--xzs-surface-soft);
+  color: var(--xzs-text);
+  font-weight: 700;
+}
+
+.dashboard__ranking-rank.is-top {
+  background: #fff0df;
+  color: var(--xzs-warning);
 }
 
 .dashboard__rail {

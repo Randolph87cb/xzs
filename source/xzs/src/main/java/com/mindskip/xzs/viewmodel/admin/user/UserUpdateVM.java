@@ -10,6 +10,8 @@ public class UserUpdateVM {
     @NotBlank
     private String realName;
 
+    private String nickName;
+
     @NotBlank
     private String phone;
 
@@ -19,6 +21,14 @@ public class UserUpdateVM {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getPhone() {

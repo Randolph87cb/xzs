@@ -1,6 +1,7 @@
 package com.mindskip.xzs.repository;
 
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.other.ClassRankingItem;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.viewmodel.admin.user.UserPageRequestVM;
 import org.apache.ibatis.annotations.Mapper;
@@ -131,4 +132,6 @@ public interface UserMapper extends BaseMapper<User> {
     User selectByWxOpenId(@Param("wxOpenId") String wxOpenId);
 
     int updateTargetSubjectId(@Param("id") Integer id, @Param("targetSubjectId") Integer targetSubjectId);
+
+    List<ClassRankingItem> selectClassRankingBase(@Param("classId") Integer classId);
 }

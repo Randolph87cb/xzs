@@ -132,6 +132,22 @@ export interface DashboardTaskItem {
   paperItems: DashboardTaskPaperItem[]
 }
 
+export interface ClassRankingItem {
+  userId: number
+  userName: string
+  realName?: string
+  nickName?: string
+  rank: number
+  paperCount: number
+  questionCount: number
+  correctCount: number
+  accuracyRate: number
+  correctionCount: number
+  resubmitCount: number
+  lastSubmitTime?: string | null
+  score: number
+}
+
 export interface QuestionAnswerListItem {
   id: number
   shortTitle: string
@@ -216,6 +232,10 @@ export function getDashboardIndex(): Promise<ApiResponse<DashboardIndex>> {
 
 export function getDashboardTasks(): Promise<ApiResponse<DashboardTaskItem[]>> {
   return post<DashboardTaskItem[]>('/api/student/dashboard/task')
+}
+
+export function getClassRanking(): Promise<ApiResponse<ClassRankingItem[]>> {
+  return post<ClassRankingItem[]>('/api/student/dashboard/class/ranking')
 }
 
 export function getQuestionAnswerPage(request: PageRequest): Promise<ApiResponse<PageResponse<QuestionAnswerListItem>>> {

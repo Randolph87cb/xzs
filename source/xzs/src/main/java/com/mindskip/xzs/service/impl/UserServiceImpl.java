@@ -1,6 +1,7 @@
 package com.mindskip.xzs.service.impl;
 
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.other.ClassRankingItem;
 import com.mindskip.xzs.exception.BusinessException;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.event.OnRegistrationCompleteEvent;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -157,5 +161,114 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     public int updateTargetSubjectId(Integer id, Integer targetSubjectId) {
         return userMapper.updateTargetSubjectId(id, targetSubjectId);
+    }
+
+    @Override
+    public List<ClassRankingItem> classRanking(Integer classId) {
+        List<ClassRankingItem> items = userMapper.selectClassRankingBase(classId);
+        items.forEach(this::fillRankingScore);
+        items.sort(classRankingComparator());
+        for (int i = 0; i < items.size(); i++) {
+            items.get(i).setRank(i + 1);
+        }
+        return items;
+    }
+
+    private void fillRankingScore(ClassRankingItem item) {
+        item.setPaperCount(defaultInt(item.getPaperCount()));
+        item.setQuestionCount(defaultInt(item.getQuestionCount()));
+        item.setCorrectCount(defaultInt(item.getCorrectCount()));
+        item.setCorrectionCount(defaultInt(item.getCorrectionCount()));
+        item.setResubmitCount(defaultInt(item.getResubmitCount()));
+
+        BigDecimal accuracyRate = item.getQuestionCount() == 0
+                ? BigDecimal.ZERO
+                : BigDecimal.valueOf(item.getCorrectCount())
+                .divide(BigDecimal.valueOf(item.getQuestionCount()), 4, RoundingMode.HALF_UP);
+        item.setAccuracyRate(accuracyRate);
+
+        double score = accuracyRate.doubleValue() * 100
+                + Math.log(item.getQuestionCount() + 1D) * 8
+                + item.getCorrectionCount() * 2D
+                - item.getResubmitCount();
+        item.setScore(BigDecimal.valueOf(score).setScale(2, RoundingMode.HALF_UP));
+    }
+
+    private Comparator<ClassRankingItem> classRankingComparator() {
+        return (left, right) -> {
+            int result = compareBigDecimalDesc(left.getScore(), right.getScore());
+            if (result != 0) {
+                return result;
+            }
+            result = compareBigDecimalDesc(left.getAccuracyRate(), right.getAccuracyRate());
+            if (result != 0) {
+                return result;
+            }
+            result = compareIntegerDesc(left.getQuestionCount(), right.getQuestionCount());
+            if (result != 0) {
+                return result;
+            }
+            result = compareDateDescNullLast(left.getLastSubmitTime(), right.getLastSubmitTime());
+            if (result != 0) {
+                return result;
+            }
+            return compareIntegerAsc(left.getUserId(), right.getUserId());
+        };
+    }
+
+    private Integer defaultInt(Integer value) {
+        return value == null ? 0 : value;
+    }
+
+    private int compareBigDecimalDesc(BigDecimal left, BigDecimal right) {
+        if (left == null && right == null) {
+            return 0;
+        }
+        if (left == null) {
+            return 1;
+        }
+        if (right == null) {
+            return -1;
+        }
+        return right.compareTo(left);
+    }
+
+    private int compareIntegerDesc(Integer left, Integer right) {
+        if (left == null && right == null) {
+            return 0;
+        }
+        if (left == null) {
+            return 1;
+        }
+        if (right == null) {
+            return -1;
+        }
+        return right.compareTo(left);
+    }
+
+    private int compareIntegerAsc(Integer left, Integer right) {
+        if (left == null && right == null) {
+            return 0;
+        }
+        if (left == null) {
+            return 1;
+        }
+        if (right == null) {
+            return -1;
+        }
+        return left.compareTo(right);
+    }
+
+    private int compareDateDescNullLast(java.util.Date left, java.util.Date right) {
+        if (left == null && right == null) {
+            return 0;
+        }
+        if (left == null) {
+            return 1;
+        }
+        if (right == null) {
+            return -1;
+        }
+        return right.compareTo(left);
     }
 }
