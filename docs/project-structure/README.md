@@ -47,6 +47,7 @@ xzs/
 
 ## 构建优化文档
 
+- `docs/project-health-improvement-plan.md`：项目工程健康改进计划与分阶段执行建议。
 - `docs/build-performance-optimization-plan.md`：构建与运行性能优化分阶段方案。
 - `docs/vue3-vite-migration-roadmap.md`：Vue 3 + Vite 长期迁移路线图。
 - `docs/frontend-modernization-migration-roadmap.md`：覆盖式 Vue 3 + Vite 前端重构路线。
