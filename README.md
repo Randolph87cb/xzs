@@ -18,12 +18,17 @@
 
 </div>
 
-# 学之思开源考试系统 - Postgresql版
+# 信息学客观题一本通
+
+## GESP/CSP 客观题训练
 
 ## 项目介绍
 
-学之思开源考试系统是一款 java + vue 的前后端分离的考试系统。主要优点是开发、部署简单快捷、界面设计友好、代码结构清晰。支持web端和微信小程序，能覆盖到pc机和手机等设备。
-支持多种部署方式：集成部署、前后端分离部署、docker部署。
+信息学客观题一本通是一套面向 GESP/CSP 客观题训练的在线练习系统，提供学生端练习、错题沉淀、考试记录和管理端题库/试卷管理能力。
+
+本项目基于学之思开源考试系统 PostgreSQL 版改造，后端使用 Java + Spring Boot，Web 端使用 Vue 3 + Vite，保留微信小程序学生端源码。项目支持本地构建、Docker 部署、Fly.io 冷启动部署和树莓派部署。
+
+当前 Fly.io 部署应用名建议使用 `gesp-csp-quiz`，默认访问地址为 `https://gesp-csp-quiz.fly.dev`。
 
 ### 演示地址
 
@@ -41,7 +46,7 @@
 * 商务微信：`whmindskip`
 * 商务邮箱：`mindskip@qq.com`
 
-### 学之思仓库版本地址
+### 上游学之思仓库版本地址
 
 * gitee - postgresql ：[https://gitee.com/mindskip/xzs](https://gitee.com/mindskip/xzs)
 * gitee - mysql ：[https://gitee.com/mindskip/xzs-mysql](https://gitee.com/mindskip/xzs-mysql)

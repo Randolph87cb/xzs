@@ -2,7 +2,7 @@
 
 ## 项目结构概览
 
-本项目是学之思开源考试系统 PostgreSQL 版，包含一个 Spring Boot 后端、一个 Vue 3 + Vite 管理端、一个 Vue 3 + Vite 学生端，以及一个微信小程序学生端。
+本项目是“信息学客观题一本通 / GESP/CSP 客观题训练”，基于学之思开源考试系统 PostgreSQL 版改造，包含一个 Spring Boot 后端、一个 Vue 3 + Vite 管理端、一个 Vue 3 + Vite 学生端，以及一个微信小程序学生端。
 
 - 后端源码在 `source/xzs`，主要按 `controller`、`service`、`repository`、`domain`、`viewmodel` 分层。
 - 管理端 Web 源码和默认构建来源在 `frontend/apps/admin`。
