@@ -24,10 +24,9 @@
 `docker` 目录保存 Docker 部署材料：
 
 - `docker/docker-compose.yml`：compose 配置。
-- `docker/release/xzs-3.9.0.jar`：Docker 部署使用的 jar。
-- `docker/install/docker-compose-linux-x86_64`：附带的 docker-compose 二进制。
+- `docker/README.md`：Docker Compose 启动、日志和停止命令说明。
 
-注意：当前仓库 README、后端配置和 SQL 文件均指向 PostgreSQL 版，但 `docker/docker-compose.yml` 与 `docker/README.md` 中仍出现 MySQL 镜像和 MySQL 部署说明。使用 Docker 部署前需要按目标数据库版本核对 compose、SQL 脚本和后端 datasource。
+Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postgresql.sql` 作为数据库初始化脚本。后端容器运行 `release/java/xzs-3.9.0.jar`；`docker/release` 不再保存同名 jar 副本，避免发布制品来源不一致。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，仓库不再附带 docker-compose 二进制。
 
 ## Fly.io 部署
 

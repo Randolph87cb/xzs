@@ -1,32 +1,59 @@
-### 6.3 docker部署
+# Docker Compose 部署
 
-> 注意：本目录保留的是上游旧 Docker Compose 示例，仍包含 MySQL 镜像和 MySQL 初始化说明。当前仓库主线是 PostgreSQL 版；Fly.io 部署请使用根目录 `Dockerfile`、`fly.toml` 和 `docs/fly-managed-postgres-deployment.md`，不要直接套用本文件。
+本目录提供当前 PostgreSQL 版的 Docker Compose 示例。后端容器直接运行仓库发布制品 `release/java/xzs-3.9.0.jar`，数据库容器首次启动时读取 `sql/xzs-postgresql.sql` 初始化数据。
 
-* 打开网站<https://gitee.com/mindskip/xzs-mysql>，找到docker目录，里面有已配置好的文件
-* 下载sql脚本，下载教程<https://www.mindskip.net:999>，然后解压sql压缩包，找到xzs-mysql.sql文件，编辑此文件，在文件开头加如下代码：
+## 前置条件
 
-```xzs-mysql
-CREATE DATABASE `xzs` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE xzs;
+- 已安装 Docker 与 Docker Compose v2。
+- `release/java/xzs-3.9.0.jar` 已存在。
+- `sql/xzs-postgresql.sql` 已存在。
+
+## 从仓库根目录启动
+
+```powershell
+docker compose -f .\docker\docker-compose.yml up -d
 ```
 
-* sql文件改好后，将文件移动到 docker/sql 目录下
-* 将整个docker目录中的文件，复制到/usr/local/xzs下面
-* 进入到install目录，执行下面命令，安装docker-compose
+查看日志：
 
-```docker-compose
-cd /usr/local/xzs/install
-mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
-chmod +x  /usr/local/bin/docker-compose
-docker-compose --version
+```powershell
+docker compose -f .\docker\docker-compose.yml logs -f java
 ```
 
-* 执行下面命令，启动信息学客观题一本通网站，有问题可以看下/usr/local/xzs/log中的日志
+停止服务：
 
-```docker-xzs
-cd /usr/local/xzs
-docker-compose up -d
+```powershell
+docker compose -f .\docker\docker-compose.yml down
 ```
 
-* 学生端访问地址为：<http://ip:8000/student>
-* 管理员端访问地址为：<http://ip:8000/admin>
+## 从 docker 目录启动
+
+```powershell
+cd .\docker
+docker compose up -d
+```
+
+查看日志：
+
+```powershell
+docker compose logs -f java
+```
+
+停止服务：
+
+```powershell
+docker compose down
+```
+
+## 服务说明
+
+- `postgres`：PostgreSQL 15，默认创建 `xzs` 数据库和 `xzs` 用户，数据持久化到命名卷 `xzs-postgres-data`。
+- `java`：Java 8 运行环境，挂载 `../release/java` 到 `/usr/local/xzs/release:ro`，运行 `/usr/local/xzs/release/xzs-3.9.0.jar`。
+- 后端生产配置通过 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD` 注入。
+
+访问地址：
+
+- 学生端：`http://ip:8000/student`
+- 管理端：`http://ip:8000/admin`
+
+如需重新初始化数据库，需要先停止服务并删除 `xzs-postgres-data` 数据卷。删除数据卷会清空数据库，请先备份。

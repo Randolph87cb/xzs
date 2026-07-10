@@ -1,27 +1,39 @@
-version: '3.9'
 services:
-    mysql:
-        image: registry.cn-hangzhou.aliyuncs.com/mindskip/mysql:8.0.33
-        restart: always
-        ports:
-            - 127.0.0.1:3306:3306
-        privileged: true
-        container_name: xzs-mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: "123456"
-            TZ: "Asia/Shanghai"
-        volumes:
-            - "./sql:/docker-entrypoint-initdb.d/"
-    java:
-        image: registry.cn-hangzhou.aliyuncs.com/mindskip/java:1.8.0
-        container_name: xzs-java
-        privileged: true
-        network_mode: host
-        restart: always
-        command:
-            /bin/bash -c "java -Duser.timezone=Asia/Shanghai -jar -Dspring.profiles.active=prod /usr/local/xzs/release/xzs-3.9.0.jar"
-        ports: 
-            - 8000:8000
-        volumes:
-            - "./release:/usr/local/xzs/release/"        
-            - "./log:/usr/log/xzs/"
+  postgres:
+    image: postgres:15
+    container_name: xzs-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: xzs
+      POSTGRES_USER: xzs
+      POSTGRES_PASSWORD: xzs_change_me
+      TZ: Asia/Shanghai
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - xzs-postgres-data:/var/lib/postgresql/data
+      - ../sql/xzs-postgresql.sql:/docker-entrypoint-initdb.d/01-xzs-postgresql.sql:ro
+
+  java:
+    image: eclipse-temurin:8-jre
+    container_name: xzs-java
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/xzs
+      SPRING_DATASOURCE_USERNAME: xzs
+      SPRING_DATASOURCE_PASSWORD: xzs_change_me
+      XZS_LOG_PATH: /usr/log/xzs/
+      TZ: Asia/Shanghai
+    command: >
+      sh -c "java -Duser.timezone=Asia/Shanghai -Dspring.profiles.active=prod
+      -jar /usr/local/xzs/release/xzs-3.9.0.jar"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../release/java:/usr/local/xzs/release:ro
+      - ./log:/usr/log/xzs/
+
+volumes:
+  xzs-postgres-data:

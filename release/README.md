@@ -1,77 +1,108 @@
 # 项目部署
 
-### 集成部署
+当前仓库主线为 PostgreSQL + Flyway + Vue 3/Vite + Spring Boot。部署时以仓库内的构建脚本、Flyway 迁移和 PostgreSQL 初始化材料为准。
 
-* 在项目根目录执行前端构建、静态资源同步和后端打包脚本
+## 发布制品
 
- ```powershell
+- `release/java/xzs-3.9.0.jar`：后端 Spring Boot jar，也是 Docker Compose 示例使用的唯一发布 jar。
+- `release/web/admin`：管理端静态资源。
+- `release/web/student`：学生端静态资源。
+- `sql/xzs-postgresql.sql`：PostgreSQL 初始化脚本；全新空库也可以直接由后端内置 Flyway 基线迁移初始化。
+
+## 本地集成部署
+
+在项目根目录构建前端静态资源并打包后端：
+
+```powershell
 .\scripts\build-all.ps1
- ```
+```
 
-* Vue 3 + Vite 打包后的目录为 `frontend/apps/student/student` 和 `frontend/apps/admin/admin`
-* `build-all.ps1` 会将文件同步到 `source/xzs/src/main/resources/static`，然后将 Java 程序打包成 jar 包
-* 修改application-prod.yml中的datasource地址
-* 数据库账号密码设置为：root/123456
-* 数据库脚本领取地址：[https://www.mindskip.net:999](https://www.mindskip.net:999)
-* 创建数据库xzs，导入数据库脚本
-* 学生端访问地址为：<http://ip:8000/student>
-* 管理员端访问地址为：<http://ip:8000/admin>
-* 执行下列命令，运行程序
+脚本会依次构建 Vue 3 + Vite 管理端和学生端，将产物同步到 `source/xzs/src/main/resources/static`，再打包后端 jar。默认构建产物位置为：
 
- ```java
-nohup java -Duser.timezone=Asia/Shanghai -jar -Dspring.profiles.active=prod  xzs-3.9.0.jar  > start1.log  2>&1 &
- ```
+- `frontend/apps/admin/admin`
+- `frontend/apps/student/student`
 
-### 前后端分离部署
+准备 PostgreSQL 数据库后，可直接启动 jar。生产配置通过环境变量传入：
 
-* 采用前后端分离方式部署，后端启动和部署方式1一样
-* 前端采用nginx来装载静态页面,先创建/usr/local/xzs/web/目录，然后将打包后的student、admin放到此目录下
-* 页面访问端口为8001，注意检查防火墙端口是否打开
-* 学生端访问地址为：<http://ip:8001/student>
-* 管理员端访问地址为：<http://ip:8001/admin>
-* nginx配置如下：
+```powershell
+$env:SPRING_DATASOURCE_URL = "jdbc:postgresql://localhost:5432/xzs"
+$env:SPRING_DATASOURCE_USERNAME = "xzs"
+$env:SPRING_DATASOURCE_PASSWORD = "change-me"
+java -Duser.timezone=Asia/Shanghai -Dspring.profiles.active=prod -jar .\release\java\xzs-3.9.0.jar
+```
+
+Linux 示例：
+
+```bash
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/xzs \
+SPRING_DATASOURCE_USERNAME=xzs \
+SPRING_DATASOURCE_PASSWORD=change-me \
+nohup java -Duser.timezone=Asia/Shanghai -Dspring.profiles.active=prod -jar release/java/xzs-3.9.0.jar > start.log 2>&1 &
+```
+
+访问地址：
+
+- 学生端：`http://ip:8000/student`
+- 管理端：`http://ip:8000/admin`
+
+## 前后端分离部署
+
+后端仍按生产 profile 连接 PostgreSQL 启动。前端可由 nginx 承载 `release/web/student` 和 `release/web/admin`，并将 `/api/` 代理到后端 8000 端口。
+
+示例目录：
+
+```text
+/usr/local/xzs/web/student
+/usr/local/xzs/web/admin
+```
+
+nginx 示例：
 
 ```nginx
 server {
-    listen      8001;
+    listen 8001;
     server_name xzs;
+
     location / {
         root /usr/local/xzs/web/;
         index index.html;
     }
+
     location /api/ {
-       proxy_pass  http://localhost:8000;
+        proxy_pass http://localhost:8000;
     }
 }
 ```
 
-### docker部署
+访问地址：
 
-* 打开网站<https://gitee.com/mindskip/xzs-mysql>，找到docker目录，里面有已配置好的文件
-* 下载sql脚本，下载教程<https://www.mindskip.net:999>，然后解压sql压缩包，找到xzs-mysql.sql文件，编辑此文件，在文件开头加如下代码：
+- 学生端：`http://ip:8001/student`
+- 管理端：`http://ip:8001/admin`
 
-```xzs-mysql
-CREATE DATABASE `xzs` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE xzs;
+## Docker Compose 部署
+
+Docker Compose 示例位于 `docker/`，当前配置使用 PostgreSQL 和 `release/java/xzs-3.9.0.jar`。从仓库根目录执行：
+
+```powershell
+docker compose -f .\docker\docker-compose.yml up -d
 ```
 
-* sql文件改好后，将文件移动到 docker/sql 目录下
-* 将整个docker目录中的文件，复制到/usr/local/xzs下面
-* 进入到install目录，执行下面命令，安装docker-compose
+或从 `docker` 目录执行：
 
-```docker-compose
-cd /usr/local/xzs/install
-mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
-chmod +x  /usr/local/bin/docker-compose
-docker-compose --version
+```powershell
+cd .\docker
+docker compose up -d
 ```
 
-* 执行下面命令，启动信息学客观题一本通网站，有问题可以看下/usr/local/xzs/log中的日志
+首次启动时，PostgreSQL 容器会读取 `sql/xzs-postgresql.sql` 初始化数据库；后端容器通过 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD` 连接该数据库。
 
-```docker-xzs
-cd /usr/local/xzs
-docker-compose up -d
+## Fly.io 与树莓派部署
+
+- Fly.io：使用根目录 `Dockerfile`、`fly.toml`，详细说明见 `docs/fly-managed-postgres-deployment.md`。
+- 树莓派：使用 `deploy/raspberry-pi` 下的 systemd、数据库初始化、备份和恢复脚本，详细说明见 `docs/raspberry-pi-deployment.md`。
+
+发布前可运行一致性校验：
+
+```powershell
+.\scripts\verify-release-consistency.ps1
 ```
-
-* 学生端访问地址为：<http://ip:8000/student>
-* 管理员端访问地址为：<http://ip:8000/admin>
