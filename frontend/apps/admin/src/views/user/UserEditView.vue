@@ -34,6 +34,11 @@
           <el-option v-for="item in classOptions" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
+      <el-form-item v-if="role === 1" label="目标科目">
+        <el-select v-model="form.targetSubjectId" clearable filterable placeholder="选择目标科目">
+          <el-option v-for="item in subjectOptions" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="手机">
         <el-input v-model="form.phone" />
       </el-form-item>
@@ -55,7 +60,15 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-import { getAdminClassOptions, getAdminUser, saveAdminUser, type AdminClassListItem, type AdminUserEditModel } from '@xzs/api-client'
+import {
+  getAdminClassOptions,
+  getAdminSubjectPage,
+  getAdminUser,
+  saveAdminUser,
+  type AdminClassListItem,
+  type AdminSubjectListItem,
+  type AdminUserEditModel
+} from '@xzs/api-client'
 
 const props = defineProps<{
   role: 1 | 2 | 3
@@ -66,6 +79,7 @@ const router = useRouter()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 const classOptions = ref<AdminClassListItem[]>([])
+const subjectOptions = ref<AdminSubjectListItem[]>([])
 const roleTitle = computed(() => {
   if (props.role === 1) return '学生'
   if (props.role === 2) return '老师'
@@ -85,8 +99,12 @@ const rules: FormRules = {
 
 onMounted(async () => {
   if (props.role === 1) {
-    const classResult = await getAdminClassOptions()
+    const [classResult, subjectResult] = await Promise.all([
+      getAdminClassOptions(),
+      getAdminSubjectPage({ pageIndex: 1, pageSize: 100 })
+    ])
     classOptions.value = classResult.response ?? []
+    subjectOptions.value = subjectResult.response?.list ?? []
   }
 
   const id = Number(route.query.id || 0)
@@ -111,11 +129,14 @@ async function submit() {
 
   loading.value = true
   try {
-    form.role = props.role
-    if (props.role === 1 && (form.userLevel == null || form.userLevel === 0)) {
-      form.userLevel = 1
+    const payload: AdminUserEditModel = { ...form, role: props.role }
+    if (props.role === 1 && (payload.userLevel == null || payload.userLevel === 0)) {
+      payload.userLevel = 1
     }
-    const result = await saveAdminUser(form)
+    if (props.role !== 1) {
+      delete payload.targetSubjectId
+    }
+    const result = await saveAdminUser(payload)
     ElMessage.success(result.message || '保存成功')
     router.push(listPath.value)
   } finally {
@@ -126,6 +147,9 @@ async function submit() {
 function reset() {
   const id = form.id
   Object.assign(form, createEmptyForm(), { id })
+  if (props.role !== 1) {
+    delete form.targetSubjectId
+  }
   formRef.value?.clearValidate()
 }
 
@@ -142,7 +166,8 @@ function createEmptyForm(): AdminUserEditModel {
     birthDay: null,
     phone: '',
     userLevel: 1,
-    classId: null
+    classId: null,
+    targetSubjectId: props.role === 1 ? null : undefined
   }
 }
 </script>

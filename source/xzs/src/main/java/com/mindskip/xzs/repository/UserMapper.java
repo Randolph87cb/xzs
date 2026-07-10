@@ -129,4 +129,6 @@ public interface UserMapper extends BaseMapper<User> {
 
 
     User selectByWxOpenId(@Param("wxOpenId") String wxOpenId);
+
+    int updateTargetSubjectId(@Param("id") Integer id, @Param("targetSubjectId") Integer targetSubjectId);
 }

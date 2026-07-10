@@ -544,15 +544,16 @@ CREATE TABLE "public"."t_user" (
   "last_active_time" timestamp(6),
   "deleted" bool,
   "wx_open_id" varchar COLLATE "pg_catalog"."default",
-  "class_id" int4
+  "class_id" int4,
+  "target_subject_id" int4
 )
 ;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO "public"."t_user" VALUES (2, '55bad52c-cdf7-4321-87b8-e37d958b24cf', 'admin', 'D1AGFL+Gx37t0NPG4d6biYP5Z31cNbwhK5w1lUeiHB2zagqbk8efYfSjYoh1Z/j1dkiRjHU+b0EpwzCh8IGsksJjzD65ci5LsnodQVf4Uj6D3pwoscXGqmkjjpzvSJbx42swwNTA+QoDU8YLo7JhtbUK2X0qCjFGpd+8eJ5BGvk=', '管理员', 18, 1, '2019-09-02 00:00:00', 13, '1561651651616156', 3, 1, NULL, '2019-07-23 07:17:16.923', '2020-02-08 10:52:42.234', '2019-07-23 07:17:16.923', 'f', NULL, NULL);
-INSERT INTO "public"."t_user" VALUES (1, 'b41eaab1-926a-4824-94e8-da9259986ab6', 'student', 'RA6atJcbedAQUA/3jTcC85RuVuedZEgkeWUCiagtwhz6SjEKerC4IvFQe1OGSvbk+tPZGfkInRrmipPgHU6tzcpaQfdJkV9cXSGoxyldrWSFxblfpGGDxVisQrtrH7N1AEyi6u3h4iYrwkf4sPV8xoU8ZpOhlKmLEjDEq/an6rQ=', '学生', 16, 2, '1979-06-05 00:00:00', 1, '19171171610', 1, 1, 'https://www.mindskip.net:9008/image/ba607a75-83ba-4530-8e23-660b72dc4953/头像.jpg', '2019-07-23 05:02:29.027', '2020-02-05 09:36:52.138', '2019-07-23 05:02:29.027', 'f', NULL, NULL);
+INSERT INTO "public"."t_user" VALUES (2, '55bad52c-cdf7-4321-87b8-e37d958b24cf', 'admin', 'D1AGFL+Gx37t0NPG4d6biYP5Z31cNbwhK5w1lUeiHB2zagqbk8efYfSjYoh1Z/j1dkiRjHU+b0EpwzCh8IGsksJjzD65ci5LsnodQVf4Uj6D3pwoscXGqmkjjpzvSJbx42swwNTA+QoDU8YLo7JhtbUK2X0qCjFGpd+8eJ5BGvk=', '管理员', 18, 1, '2019-09-02 00:00:00', 13, '1561651651616156', 3, 1, NULL, '2019-07-23 07:17:16.923', '2020-02-08 10:52:42.234', '2019-07-23 07:17:16.923', 'f', NULL, NULL, NULL);
+INSERT INTO "public"."t_user" VALUES (1, 'b41eaab1-926a-4824-94e8-da9259986ab6', 'student', 'RA6atJcbedAQUA/3jTcC85RuVuedZEgkeWUCiagtwhz6SjEKerC4IvFQe1OGSvbk+tPZGfkInRrmipPgHU6tzcpaQfdJkV9cXSGoxyldrWSFxblfpGGDxVisQrtrH7N1AEyi6u3h4iYrwkf4sPV8xoU8ZpOhlKmLEjDEq/an6rQ=', '学生', 16, 2, '1979-06-05 00:00:00', 1, '19171171610', 1, 1, 'https://www.mindskip.net:9008/image/ba607a75-83ba-4530-8e23-660b72dc4953/头像.jpg', '2019-07-23 05:02:29.027', '2020-02-05 09:36:52.138', '2019-07-23 05:02:29.027', 'f', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for t_user_event_log

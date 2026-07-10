@@ -3,12 +3,14 @@ package com.mindskip.xzs.controller.admin;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.Subject;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.UserEventLog;
 import com.mindskip.xzs.domain.enums.RoleEnum;
 import com.mindskip.xzs.domain.enums.UserStatusEnum;
 import com.mindskip.xzs.service.AuthenticationService;
 import com.mindskip.xzs.service.ClassScopeService;
+import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.service.UserEventLogService;
 import com.mindskip.xzs.service.UserService;
 import com.mindskip.xzs.utility.DateTimeUtil;
@@ -34,13 +36,15 @@ public class UserController extends BaseApiController {
     private final UserEventLogService userEventLogService;
     private final AuthenticationService authenticationService;
     private final ClassScopeService classScopeService;
+    private final SubjectService subjectService;
 
     @Autowired
-    public UserController(UserService userService, UserEventLogService userEventLogService, AuthenticationService authenticationService, ClassScopeService classScopeService) {
+    public UserController(UserService userService, UserEventLogService userEventLogService, AuthenticationService authenticationService, ClassScopeService classScopeService, SubjectService subjectService) {
         this.userService = userService;
         this.userEventLogService = userEventLogService;
         this.authenticationService = authenticationService;
         this.classScopeService = classScopeService;
+        this.subjectService = subjectService;
     }
 
 
@@ -110,6 +114,10 @@ public class UserController extends BaseApiController {
         if (classScopeService.isTeacher(currentUser)) {
             model.setRole(RoleEnum.STUDENT.getCode());
         }
+        RestResponse<User> targetSubjectError = validateAndNormalizeTargetSubject(model, before);
+        if (targetSubjectError != null) {
+            return targetSubjectError;
+        }
         User user = modelMapper.map(model, User.class);
         if (user.getRole() == null || RoleEnum.STUDENT.getCode() != user.getRole()) {
             user.setClassId(null);
@@ -130,6 +138,7 @@ public class UserController extends BaseApiController {
             }
             user.setModifyTime(new Date());
             userService.updateByIdFilter(user);
+            userService.updateTargetSubjectId(user.getId(), user.getTargetSubjectId());
         }
         return RestResponse.ok(user);
     }
@@ -207,6 +216,30 @@ public class UserController extends BaseApiController {
         }
         if (model.getRole() != null && RoleEnum.STUDENT.getCode() == model.getRole() && model.getClassId() == null && before == null) {
             return RestResponse.fail(2, "学生班级不能为空");
+        }
+        return null;
+    }
+
+    private RestResponse<User> validateAndNormalizeTargetSubject(UserCreateVM model, User before) {
+        Integer role = model.getRole();
+        if (role == null && before != null) {
+            role = before.getRole();
+            model.setRole(role);
+        }
+
+        if (role == null || RoleEnum.STUDENT.getCode() != role) {
+            model.setTargetSubjectId(null);
+            return null;
+        }
+
+        Integer targetSubjectId = model.getTargetSubjectId();
+        if (targetSubjectId == null) {
+            return null;
+        }
+
+        Subject subject = subjectService.selectById(targetSubjectId);
+        if (subject == null || Boolean.TRUE.equals(subject.getDeleted())) {
+            return RestResponse.fail(2, "目标科目不存在");
         }
         return null;
     }

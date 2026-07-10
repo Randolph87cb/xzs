@@ -50,6 +50,11 @@ public class User implements Serializable {
     private Integer classId;
 
     /**
+     * 学生目标科目
+     */
+    private Integer targetSubjectId;
+
+    /**
      * 1.启用 2禁用
      */
     private Integer status;
@@ -169,6 +174,14 @@ public class User implements Serializable {
 
     public void setClassId(Integer classId) {
         this.classId = classId;
+    }
+
+    public Integer getTargetSubjectId() {
+        return targetSubjectId;
+    }
+
+    public void setTargetSubjectId(Integer targetSubjectId) {
+        this.targetSubjectId = targetSubjectId;
     }
 
     public Integer getStatus() {

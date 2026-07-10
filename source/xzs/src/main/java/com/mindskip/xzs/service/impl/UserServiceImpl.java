@@ -153,4 +153,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public User selectByWxOpenId(String wxOpenId) {
         return userMapper.selectByWxOpenId(wxOpenId);
     }
+
+    @Override
+    public int updateTargetSubjectId(Integer id, Integer targetSubjectId) {
+        return userMapper.updateTargetSubjectId(id, targetSubjectId);
+    }
 }

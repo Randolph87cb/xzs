@@ -33,6 +33,8 @@ public class UserCreateVM {
 
     private Integer classId;
 
+    private Integer targetSubjectId;
+
     public Integer getId() {
         return id;
     }
@@ -127,5 +129,13 @@ public class UserCreateVM {
 
     public void setClassId(Integer classId) {
         this.classId = classId;
+    }
+
+    public Integer getTargetSubjectId() {
+        return targetSubjectId;
+    }
+
+    public void setTargetSubjectId(Integer targetSubjectId) {
+        this.targetSubjectId = targetSubjectId;
     }
 }

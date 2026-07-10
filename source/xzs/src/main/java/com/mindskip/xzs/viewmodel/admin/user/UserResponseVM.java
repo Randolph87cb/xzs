@@ -37,6 +37,8 @@ public class UserResponseVM extends BaseVM {
 
     private Integer classId;
 
+    private Integer targetSubjectId;
+
     private String imagePath;
 
     public static UserResponseVM from(User user) {
@@ -166,6 +168,14 @@ public class UserResponseVM extends BaseVM {
 
     public void setClassId(Integer classId) {
         this.classId = classId;
+    }
+
+    public Integer getTargetSubjectId() {
+        return targetSubjectId;
+    }
+
+    public void setTargetSubjectId(Integer targetSubjectId) {
+        this.targetSubjectId = targetSubjectId;
     }
 
     public String getImagePath() {

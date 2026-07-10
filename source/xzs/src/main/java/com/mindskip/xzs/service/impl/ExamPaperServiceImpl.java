@@ -428,6 +428,11 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         return examPaperMapper.indexPaper(paperFilter);
     }
 
+    @Override
+    public List<ExamPaper> selectByIds(List<Integer> ids) {
+        return examPaperMapper.selectByIds(ids);
+    }
+
 
     @Override
     public Integer selectAllCount() {

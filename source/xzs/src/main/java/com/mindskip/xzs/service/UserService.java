@@ -125,4 +125,6 @@ public interface UserService extends BaseService<User> {
     List<User> selectByIds(List<Integer> ids);
 
     User selectByWxOpenId(String wxOpenId);
+
+    int updateTargetSubjectId(Integer id, Integer targetSubjectId);
 }

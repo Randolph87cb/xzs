@@ -100,6 +100,7 @@ export interface AdminUserEditModel extends Omit<AdminUserListItem, 'id'> {
   birthDay?: string | null
   userLevel?: number
   classId?: number | null
+  targetSubjectId?: number | null
 }
 
 export interface AdminSubjectEditModel {

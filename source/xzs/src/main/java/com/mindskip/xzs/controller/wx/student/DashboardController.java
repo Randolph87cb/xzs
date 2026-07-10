@@ -2,6 +2,7 @@ package com.mindskip.xzs.controller.wx.student;
 
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.controller.wx.BaseWXApiController;
+import com.mindskip.xzs.domain.ExamPaper;
 import com.mindskip.xzs.domain.TaskExam;
 import com.mindskip.xzs.domain.TaskExamCustomerAnswer;
 import com.mindskip.xzs.domain.TextContent;
@@ -23,8 +24,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -48,15 +54,18 @@ public class DashboardController extends BaseWXApiController {
 
     @RequestMapping(value = "/index", method = RequestMethod.POST)
     public RestResponse<IndexVM> index() {
+        User user = getCurrentUser();
         IndexVM indexVM = new IndexVM();
 
         PaperFilter fixedPaperFilter = new PaperFilter();
         fixedPaperFilter.setExamPaperType(ExamPaperTypeEnum.Fixed.getCode());
+        fixedPaperFilter.setSubjectId(user.getTargetSubjectId());
         indexVM.setFixedPaper(examPaperService.indexPaper(fixedPaperFilter));
 
         PaperFilter timeLimitPaperFilter = new PaperFilter();
         timeLimitPaperFilter.setDateTime(new Date());
         timeLimitPaperFilter.setExamPaperType(ExamPaperTypeEnum.TimeLimit.getCode());
+        timeLimitPaperFilter.setSubjectId(user.getTargetSubjectId());
 
         List<PaperInfo> limitPaper = examPaperService.indexPaper(timeLimitPaperFilter);
         List<PaperInfoVM> paperInfoVMS = limitPaper.stream().map(d -> {
@@ -78,24 +87,46 @@ public class DashboardController extends BaseWXApiController {
         }
         List<Integer> tIds = taskExams.stream().map(taskExam -> taskExam.getId()).collect(Collectors.toList());
         List<TaskExamCustomerAnswer> taskExamCustomerAnswers = taskExamCustomerAnswerService.selectByTUid(tIds, user.getId());
-        List<TaskItemVm> vm = taskExams.stream().map(t -> {
+        Map<Integer, TaskExamCustomerAnswer> taskAnswerMap = taskExamCustomerAnswers.stream()
+                .collect(Collectors.toMap(TaskExamCustomerAnswer::getTaskExamId, Function.identity(), (a, b) -> a));
+        List<TaskPaperContext> taskPaperContexts = taskExams.stream()
+                .map(t -> new TaskPaperContext(t, getTaskPaperItems(t.getFrameTextContentId())))
+                .collect(Collectors.toList());
+        Map<Integer, ExamPaper> examPaperMap = getTaskExamPaperMap(taskPaperContexts, user.getTargetSubjectId());
+        List<TaskItemVm> vm = taskPaperContexts.stream().map(context -> {
+            TaskExam t = context.getTaskExam();
             TaskItemVm itemVm = new TaskItemVm();
             itemVm.setId(t.getId());
             itemVm.setTitle(t.getTitle());
-            TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswers.stream()
-                    .filter(tc -> tc.getTaskExamId().equals(t.getId())).findFirst().orElse(null);
-            List<TaskItemPaperVm> paperItemVMS = getTaskItemPaperVm(t.getFrameTextContentId(), taskExamCustomerAnswer);
+            TaskExamCustomerAnswer taskExamCustomerAnswer = taskAnswerMap.get(t.getId());
+            List<TaskItemPaperVm> paperItemVMS = getTaskItemPaperVm(context.getPaperItems(), taskExamCustomerAnswer, user.getTargetSubjectId(), examPaperMap);
             itemVm.setPaperItems(paperItemVMS);
             return itemVm;
-        }).collect(Collectors.toList());
+        }).filter(item -> user.getTargetSubjectId() == null || !item.getPaperItems().isEmpty()).collect(Collectors.toList());
         return RestResponse.ok(vm);
     }
 
 
-    private List<TaskItemPaperVm> getTaskItemPaperVm(Integer tFrameId, TaskExamCustomerAnswer taskExamCustomerAnswers) {
+    private List<TaskItemObject> getTaskPaperItems(Integer tFrameId) {
         TextContent textContent = textContentService.selectById(tFrameId);
-        List<TaskItemObject> paperItems = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemObject.class);
+        return JsonUtil.toJsonListObject(textContent.getContent(), TaskItemObject.class);
+    }
 
+    private Map<Integer, ExamPaper> getTaskExamPaperMap(List<TaskPaperContext> taskPaperContexts, Integer targetSubjectId) {
+        if (targetSubjectId == null) {
+            return Collections.emptyMap();
+        }
+        Set<Integer> paperIds = new HashSet<>();
+        taskPaperContexts.forEach(context -> context.getPaperItems()
+                .forEach(item -> paperIds.add(item.getExamPaperId())));
+        if (paperIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return examPaperService.selectByIds(new ArrayList<>(paperIds)).stream()
+                .collect(Collectors.toMap(ExamPaper::getId, Function.identity(), (a, b) -> a));
+    }
+
+    private List<TaskItemPaperVm> getTaskItemPaperVm(List<TaskItemObject> paperItems, TaskExamCustomerAnswer taskExamCustomerAnswers, Integer targetSubjectId, Map<Integer, ExamPaper> examPaperMap) {
         List<TaskItemAnswerObject> answerPaperItems = null;
         if (null != taskExamCustomerAnswers) {
             TextContent answerTextContent = textContentService.selectById(taskExamCustomerAnswers.getTextContentId());
@@ -104,7 +135,13 @@ public class DashboardController extends BaseWXApiController {
 
 
         List<TaskItemAnswerObject> finalAnswerPaperItems = answerPaperItems;
-        return paperItems.stream().map(p -> {
+        return paperItems.stream().filter(p -> {
+                    if (targetSubjectId == null) {
+                        return true;
+                    }
+                    ExamPaper examPaper = examPaperMap.get(p.getExamPaperId());
+                    return examPaper != null && targetSubjectId.equals(examPaper.getSubjectId());
+                }).map(p -> {
                     TaskItemPaperVm ivm = new TaskItemPaperVm();
                     ivm.setExamPaperId(p.getExamPaperId());
                     ivm.setExamPaperName(p.getExamPaperName());
@@ -122,5 +159,22 @@ public class DashboardController extends BaseWXApiController {
         ).collect(Collectors.toList());
     }
 
+    private static class TaskPaperContext {
+        private final TaskExam taskExam;
+        private final List<TaskItemObject> paperItems;
+
+        TaskPaperContext(TaskExam taskExam, List<TaskItemObject> paperItems) {
+            this.taskExam = taskExam;
+            this.paperItems = paperItems;
+        }
+
+        TaskExam getTaskExam() {
+            return taskExam;
+        }
+
+        List<TaskItemObject> getPaperItems() {
+            return paperItems;
+        }
+    }
 
 }
