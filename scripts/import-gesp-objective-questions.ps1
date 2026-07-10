@@ -9,7 +9,13 @@ param(
     [switch]$KeepExisting,
     [switch]$CleanLegacyJsonDuplicates,
     [switch]$MigrationSqlOnly,
-    [switch]$DryRun
+    [switch]$DryRun,
+    [switch]$QualityCheck,
+    [ValidateRange(1, 100000)]
+    [int]$QualityShortAnalyzeThreshold = 60,
+    [ValidateRange(0, 1000)]
+    [int]$QualitySampleLimit = 20,
+    [switch]$FailOnQualityIssues
 )
 
 $ErrorActionPreference = "Stop"
@@ -369,6 +375,192 @@ function New-QuestionContentJson {
     }
 
     return ($jsonObject | ConvertTo-Json -Depth 20 -Compress)
+}
+
+function Get-GespQuestionTypeName {
+    param([int]$QuestionType)
+
+    if ($QuestionType -eq 1) {
+        return "选择题"
+    }
+    if ($QuestionType -eq 3) {
+        return "判断题"
+    }
+    return "题型$QuestionType"
+}
+
+function Get-GespQuestionBatch {
+    param([string]$Source)
+
+    $parts = $Source -split "[\\/]"
+    if ($parts.Count -gt 0 -and -not [string]::IsNullOrWhiteSpace($parts[0])) {
+        return $parts[0]
+    }
+    return "unknown"
+}
+
+function Get-NormalizedAnalysisText {
+    param([AllowNull()][string]$Analyze)
+
+    if ($null -eq $Analyze) {
+        return ""
+    }
+
+    $plain = [regex]::Replace($Analyze, "<[^>]+>", "")
+    $plain = [regex]::Replace($plain, "!\[[^\]]*\]\([^\)]*\)", "")
+    $plain = [regex]::Replace($plain, "\[[^\]]+\]\([^\)]*\)", "")
+    $plain = [regex]::Replace($plain, "[#>*_`~\-]", "")
+    return $plain.Trim()
+}
+
+function New-GespQualityIssue {
+    param(
+        [object]$Question,
+        [string]$IssueType,
+        [string]$Reason
+    )
+
+    return [pscustomobject]@{
+        Source = $Question.Source
+        Batch = Get-GespQuestionBatch $Question.Source
+        Order = $Question.Order
+        Type = Get-GespQuestionTypeName $Question.QuestionType
+        KnowledgePoint = $Question.KnowledgePoint
+        IssueType = $IssueType
+        Reason = $Reason
+    }
+}
+
+function Get-GespAnalysisQualityIssues {
+    param(
+        [System.Collections.IEnumerable]$Questions,
+        [int]$ShortAnalyzeThreshold
+    )
+
+    $templatePhrases = @(
+        "与题干要求一致",
+        "其余选项要么改变了关键条件",
+        "其他选项与实际结果",
+        "按题目涉及的 C++ 语法",
+        "题目中的表述与 C++ 实际语法"
+    )
+
+    $issues = New-Object System.Collections.Generic.List[object]
+    foreach ($question in $Questions) {
+        $analyze = [string]$question.Analyze
+        $normalized = Get-NormalizedAnalysisText $analyze
+        $compact = [regex]::Replace($normalized, "\s+", "")
+
+        if ($analyze -match "暂无解析") {
+            $issues.Add((New-GespQualityIssue -Question $question -IssueType "Placeholder" -Reason "解析包含“暂无解析”"))
+        }
+
+        if ($compact.Length -lt $ShortAnalyzeThreshold) {
+            $issues.Add((New-GespQualityIssue -Question $question -IssueType "ShortAnalysis" -Reason "解析有效字符数 $($compact.Length)，小于阈值 $ShortAnalyzeThreshold"))
+        }
+
+        foreach ($phrase in $templatePhrases) {
+            if ($analyze.Contains($phrase)) {
+                $issues.Add((New-GespQualityIssue -Question $question -IssueType "TemplatePhrase" -Reason "模板短语：$phrase"))
+            }
+        }
+    }
+
+    return $issues
+}
+
+function Get-UniqueQualityIssueQuestionCount {
+    param([System.Collections.IEnumerable]$Issues)
+
+    $keys = @{}
+    foreach ($issue in $Issues) {
+        $keys["$($issue.Source)|$($issue.Order)|$($issue.Type)"] = $true
+    }
+    return $keys.Count
+}
+
+function Write-GespAnalysisQualityReport {
+    param(
+        [System.Collections.IEnumerable]$Questions,
+        [System.Collections.IEnumerable]$Issues,
+        [int]$ShortAnalyzeThreshold,
+        [int]$SampleLimit
+    )
+
+    $questionList = @($Questions)
+    $issueList = @($Issues)
+    $placeholderIssues = @($issueList | Where-Object { $_.IssueType -eq "Placeholder" })
+    $shortIssues = @($issueList | Where-Object { $_.IssueType -eq "ShortAnalysis" })
+    $templateIssues = @($issueList | Where-Object { $_.IssueType -eq "TemplatePhrase" })
+
+    Write-Output ""
+    Write-Output "GESP analysis quality check"
+    Write-Output "Total questions: $($questionList.Count)"
+    Write-Output "Short analysis threshold: $ShortAnalyzeThreshold"
+    Write-Output "Placeholder analysis questions: $(Get-UniqueQualityIssueQuestionCount $placeholderIssues)"
+    Write-Output "Short analysis questions: $(Get-UniqueQualityIssueQuestionCount $shortIssues)"
+    Write-Output "Template phrase hits: $($templateIssues.Count)"
+    Write-Output "Affected questions: $(Get-UniqueQualityIssueQuestionCount $issueList)"
+    Write-Output "Total quality issues: $($issueList.Count)"
+
+    Write-Output ""
+    Write-Output "Batch summary:"
+    $questionBatches = $questionList |
+        Group-Object { Get-GespQuestionBatch $_.Source } |
+        Sort-Object Name
+    foreach ($batchGroup in $questionBatches) {
+        $batchIssues = @($issueList | Where-Object { $_.Batch -eq $batchGroup.Name })
+        $batchPlaceholder = @($batchIssues | Where-Object { $_.IssueType -eq "Placeholder" })
+        $batchShort = @($batchIssues | Where-Object { $_.IssueType -eq "ShortAnalysis" })
+        $batchTemplate = @($batchIssues | Where-Object { $_.IssueType -eq "TemplatePhrase" })
+        Write-Output ("- {0}: questions={1}; affected={2}; placeholder={3}; short={4}; templateHits={5}" -f `
+            $batchGroup.Name,
+            $batchGroup.Count,
+            (Get-UniqueQualityIssueQuestionCount $batchIssues),
+            (Get-UniqueQualityIssueQuestionCount $batchPlaceholder),
+            (Get-UniqueQualityIssueQuestionCount $batchShort),
+            $batchTemplate.Count)
+    }
+
+    Write-Output ""
+    Write-Output "File summary with issues:"
+    $issueFiles = @($issueList | Group-Object Source | Sort-Object Name)
+    if ($issueFiles.Count -eq 0) {
+        Write-Output "- none"
+    } else {
+        foreach ($fileGroup in $issueFiles) {
+            $fileQuestions = @($questionList | Where-Object { $_.Source -eq $fileGroup.Name })
+            $fileIssues = @($fileGroup.Group)
+            $filePlaceholder = @($fileIssues | Where-Object { $_.IssueType -eq "Placeholder" })
+            $fileShort = @($fileIssues | Where-Object { $_.IssueType -eq "ShortAnalysis" })
+            $fileTemplate = @($fileIssues | Where-Object { $_.IssueType -eq "TemplatePhrase" })
+            Write-Output ("- {0}: questions={1}; affected={2}; placeholder={3}; short={4}; templateHits={5}" -f `
+                $fileGroup.Name,
+                $fileQuestions.Count,
+                (Get-UniqueQualityIssueQuestionCount $fileIssues),
+                (Get-UniqueQualityIssueQuestionCount $filePlaceholder),
+                (Get-UniqueQualityIssueQuestionCount $fileShort),
+                $fileTemplate.Count)
+        }
+    }
+
+    Write-Output ""
+    Write-Output "Issue samples:"
+    if ($issueList.Count -eq 0 -or $SampleLimit -eq 0) {
+        Write-Output "- none"
+    } else {
+        $samples = $issueList |
+            Sort-Object Source, Order, IssueType, Reason |
+            Select-Object -First $SampleLimit
+        foreach ($sample in $samples) {
+            Write-Output ("- source={0}; order={1}; type={2}; knowledgePoint={3}; reason={4}" -f `
+                $sample.Source,
+                $sample.Order,
+                $sample.Type,
+                $sample.KnowledgePoint,
+                $sample.Reason)
+        }
+    }
 }
 
 function New-ImportManifestSql {
@@ -791,6 +983,16 @@ if ($skippedFiles.Count -gt 0) {
 }
 if ($KeepExisting) {
     Write-Output "KeepExisting is retained for compatibility; import now preserves existing question rows by default."
+}
+
+if ($QualityCheck -or $FailOnQualityIssues) {
+    $qualityIssues = Get-GespAnalysisQualityIssues -Questions $questions -ShortAnalyzeThreshold $QualityShortAnalyzeThreshold
+    Write-GespAnalysisQualityReport -Questions $questions -Issues $qualityIssues -ShortAnalyzeThreshold $QualityShortAnalyzeThreshold -SampleLimit $QualitySampleLimit
+    if ($FailOnQualityIssues -and @($qualityIssues).Count -gt 0) {
+        Write-Output "Quality check failed because -FailOnQualityIssues was specified."
+        exit 1
+    }
+    exit 0
 }
 
 if ($DryRun) {

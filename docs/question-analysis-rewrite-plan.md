@@ -91,6 +91,28 @@
 - 影响范围：`scripts/import-gesp-objective-questions.ps1`、后台题目审核接口和管理端审核页面。
 - 验证方案：构造包含 `暂无解析` 和模板短语的 Markdown 样例，确认质量检查失败；后台筛选能定位对应题目；编辑解析后 `t_question_review_record` 有记录。
 
+第一阶段已先在本地导入脚本加入报告型质量检查，不改生产数据库，也不批量重写 `docs/question-bank/GESP` 解析正文：
+
+```powershell
+.\scripts\import-gesp-objective-questions.ps1 -QualityCheck
+```
+
+默认报告模式会解析本地 Markdown 并统计总题数、占位解析、短解析、模板短语命中、批次/文件汇总和问题样本，但即使命中当前存量问题也返回 0。这样可以先把问题规模和优先批次稳定暴露出来，不阻断现有导入、DryRun、SQL 生成和迁移 SQL 生成流程。
+
+短解析阈值默认 60 个有效字符，可按需调整：
+
+```powershell
+.\scripts\import-gesp-objective-questions.ps1 -QualityCheck -QualityShortAnalyzeThreshold 80
+```
+
+后续接入 CI 或正式门禁时再显式启用严格失败：
+
+```powershell
+.\scripts\import-gesp-objective-questions.ps1 -QualityCheck -FailOnQualityIssues
+```
+
+严格模式只在存在质量问题时返回非 0，用于防止后续重写批次回退到 `暂无解析`、过短解析或模板句式。
+
 ## 执行顺序
 
 1. 生产库备份：导出 `t_question`、`t_text_content`、`t_question_review_record`，并记录 Fly app、数据库和备份时间。
