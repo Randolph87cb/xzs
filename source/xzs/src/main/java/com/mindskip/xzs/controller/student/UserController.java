@@ -4,6 +4,7 @@ import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.Message;
 import com.mindskip.xzs.domain.MessageUser;
+import com.mindskip.xzs.domain.SchoolClass;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.UserEventLog;
 import com.mindskip.xzs.domain.enums.RoleEnum;
@@ -11,6 +12,7 @@ import com.mindskip.xzs.domain.enums.UserStatusEnum;
 import com.mindskip.xzs.event.UserEvent;
 import com.mindskip.xzs.service.AuthenticationService;
 import com.mindskip.xzs.service.MessageService;
+import com.mindskip.xzs.service.SchoolClassService;
 import com.mindskip.xzs.service.UserEventLogService;
 import com.mindskip.xzs.service.UserService;
 import com.mindskip.xzs.utility.DateTimeUtil;
@@ -36,14 +38,16 @@ public class UserController extends BaseApiController {
     private final UserEventLogService userEventLogService;
     private final MessageService messageService;
     private final AuthenticationService authenticationService;
+    private final SchoolClassService schoolClassService;
     private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public UserController(UserService userService, UserEventLogService userEventLogService, MessageService messageService, AuthenticationService authenticationService, ApplicationEventPublisher eventPublisher) {
+    public UserController(UserService userService, UserEventLogService userEventLogService, MessageService messageService, AuthenticationService authenticationService, SchoolClassService schoolClassService, ApplicationEventPublisher eventPublisher) {
         this.userService = userService;
         this.userEventLogService = userEventLogService;
         this.messageService = messageService;
         this.authenticationService = authenticationService;
+        this.schoolClassService = schoolClassService;
         this.eventPublisher = eventPublisher;
     }
 
@@ -51,6 +55,12 @@ public class UserController extends BaseApiController {
     public RestResponse<UserResponseVM> current() {
         User user = getCurrentUser();
         UserResponseVM userVm = UserResponseVM.from(user);
+        if (user.getClassId() != null) {
+            SchoolClass schoolClass = schoolClassService.selectById(user.getClassId());
+            if (schoolClass != null) {
+                userVm.setClassName(schoolClass.getName());
+            }
+        }
         return RestResponse.ok(userVm);
     }
 

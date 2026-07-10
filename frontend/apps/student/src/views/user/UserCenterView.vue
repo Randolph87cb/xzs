@@ -53,7 +53,7 @@ const rules: FormRules = {
 
 const displayName = computed(() => user.value?.nickName || user.value?.realName || user.value?.userName || '-')
 const userInitial = computed(() => displayName.value.slice(0, 1).toUpperCase())
-const classText = computed(() => user.value?.className || (user.value?.classId ? `班级 ${user.value.classId}` : '-'))
+const classText = computed(() => user.value?.className || '-')
 
 onMounted(loadUser)
 

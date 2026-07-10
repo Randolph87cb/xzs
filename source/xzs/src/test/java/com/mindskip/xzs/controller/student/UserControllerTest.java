@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.context.WebContext;
+import com.mindskip.xzs.domain.SchoolClass;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.service.AuthenticationService;
 import com.mindskip.xzs.service.MessageService;
+import com.mindskip.xzs.service.SchoolClassService;
 import com.mindskip.xzs.service.UserEventLogService;
 import com.mindskip.xzs.service.UserService;
 import com.mindskip.xzs.viewmodel.student.user.UserResponseVM;
@@ -22,27 +24,33 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class UserControllerTest {
 
     private UserService userService;
+    private SchoolClassService schoolClassService;
+    private WebContext webContext;
     private UserController controller;
 
     @Before
     public void setUp() {
         userService = mock(UserService.class);
+        schoolClassService = mock(SchoolClassService.class);
         controller = new UserController(
                 userService,
                 mock(UserEventLogService.class),
                 mock(MessageService.class),
                 mock(AuthenticationService.class),
+                schoolClassService,
                 mock(ApplicationEventPublisher.class));
 
-        WebContext webContext = mock(WebContext.class);
-        when(webContext.getCurrentUser()).thenReturn(user());
+        webContext = mock(WebContext.class);
+        setCurrentUser(user());
         ReflectionTestUtils.setField(controller, "webContext", webContext);
     }
 
@@ -73,13 +81,33 @@ public class UserControllerTest {
     }
 
     @Test
-    public void currentReturnsNickNameAndOriginalRealName() {
+    public void currentReturnsNickNameOriginalRealNameAndClassName() {
+        SchoolClass schoolClass = new SchoolClass();
+        schoolClass.setId(2);
+        schoolClass.setName("未分配");
+        when(schoolClassService.selectById(2)).thenReturn(schoolClass);
+
         RestResponse<UserResponseVM> response = controller.current();
 
         assertEquals(1, response.getCode());
         assertEquals("old nick", response.getResponse().getNickName());
         assertEquals("Real Student", response.getResponse().getRealName());
-        assertEquals(Integer.valueOf(5), response.getResponse().getClassId());
+        assertEquals(Integer.valueOf(2), response.getResponse().getClassId());
+        assertEquals("未分配", response.getResponse().getClassName());
+    }
+
+    @Test
+    public void currentDoesNotSetClassNameWhenUserHasNoClassId() {
+        User user = user();
+        user.setClassId(null);
+        setCurrentUser(user);
+
+        RestResponse<UserResponseVM> response = controller.current();
+
+        assertEquals(1, response.getCode());
+        assertNull(response.getResponse().getClassId());
+        assertNull(response.getResponse().getClassName());
+        verify(schoolClassService, never()).selectById(any());
     }
 
     private User user() {
@@ -93,7 +121,11 @@ public class UserControllerTest {
         user.setSex(2);
         user.setBirthDay(new Date(0));
         user.setUserLevel(3);
-        user.setClassId(5);
+        user.setClassId(2);
         return user;
+    }
+
+    private void setCurrentUser(User user) {
+        when(webContext.getCurrentUser()).thenReturn(user);
     }
 }
