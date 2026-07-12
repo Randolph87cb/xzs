@@ -71,8 +71,6 @@ docker buildx inspect --bootstrap
 /opt/apps/xzs/
   .env
   docker-compose.yml
-  init/
-    01-xzs-postgresql.sql
   data/
     postgres/
   backups/
@@ -83,16 +81,12 @@ docker buildx inspect --bootstrap
 初始化目录：
 
 ```bash
-sudo mkdir -p /opt/apps/xzs/init /opt/apps/xzs/data/postgres /opt/apps/xzs/backups /opt/apps/xzs/logs/app
+sudo mkdir -p /opt/apps/xzs/data/postgres /opt/apps/xzs/backups /opt/apps/xzs/logs/app
 sudo chown -R $USER:$USER /opt/apps/xzs
 chmod 700 /opt/apps/xzs/data/postgres /opt/apps/xzs/backups
 ```
 
-把仓库里的 `sql/xzs-postgresql.sql` 复制到：
-
-```text
-/opt/apps/xzs/init/01-xzs-postgresql.sql
-```
+Docker 方案不要把仓库里的 `sql/xzs-postgresql.sql` 挂载到 PostgreSQL 容器的 `/docker-entrypoint-initdb.d/`。该 SQL 是完整快照，已经包含部分后续迁移结果；应用启动后还会执行内置 Flyway 迁移，二者混用会造成重复建列或重复建表。
 
 ### 3. Compose 生产配置
 
@@ -106,7 +100,7 @@ chmod 700 /opt/apps/xzs/data/postgres /opt/apps/xzs/backups
 - 修改方案：
   - 使用下面的 `docker-compose.yml`。
 - 影响范围：
-  - 首次启动时 PostgreSQL 会执行 `init/01-xzs-postgresql.sql`；这个初始化脚本只在空数据目录首次创建时执行。
+  - 首次启动时 PostgreSQL 只创建空库和用户；应用容器启动后由 Flyway 执行 `V1__baseline_schema.sql`、`V2__add_user_target_subject.sql`、`V3__add_user_nick_name.sql`。
 - 验证方案：
   - `docker compose config` 成功。
   - `docker compose ps` 显示 `xzs-postgres` healthy，`xzs-app` running。
@@ -144,7 +138,6 @@ services:
       - wal_compression=on
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-      - ./init/01-xzs-postgresql.sql:/docker-entrypoint-initdb.d/01-xzs-postgresql.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -400,16 +393,15 @@ docker compose down -v
 2. 在镜像仓库创建 `xzs` 镜像仓库。
 3. 在开发机用 `docker buildx build --platform linux/arm64 ... --push` 构建并推送应用镜像。
 4. 在树莓派创建 `/opt/apps/xzs` 目录和 `.env`、`docker-compose.yml`。
-5. 复制 `sql/xzs-postgresql.sql` 到 `/opt/apps/xzs/init/01-xzs-postgresql.sql`。
-6. 在树莓派执行 `docker compose config && docker compose pull && docker compose up -d`。
-7. 验证健康检查、学生端、管理端、日志、资源占用。
-8. 配置数据库备份流程，并把备份复制到树莓派以外的位置。
+5. 在树莓派执行 `docker compose config && docker compose pull && docker compose up -d`。
+6. 验证健康检查、学生端、管理端、日志、资源占用。
+7. 配置数据库备份流程，并把备份复制到树莓派以外的位置。
 
 ## 风险与待确认
 
 - 镜像仓库待确认：阿里云 ACR、GHCR 或 Docker Hub 均可；私有仓库需要树莓派执行 `docker login`。
 - 公网访问待确认：如果只在局域网使用，直接暴露 `8000` 即可；如果公网访问，应在前面加反向代理和 HTTPS。
 - 备份目标待确认：32G TF 卡不应作为唯一备份位置。
-- 数据初始化策略待确认：`init/01-xzs-postgresql.sql` 只在空数据库目录首次启动时执行；已有数据库升级应依赖应用内 Flyway 迁移和正式备份。
+- 数据初始化策略：Docker 方案以应用内 Flyway 为准。不要把完整快照 SQL 和 Flyway 迁移混用；已有数据库升级应依赖 Flyway 迁移和正式备份。
 - 性能参数需要上线后观察：初始 JVM `-Xmx512m`、Hikari 最大连接数 `4`；如果 8GB 内存余量稳定且并发增加，可逐步调大。
 
