@@ -12,7 +12,9 @@
 
 ## 结论
 
-推荐采用“一次演练迁移 + 一次停写最终迁移 + Docker PostgreSQL 定时备份 + 异机备份”的方式。切换完成后，以树莓派 URL 为主入口；Fly.io 保留 3 到 7 天作为只读回滚参考，不再承接新写入。
+推荐采用“一次演练迁移 + 一次停写最终迁移 + 树莓派主服务 + Fly.io 冷备服务 + 本机备份文件”的方式。切换完成后，以树莓派 URL 为主入口；Fly.io 保留为低成本冷启动备用节点，并定期从树莓派同步数据库。Fly 平时不承接用户写入，只有树莓派故障或维护时才临时切过去。
+
+Fly 作为备份的定位是“冷备/备用服务节点”，不是自动实时备份。它能降低额外备份机器成本，但恢复点取决于最近一次从树莓派同步到 Fly 的时间。例如每日凌晨同步一次，最坏会丢失当天同步后到故障发生前的数据；每 6 小时同步一次，最坏丢失窗口约为 6 小时。
 
 本文以 Docker Compose 部署为准，不使用 `deploy/raspberry-pi/*.sh` 和 systemd 服务命令。那些脚本适用于非 Docker 的 Jar 直部署。
 
@@ -61,20 +63,24 @@
 - 当前现状：
   - Docker Compose PostgreSQL 数据保存在命名卷 `xzs-postgres-data`。
   - 备份应优先使用 PostgreSQL 逻辑备份 `pg_dump --format custom`，而不是直接复制 Docker volume。
+  - Fly.io 已有低成本冷启动部署，可以作为备用服务节点承接灾难恢复。
 - 判断：
   - 只把备份放在树莓派本机不够；SD 卡、硬盘或整机故障会同时带走数据库和备份。
-  - 推荐至少保留一份树莓派外部备份。
+  - 用 Fly 作为冷备是合理选择：平时成本低，故障时可通过冷启动临时恢复访问。
+  - Fly 冷备不是实时主从复制；必须通过定期 dump/restore 把树莓派数据覆盖到 Fly。
 - 修改方案：
   - 本机每日凌晨通过 `docker exec xzs-postgres pg_dump` 生成 `.dump` 文件，保留 14 到 30 份。
-  - 每日或每周把 `.dump` 同步到另一台电脑、NAS、移动硬盘或云盘。
+  - 每日凌晨把最新 `.dump` 恢复到 Fly Postgres，使 Fly URL 成为可启动的备用环境。
+  - 重要数据变更前后，例如批量导题、批量改题、应用升级前后，手动额外同步一次 Fly。
   - 每月做一次恢复演练，证明备份文件真的可恢复。
 - 影响范围：
   - 树莓派备份目录磁盘占用，例如 `/opt/xzs/backups`。
   - Docker Compose 中数据库密码管理。
-  - 异机备份目标的账号、密钥和存储保留策略。
+  - Fly Postgres 数据会被定期覆盖为树莓派快照。
+  - Fly URL 的开放策略和故障切换流程。
 - 验证方案：
   - 手动运行一次备份，确认生成 `.dump` 文件。
-  - 手动执行一次异机复制，确认目标端存在同名文件且大小合理。
+  - 手动执行一次恢复到 Fly，确认 Fly 健康检查和关键页面正常。
   - 在临时数据库或测试 Docker PostgreSQL 中恢复一次。
 
 ## 推荐执行顺序
@@ -252,18 +258,26 @@ docker start xzs-java
 .\scripts\test-remote-deployment.ps1 -BaseUrl "https://<raspberry-pi-url>"
 ```
 
-### 5. 切换后的 Fly 保留与回滚
+### 5. 切换后的 Fly 冷备策略
 
-切换完成后 3 到 7 天内建议保留 Fly 数据库和最终 dump 文件，但不要再让用户使用 Fly URL。
+切换完成后建议长期保留 Fly Web App 和 Fly Postgres 作为冷备，但不要让用户日常使用 Fly URL。日常只开放树莓派 URL；Fly URL 只用于健康检查、恢复演练和树莓派故障时的临时入口。
+
+推荐策略：
+
+- 树莓派是唯一主写入节点。
+- Fly 每日或每 6 小时接收一次树莓派数据库快照。
+- Fly Web App 和 Fly Postgres 保持冷启动低成本配置。
+- 同步到 Fly 前先停止 Fly Web，避免同步期间有用户写入或应用连接占用。
+- 同步完成后运行一次 Fly 远端检查，确认冷备可用；检查完成后可以再次停止 Fly Web 和 Fly Postgres。
 
 如果树莓派出现严重问题且需要回滚：
 
 1. 停止树莓派写入入口，例如 `docker stop xzs-java`。
-2. 判断是否要把树莓派上的新增数据再导回 Fly。
-3. 如果不保留树莓派新增数据，直接重新开放 Fly URL。
-4. 如果要保留树莓派新增数据，必须先从树莓派 Docker PostgreSQL 导出 dump，再恢复到 Fly Postgres，之后再开放 Fly。
+2. 判断是否能从树莓派导出比 Fly 更新的 dump。
+3. 如果可以导出，先把最新 dump 恢复到 Fly，再开放 Fly URL。
+4. 如果树莓派完全不可用，只能开放 Fly 上最近一次同步的数据，并接受相应 RPO 数据损失。
 
-除非已经确认树莓派稳定运行并且异机备份可靠，否则不要立即删除 Fly Postgres。
+不要删除 Fly Postgres；它就是后续的冷备数据库。
 
 ## 后续备份方案
 
@@ -315,9 +329,88 @@ sudo chmod 0600 /etc/xzs/docker-db.env
 15 3 * * * . /etc/xzs/docker-db.env; mkdir -p /opt/xzs/backups && timestamp="$(date +\%Y\%m\%d-\%H\%M\%S)" && docker exec -e PGPASSWORD="$PGPASSWORD" xzs-postgres pg_dump --host 127.0.0.1 --port 5432 --username xzs --dbname xzs --format custom --no-owner --no-privileges > "/opt/xzs/backups/xzs-${timestamp}.dump" 2>> /opt/xzs/backups/backup-db.log && find /opt/xzs/backups -maxdepth 1 -type f -name 'xzs-*.dump' -printf '\%T@ \%p\n' | sort -rn | tail -n +31 | cut -d' ' -f2- | xargs -r rm -f
 ```
 
-### 异机备份
+### 同步到 Fly 冷备
 
-至少选择一个树莓派之外的目标。示例：同步到另一台 Linux 主机或 NAS：
+同步到 Fly 的推荐流程是：先在树莓派生成 dump，再传回开发机或一台运维机，最后通过 `fly proxy` 恢复到 Fly Postgres。恢复 Fly 前应停止 Fly Web，避免同步期间发生写入。
+
+在树莓派生成备份：
+
+```sh
+timestamp="$(date +%Y%m%d-%H%M%S)"
+docker exec -e PGPASSWORD='<raspberry-pi-db-password>' xzs-postgres pg_dump \
+  --host 127.0.0.1 \
+  --port 5432 \
+  --username xzs \
+  --dbname xzs \
+  --format custom \
+  --no-owner \
+  --no-privileges \
+  > "/opt/xzs/backups/xzs-to-fly-${timestamp}.dump"
+```
+
+把备份拉到开发机或运维机：
+
+```powershell
+scp <pi-user>@<pi-host>:/opt/xzs/backups/xzs-to-fly-<timestamp>.dump .\backups\
+```
+
+停止 Fly Web 写入口：
+
+```powershell
+fly machine list -a gesp-csp-quiz
+fly machine stop <web-machine-id> -a gesp-csp-quiz
+```
+
+启动 Fly Postgres 代理：
+
+```powershell
+fly proxy 15432:5432 -a xzs-pg-cb867393296
+```
+
+另开一个终端，把树莓派备份恢复到 Fly Postgres：
+
+```powershell
+$env:PGPASSWORD = "<fly-db-password>"
+pg_restore `
+  --host localhost `
+  --port 15432 `
+  --username "<fly-db-user>" `
+  --dbname xzs_cb867393296 `
+  --clean `
+  --if-exists `
+  --no-owner `
+  --no-privileges `
+  .\backups\xzs-to-fly-<timestamp>.dump
+Remove-Item Env:\PGPASSWORD
+```
+
+恢复完成后验证 Fly 冷备：
+
+```powershell
+.\scripts\test-remote-deployment.ps1 -BaseUrl "https://gesp-csp-quiz.fly.dev" -RetryCount 45 -RetryDelaySeconds 10
+```
+
+如果只是验证冷备可启动，检查完成后可以再次停止 Fly Web 和 Fly Postgres：
+
+```powershell
+fly machine list -a gesp-csp-quiz
+fly machine stop <web-machine-id> -a gesp-csp-quiz
+
+fly machine list -a xzs-pg-cb867393296
+fly machine stop <postgres-machine-id> -a xzs-pg-cb867393296
+```
+
+推荐同步频率：
+
+- 普通阶段：每日凌晨同步一次到 Fly，RPO 约 24 小时。
+- 有学生集中使用或近期频繁更新题库时：每 6 小时同步一次，RPO 约 6 小时。
+- 批量导题、批量改题、升级前后：手动立即同步一次。
+
+### 额外异机备份
+
+Fly 冷备可以作为主要异地备份，但仍建议至少保留最近几份 `.dump` 文件在树莓派或开发机上，避免误操作把错误数据同步到 Fly 后没有更早版本可退。
+
+如果还想再加一层低成本备份，可以同步到另一台 Linux 主机或 NAS：
 
 ```sh
 rsync -av --ignore-existing /opt/xzs/backups/ <backup-user>@<backup-host>:/srv/backups/xzs/
@@ -332,7 +425,8 @@ scp /opt/xzs/backups/*.dump <backup-user>@<backup-host>:/srv/backups/xzs/
 推荐保留策略：
 
 - 树莓派本机：最近 30 天每日备份。
-- 异机：最近 30 天每日备份 + 最近 12 周每周备份 + 最近 12 个月每月备份。
+- Fly 冷备：保留一份最近可启动数据快照。
+- 备份文件：至少保留最近 7 到 30 份 `.dump`，用于误删、错误同步或题库批量操作回滚。
 - 每次应用大版本升级、批量导题、批量改题前，手动做一次带说明的备份。
 
 ### 恢复演练
@@ -378,7 +472,10 @@ docker exec -e PGPASSWORD='<raspberry-pi-db-password>' xzs-postgres dropdb \
 - 待确认：树莓派最终公网 URL、是否使用 HTTPS、是否有自定义域名。
 - 待确认：Fly 数据库连接串是否可从现有记录或 `fly ssh console` 获取。
 - 待确认：树莓派 Docker Compose 中实际数据库密码；不要假设生产仍使用示例密码 `xzs_change_me`。
+- 待确认：Fly 冷备同步频率；建议普通阶段每日一次，集中使用阶段每 6 小时一次。
 - 风险：最终 dump 导出后，如果仍有人访问 Fly 并写入数据，树莓派不会自动获得这些新增数据。
 - 风险：只做树莓派本机备份不能覆盖整机损坏、误删和存储卡故障。
+- 风险：把树莓派数据同步到 Fly 是覆盖式恢复；如果树莓派数据已经被误删或污染，直接同步会把错误数据也覆盖到 Fly。
+- 风险：Fly 冷备的恢复点取决于最近一次同步时间，不等价于实时高可用。
 - 风险：直接复制 Docker volume 不等价于可验证的数据库备份；日常备份应使用 `pg_dump --format custom`。
 - 风险：如果树莓派 Jar 版本落后于 Fly 数据库 schema，恢复成功后应用也可能启动失败。

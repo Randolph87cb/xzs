@@ -62,6 +62,8 @@ docker compose down
 
 Docker 部署时 PostgreSQL 数据保存在命名卷 `xzs-postgres-data`。日常备份建议使用 `pg_dump --format custom` 生成逻辑备份，不建议直接复制 Docker volume 作为唯一备份。
 
+如果树莓派是主服务节点，可以继续保留 Fly.io 作为低成本冷启动冷备节点：定期从树莓派导出 `.dump`，再恢复到 Fly Postgres。完整流程见 `docs/fly-to-raspberry-pi-data-migration-plan.md`。
+
 手动备份示例：
 
 ```sh
@@ -100,4 +102,4 @@ docker start xzs-java
 
 ## 从 Fly.io 迁移到树莓派 Docker
 
-如果树莓派使用 Docker Compose 作为长期主环境，按 `docs/fly-to-raspberry-pi-data-migration-plan.md` 执行。该文档包含演练迁移、最终停写切换、Fly 回滚保留、本机定时备份和异机备份策略。
+如果树莓派使用 Docker Compose 作为长期主环境，按 `docs/fly-to-raspberry-pi-data-migration-plan.md` 执行。该文档包含演练迁移、最终停写切换、Fly 冷备同步、本机定时备份和恢复演练策略。
