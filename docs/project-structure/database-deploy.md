@@ -47,6 +47,7 @@ Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postg
 - `deploy/raspberry-pi/backup-db.sh`：使用 `pg_dump --format custom` 生成带时间戳的数据库备份，并按保留数量清理旧备份。
 - `deploy/raspberry-pi/restore-db.sh`：从指定备份恢复数据库，要求显式确认后执行。
 - `docs/raspberry-pi-deployment.md`：树莓派运行目录、部署资产安装、数据库初始化、systemd 启停、备份、恢复和健康检查说明。
+- `docs/fly-to-raspberry-pi-data-migration-plan.md`：从 Fly.io Postgres 迁移到树莓派 Docker PostgreSQL 的演练、最终切换、回滚和后续备份方案。
 
 树莓派普通运行时不承担 Maven 或前端构建任务；应在开发机或 CI 构建完成后，只复制后端 jar、SQL 脚本和运行所需部署资产。
 
