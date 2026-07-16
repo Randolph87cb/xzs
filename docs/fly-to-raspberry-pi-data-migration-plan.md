@@ -5,9 +5,10 @@
 - 已确认 Fly.io 当前 Web App 为 `gesp-csp-quiz`，默认访问地址为 `https://gesp-csp-quiz.fly.dev`。
 - 已确认 Fly Postgres App 为 `xzs-pg-cb867393296`，当前业务库为 `xzs_cb867393296`。
 - 已确认树莓派当前采用 Docker Compose 部署，配置入口为 `docker/docker-compose.yml`。
-- 已确认 Docker Compose 中 PostgreSQL 服务为 `postgres`，容器名为 `xzs-postgres`，Java 服务为 `java`，容器名为 `xzs-java`，数据库卷为 `xzs-postgres-data`。
+- 仓库示例 Docker Compose 中 PostgreSQL 服务为 `postgres`，容器名为 `xzs-postgres`，Java 服务为 `java`，容器名为 `xzs-java`，数据库卷为 `xzs-postgres-data`。实际树莓派生产部署可能使用不同应用容器名；2026-07-16 迁移时实际应用容器为 `xzs-app`。
 - 已确认 Docker Compose 默认数据库名、用户名、密码分别为 `xzs`、`xzs`、`xzs_change_me`。生产环境应以树莓派实际 `docker-compose.yml` 或 `.env` 中的密码为准。
 - 已确认远端部署检查脚本为 `scripts/test-remote-deployment.ps1`，会检查 `/api/health`、`/student/index.html` 和 `/admin/index.html`。
+- 已确认 2026-07-16 之后树莓派主站为 `https://gesp-csp-quiz.randolph87.top`，后续文档中未特别说明时，“远端”“线上”“主站”默认指这个树莓派 Docker 部署。
 - 推断当前核心业务数据都在 PostgreSQL 中；项目文档已说明当前关闭运行时上传入口，不依赖 Fly App 本地磁盘持久化。
 
 ## 结论
@@ -17,6 +18,27 @@
 Fly 作为备份的定位是“冷备/备用服务节点”，不是自动实时备份。它能降低额外备份机器成本，但恢复点取决于最近一次从树莓派同步到 Fly 的时间。例如每日凌晨同步一次，最坏会丢失当天同步后到故障发生前的数据；每 6 小时同步一次，最坏丢失窗口约为 6 小时。
 
 本文以 Docker Compose 部署为准，不使用 `deploy/raspberry-pi/*.sh` 和 systemd 服务命令。那些脚本适用于非 Docker 的 Jar 直部署。
+
+## 日常约定：远端数据更新与 Fly 备份
+
+2026-07-16 迁移完成后，日常数据运维的默认方向已经改变：
+
+- 更新远端数据：更新树莓派主库，也就是 `https://gesp-csp-quiz.randolph87.top` 背后的 Docker PostgreSQL。
+- 备份远端数据：从树莓派主库导出 `.dump`，再恢复到 Fly Postgres，形成 Fly 冷备。
+- Fly 的角色：低成本冷启动冷备和应急入口，不是日常主写入环境。
+- 禁止默认写 Fly：除非明确执行“同步到 Fly 冷备”或“灾难切换到 Fly”，否则题库同步、解析回写、后台数据修复都不应直接写 Fly。
+
+推荐的日常顺序：
+
+1. 在本地生成 SQL 或准备后台操作，并人工审查影响范围。
+2. 在树莓派主库执行前先备份树莓派数据库。
+3. 只对树莓派主库执行写入。
+4. 验证 `https://gesp-csp-quiz.randolph87.top/api/health`、学生端和管理端。
+5. 抽查关键表或页面，确认数据更新符合预期。
+6. 将树莓派最新 dump 恢复到 Fly Postgres，更新冷备恢复点。
+7. 验证 Fly 冷备可启动后，再停止 Fly Web 和 Fly Postgres 保持低成本状态。
+
+如果某份历史文档仍写“同步 Fly 远端”或“Fly 远端数据库”，按当前约定理解为“先同步树莓派主库，再同步 Fly 冷备”。需要直接操作 Fly 时，文档或任务必须明确写出“Fly 冷备”。
 
 ## 需求拆解
 
@@ -70,7 +92,7 @@ Fly 作为备份的定位是“冷备/备用服务节点”，不是自动实时
   - Fly 冷备不是实时主从复制；必须通过定期 dump/restore 把树莓派数据覆盖到 Fly。
 - 修改方案：
   - 本机每日凌晨通过 `docker exec xzs-postgres pg_dump` 生成 `.dump` 文件，保留 14 到 30 份。
-  - 每日凌晨把最新 `.dump` 恢复到 Fly Postgres，使 Fly URL 成为可启动的备用环境。
+  - 每日凌晨把树莓派最新 `.dump` 恢复到 Fly Postgres，使 Fly URL 成为可启动的备用环境。
   - 重要数据变更前后，例如批量导题、批量改题、应用升级前后，手动额外同步一次 Fly。
   - 每月做一次恢复演练，证明备份文件真的可恢复。
 - 影响范围：
@@ -80,7 +102,7 @@ Fly 作为备份的定位是“冷备/备用服务节点”，不是自动实时
   - Fly URL 的开放策略和故障切换流程。
 - 验证方案：
   - 手动运行一次备份，确认生成 `.dump` 文件。
-  - 手动执行一次恢复到 Fly，确认 Fly 健康检查和关键页面正常。
+  - 手动执行一次从树莓派恢复到 Fly，确认 Fly 健康检查和关键页面正常。
   - 在临时数据库或测试 Docker PostgreSQL 中恢复一次。
 
 ## 推荐执行顺序
@@ -91,7 +113,8 @@ Fly 作为备份的定位是“冷备/备用服务节点”，不是自动实时
 
 ```sh
 docker compose -f docker/docker-compose.yml ps
-docker logs --tail=100 xzs-java
+APP_CONTAINER=xzs-app
+docker logs --tail=100 "$APP_CONTAINER"
 curl -fsS http://127.0.0.1:8000/api/health
 ```
 
@@ -150,13 +173,14 @@ Remove-Item Env:\PGPASSWORD
 scp .\backups\xzs-fly-rehearsal.dump <pi-user>@<pi-host>:/tmp/
 ```
 
-在树莓派执行恢复。关键点是只停 Java 容器，保留 PostgreSQL 容器运行：
+在树莓派执行恢复。关键点是只停应用容器，保留 PostgreSQL 容器运行。生产环境如果不是 `xzs-app`，先用 `docker ps` 确认后替换 `APP_CONTAINER`：
 
 ```sh
+APP_CONTAINER=xzs-app
 mkdir -p /opt/xzs/backups
 sudo install -m 0600 /tmp/xzs-fly-rehearsal.dump /opt/xzs/backups/xzs-fly-rehearsal.dump
 
-docker stop xzs-java
+docker stop "$APP_CONTAINER"
 docker cp /opt/xzs/backups/xzs-fly-rehearsal.dump xzs-postgres:/tmp/xzs-fly-rehearsal.dump
 docker exec -e PGPASSWORD='<raspberry-pi-db-password>' xzs-postgres pg_restore \
   --host 127.0.0.1 \
@@ -168,7 +192,7 @@ docker exec -e PGPASSWORD='<raspberry-pi-db-password>' xzs-postgres pg_restore \
   --no-owner \
   --no-privileges \
   /tmp/xzs-fly-rehearsal.dump
-docker start xzs-java
+docker start "$APP_CONTAINER"
 ```
 
 如果树莓派使用仓库默认密码，`<raspberry-pi-db-password>` 是 `xzs_change_me`；如果你已经改过密码，以树莓派实际 Docker Compose 配置为准。
@@ -234,10 +258,11 @@ scp .\backups\xzs-fly-final.dump <pi-user>@<pi-host>:/tmp/
 ```
 
 ```sh
+APP_CONTAINER=xzs-app
 mkdir -p /opt/xzs/backups
 sudo install -m 0600 /tmp/xzs-fly-final.dump /opt/xzs/backups/xzs-fly-final.dump
 
-docker stop xzs-java
+docker stop "$APP_CONTAINER"
 docker cp /opt/xzs/backups/xzs-fly-final.dump xzs-postgres:/tmp/xzs-fly-final.dump
 docker exec -e PGPASSWORD='<raspberry-pi-db-password>' xzs-postgres pg_restore \
   --host 127.0.0.1 \
@@ -249,7 +274,7 @@ docker exec -e PGPASSWORD='<raspberry-pi-db-password>' xzs-postgres pg_restore \
   --no-owner \
   --no-privileges \
   /tmp/xzs-fly-final.dump
-docker start xzs-java
+docker start "$APP_CONTAINER"
 ```
 
 通过验证后，正式把入口切到树莓派：
@@ -268,11 +293,11 @@ docker start xzs-java
 - Fly 每日或每 6 小时接收一次树莓派数据库快照。
 - Fly Web App 和 Fly Postgres 保持冷启动低成本配置。
 - 同步到 Fly 前先停止 Fly Web，避免同步期间有用户写入或应用连接占用。
-- 同步完成后运行一次 Fly 远端检查，确认冷备可用；检查完成后可以再次停止 Fly Web 和 Fly Postgres。
+- 同步完成后运行一次 Fly 冷备检查，确认冷备可用；检查完成后可以再次停止 Fly Web 和 Fly Postgres。
 
 如果树莓派出现严重问题且需要回滚：
 
-1. 停止树莓派写入入口，例如 `docker stop xzs-java`。
+1. 停止树莓派写入入口，例如 `APP_CONTAINER=xzs-app; docker stop "$APP_CONTAINER"`。
 2. 判断是否能从树莓派导出比 Fly 更新的 dump。
 3. 如果可以导出，先把最新 dump 恢复到 Fly，再开放 Fly URL。
 4. 如果树莓派完全不可用，只能开放 Fly 上最近一次同步的数据，并接受相应 RPO 数据损失。
