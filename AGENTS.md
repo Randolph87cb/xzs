@@ -17,6 +17,12 @@
 - 树莓派部署说明在 `docs/raspberry-pi-deployment.md`；对应 systemd 服务模板和数据库初始化、备份、恢复脚本在 `deploy/raspberry-pi`。
 - 发布包与部署材料分别在 `release`、`docker` 和 `deploy`。
 
+## 树莓派与 Docker 运维入口
+
+- 树莓派迁移、性能、备份、恢复或故障排查任务开始前，先确认当前实际部署方式是 Docker Compose、systemd/Jar 还是其他方式。
+- 用户已说明树莓派使用 Docker 时，优先读取 `docker/README.md` 和 `docker/docker-compose.yml`，再结合 `docs/fly-to-raspberry-pi-data-migration-plan.md` 判断迁移、备份和冷备流程。
+- 未确认部署方式时，不要直接套用 `deploy/raspberry-pi` 的 systemd/Jar 流程。
+
 ## 项目结构文档
 
 详细项目结构文档已拆分到 `docs/project-structure/`：

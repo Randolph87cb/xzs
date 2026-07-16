@@ -58,6 +58,37 @@ docker compose down
 
 如需重新初始化数据库，需要先停止服务并删除 `xzs-postgres-data` 数据卷。删除数据卷会清空数据库，请先备份。
 
+## 运行参数参考
+
+树莓派或低资源主机上优先通过 `docker/docker-compose.yml` 的 `java.command` 和环境变量调整运行参数。改动前先记录当前 `docker compose ps`、`docker compose logs --tail 200 java` 和数据库连接池日志，避免把网络缓存、冷启动或数据库慢查询误判为 JVM 问题。
+
+JVM 参数可从小内存保守值开始，例如：
+
+```yaml
+command: >
+  sh -c "java -Duser.timezone=Asia/Shanghai -Dspring.profiles.active=prod
+  -Xms128m -Xmx384m -XX:+UseSerialGC
+  -jar /usr/local/xzs/release/xzs-3.9.0.jar"
+```
+
+Undertow 和 Hikari 参数建议通过环境变量覆盖 Spring Boot 配置，按实际并发逐步调整：
+
+```yaml
+environment:
+  SERVER_UNDERTOW_IO_THREADS: 2
+  SERVER_UNDERTOW_WORKER_THREADS: 16
+  SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 5
+  SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: 1
+  SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 30000
+```
+
+如果站点前面接了 Cloudflare，性能排查时同时检查：
+
+- 静态资源是否命中缓存：查看响应头 `cf-cache-status`、`cache-control`、`etag`。
+- HTML 是否被错误缓存：管理端、学生端入口 HTML 通常不应长时间强缓存。
+- 首次访问慢是否来自后端冷启动、数据库唤醒或 Cloudflare 回源，而不是前端包体。
+- 变更静态资源后是否需要清理 Cloudflare 缓存或等待哈希资源自然更新。
+
 ## 数据备份
 
 Docker 部署时 PostgreSQL 数据保存在命名卷 `xzs-postgres-data`。日常备份建议使用 `pg_dump --format custom` 生成逻辑备份，不建议直接复制 Docker volume 作为唯一备份。
@@ -99,6 +130,30 @@ docker exec -e PGPASSWORD='<db-password>' xzs-postgres pg_restore \
   /tmp/xzs-restore.dump
 docker start xzs-java
 ```
+
+恢复后建议执行：
+
+```sh
+docker compose -f ./docker/docker-compose.yml logs --tail 100 postgres
+docker compose -f ./docker/docker-compose.yml logs --tail 100 java
+docker exec -e PGPASSWORD='<db-password>' xzs-postgres psql \
+  --host 127.0.0.1 \
+  --username xzs \
+  --dbname xzs \
+  --command "select count(*) from t_question;"
+```
+
+## Fly 冷备
+
+树莓派作为主节点时，Fly.io 可以保留为冷备环境。建议只在明确维护窗口内执行同步：
+
+1. 树莓派主库执行 `pg_dump --format custom --no-owner --no-privileges`。
+2. 将 `.dump` 上传到受控位置或本地开发机。
+3. 停止 Fly 应用写入流量，确认不会产生双写。
+4. 对 Fly Postgres 执行 `pg_restore --clean --if-exists --no-owner --no-privileges`。
+5. 启动 Fly 应用后做只读抽样检查，再保持冷备停机或低成本待机。
+
+不要把 Fly 冷备恢复当作默认日常备份替代品；主节点仍应保留本地定时备份和至少一份异地备份。
 
 ## 从 Fly.io 迁移到树莓派 Docker
 

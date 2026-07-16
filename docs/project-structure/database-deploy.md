@@ -24,7 +24,7 @@
 `docker` 目录保存 Docker 部署材料：
 
 - `docker/docker-compose.yml`：compose 配置。
-- `docker/README.md`：Docker Compose 启动、日志和停止命令说明。
+- `docker/README.md`：Docker Compose 启动、日志、JVM/Undertow/Hikari 参数、Cloudflare 缓存检查、Fly 冷备和 Docker PostgreSQL 备份恢复说明。
 
 Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postgresql.sql` 作为数据库初始化脚本。后端容器运行 `release/java/xzs-3.9.0.jar`；`docker/release` 不再保存同名 jar 副本，避免发布制品来源不一致。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，仓库不再附带 docker-compose 二进制。
 
@@ -62,3 +62,9 @@ Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postg
 - `scripts/package-backend.ps1`：使用 Maven Wrapper、系统 Maven 或临时 Maven 打包后端。
 - `scripts/build-all.ps1`：按管理端、学生端、静态资源同步、后端打包顺序执行集成构建。
 - `scripts/measure-build.ps1`：记录各阶段耗时，便于对比优化效果。
+
+题库解析治理相关脚本：
+
+- `scripts/generate-question-analysis.ps1`：从题源 Markdown 生成解析 API prompt、请求体、manifest 和人工复核队列；默认 prompt-only，不调用外部 API。
+- `scripts/sync-question-analysis-to-remote.ps1`：根据解析 manifest 生成远端同步 SQL，强制使用 `import_batch + import_source + import_question_order` 匹配；默认只生成 SQL，不写库。
+- `docs/question-bank/analysis-generation-api-prompt.md`：解析生成 API prompt 模板，约束输入字段、输出结构和质量规则。

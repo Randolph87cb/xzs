@@ -15,13 +15,13 @@
 xzs/
 ├── deploy/              # 设备和环境专用部署资产
 │   └── raspberry-pi/    # 树莓派 systemd 服务模板、数据库初始化、备份和恢复脚本
-├── docker/              # Docker 部署材料，包含 compose、安装文件和发布 jar
+├── docker/              # Docker 部署材料，包含 compose 和 Docker 运维参考
 ├── docs/                # 已构建的项目文档站静态文件、结构拆分文档和题库资料
 │   ├── project-structure/ # 项目结构拆分文档
-│   └── question-bank/   # 随项目版本管理的真题题库 Markdown 资料
+│   └── question-bank/   # 随项目版本管理的真题题库 Markdown 资料和解析生成 prompt 模板
 ├── release/             # 已构建发布包：后端 jar 与前端静态包
 ├── frontend/            # Vue 3 + Vite Web 前端工作区
-├── scripts/             # 本地构建、测量、静态资源同步、维护和数据导入脚本
+├── scripts/             # 本地构建、测量、静态资源同步、维护、题库解析治理和数据导入脚本
 ├── source/              # 源码根目录
 │   ├── xzs/             # Spring Boot 后端
 │   └── wx/              # 微信小程序源码
