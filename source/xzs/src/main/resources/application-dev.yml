@@ -1,8 +1,24 @@
 logging:
   path: ./log/
 
+xzs:
+  web:
+    static:
+      admin-root: ${XZS_ADMIN_STATIC_ROOT:../../frontend/apps/admin/}
+      student-root: ${XZS_STUDENT_STATIC_ROOT:../../frontend/apps/student/}
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/xzs
     username: postgres
     password: 123456
+  web:
+    resources:
+      static-locations:
+        - file:${XZS_ADMIN_STATIC_ROOT:../../frontend/apps/admin/}
+        - file:${XZS_STUDENT_STATIC_ROOT:../../frontend/apps/student/}
+        - classpath:/static/
+      cache:
+        period: 0
+        cachecontrol:
+          no-store: true
