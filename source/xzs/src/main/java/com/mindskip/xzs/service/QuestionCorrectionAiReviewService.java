@@ -162,37 +162,32 @@ public class QuestionCorrectionAiReviewService {
         }
     }
 
-    public void preReview(Integer correctionId, String triggerType) {
+    public Map<String, Object> preReview(Integer correctionId, String triggerType) {
         try {
             List<Map<String, Object>> contextRows = jdbcTemplate.queryForList(contextSql(), correctionId);
             if (contextRows.isEmpty()) {
-                insertTerminalRecord(correctionId, null, triggerType, "SKIPPED", null, null, null, "改错记录不存在", null);
-                return;
+                return insertTerminalRecord(correctionId, null, triggerType, "SKIPPED", null, null, null, "改错记录不存在", null);
             }
 
             Map<String, Object> context = contextRows.get(0);
             Integer teacherUserId = (Integer) context.get("teacher_user_id");
             if (teacherUserId == null) {
-                insertTerminalRecord(correctionId, null, triggerType, "SKIPPED", null, null, null, "错题所属班级没有负责老师", null);
-                return;
+                return insertTerminalRecord(correctionId, null, triggerType, "SKIPPED", null, null, null, "错题所属班级没有负责老师", null);
             }
 
             List<Map<String, Object>> configRows = jdbcTemplate.queryForList(
                     "select * from t_teacher_ai_review_config where teacher_user_id = ?",
                     teacherUserId);
             if (configRows.isEmpty()) {
-                insertTerminalRecord(correctionId, teacherUserId, triggerType, "SKIPPED", null, null, null, "负责老师未配置 AI 预审", null);
-                return;
+                return insertTerminalRecord(correctionId, teacherUserId, triggerType, "SKIPPED", null, null, null, "负责老师未配置 AI 预审", null);
             }
             Map<String, Object> config = configRows.get(0);
             if (!Boolean.TRUE.equals(config.get("enabled"))) {
-                insertTerminalRecord(correctionId, teacherUserId, triggerType, "SKIPPED", null, null, null, "负责老师未启用 AI 预审", null);
-                return;
+                return insertTerminalRecord(correctionId, teacherUserId, triggerType, "SKIPPED", null, null, null, "负责老师未启用 AI 预审", null);
             }
             String apiKeyCipher = (String) config.get("api_key_cipher");
             if (StringUtils.isBlank(apiKeyCipher)) {
-                insertTerminalRecord(correctionId, teacherUserId, triggerType, "SKIPPED", null, null, null, "负责老师未配置 API Key", null);
-                return;
+                return insertTerminalRecord(correctionId, teacherUserId, triggerType, "SKIPPED", null, null, null, "负责老师未配置 API Key", null);
             }
 
             Integer recordId = jdbcTemplate.queryForObject(
@@ -215,9 +210,10 @@ public class QuestionCorrectionAiReviewService {
                     suggestion.reason,
                     rawContent,
                     recordId);
+            return selectReviewRecord(recordId);
         } catch (Exception e) {
             logger.warn("question correction ai review failed, correctionId={}", correctionId, e);
-            insertTerminalRecord(correctionId, null, triggerType, "FAILED", null, null, null, "AI 预审调用失败：" + StringUtils.left(e.getMessage(), 500), null);
+            return insertTerminalRecord(correctionId, null, triggerType, "FAILED", null, null, null, "AI 预审调用失败：" + StringUtils.left(e.getMessage(), 500), null);
         }
     }
 
@@ -335,13 +331,14 @@ public class QuestionCorrectionAiReviewService {
         return "UNCERTAIN";
     }
 
-    private void insertTerminalRecord(Integer correctionId, Integer teacherUserId, String triggerType, String status,
-                                      String reviewResult, String reviewComment, BigDecimal confidence,
-                                      String message, String rawContent) {
-        jdbcTemplate.update(
+    private Map<String, Object> insertTerminalRecord(Integer correctionId, Integer teacherUserId, String triggerType, String status,
+                                                     String reviewResult, String reviewComment, BigDecimal confidence,
+                                                     String message, String rawContent) {
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(
                 "insert into t_question_correction_ai_review_record " +
                         "(correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, raw_content, error_message, finish_time, create_time) " +
-                        "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now())",
+                        "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now()) " +
+                        "returning id, correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, raw_content, error_message, request_time, finish_time, create_time",
                 correctionId,
                 teacherUserId,
                 StringUtils.defaultIfBlank(triggerType, "AUTO_SUBMIT"),
@@ -352,6 +349,21 @@ public class QuestionCorrectionAiReviewService {
                 message,
                 rawContent,
                 message);
+        if (rows.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return rows.get(0);
+    }
+
+    private Map<String, Object> selectReviewRecord(Integer recordId) {
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(
+                "select id, correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, raw_content, error_message, request_time, finish_time, create_time " +
+                        "from t_question_correction_ai_review_record where id = ?",
+                recordId);
+        if (rows.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return rows.get(0);
     }
 
     private String encrypt(String plainText) {

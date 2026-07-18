@@ -190,6 +190,7 @@ export interface AdminSmartTrainingConfig {
 
 export interface AdminQuestionCorrectionPageRequest {
   reviewStatus?: 'SUBMITTED' | 'APPROVED' | 'REJECTED' | null
+  aiReviewStatus?: QuestionCorrectionAiReviewStatus | null
   classId?: number | null
   pageIndex: number
   pageSize: number
@@ -261,6 +262,16 @@ export interface AdminQuestionCorrectionReviewRequest {
   id: number
   reviewResult: 'APPROVED' | 'REJECTED'
   reviewComment?: string
+}
+
+export interface AdminQuestionCorrectionAiBatchResponse {
+  acceptedCount: number
+  skippedCount: number
+  failedCount: number
+  failures?: Array<{
+    id?: number
+    message?: string
+  }>
 }
 
 export interface AdminQuestionCorrectionAiConfig {
@@ -432,6 +443,20 @@ export function saveAdminQuestionCorrectionReview(
   request: AdminQuestionCorrectionReviewRequest
 ): Promise<ApiResponse<void>> {
   return post<void>('/api/admin/questionCorrection/review/edit', request)
+}
+
+export function reviewAdminQuestionCorrectionWithAi(
+  id: number
+): Promise<ApiResponse<AdminQuestionCorrectionAiReview | AdminQuestionCorrectionItem | null>> {
+  return post<AdminQuestionCorrectionAiReview | AdminQuestionCorrectionItem | null>(
+    `/api/admin/questionCorrection/ai/review/${id}`
+  )
+}
+
+export function reviewAdminQuestionCorrectionsWithAiBatch(
+  request: AdminQuestionCorrectionPageRequest
+): Promise<ApiResponse<AdminQuestionCorrectionAiBatchResponse>> {
+  return post<AdminQuestionCorrectionAiBatchResponse>('/api/admin/questionCorrection/ai/review/batch', request)
 }
 
 export function getAdminQuestionCorrectionAiConfig(): Promise<ApiResponse<AdminQuestionCorrectionAiConfig>> {

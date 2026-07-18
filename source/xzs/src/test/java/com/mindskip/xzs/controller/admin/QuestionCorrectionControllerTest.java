@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,7 @@ public class QuestionCorrectionControllerTest {
     private ClassScopeService classScopeService;
     private QuestionCorrectionAiReviewService aiReviewService;
     private QuestionCorrectionController controller;
+    private WebContext webContext;
 
     @Before
     public void setUp() {
@@ -39,7 +41,7 @@ public class QuestionCorrectionControllerTest {
         aiReviewService = mock(QuestionCorrectionAiReviewService.class);
         controller = new QuestionCorrectionController(jdbcTemplate, classScopeService, aiReviewService);
 
-        WebContext webContext = mock(WebContext.class);
+        webContext = mock(WebContext.class);
         when(webContext.getCurrentUser()).thenReturn(user(12, "admin", "Admin User", RoleEnum.ADMIN));
         ReflectionTestUtils.setField(controller, "webContext", webContext);
     }
@@ -120,6 +122,28 @@ public class QuestionCorrectionControllerTest {
     }
 
     @Test
+    public void pageFiltersByLatestAiReviewStatusInCountAndListQueries() {
+        QuestionCorrectionController.QuestionCorrectionPageRequest request = new QuestionCorrectionController.QuestionCorrectionPageRequest();
+        request.setAiReviewStatus("FAILED");
+        jdbcTemplate.addQueryForObjectResult(0);
+        jdbcTemplate.addQueryForListResult(Collections.emptyList());
+
+        RestResponse<Map<String, Object>> response = controller.page(request);
+
+        assertEquals(1, response.getCode());
+        RecordingJdbcTemplate.Call countQuery = jdbcTemplate.getCalls("queryForObject").get(0);
+        assertTrue(countQuery.getSql().contains("left join lateral"));
+        assertTrue(countQuery.getSql().contains("from t_question_correction_ai_review_record ar"));
+        assertTrue(countQuery.getSql().contains("ai.status = ?"));
+        assertArrayEquals(new Object[]{"FAILED"}, countQuery.getArgs());
+
+        RecordingJdbcTemplate.Call listQuery = jdbcTemplate.getCalls("queryForList").get(0);
+        assertTrue(listQuery.getSql().contains("left join lateral"));
+        assertTrue(listQuery.getSql().contains("ai.status = ?"));
+        assertArrayEquals(new Object[]{"FAILED", 20, 0}, listQuery.getArgs());
+    }
+
+    @Test
     public void selectAiConfigRejectsUserWithoutAiConfigPermission() {
         RestResponse<Map<String, Object>> response = controller.selectAiConfig();
 
@@ -162,6 +186,67 @@ public class QuestionCorrectionControllerTest {
         verify(aiReviewService).saveConfig(12, request);
     }
 
+    @Test
+    public void manualSingleAiReviewTriggersAiWithoutUpdatingReviewStatus() {
+        Map<String, Object> aiReview = aiReview("SUCCESS");
+        jdbcTemplate.addQueryForListResult(Collections.singletonList(correction("APPROVED")));
+        when(aiReviewService.preReview(3, "MANUAL_SINGLE")).thenReturn(aiReview);
+
+        RestResponse<Map<String, Object>> response = controller.aiReview(3);
+
+        assertEquals(1, response.getCode());
+        assertEquals(3, response.getResponse().get("correctionId"));
+        assertEquals("APPROVED", response.getResponse().get("reviewStatus"));
+        assertEquals(aiReview, response.getResponse().get("aiReview"));
+        assertEquals(0, jdbcTemplate.getCalls("update").size());
+        verify(aiReviewService).preReview(3, "MANUAL_SINGLE");
+    }
+
+    @Test
+    public void batchAiReviewDefaultsToSubmittedAndAppliesTeacherScopeAndLimit() {
+        when(webContext.getCurrentUser()).thenReturn(user(22, "teacher", "Teacher User", RoleEnum.TEACHER));
+        when(classScopeService.isTeacher(any())).thenReturn(true);
+        when(classScopeService.teacherClassIds(any())).thenReturn(Arrays.asList(101, 102));
+        QuestionCorrectionController.QuestionCorrectionPageRequest request = new QuestionCorrectionController.QuestionCorrectionPageRequest();
+        request.setAiReviewStatus("SKIPPED");
+        jdbcTemplate.addQueryForListResult(Arrays.asList(
+                correction(1, "SUBMITTED"),
+                correction(2, "SUBMITTED"),
+                correction(3, "APPROVED")));
+        when(aiReviewService.preReview(1, "MANUAL_BATCH")).thenReturn(aiReview("SUCCESS"));
+        when(aiReviewService.preReview(2, "MANUAL_BATCH")).thenReturn(aiReview("SKIPPED"));
+
+        RestResponse<Map<String, Object>> response = controller.batchAiReview(request);
+
+        assertEquals(1, response.getCode());
+        assertEquals(1, response.getResponse().get("acceptedCount"));
+        assertEquals(2, response.getResponse().get("skippedCount"));
+        assertEquals(0, response.getResponse().get("failedCount"));
+        assertEquals(50, response.getResponse().get("limit"));
+        RecordingJdbcTemplate.Call query = jdbcTemplate.getCalls("queryForList").get(0);
+        assertTrue(query.getSql().contains("left join lateral"));
+        assertTrue(query.getSql().contains("c.review_status = ?"));
+        assertTrue(query.getSql().contains("ai.status = ?"));
+        assertTrue(query.getSql().contains("coalesce(c.class_id, u.class_id) in (?,?)"));
+        assertTrue(query.getSql().contains("limit ?"));
+        assertArrayEquals(new Object[]{"SUBMITTED", "SKIPPED", 101, 102, 50}, query.getArgs());
+    }
+
+    @Test
+    public void manualSingleAiReviewRejectsTeacherOutOfScopeRecord() {
+        when(webContext.getCurrentUser()).thenReturn(user(22, "teacher", "Teacher User", RoleEnum.TEACHER));
+        when(classScopeService.isTeacher(any())).thenReturn(true);
+        when(classScopeService.teacherClassIds(any())).thenReturn(Collections.singletonList(101));
+        jdbcTemplate.addQueryForListResult(Collections.emptyList());
+
+        RestResponse<Map<String, Object>> response = controller.aiReview(99);
+
+        assertEquals(2, response.getCode());
+        assertEquals("改错记录不存在", response.getMessage());
+        assertArrayEquals(new Object[]{101, 99}, jdbcTemplate.getCalls("queryForList").get(0).getArgs());
+        verify(aiReviewService, never()).preReview(any(), any());
+    }
+
     private QuestionCorrectionController.QuestionCorrectionReviewRequest reviewRequest(Integer id, String result, String comment) {
         QuestionCorrectionController.QuestionCorrectionReviewRequest request = new QuestionCorrectionController.QuestionCorrectionReviewRequest();
         request.setId(id);
@@ -171,11 +256,21 @@ public class QuestionCorrectionControllerTest {
     }
 
     private Map<String, Object> correction(String status) {
+        return correction(3, status);
+    }
+
+    private Map<String, Object> correction(Integer id, String status) {
         Map<String, Object> row = new HashMap<>();
-        row.put("id", 3);
+        row.put("id", id);
         row.put("review_status", status);
         row.put("student_wrong_reason", "student wrong");
         row.put("student_correct_thinking", "student thinking");
+        return row;
+    }
+
+    private Map<String, Object> aiReview(String status) {
+        Map<String, Object> row = new HashMap<>();
+        row.put("status", status);
         return row;
     }
 

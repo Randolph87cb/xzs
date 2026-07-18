@@ -1,134 +1,158 @@
 <template>
   <section class="question-error">
-    <div class="question-error__list">
-      <header class="question-error__header">
+    <header class="question-error__page-header">
+      <div>
         <h1>错题本</h1>
-        <el-button :loading="loading" @click="loadQuestions">刷新</el-button>
-      </header>
+        <p>对照题目、解析和老师意见完成改错。</p>
+      </div>
+      <el-button :loading="loading" @click="loadQuestions">刷新</el-button>
+    </header>
 
-      <el-tabs v-model="activeCorrectionLayer" class="question-error__tabs" @tab-change="handleLayerChange">
-        <el-tab-pane v-for="layer in correctionLayers" :key="layer.key" :name="layer.key">
-          <template #label>
-            <span>{{ layer.label }}</span>
-            <span class="question-error__tab-count">{{ layerCount(layer.key) }}</span>
-          </template>
-        </el-tab-pane>
-      </el-tabs>
+    <div class="question-error__workspace">
+      <aside class="question-error__queue" v-loading="loading">
+        <div class="question-error__queue-header">
+          <h2>错题队列</h2>
+          <el-tag size="small" type="info">{{ total }} 条</el-tag>
+        </div>
 
-      <el-table
-        v-loading="loading"
-        :data="filteredQuestions"
-        row-key="id"
-        highlight-current-row
-        empty-text="当前层次暂无错题"
-        @row-click="selectQuestion"
-      >
-        <el-table-column prop="shortTitle" label="题干" min-width="220" show-overflow-tooltip />
-        <el-table-column label="题型" width="90">
-          <template #default="{ row }">{{ questionTypeText(row.questionType) }}</template>
-        </el-table-column>
-        <el-table-column prop="subjectName" label="学科" width="90" />
-        <el-table-column label="改错状态" width="120">
-          <template #default="{ row }">
-            <el-tag size="small" :type="correctionTagType(rowCorrectionLayer(row))">
-              {{ correctionLayerText(rowCorrectionLayer(row)) }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="createTime" label="做题时间" width="170" />
-      </el-table>
+        <el-tabs v-model="activeCorrectionLayer" class="question-error__tabs" @tab-change="handleLayerChange">
+          <el-tab-pane v-for="layer in correctionLayers" :key="layer.key" :name="layer.key">
+            <template #label>
+              <span>{{ layer.label }}</span>
+              <span class="question-error__tab-count">{{ layerCount(layer.key) }}</span>
+            </template>
+          </el-tab-pane>
+        </el-tabs>
 
-      <el-pagination
-        v-if="total > 0"
-        class="question-error__pagination"
-        layout="prev, pager, next, total"
-        :total="total"
-        :page-size="query.pageSize"
-        :current-page="query.pageIndex"
-        @current-change="handlePageChange"
-      />
-    </div>
-
-    <aside v-loading="detailLoading" class="question-error__detail">
-      <template v-if="selectedQuestion && selectedAnswer">
-        <section class="question-error__section">
-          <div class="question-error__section-header">
-            <h2>题目</h2>
-            <el-tag size="small" type="info">{{ questionTypeText(selectedQuestion.questionType) }}</el-tag>
-          </div>
-          <QuestionReview :question="selectedQuestion" :answer="selectedAnswer" />
-        </section>
-
-        <section class="question-error__section">
-          <div class="question-error__section-header">
-            <div>
-              <h2>改错</h2>
-              <p class="question-error__status">{{ selectedCorrectionStatusText }}</p>
-            </div>
-          </div>
-
-          <div
-            v-if="selectedCorrectionLayer === 'REJECTED' && correction?.review_comment"
-            class="question-error__rejection"
+        <div v-if="filteredQuestions.length > 0" class="question-error__queue-list">
+          <button
+            v-for="row in filteredQuestions"
+            :key="row.id"
+            type="button"
+            class="question-error__queue-item"
+            :class="{ 'is-active': selectedRow?.id === row.id }"
+            @click="selectQuestion(row)"
           >
-            <h3>老师驳回意见</h3>
-            <p>{{ correction.review_comment }}</p>
-          </div>
+            <span class="question-error__queue-title">{{ row.shortTitle || '无题干' }}</span>
+            <span class="question-error__queue-meta">
+              <span>{{ row.subjectName || '未知学科' }}</span>
+              <el-tag size="small" :type="correctionTagType(rowCorrectionLayer(row))">
+                {{ correctionLayerText(rowCorrectionLayer(row)) }}
+              </el-tag>
+              <span>{{ row.createTime || '-' }}</span>
+            </span>
+          </button>
+        </div>
+        <el-empty v-else description="当前层次暂无错题" :image-size="72" />
 
-          <el-form v-if="canSubmitCorrection" class="question-error__inline-form" label-position="top">
-            <el-form-item label="我错在哪里">
-              <el-input v-model="correctionForm.wrongReason" type="textarea" :rows="4" />
-            </el-form-item>
-            <el-form-item label="正确思路是什么">
-              <el-input v-model="correctionForm.correctThinking" type="textarea" :rows="4" />
-            </el-form-item>
-            <el-form-item>
-              <el-button :loading="submitting" type="primary" @click="submitCorrectionForm">
-                {{ correctionSubmitButtonText }}
-              </el-button>
-            </el-form-item>
-          </el-form>
+        <el-pagination
+          v-if="total > 0"
+          class="question-error__pagination"
+          layout="prev, pager, next"
+          :total="total"
+          :page-size="query.pageSize"
+          :current-page="query.pageIndex"
+          small
+          background
+          @current-change="handlePageChange"
+        />
+      </aside>
 
-          <div v-else-if="correction" class="question-error__correction-content">
-            <div>
-              <h3>我的错误原因</h3>
-              <p>{{ correction.student_wrong_reason || '暂无填写' }}</p>
+      <main v-loading="detailLoading" class="question-error__detail">
+        <template v-if="selectedQuestion && selectedAnswer">
+          <section class="question-error__question-panel">
+            <div class="question-error__section-header">
+              <div>
+                <h2>题目上下文</h2>
+                <p>{{ questionTypeText(selectedQuestion.questionType) }} · {{ selectedRow?.subjectName || '未知学科' }}</p>
+              </div>
+              <el-tag size="small" :type="correctionTagType(selectedCorrectionLayer)">
+                {{ selectedCorrectionStatusText }}
+              </el-tag>
             </div>
-            <div>
-              <h3>我的正确思路</h3>
-              <p>{{ correction.student_correct_thinking || '暂无填写' }}</p>
-            </div>
-          </div>
-          <el-empty v-else description="还没有提交改错" :image-size="72" />
-        </section>
+            <QuestionCorrectionContext :question="selectedQuestion" :answer="selectedAnswer" />
+          </section>
 
-        <section class="question-error__section">
-          <div class="question-error__section-header">
-            <h2>历史</h2>
-            <el-tag size="small" :type="correctionTagType(selectedCorrectionLayer)">
-              {{ selectedCorrectionStatusText }}
-            </el-tag>
-          </div>
+          <aside class="question-error__correction-panel">
+            <section
+              v-if="selectedCorrectionLayer === 'REJECTED' && correction?.review_comment"
+              class="question-error__rejection"
+            >
+              <h2>老师驳回意见</h2>
+              <p>{{ correction.review_comment }}</p>
+            </section>
 
-          <el-timeline v-if="correction" class="question-error__timeline">
-            <el-timeline-item :type="correctionTimelineType(selectedCorrectionLayer)" :timestamp="selectedCorrectionStatusText">
-              <p>{{ correctionHistoryText }}</p>
-              <p v-if="correction.review_comment" class="question-error__review-comment">
-                审核意见：{{ correction.review_comment }}
-              </p>
-            </el-timeline-item>
-          </el-timeline>
-          <el-empty v-else description="暂无改错历史" :image-size="72" />
-        </section>
-      </template>
-      <el-empty v-else description="请选择错题" />
-    </aside>
+            <section class="question-error__card">
+              <div class="question-error__section-header">
+                <div>
+                  <h2>{{ canSubmitCorrection ? correctionSubmitButtonText : '我的改错' }}</h2>
+                  <p>{{ selectedCorrectionStatusText }}</p>
+                </div>
+                <el-tag size="small" :type="correctionTagType(selectedCorrectionLayer)">
+                  {{ selectedCorrectionStatusText }}
+                </el-tag>
+              </div>
+
+              <el-form v-if="canSubmitCorrection" class="question-error__inline-form" label-position="top">
+                <el-form-item label="我错在哪里">
+                  <el-input v-model="correctionForm.wrongReason" type="textarea" :rows="5" />
+                </el-form-item>
+                <el-form-item label="正确思路是什么">
+                  <el-input v-model="correctionForm.correctThinking" type="textarea" :rows="5" />
+                </el-form-item>
+                <el-form-item>
+                  <el-button :loading="submitting" type="primary" @click="submitCorrectionForm">
+                    {{ correctionSubmitButtonText }}
+                  </el-button>
+                </el-form-item>
+              </el-form>
+
+              <div v-else-if="correction" class="question-error__correction-content">
+                <div>
+                  <h3>我的错误原因</h3>
+                  <p>{{ correction.student_wrong_reason || '暂无填写' }}</p>
+                </div>
+                <div>
+                  <h3>我的正确思路</h3>
+                  <p>{{ correction.student_correct_thinking || '暂无填写' }}</p>
+                </div>
+              </div>
+              <el-empty v-else description="还没有提交改错" :image-size="72" />
+            </section>
+
+            <section class="question-error__card">
+              <div class="question-error__section-header">
+                <h2>历史</h2>
+                <el-tag size="small" :type="correctionTagType(selectedCorrectionLayer)">
+                  {{ selectedCorrectionStatusText }}
+                </el-tag>
+              </div>
+
+              <el-timeline v-if="correction" class="question-error__timeline">
+                <el-timeline-item
+                  :type="correctionTimelineType(selectedCorrectionLayer)"
+                  :timestamp="selectedCorrectionStatusText"
+                >
+                  <p>{{ correctionHistoryText }}</p>
+                  <p v-if="correction.review_comment" class="question-error__review-comment">
+                    审核意见：{{ correction.review_comment }}
+                  </p>
+                </el-timeline-item>
+              </el-timeline>
+              <el-empty v-else description="暂无改错历史" :image-size="72" />
+            </section>
+          </aside>
+        </template>
+        <el-empty v-else description="请选择错题" />
+      </main>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { QuestionCorrectionContext } from '@xzs/question-renderer'
 import {
   getQuestionCorrection,
   getQuestionAnswerDetail,
@@ -140,7 +164,6 @@ import {
   type QuestionCorrectionReviewStatus,
   type QuestionAnswerListItem
 } from '@xzs/api-client'
-import QuestionReview from '@/components/QuestionReview.vue'
 
 type CorrectionLayerKey = 'UNSUBMITTED' | QuestionCorrectionReviewStatus
 
@@ -150,10 +173,10 @@ interface CorrectionLayer {
 }
 
 const correctionLayers: CorrectionLayer[] = [
-  { key: 'UNSUBMITTED', label: '未提交改错' },
-  { key: 'SUBMITTED', label: '改错待审核' },
-  { key: 'APPROVED', label: '改错已通过' },
-  { key: 'REJECTED', label: '改错被驳回' }
+  { key: 'UNSUBMITTED', label: '未提交' },
+  { key: 'SUBMITTED', label: '待审核' },
+  { key: 'APPROVED', label: '已通过' },
+  { key: 'REJECTED', label: '被驳回' }
 ]
 
 const loading = ref(false)
@@ -377,44 +400,97 @@ function questionTypeText(type: number) {
 <style scoped lang="scss">
 .question-error {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
   gap: 18px;
+  min-width: 0;
 }
 
-.question-error__list,
-.question-error__detail {
-  padding: 18px;
-  border: 1px solid var(--xzs-border);
-  border-radius: 6px;
-  background: var(--xzs-surface);
-}
-
-.question-error__header,
-.question-error__section-header {
+.question-error__page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
-.question-error__header {
-  margin-bottom: 12px;
-}
-
-.question-error__header h1,
-.question-error__section h2,
-.question-error__section h3,
-.question-error__section p {
+.question-error__page-header h1,
+.question-error__page-header p,
+.question-error__queue-header h2,
+.question-error__section-header h2,
+.question-error__section-header p,
+.question-error__card h2,
+.question-error__card h3,
+.question-error__card p,
+.question-error__rejection h2,
+.question-error__rejection p {
   margin: 0;
 }
 
-.question-error__header h1 {
+.question-error__page-header h1 {
   color: var(--xzs-text);
-  font-size: 22px;
+  font-size: 24px;
+}
+
+.question-error__page-header p,
+.question-error__section-header p,
+.question-error__review-comment {
+  color: var(--xzs-text-muted);
+}
+
+.question-error__workspace {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: 14px;
+  min-height: 620px;
+}
+
+.question-error__queue,
+.question-error__detail,
+.question-error__question-panel,
+.question-error__card,
+.question-error__rejection {
+  min-width: 0;
+  border: 1px solid var(--xzs-border);
+  border-radius: 6px;
+  background: var(--xzs-surface);
+}
+
+.question-error__queue {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  max-height: calc(100vh - 210px);
+  overflow: hidden;
+}
+
+.question-error__queue-header,
+.question-error__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.question-error__queue-header {
+  padding: 14px 16px 8px;
+}
+
+.question-error__queue-header h2,
+.question-error__section-header h2,
+.question-error__card h2,
+.question-error__rejection h2 {
+  color: var(--xzs-text);
+  font-size: 18px;
 }
 
 .question-error__tabs {
+  min-width: 0;
+  padding: 0 12px;
+}
+
+.question-error__tabs :deep(.el-tabs__header) {
   margin-bottom: 8px;
+}
+
+.question-error__tabs :deep(.el-tabs__nav-wrap::after) {
+  height: 1px;
 }
 
 .question-error__tab-count {
@@ -432,60 +508,112 @@ function questionTypeText(type: number) {
   line-height: 20px;
 }
 
+.question-error__queue-list {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 0;
+  padding: 10px;
+  overflow: auto;
+}
+
+.question-error__queue-item {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--xzs-text);
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+
+.question-error__queue-item:hover,
+.question-error__queue-item.is-active {
+  border-color: var(--xzs-primary);
+  background: var(--xzs-surface-blue);
+}
+
+.question-error__queue-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.question-error__queue-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--xzs-text-muted);
+  font-size: 12px;
+}
+
 .question-error__pagination {
-  justify-content: flex-end;
-  margin-top: 18px;
+  justify-content: center;
+  padding: 12px 8px 14px;
+  border-top: 1px solid var(--xzs-border);
 }
 
 .question-error__detail {
   display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+  min-height: 620px;
+  overflow: hidden;
+}
+
+.question-error__detail > .el-empty {
+  grid-column: 1 / -1;
+}
+
+.question-error__question-panel {
+  max-height: calc(100vh - 210px);
+  padding: 18px 20px;
+  border-width: 0 1px 0 0;
+  border-radius: 6px 0 0 6px;
+  overflow: auto;
+}
+
+.question-error__section-header {
+  margin-bottom: 16px;
+}
+
+.question-error__correction-panel {
+  display: grid;
   align-content: start;
   gap: 14px;
+  max-height: calc(100vh - 210px);
+  padding: 16px;
+  overflow: auto;
 }
 
-.question-error__section {
+.question-error__card,
+.question-error__rejection {
   display: grid;
   gap: 12px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--xzs-border);
-}
-
-.question-error__section:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
-}
-
-.question-error__section h2 {
-  color: var(--xzs-text);
-  font-size: 18px;
-}
-
-.question-error__section h3 {
-  color: #344463;
-  font-size: 14px;
-}
-
-.question-error__status,
-.question-error__review-comment {
-  color: var(--xzs-text-muted);
+  padding: 14px 16px;
 }
 
 .question-error__rejection {
-  display: grid;
-  gap: 6px;
-  padding: 10px 12px;
-  border-left: 4px solid var(--el-color-danger);
-  border-radius: 4px;
-  background: var(--el-color-danger-light-9);
+  border-color: #ffb4b4;
+  background: #fff7f7;
 }
 
-.question-error__rejection h3 {
+.question-error__rejection h2 {
   color: var(--el-color-danger);
 }
 
 .question-error__rejection p,
 .question-error__correction-content p,
-.question-error__review-comment {
+.question-error__review-comment,
+.question-error__timeline p {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -502,15 +630,44 @@ function questionTypeText(type: number) {
 .question-error__correction-content > div {
   display: grid;
   gap: 6px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: var(--xzs-surface-soft);
+}
+
+.question-error__correction-content h3 {
+  color: #344463;
+  font-size: 14px;
 }
 
 .question-error__timeline {
   padding-left: 4px;
 }
 
-@media (max-width: 980px) {
-  .question-error {
+@media (max-width: 1180px) {
+  .question-error__workspace,
+  .question-error__detail {
     grid-template-columns: 1fr;
+  }
+
+  .question-error__queue,
+  .question-error__question-panel,
+  .question-error__correction-panel {
+    max-height: none;
+  }
+
+  .question-error__question-panel {
+    border-width: 0 0 1px;
+    border-radius: 6px 6px 0 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .question-error__page-header,
+  .question-error__queue-header,
+  .question-error__section-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 </style>
