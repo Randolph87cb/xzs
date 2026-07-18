@@ -1,6 +1,7 @@
 param(
     [switch]$SkipAdmin,
-    [switch]$SkipStudent
+    [switch]$SkipStudent,
+    [switch]$SkipRuntime
 )
 
 $ErrorActionPreference = "Stop"
@@ -54,17 +55,20 @@ function Sync-StaticDirectory {
 
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
 $backendStatic = Join-Path $workspaceRoot "source\xzs\src\main\resources\static"
+$runtimeStatic = Join-Path $workspaceRoot "source\xzs\target\classes\static"
 
 if (-not $SkipAdmin) {
-    Sync-StaticDirectory `
-        -Source (Join-Path $workspaceRoot "frontend\apps\admin\admin") `
-        -Target (Join-Path $backendStatic "admin") `
-        -WorkspaceRoot $workspaceRoot
+    $adminSource = Join-Path $workspaceRoot "frontend\apps\admin\admin"
+    Sync-StaticDirectory -Source $adminSource -Target (Join-Path $backendStatic "admin") -WorkspaceRoot $workspaceRoot
+    if (-not $SkipRuntime -and (Test-Path -LiteralPath $runtimeStatic -PathType Container)) {
+        Sync-StaticDirectory -Source $adminSource -Target (Join-Path $runtimeStatic "admin") -WorkspaceRoot $workspaceRoot
+    }
 }
 
 if (-not $SkipStudent) {
-    Sync-StaticDirectory `
-        -Source (Join-Path $workspaceRoot "frontend\apps\student\student") `
-        -Target (Join-Path $backendStatic "student") `
-        -WorkspaceRoot $workspaceRoot
+    $studentSource = Join-Path $workspaceRoot "frontend\apps\student\student"
+    Sync-StaticDirectory -Source $studentSource -Target (Join-Path $backendStatic "student") -WorkspaceRoot $workspaceRoot
+    if (-not $SkipRuntime -and (Test-Path -LiteralPath $runtimeStatic -PathType Container)) {
+        Sync-StaticDirectory -Source $studentSource -Target (Join-Path $runtimeStatic "student") -WorkspaceRoot $workspaceRoot
+    }
 }
