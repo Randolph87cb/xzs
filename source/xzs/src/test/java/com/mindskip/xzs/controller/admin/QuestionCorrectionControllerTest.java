@@ -120,21 +120,46 @@ public class QuestionCorrectionControllerTest {
     }
 
     @Test
-    public void selectAiConfigRejectsNonTeacher() {
+    public void selectAiConfigRejectsUserWithoutAiConfigPermission() {
         RestResponse<Map<String, Object>> response = controller.selectAiConfig();
 
         assertEquals(2, response.getCode());
-        assertEquals("AI 预审配置仅班级负责老师可维护", response.getMessage());
+        assertEquals("AI 预审配置仅老师或管理员可维护", response.getMessage());
         verify(aiReviewService, never()).selectConfig(any());
     }
 
     @Test
-    public void editAiConfigRejectsNonTeacher() {
+    public void editAiConfigRejectsUserWithoutAiConfigPermission() {
         RestResponse response = controller.editAiConfig(new QuestionCorrectionAiReviewService.SaveConfigRequest());
 
         assertEquals(2, response.getCode());
-        assertEquals("AI 预审配置仅班级负责老师可维护", response.getMessage());
+        assertEquals("AI 预审配置仅老师或管理员可维护", response.getMessage());
         verify(aiReviewService, never()).saveConfig(eq(12), any());
+    }
+
+    @Test
+    public void selectAiConfigAllowsAdmin() {
+        Map<String, Object> config = new HashMap<>();
+        config.put("enabled", true);
+        when(classScopeService.canConfigureAiReview(any())).thenReturn(true);
+        when(aiReviewService.selectConfig(12)).thenReturn(config);
+
+        RestResponse<Map<String, Object>> response = controller.selectAiConfig();
+
+        assertEquals(1, response.getCode());
+        assertEquals(config, response.getResponse());
+        verify(aiReviewService).selectConfig(12);
+    }
+
+    @Test
+    public void editAiConfigAllowsAdmin() {
+        QuestionCorrectionAiReviewService.SaveConfigRequest request = new QuestionCorrectionAiReviewService.SaveConfigRequest();
+        when(classScopeService.canConfigureAiReview(any())).thenReturn(true);
+
+        RestResponse response = controller.editAiConfig(request);
+
+        assertEquals(1, response.getCode());
+        verify(aiReviewService).saveConfig(12, request);
     }
 
     private QuestionCorrectionController.QuestionCorrectionReviewRequest reviewRequest(Integer id, String result, String comment) {

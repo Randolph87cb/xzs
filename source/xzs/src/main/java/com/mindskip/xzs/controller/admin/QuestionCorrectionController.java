@@ -74,8 +74,8 @@ public class QuestionCorrectionController extends BaseApiController {
     @RequestMapping(value = "/ai/config/select", method = RequestMethod.POST)
     public RestResponse<Map<String, Object>> selectAiConfig() {
         User currentUser = getCurrentUser();
-        if (!classScopeService.isTeacher(currentUser)) {
-            return RestResponse.fail(2, "AI 预审配置仅班级负责老师可维护");
+        if (!classScopeService.canConfigureAiReview(currentUser)) {
+            return RestResponse.fail(2, "AI 预审配置仅老师或管理员可维护");
         }
         return RestResponse.ok(questionCorrectionAiReviewService.selectConfig(currentUser.getId()));
     }
@@ -83,8 +83,8 @@ public class QuestionCorrectionController extends BaseApiController {
     @RequestMapping(value = "/ai/config/edit", method = RequestMethod.POST)
     public RestResponse editAiConfig(@RequestBody QuestionCorrectionAiReviewService.SaveConfigRequest request) {
         User currentUser = getCurrentUser();
-        if (!classScopeService.isTeacher(currentUser)) {
-            return RestResponse.fail(2, "AI 预审配置仅班级负责老师可维护");
+        if (!classScopeService.canConfigureAiReview(currentUser)) {
+            return RestResponse.fail(2, "AI 预审配置仅老师或管理员可维护");
         }
         String error = questionCorrectionAiReviewService.saveConfig(currentUser.getId(), request);
         if (StringUtils.isNotBlank(error)) {

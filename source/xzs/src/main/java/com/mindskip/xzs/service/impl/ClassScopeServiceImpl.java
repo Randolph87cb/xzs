@@ -37,6 +37,16 @@ public class ClassScopeServiceImpl implements ClassScopeService {
     }
 
     @Override
+    public boolean canBeClassTeacher(User user) {
+        return isTeacher(user) || isAdmin(user);
+    }
+
+    @Override
+    public boolean canConfigureAiReview(User user) {
+        return isTeacher(user) || isAdmin(user);
+    }
+
+    @Override
     public List<Integer> teacherClassIds(User teacher) {
         if (!isTeacher(teacher)) {
             return Collections.emptyList();

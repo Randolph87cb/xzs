@@ -65,12 +65,31 @@
               <h2>改错</h2>
               <p class="question-error__status">{{ selectedCorrectionStatusText }}</p>
             </div>
-            <el-button v-if="canSubmitCorrection" size="small" type="primary" @click="openCorrectionDialog">
-              {{ correctionSubmitButtonText }}
-            </el-button>
           </div>
 
-          <div v-if="correction" class="question-error__correction-content">
+          <div
+            v-if="selectedCorrectionLayer === 'REJECTED' && correction?.review_comment"
+            class="question-error__rejection"
+          >
+            <h3>老师驳回意见</h3>
+            <p>{{ correction.review_comment }}</p>
+          </div>
+
+          <el-form v-if="canSubmitCorrection" class="question-error__inline-form" label-position="top">
+            <el-form-item label="我错在哪里">
+              <el-input v-model="correctionForm.wrongReason" type="textarea" :rows="4" />
+            </el-form-item>
+            <el-form-item label="正确思路是什么">
+              <el-input v-model="correctionForm.correctThinking" type="textarea" :rows="4" />
+            </el-form-item>
+            <el-form-item>
+              <el-button :loading="submitting" type="primary" @click="submitCorrectionForm">
+                {{ correctionSubmitButtonText }}
+              </el-button>
+            </el-form-item>
+          </el-form>
+
+          <div v-else-if="correction" class="question-error__correction-content">
             <div>
               <h3>我的错误原因</h3>
               <p>{{ correction.student_wrong_reason || '暂无填写' }}</p>
@@ -104,21 +123,6 @@
       </template>
       <el-empty v-else description="请选择错题" />
     </aside>
-
-    <el-dialog v-model="correctionDialogVisible" :title="correctionDialogTitle" width="560px">
-      <el-form label-position="top">
-        <el-form-item label="我错在哪里">
-          <el-input v-model="correctionForm.wrongReason" type="textarea" :rows="4" />
-        </el-form-item>
-        <el-form-item label="正确思路是什么">
-          <el-input v-model="correctionForm.correctThinking" type="textarea" :rows="4" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="correctionDialogVisible = false">取消</el-button>
-        <el-button :loading="submitting" type="primary" @click="submitCorrectionForm">提交</el-button>
-      </template>
-    </el-dialog>
   </section>
 </template>
 
@@ -162,7 +166,6 @@ const selectedRow = ref<QuestionAnswerListItem | null>(null)
 const selectedQuestion = ref<ExamQuestion | null>(null)
 const selectedAnswer = ref<AnswerItem | null>(null)
 const correction = ref<QuestionCorrectionRecord | null>(null)
-const correctionDialogVisible = ref(false)
 const query = reactive({
   pageIndex: 1,
   pageSize: 10
@@ -185,7 +188,6 @@ const canSubmitCorrection = computed(() => {
 const correctionSubmitButtonText = computed(() =>
   selectedCorrectionLayer.value === 'REJECTED' ? '重新提交改错' : '提交改错'
 )
-const correctionDialogTitle = computed(() => correctionSubmitButtonText.value)
 const correctionHistoryText = computed(() => {
   const map: Record<CorrectionLayerKey, string> = {
     UNSUBMITTED: '未提交改错，暂无审核历史。',
@@ -230,22 +232,14 @@ async function loadCorrection() {
   correction.value = null
   if (!selectedAnswer.value?.id) {
     updateSelectedRowStatus(null)
+    resetCorrectionForm('UNSUBMITTED', null)
     return
   }
   const result = await getQuestionCorrection(selectedAnswer.value.id)
   correction.value = result.response ?? null
   const status = updateSelectedRowStatus(correction.value)
+  resetCorrectionForm(status, correction.value)
   activeCorrectionLayer.value = status
-}
-
-function openCorrectionDialog() {
-  if (!canSubmitCorrection.value) {
-    ElMessage.warning('当前状态不允许提交改错')
-    return
-  }
-  correctionForm.wrongReason = correction.value?.student_wrong_reason ?? ''
-  correctionForm.correctThinking = correction.value?.student_correct_thinking ?? ''
-  correctionDialogVisible.value = true
 }
 
 async function submitCorrectionForm() {
@@ -270,7 +264,6 @@ async function submitCorrectionForm() {
       correctThinking: correctionForm.correctThinking
     })
     ElMessage.success(result.message || '改错已提交')
-    correctionDialogVisible.value = false
     await loadCorrection()
     activeCorrectionLayer.value = selectedCorrectionLayer.value
   } finally {
@@ -301,6 +294,7 @@ function clearSelectedQuestion() {
   selectedQuestion.value = null
   selectedAnswer.value = null
   correction.value = null
+  resetCorrectionForm('UNSUBMITTED', null)
 }
 
 function updateSelectedRowStatus(record: QuestionCorrectionRecord | null) {
@@ -309,6 +303,11 @@ function updateSelectedRowStatus(record: QuestionCorrectionRecord | null) {
     selectedRow.value.correction_status = status === 'UNSUBMITTED' ? null : status
   }
   return status
+}
+
+function resetCorrectionForm(status: CorrectionLayerKey, record: QuestionCorrectionRecord | null) {
+  correctionForm.wrongReason = status === 'REJECTED' ? record?.student_wrong_reason ?? '' : ''
+  correctionForm.correctThinking = status === 'REJECTED' ? record?.student_correct_thinking ?? '' : ''
 }
 
 function rowCorrectionLayer(row: QuestionAnswerListItem): CorrectionLayerKey {
@@ -469,6 +468,30 @@ function questionTypeText(type: number) {
 .question-error__status,
 .question-error__review-comment {
   color: var(--xzs-text-muted);
+}
+
+.question-error__rejection {
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  border-left: 4px solid var(--el-color-danger);
+  border-radius: 4px;
+  background: var(--el-color-danger-light-9);
+}
+
+.question-error__rejection h3 {
+  color: var(--el-color-danger);
+}
+
+.question-error__rejection p,
+.question-error__correction-content p,
+.question-error__review-comment {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.question-error__inline-form {
+  min-width: 0;
 }
 
 .question-error__correction-content {

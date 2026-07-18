@@ -5,7 +5,6 @@ import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.SchoolClass;
 import com.mindskip.xzs.domain.User;
-import com.mindskip.xzs.domain.enums.RoleEnum;
 import com.mindskip.xzs.service.ClassScopeService;
 import com.mindskip.xzs.service.SchoolClassService;
 import com.mindskip.xzs.service.UserService;
@@ -76,7 +75,7 @@ public class ClassController extends BaseApiController {
             return RestResponse.fail(2, "负责老师不能为空");
         }
         User teacher = userService.getUserById(teacherId);
-        if (teacher == null || RoleEnum.TEACHER.getCode() != teacher.getRole()) {
+        if (teacher == null || !classScopeService.canBeClassTeacher(teacher)) {
             return RestResponse.fail(2, "负责老师不存在");
         }
 

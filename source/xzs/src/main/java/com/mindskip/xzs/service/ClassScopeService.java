@@ -10,6 +10,10 @@ public interface ClassScopeService {
 
     boolean isTeacher(User user);
 
+    boolean canBeClassTeacher(User user);
+
+    boolean canConfigureAiReview(User user);
+
     List<Integer> teacherClassIds(User teacher);
 
     boolean canManageClass(User user, Integer classId);

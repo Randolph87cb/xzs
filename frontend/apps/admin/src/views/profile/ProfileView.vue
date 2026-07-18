@@ -29,7 +29,7 @@
     <section v-if="canConfigureAiReview" class="profile-section">
       <header>
         <h2>AI 审核配置</h2>
-        <p>自动预审会使用错题所属班级负责老师的配置；这里仅维护你作为负责老师时的配置。</p>
+        <p>自动预审会使用错题所属班级负责老师的配置；这里维护当前账号作为班级负责老师时使用的 AI 预审接口。</p>
       </header>
       <el-form :model="aiForm" label-width="104px" style="max-width: 760px">
         <el-form-item label="启用预审">
@@ -96,7 +96,7 @@ const roleLabel = computed(() => {
   if (userStore.userInfo?.role === 3) return '管理员'
   return userStore.userInfo?.role ?? ''
 })
-const canConfigureAiReview = computed(() => userStore.userInfo?.role === 2)
+const canConfigureAiReview = computed(() => userStore.userInfo?.role === 2 || userStore.userInfo?.role === 3)
 
 onMounted(async () => {
   await userStore.initUserInfo()

@@ -15,8 +15,13 @@
         <el-input-number v-model="form.gradeLevel" :min="1" :max="20" />
       </el-form-item>
       <el-form-item v-if="userStore.userInfo?.role !== 2" label="负责老师" prop="teacherId">
-        <el-select v-model="form.teacherId" filterable placeholder="选择老师">
-          <el-option v-for="teacher in teachers" :key="teacher.id" :label="teacher.realName || teacher.userName" :value="teacher.id" />
+        <el-select v-model="form.teacherId" filterable placeholder="选择老师或管理员">
+          <el-option
+            v-for="teacher in teachers"
+            :key="teacher.id"
+            :label="teacherOptionLabel(teacher)"
+            :value="teacher.id"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="状态">
@@ -60,8 +65,14 @@ const rules: FormRules = {
 
 onMounted(async () => {
   if (userStore.userInfo?.role !== 2) {
-    const teacherResult = await getAdminUserPage({ role: 2, pageIndex: 1, pageSize: 100 })
-    teachers.value = teacherResult.response?.list ?? []
+    const [teacherResult, adminResult] = await Promise.all([
+      getAdminUserPage({ role: 2, pageIndex: 1, pageSize: 100 }),
+      getAdminUserPage({ role: 3, pageIndex: 1, pageSize: 100 })
+    ])
+    teachers.value = mergeTeacherCandidates([
+      ...(teacherResult.response?.list ?? []),
+      ...(adminResult.response?.list ?? [])
+    ])
   }
 
   const id = Number(route.query.id || 0)
@@ -74,6 +85,17 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+function mergeTeacherCandidates(candidates: AdminUserListItem[]) {
+  const userMap = new Map<number, AdminUserListItem>()
+  candidates.forEach((candidate) => userMap.set(candidate.id, candidate))
+  return Array.from(userMap.values())
+}
+
+function teacherOptionLabel(teacher: AdminUserListItem) {
+  const name = teacher.realName || teacher.userName
+  return teacher.role === 3 ? `${name}（管理员）` : name
+}
 
 async function submit() {
   const valid = await formRef.value?.validate()
