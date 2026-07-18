@@ -28,15 +28,27 @@
 
 Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postgresql.sql` 作为数据库初始化脚本。后端容器运行 `release/java/xzs-3.9.0.jar`；`docker/release` 不再保存同名 jar 副本，避免发布制品来源不一致。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，仓库不再附带 docker-compose 二进制。
 
+## Neon 数据库
+
+当前线上数据库默认使用 Neon PostgreSQL：
+
+- 生产数据使用 Neon `production` branch。
+- 本地构建服务测试和测试环境使用 Neon `test` branch，避免测试写入污染生产数据。
+- 后端支持将 Neon 原始连接串直接写入 `SPRING_DATASOURCE_URL`，格式为 `postgresql://<user>:<password>@<branch-host>/<database>?sslmode=require&channel_binding=require`。启动时会自动转换为 JDBC URL，并移除当前 PostgreSQL JDBC 驱动不支持的 `channel_binding` 参数。
+- 如果连接串已经包含用户名和密码，不需要额外配置 `SPRING_DATASOURCE_USERNAME` 和 `SPRING_DATASOURCE_PASSWORD`；显式环境变量仍可覆盖连接串中的用户信息。
+- 本地真实测试配置写入 `.env.neon-test`，模板见 `.env.neon-test.example`。`.env.neon-test` 和其他 `.env*` 真实环境文件被 Git 忽略，禁止提交完整连接串、密码或 Fly/Neon secrets。
+- Neon 免费/低配环境默认使用 `SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=3`、`SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=1`，避免连接数占用过高。
+- `test` branch 可以在 Neon 控制台从 `production` branch reset 或重建以复制生产数据；该操作会丢弃 `test` branch 当前数据，执行前需要确认测试数据不需要保留。
+
 ## Fly.io 部署
 
 根目录 `Dockerfile` 和 `fly.toml` 用于 Fly.io 部署：
 
 - `Dockerfile`：多阶段构建，先构建 Vue 3 + Vite 管理端和学生端，再将产物复制到 Spring Boot static，最后打包运行 jar。
 - `fly.toml`：Fly App 配置模板，默认内部端口为 `8000`。
-- `docs/fly-managed-postgres-deployment.md`：Fly.io 冷启动按量部署、Postgres 挂载、初始化和日常停机步骤。
+- `docs/fly-managed-postgres-deployment.md`：Fly.io Web App 部署、Neon 数据库 secret 配置，以及历史 Fly Postgres 冷启动方案说明。
 
-当前低成本部署使用可冷启动的 Fly Postgres App + Volume；如果需要托管运维和更高可靠性，再改用 Fly Managed Postgres。后端 `application-prod.yml` 支持 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD`，并兼容 Fly 默认注入的 `DATABASE_URL=postgres://...`。
+当前 Fly Web App 默认连接 Neon PostgreSQL，不再依赖 Fly Postgres 作为主库。Fly 旧 Postgres App `xzs-pg-cb867393296` 已停止，仅作为历史迁移来源或回滚参考；销毁旧 App 或 Volume 前必须先取得用户明确确认。
 
 ## 树莓派部署
 

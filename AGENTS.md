@@ -23,6 +23,16 @@
 - 用户已说明树莓派使用 Docker 时，优先读取 `docker/README.md` 和 `docker/docker-compose.yml`，再结合 `docs/fly-to-raspberry-pi-data-migration-plan.md` 判断迁移、备份和冷备流程。
 - 未确认部署方式时，不要直接套用 `deploy/raspberry-pi` 的 systemd/Jar 流程；`docs/raspberry-pi-deployment.md` 只代表 systemd/Jar 直部署路线。
 
+## Neon 数据库配置约定
+
+- 当前在线数据库默认使用 Neon PostgreSQL；Fly Web App、测试环境和本地构建服务测试都应通过环境变量连接 Neon，不再默认使用 Fly Postgres。
+- Neon 连接优先使用原始 URL 形式写入 `SPRING_DATASOURCE_URL`，例如 `postgresql://<user>:<password>@<branch-host>/<database>?sslmode=require&channel_binding=require`。后端启动入口会自动转换为 Spring JDBC URL，并移除当前 JDBC 驱动不支持的 `channel_binding` 参数。
+- 生产使用 Neon `production` branch；本地直接启动 Java 服务、构建后验收和测试环境使用 Neon `test` branch。不要用本地测试服务连接 `production` branch，除非用户明确要求只读排查。
+- 本地真实配置写入 `.env.neon-test`，该文件被 Git 忽略；可提交模板为 `.env.neon-test.example`。不要把 Neon 密码、完整连接串或 Fly/Neon secrets 写入可提交文档、脚本或日志。
+- Hikari 在 Neon 免费/低配环境默认使用保守配置：`SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=3`、`SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=1`。提高并发前先检查 Neon 连接数、冷启动和查询耗时。
+- Neon branch 管理约定：`test` branch 可从 `production` branch reset 或重建以复制生产数据；reset 会丢弃 `test` branch 上的测试写入，执行前先确认没有需要保留的数据。
+- Fly 旧 Postgres App `xzs-pg-cb867393296` 已停止，只作为历史迁移来源或回滚参考；销毁 App 或 Volume 是不可逆删除，必须用户明确确认后才能执行。
+
 ## docs 目录使用规则
 
 - `docs/project-structure/`、`docs/question-bank/`、部署说明和可执行运维文档是当前事实来源。
