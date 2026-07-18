@@ -70,6 +70,31 @@ public class UserControllerTest {
         verify(authenticationService, never()).pwdEncode(any());
     }
 
+    @Test
+    public void createUserAcceptsChineseLoginNameAndNormalizesWhitespace() {
+        when(userService.getUserByUserName("彬彬老师")).thenReturn(null);
+        when(authenticationService.pwdEncode("pwd")).thenReturn("encoded-pwd");
+
+        UserCreateVM model = new UserCreateVM();
+        model.setUserName("  彬彬老师  ");
+        model.setRealName("  彬彬老师  ");
+        model.setPassword(" pwd ");
+        model.setRole(RoleEnum.TEACHER.getCode());
+        model.setStatus(UserStatusEnum.Enable.getCode());
+
+        RestResponse<User> response = controller.edit(model);
+
+        assertEquals(1, response.getCode());
+        verify(userService).getUserByUserName("彬彬老师");
+        verify(authenticationService).pwdEncode("pwd");
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userService).insertByFilter(captor.capture());
+        assertEquals("彬彬老师", captor.getValue().getUserName());
+        assertEquals("彬彬老师", captor.getValue().getRealName());
+        assertEquals("encoded-pwd", captor.getValue().getPassword());
+        assertEquals(Integer.valueOf(RoleEnum.TEACHER.getCode()), captor.getValue().getRole());
+    }
+
     private User user(Integer id, String userName, RoleEnum role, String password) {
         User user = new User();
         user.setId(id);

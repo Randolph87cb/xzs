@@ -40,14 +40,8 @@ const form = reactive({
   remember: true
 })
 const rules: FormRules<typeof form> = {
-  userName: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 5, message: '用户名不能少于5个字符', trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 5, message: '密码不能少于5个字符', trigger: 'blur' }
-  ]
+  userName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
 const redirectPath = computed(() => {
   const redirect = route.query.redirect
@@ -63,7 +57,10 @@ async function handleLogin() {
 
   loading.value = true
   try {
-    await userStore.login(form)
+    await userStore.login({
+      ...form,
+      userName: form.userName.trim()
+    })
     router.push(redirectPath.value)
   } catch (error) {
     ElMessage.error(error instanceof Error ? error.message : '登录失败')

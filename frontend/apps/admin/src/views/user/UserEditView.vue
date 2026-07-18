@@ -11,8 +11,8 @@
       <el-form-item label="用户名" prop="userName">
         <el-input v-model="form.userName" />
       </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="form.password" placeholder="留空则不修改密码" show-password />
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="form.password" :placeholder="passwordPlaceholder" show-password />
       </el-form-item>
       <el-form-item label="真实姓名" prop="realName">
         <el-input v-model="form.realName" />
@@ -93,9 +93,23 @@ const listPath = computed(() => {
   if (props.role === 2) return '/user/teacher/list'
   return '/user/admin/list'
 })
+const isCreateMode = computed(() => !Number(route.query.id || 0))
+const passwordPlaceholder = computed(() => (isCreateMode.value ? '请输入登录密码' : '留空则不修改密码'))
 const form = reactive<AdminUserEditModel>(createEmptyForm())
 const rules: FormRules = {
   userName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [
+    {
+      validator: (_rule: unknown, value: unknown, callback: (error?: Error) => void) => {
+        if (isCreateMode.value && !String(value ?? '').trim()) {
+          callback(new Error('请输入密码'))
+          return
+        }
+        callback()
+      },
+      trigger: 'blur'
+    }
+  ],
   realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
   classId: [{ required: props.role === 1, message: '请选择班级', trigger: 'change' }]
 }
@@ -133,6 +147,7 @@ async function submit() {
   loading.value = true
   try {
     const payload: AdminUserEditModel = { ...form, role: props.role }
+    payload.userName = String(payload.userName ?? '').trim()
     if (typeof payload.password === 'string') {
       payload.password = payload.password.trim()
     }

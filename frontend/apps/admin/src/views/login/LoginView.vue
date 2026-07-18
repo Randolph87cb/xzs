@@ -47,14 +47,8 @@ const form = reactive({
   remember: true
 })
 const rules: FormRules = {
-  userName: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 5, message: '用户名不能少于 5 个字符', trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 5, message: '密码不能少于 5 个字符', trigger: 'blur' }
-  ]
+  userName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 }
 
 async function handleLogin() {
@@ -65,7 +59,10 @@ async function handleLogin() {
 
   loading.value = true
   try {
-    const result = await userStore.login(form)
+    const result = await userStore.login({
+      ...form,
+      userName: form.userName.trim()
+    })
     if (result.code === 1) {
       const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/dashboard'
       router.push(redirect)

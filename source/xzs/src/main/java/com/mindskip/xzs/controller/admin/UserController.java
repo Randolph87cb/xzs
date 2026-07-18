@@ -92,6 +92,7 @@ public class UserController extends BaseApiController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public RestResponse<User> edit(@RequestBody @Valid UserCreateVM model) {
+        normalizeUserCreateModel(model);
         User currentUser = getCurrentUser();
         User before = model.getId() == null ? null : userService.getUserById(model.getId());
         RestResponse<User> scopeError = validateUserScope(currentUser, model, before);
@@ -244,6 +245,12 @@ public class UserController extends BaseApiController {
             return RestResponse.fail(2, "目标科目不存在");
         }
         return null;
+    }
+
+    private void normalizeUserCreateModel(UserCreateVM model) {
+        model.setUserName(StringUtils.trimToEmpty(model.getUserName()));
+        model.setPassword(StringUtils.trimToNull(model.getPassword()));
+        model.setRealName(StringUtils.trimToEmpty(model.getRealName()));
     }
 
 }
