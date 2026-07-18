@@ -204,6 +204,7 @@ export interface AdminQuestionCorrectionItem {
   customer_answer_id: number
   title?: string
   items?: AdminQuestionEditItem[] | string | null
+  analyze?: string
   question_type?: number
   correct?: string
   student_answer?: string
@@ -216,7 +217,28 @@ export interface AdminQuestionCorrectionItem {
   review_comment?: string
   submit_time?: string
   review_time?: string
+  ai_review_status?: QuestionCorrectionAiReviewStatus
+  ai_review_result?: QuestionCorrectionAiReviewResult
+  ai_review_comment?: string
+  ai_review_confidence?: number | string
+  ai_review_reason?: string
+  ai_review_error_message?: string
+  ai_review_time?: string
+  aiReview?: AdminQuestionCorrectionAiReview | null
   reviewRecords?: AdminQuestionCorrectionReviewRecord[]
+}
+
+export type QuestionCorrectionAiReviewStatus = 'PENDING' | 'RUNNING' | 'SUCCESS' | 'FAILED' | 'SKIPPED'
+export type QuestionCorrectionAiReviewResult = 'APPROVED' | 'REJECTED' | 'UNCERTAIN'
+
+export interface AdminQuestionCorrectionAiReview {
+  status?: QuestionCorrectionAiReviewStatus
+  reviewResult?: QuestionCorrectionAiReviewResult
+  reviewComment?: string
+  confidence?: number | string
+  reason?: string
+  errorMessage?: string
+  finishTime?: string
 }
 
 export interface AdminQuestionCorrectionReviewRecord {
@@ -239,6 +261,17 @@ export interface AdminQuestionCorrectionReviewRequest {
   id: number
   reviewResult: 'APPROVED' | 'REJECTED'
   reviewComment?: string
+}
+
+export interface AdminQuestionCorrectionAiConfig {
+  provider?: string
+  baseUrl: string
+  model: string
+  apiKey?: string
+  clearApiKey?: boolean
+  enabled: boolean
+  prompt?: string
+  hasApiKey?: boolean
 }
 
 export interface AdminUserProfileUpdate {
@@ -399,6 +432,16 @@ export function saveAdminQuestionCorrectionReview(
   request: AdminQuestionCorrectionReviewRequest
 ): Promise<ApiResponse<void>> {
   return post<void>('/api/admin/questionCorrection/review/edit', request)
+}
+
+export function getAdminQuestionCorrectionAiConfig(): Promise<ApiResponse<AdminQuestionCorrectionAiConfig>> {
+  return post<AdminQuestionCorrectionAiConfig>('/api/admin/questionCorrection/ai/config/select', {})
+}
+
+export function saveAdminQuestionCorrectionAiConfig(
+  request: AdminQuestionCorrectionAiConfig
+): Promise<ApiResponse<void>> {
+  return post<void>('/api/admin/questionCorrection/ai/config/edit', request)
 }
 
 export function updateCurrentAdminUser(request: AdminUserProfileUpdate): Promise<ApiResponse<void>> {

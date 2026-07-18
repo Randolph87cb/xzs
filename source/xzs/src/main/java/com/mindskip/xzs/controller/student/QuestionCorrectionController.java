@@ -2,6 +2,7 @@ package com.mindskip.xzs.controller.student;
 
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
+import com.mindskip.xzs.service.QuestionCorrectionAiReviewService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,10 +17,12 @@ import java.util.Map;
 public class QuestionCorrectionController extends BaseApiController {
 
     private final JdbcTemplate jdbcTemplate;
+    private final QuestionCorrectionAiReviewService questionCorrectionAiReviewService;
 
     @Autowired
-    public QuestionCorrectionController(JdbcTemplate jdbcTemplate) {
+    public QuestionCorrectionController(JdbcTemplate jdbcTemplate, QuestionCorrectionAiReviewService questionCorrectionAiReviewService) {
         this.jdbcTemplate = jdbcTemplate;
+        this.questionCorrectionAiReviewService = questionCorrectionAiReviewService;
     }
 
     @RequestMapping(value = "/select/{customerAnswerId}", method = RequestMethod.POST)
@@ -53,14 +56,16 @@ public class QuestionCorrectionController extends BaseApiController {
         }
 
         Map<String, Object> answer = answerRows.get(0);
+        Integer correctionId;
         List<Map<String, Object>> existingRows = jdbcTemplate.queryForList(
                 "select id, review_status from t_question_correction_record where deleted = false and customer_answer_id = ? and user_id = ? order by id desc limit 1",
                 request.getCustomerAnswerId(),
                 getCurrentUser().getId());
         if (existingRows.isEmpty()) {
-            jdbcTemplate.update(
+            correctionId = jdbcTemplate.queryForObject(
                     "insert into t_question_correction_record (user_id, question_id, exam_paper_answer_id, customer_answer_id, student_wrong_reason, student_correct_thinking, review_status, resubmit_count, submit_time, deleted, class_id) " +
-                            "values (?, ?, ?, ?, ?, ?, 'SUBMITTED', 0, now(), false, ?)",
+                            "values (?, ?, ?, ?, ?, ?, 'SUBMITTED', 0, now(), false, ?) returning id",
+                    Integer.class,
                     getCurrentUser().getId(),
                     answer.get("question_id"),
                     answer.get("exam_paper_answer_id"),
@@ -68,6 +73,7 @@ public class QuestionCorrectionController extends BaseApiController {
                     request.getWrongReason().trim(),
                     request.getCorrectThinking().trim(),
                     getCurrentUser().getClassId());
+            questionCorrectionAiReviewService.triggerAfterCommit(correctionId, "AUTO_SUBMIT");
             return RestResponse.ok();
         }
 
@@ -91,6 +97,8 @@ public class QuestionCorrectionController extends BaseApiController {
                 request.getCorrectThinking().trim(),
                 getCurrentUser().getClassId(),
                 existing.get("id"));
+        correctionId = (Integer) existing.get("id");
+        questionCorrectionAiReviewService.triggerAfterCommit(correctionId, "AUTO_RESUBMIT");
         return RestResponse.ok();
     }
 

@@ -4,6 +4,7 @@ import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.service.ClassScopeService;
+import com.mindskip.xzs.service.QuestionCorrectionAiReviewService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,11 +22,13 @@ public class QuestionCorrectionController extends BaseApiController {
 
     private final JdbcTemplate jdbcTemplate;
     private final ClassScopeService classScopeService;
+    private final QuestionCorrectionAiReviewService questionCorrectionAiReviewService;
 
     @Autowired
-    public QuestionCorrectionController(JdbcTemplate jdbcTemplate, ClassScopeService classScopeService) {
+    public QuestionCorrectionController(JdbcTemplate jdbcTemplate, ClassScopeService classScopeService, QuestionCorrectionAiReviewService questionCorrectionAiReviewService) {
         this.jdbcTemplate = jdbcTemplate;
         this.classScopeService = classScopeService;
+        this.questionCorrectionAiReviewService = questionCorrectionAiReviewService;
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.POST)
@@ -61,10 +64,33 @@ public class QuestionCorrectionController extends BaseApiController {
             return RestResponse.fail(2, "改错记录不存在");
         }
         Map<String, Object> result = new HashMap<>(rows.get(0));
+        result.put("aiReview", latestAiReview(result));
         result.put("reviewRecords", jdbcTemplate.queryForList(
                 "select * from t_question_correction_review_record where correction_id = ? order by create_time desc, id desc",
                 id));
         return RestResponse.ok(result);
+    }
+
+    @RequestMapping(value = "/ai/config/select", method = RequestMethod.POST)
+    public RestResponse<Map<String, Object>> selectAiConfig() {
+        User currentUser = getCurrentUser();
+        if (!classScopeService.isTeacher(currentUser)) {
+            return RestResponse.fail(2, "AI 预审配置仅班级负责老师可维护");
+        }
+        return RestResponse.ok(questionCorrectionAiReviewService.selectConfig(currentUser.getId()));
+    }
+
+    @RequestMapping(value = "/ai/config/edit", method = RequestMethod.POST)
+    public RestResponse editAiConfig(@RequestBody QuestionCorrectionAiReviewService.SaveConfigRequest request) {
+        User currentUser = getCurrentUser();
+        if (!classScopeService.isTeacher(currentUser)) {
+            return RestResponse.fail(2, "AI 预审配置仅班级负责老师可维护");
+        }
+        String error = questionCorrectionAiReviewService.saveConfig(currentUser.getId(), request);
+        if (StringUtils.isNotBlank(error)) {
+            return RestResponse.fail(2, error);
+        }
+        return RestResponse.ok();
     }
 
     @RequestMapping(value = "/review/edit", method = RequestMethod.POST)
@@ -134,13 +160,38 @@ public class QuestionCorrectionController extends BaseApiController {
     private String pageBaseSql() {
         return "select c.*, u.user_name, u.real_name, q.question_type, q.correct, a.answer as student_answer, " +
                 "tc.content::jsonb ->> 'titleContent' as title, " +
-                "tc.content::jsonb ->> 'questionItemObjects' as items " +
+                "tc.content::jsonb ->> 'questionItemObjects' as items, " +
+                "tc.content::jsonb ->> 'analyze' as analyze, " +
+                "ai.status as ai_review_status, ai.review_result as ai_review_result, ai.review_comment as ai_review_comment, " +
+                "ai.confidence as ai_review_confidence, ai.reason as ai_review_reason, ai.error_message as ai_review_error_message, " +
+                "ai.finish_time as ai_review_time " +
                 "from t_question_correction_record c " +
                 "join t_user u on u.id = c.user_id " +
                 "join t_question q on q.id = c.question_id " +
                 "join t_text_content tc on tc.id = q.info_text_content_id " +
                 "join t_exam_paper_question_customer_answer a on a.id = c.customer_answer_id " +
+                "left join lateral (" +
+                "  select status, review_result, review_comment, confidence, reason, error_message, finish_time " +
+                "  from t_question_correction_ai_review_record ar " +
+                "  where ar.correction_id = c.id " +
+                "  order by ar.create_time desc, ar.id desc limit 1" +
+                ") ai on true " +
                 "where c.deleted = false ";
+    }
+
+    private Map<String, Object> latestAiReview(Map<String, Object> row) {
+        if (row.get("ai_review_status") == null) {
+            return null;
+        }
+        Map<String, Object> aiReview = new HashMap<>();
+        aiReview.put("status", row.get("ai_review_status"));
+        aiReview.put("reviewResult", row.get("ai_review_result"));
+        aiReview.put("reviewComment", row.get("ai_review_comment"));
+        aiReview.put("confidence", row.get("ai_review_confidence"));
+        aiReview.put("reason", row.get("ai_review_reason"));
+        aiReview.put("errorMessage", row.get("ai_review_error_message"));
+        aiReview.put("finishTime", row.get("ai_review_time"));
+        return aiReview;
     }
 
     private String pageFilterSql(QuestionCorrectionPageRequest request, User currentUser, List<Object> args) {

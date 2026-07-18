@@ -4,6 +4,7 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.context.WebContext;
 import com.mindskip.xzs.controller.support.RecordingJdbcTemplate;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.service.QuestionCorrectionAiReviewService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -16,17 +17,21 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 public class QuestionCorrectionControllerTest {
 
     private RecordingJdbcTemplate jdbcTemplate;
     private QuestionCorrectionController controller;
+    private QuestionCorrectionAiReviewService aiReviewService;
 
     @Before
     public void setUp() {
         jdbcTemplate = new RecordingJdbcTemplate();
-        controller = new QuestionCorrectionController(jdbcTemplate);
+        aiReviewService = mock(QuestionCorrectionAiReviewService.class);
+        controller = new QuestionCorrectionController(jdbcTemplate, aiReviewService);
 
         WebContext webContext = mock(WebContext.class);
         when(webContext.getCurrentUser()).thenReturn(user(23));
@@ -42,6 +47,7 @@ public class QuestionCorrectionControllerTest {
 
         assertEquals(2, response.getCode());
         assertEquals(0, jdbcTemplate.getCalls("update").size());
+        verifyNoInteractions(aiReviewService);
     }
 
     @Test
@@ -56,6 +62,7 @@ public class QuestionCorrectionControllerTest {
         assertTrue(update.getSql().contains("review_status = 'SUBMITTED'"));
         assertTrue(update.getSql().contains("resubmit_count = coalesce(resubmit_count, 0) + 1"));
         assertArrayEquals(new Object[]{"new wrong", "new thinking", 7, 41}, update.getArgs());
+        verify(aiReviewService).triggerAfterCommit(41, "AUTO_RESUBMIT");
     }
 
     @Test

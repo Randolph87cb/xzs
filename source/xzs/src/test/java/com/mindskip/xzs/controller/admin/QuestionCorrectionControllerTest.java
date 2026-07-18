@@ -4,7 +4,9 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.context.WebContext;
 import com.mindskip.xzs.controller.support.RecordingJdbcTemplate;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.domain.enums.RoleEnum;
 import com.mindskip.xzs.service.ClassScopeService;
+import com.mindskip.xzs.service.QuestionCorrectionAiReviewService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -16,21 +18,29 @@ import java.util.Map;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class QuestionCorrectionControllerTest {
 
     private RecordingJdbcTemplate jdbcTemplate;
+    private ClassScopeService classScopeService;
+    private QuestionCorrectionAiReviewService aiReviewService;
     private QuestionCorrectionController controller;
 
     @Before
     public void setUp() {
         jdbcTemplate = new RecordingJdbcTemplate();
-        controller = new QuestionCorrectionController(jdbcTemplate, mock(ClassScopeService.class));
+        classScopeService = mock(ClassScopeService.class);
+        aiReviewService = mock(QuestionCorrectionAiReviewService.class);
+        controller = new QuestionCorrectionController(jdbcTemplate, classScopeService, aiReviewService);
 
         WebContext webContext = mock(WebContext.class);
-        when(webContext.getCurrentUser()).thenReturn(user(12, "admin", "Admin User"));
+        when(webContext.getCurrentUser()).thenReturn(user(12, "admin", "Admin User", RoleEnum.ADMIN));
         ReflectionTestUtils.setField(controller, "webContext", webContext);
     }
 
@@ -104,8 +114,27 @@ public class QuestionCorrectionControllerTest {
         assertEquals(1, response.getCode());
         RecordingJdbcTemplate.Call detailQuery = jdbcTemplate.getCalls("queryForList").get(0);
         assertTrue(detailQuery.getSql().contains("->> 'questionItemObjects' as items"));
+        assertTrue(detailQuery.getSql().contains("->> 'analyze' as analyze"));
         assertTrue(detailQuery.getSql().contains("student_answer"));
         assertEquals("A", response.getResponse().get("student_answer"));
+    }
+
+    @Test
+    public void selectAiConfigRejectsNonTeacher() {
+        RestResponse<Map<String, Object>> response = controller.selectAiConfig();
+
+        assertEquals(2, response.getCode());
+        assertEquals("AI 预审配置仅班级负责老师可维护", response.getMessage());
+        verify(aiReviewService, never()).selectConfig(any());
+    }
+
+    @Test
+    public void editAiConfigRejectsNonTeacher() {
+        RestResponse response = controller.editAiConfig(new QuestionCorrectionAiReviewService.SaveConfigRequest());
+
+        assertEquals(2, response.getCode());
+        assertEquals("AI 预审配置仅班级负责老师可维护", response.getMessage());
+        verify(aiReviewService, never()).saveConfig(eq(12), any());
     }
 
     private QuestionCorrectionController.QuestionCorrectionReviewRequest reviewRequest(Integer id, String result, String comment) {
@@ -125,11 +154,12 @@ public class QuestionCorrectionControllerTest {
         return row;
     }
 
-    private User user(Integer id, String userName, String realName) {
+    private User user(Integer id, String userName, String realName, RoleEnum role) {
         User user = new User();
         user.setId(id);
         user.setUserName(userName);
         user.setRealName(realName);
+        user.setRole(role.getCode());
         return user;
     }
 }

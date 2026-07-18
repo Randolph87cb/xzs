@@ -36,6 +36,18 @@
       <el-table-column label="状态" width="110">
         <template #default="{ row }">{{ statusText(row.review_status) }}</template>
       </el-table-column>
+      <el-table-column label="AI 预审" width="130">
+        <template #default="{ row }">
+          <el-tag size="small" :type="aiStatusTagType(row.ai_review_status, row.ai_review_result)">
+            {{ aiStatusText(row.ai_review_status, row.ai_review_result) }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="AI 建议" min-width="220" show-overflow-tooltip>
+        <template #default="{ row }">
+          {{ row.ai_review_comment || row.ai_review_reason || row.ai_review_error_message || '-' }}
+        </template>
+      </el-table-column>
       <el-table-column prop="submit_time" label="提交时间" width="170" />
       <el-table-column label="操作" width="100" fixed="right">
         <template #default="{ row }">
@@ -59,20 +71,29 @@
 
     <el-dialog v-model="reviewVisible" title="改错审核" width="860px">
       <div v-if="detail" class="correction-review">
-        <section>
-          <h3>题干</h3>
-          <QuestionMarkdown :content="detail.title || ''" />
-          <ol v-if="questionItems.length" class="correction-review__items">
-            <li v-for="(item, index) in questionItems" :key="item.itemUuid || item.prefix || index">
-              <strong>{{ item.prefix }}.</strong>
-              <QuestionMarkdown :content="item.content" />
-            </li>
-          </ol>
-          <div class="correction-review__answers">
-            <p><strong>学生答案：</strong>{{ formatAnswer(detail.student_answer) }}</p>
-            <p><strong>正确答案：</strong>{{ formatAnswer(detail.correct) }}</p>
-          </div>
+        <section v-if="reviewQuestion && reviewAnswer">
+          <h3>题目上下文</h3>
+          <QuestionCorrectionContext :question="reviewQuestion" :answer="reviewAnswer" :show-result="false" />
         </section>
+
+        <section class="correction-review__ai">
+          <div class="correction-review__section-header">
+            <h3>AI 预审</h3>
+            <el-tag size="small" :type="aiStatusTagType(detail.aiReview?.status, detail.aiReview?.reviewResult)">
+              {{ aiStatusText(detail.aiReview?.status, detail.aiReview?.reviewResult) }}
+            </el-tag>
+          </div>
+          <template v-if="detail.aiReview">
+            <p v-if="detail.aiReview.reviewComment"><strong>建议意见：</strong>{{ detail.aiReview.reviewComment }}</p>
+            <p v-if="detail.aiReview.reason"><strong>理由：</strong>{{ detail.aiReview.reason }}</p>
+            <p v-if="detail.aiReview.confidence !== undefined && detail.aiReview.confidence !== null">
+              <strong>置信度：</strong>{{ detail.aiReview.confidence }}
+            </p>
+            <p v-if="detail.aiReview.errorMessage"><strong>失败原因：</strong>{{ detail.aiReview.errorMessage }}</p>
+          </template>
+          <p v-else>暂无 AI 预审记录。</p>
+        </section>
+
         <section class="correction-review__student">
           <h3>学生提交</h3>
           <p><strong>错误原因：</strong>{{ detail.student_wrong_reason }}</p>
@@ -110,7 +131,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { QuestionMarkdown } from '@xzs/question-renderer'
+import { QuestionCorrectionContext } from '@xzs/question-renderer'
 import {
   getAdminClassOptions,
   getAdminQuestionCorrection,
@@ -120,7 +141,8 @@ import {
   type AdminQuestionCorrectionItem,
   type AdminQuestionCorrectionPageRequest,
   type AdminQuestionCorrectionReviewRequest,
-  type AdminQuestionEditItem
+  type QuestionCorrectionAiReviewResult,
+  type QuestionCorrectionAiReviewStatus
 } from '@xzs/api-client'
 
 const loading = ref(false)
@@ -140,7 +162,25 @@ const reviewForm = reactive<AdminQuestionCorrectionReviewRequest>({
   reviewResult: 'APPROVED',
   reviewComment: ''
 })
-const questionItems = computed(() => normalizeQuestionItems(detail.value?.items))
+const reviewQuestion = computed(() => {
+  if (!detail.value) return null
+  return {
+    title: detail.value.title ?? '',
+    questionType: Number(detail.value.question_type ?? 0),
+    items: detail.value.items ?? [],
+    analyze: detail.value.analyze ?? '',
+    correct: detail.value.correct ?? '',
+    correctArray: parseAnswerArray(detail.value.correct)
+  }
+})
+const reviewAnswer = computed(() => {
+  if (!detail.value) return null
+  return {
+    content: detail.value.student_answer ?? '',
+    contentArray: parseAnswerArray(detail.value.student_answer),
+    doRight: false
+  }
+})
 
 init()
 
@@ -166,8 +206,17 @@ async function openReview(id: number) {
   detail.value = result.response ?? null
   if (!detail.value) return
   reviewForm.id = id
-  reviewForm.reviewResult = 'APPROVED'
-  reviewForm.reviewComment = ''
+  const aiReview = detail.value.aiReview
+  if (
+    aiReview?.status === 'SUCCESS' &&
+    (aiReview.reviewResult === 'APPROVED' || aiReview.reviewResult === 'REJECTED')
+  ) {
+    reviewForm.reviewResult = aiReview.reviewResult
+    reviewForm.reviewComment = aiReview.reviewComment ?? ''
+  } else {
+    reviewForm.reviewResult = 'APPROVED'
+    reviewForm.reviewComment = ''
+  }
   reviewVisible.value = true
 }
 
@@ -191,93 +240,60 @@ function statusText(status?: string) {
   return map[status ?? ''] ?? '未知'
 }
 
+function aiStatusText(status?: QuestionCorrectionAiReviewStatus, result?: QuestionCorrectionAiReviewResult) {
+  if (status === 'SUCCESS') {
+    const resultMap: Record<QuestionCorrectionAiReviewResult, string> = {
+      APPROVED: '建议通过',
+      REJECTED: '建议驳回',
+      UNCERTAIN: '不确定'
+    }
+    return resultMap[result ?? 'UNCERTAIN']
+  }
+  const map: Record<QuestionCorrectionAiReviewStatus, string> = {
+    PENDING: '预审中',
+    RUNNING: '预审中',
+    FAILED: '预审失败',
+    SKIPPED: '未预审',
+    SUCCESS: '已预审'
+  }
+  return status ? map[status] : '无记录'
+}
+
+function aiStatusTagType(
+  status?: QuestionCorrectionAiReviewStatus,
+  result?: QuestionCorrectionAiReviewResult
+): 'success' | 'warning' | 'danger' | 'info' {
+  if (status === 'SUCCESS') {
+    if (result === 'APPROVED') return 'success'
+    if (result === 'REJECTED') return 'danger'
+    return 'warning'
+  }
+  if (status === 'FAILED') return 'danger'
+  if (status === 'PENDING' || status === 'RUNNING') return 'warning'
+  return 'info'
+}
+
 function stripHtml(value?: string) {
   return (value ?? '').replace(/<[^>]*>/g, '').slice(0, 120)
 }
 
-function normalizeQuestionItems(items: AdminQuestionCorrectionItem['items']): AdminQuestionEditItem[] {
-  const rawItems = coerceQuestionItems(items)
-  const deduped: AdminQuestionEditItem[] = []
-  const seenPrefixes = new Set<string>()
-
-  for (const rawItem of rawItems) {
-    if (!isRecord(rawItem)) {
-      continue
-    }
-
-    const prefix = String(rawItem.prefix ?? '').trim()
-    if (!prefix || seenPrefixes.has(prefix)) {
-      continue
-    }
-
-    seenPrefixes.add(prefix)
-    deduped.push({
-      prefix,
-      content: String(rawItem.content ?? ''),
-      score: rawItem.score == null ? undefined : String(rawItem.score),
-      itemUuid: rawItem.itemUuid == null ? undefined : String(rawItem.itemUuid)
-    })
-  }
-
-  return deduped
-}
-
-function coerceQuestionItems(value: unknown): unknown[] {
-  if (Array.isArray(value)) {
-    return value
-  }
-
+function parseAnswerArray(value?: string | null) {
   if (typeof value === 'string') {
     const trimmed = value.trim()
     if (!trimmed) {
       return []
     }
-
     try {
-      return coerceQuestionItems(JSON.parse(trimmed) as unknown)
+      const parsed = JSON.parse(trimmed) as unknown
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) => String(item)).filter(Boolean)
+      }
     } catch {
-      return []
+      return [trimmed]
     }
+    return [trimmed]
   }
-
-  if (!isRecord(value)) {
-    return []
-  }
-
-  const wrappedValue = value.value ?? value.stringValue
-  if (typeof wrappedValue === 'string') {
-    return coerceQuestionItems(wrappedValue)
-  }
-
-  if (Array.isArray(value.questionItemObjects)) {
-    return value.questionItemObjects
-  }
-
-  if (Array.isArray(value.items)) {
-    return value.items
-  }
-
-  const objectValues = Object.values(value)
-  return objectValues.every((item) => isRecord(item) && 'prefix' in item) ? objectValues : []
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
-
-function formatAnswer(value?: string | null) {
-  if (!value) {
-    return '-'
-  }
-  try {
-    const parsed = JSON.parse(value) as unknown
-    if (Array.isArray(parsed)) {
-      return parsed.join('、') || '-'
-    }
-  } catch {
-    // Plain answer values such as A/B do not need JSON parsing.
-  }
-  return value
+  return []
 }
 </script>
 
@@ -292,6 +308,13 @@ function formatAnswer(value?: string | null) {
   margin: 0;
 }
 
+.correction-review__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .correction-review__student {
   display: grid;
   gap: 8px;
@@ -300,23 +323,11 @@ function formatAnswer(value?: string | null) {
   background: var(--xzs-surface-soft);
 }
 
-.correction-review__items {
+.correction-review__ai {
   display: grid;
   gap: 8px;
-  margin: 12px 0 0;
-  padding-left: 22px;
-}
-
-.correction-review__items li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 6px;
-  padding-left: 4px;
-}
-
-.correction-review__answers {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--xzs-border);
+  background: #f8fafc;
 }
 </style>

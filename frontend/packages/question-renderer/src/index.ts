@@ -1,4 +1,5 @@
 export { default as QuestionMarkdown } from './QuestionMarkdown.vue'
+export { default as QuestionCorrectionContext } from './QuestionCorrectionContext.vue'
 export { default as QuestionStem } from './QuestionMarkdown.vue'
 export { default as QuestionOption } from './QuestionMarkdown.vue'
 export { default as QuestionAnalysis } from './QuestionMarkdown.vue'
