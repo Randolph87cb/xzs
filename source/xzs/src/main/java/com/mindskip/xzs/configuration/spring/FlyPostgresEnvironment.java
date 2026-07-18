@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 
 /**
- * Adapts Fly Managed Postgres DATABASE_URL to Spring JDBC datasource properties.
+ * Adapts Postgres URL-style datasource values to Spring JDBC datasource properties.
  */
 public final class FlyPostgresEnvironment {
 
@@ -14,7 +14,15 @@ public final class FlyPostgresEnvironment {
     }
 
     public static void apply() {
-        if (hasText(System.getenv("SPRING_DATASOURCE_URL")) || hasText(System.getProperty("spring.datasource.url"))) {
+        String datasourceProperty = System.getProperty("spring.datasource.url");
+        if (hasText(datasourceProperty)) {
+            applyParsedUrl(datasourceProperty, false);
+            return;
+        }
+
+        String springDatasourceUrl = System.getenv("SPRING_DATASOURCE_URL");
+        if (hasText(springDatasourceUrl)) {
+            applyParsedUrl(springDatasourceUrl, true);
             return;
         }
 
@@ -23,30 +31,38 @@ public final class FlyPostgresEnvironment {
             return;
         }
 
-        ParsedPostgresUrl parsed = parse(databaseUrl);
+        applyParsedUrl(databaseUrl, true);
+    }
+
+    private static void applyParsedUrl(String url, boolean readCredentialsFromUrl) {
+        if (url.startsWith("jdbc:postgresql://")) {
+            return;
+        }
+
+        ParsedPostgresUrl parsed = parse(url);
         System.setProperty("spring.datasource.url", parsed.jdbcUrl);
 
-        if (hasText(parsed.username) && !hasText(System.getenv("SPRING_DATASOURCE_USERNAME"))) {
+        if (readCredentialsFromUrl && hasText(parsed.username) && !hasText(System.getenv("SPRING_DATASOURCE_USERNAME"))) {
             System.setProperty("spring.datasource.username", parsed.username);
         }
 
-        if (hasText(parsed.password) && !hasText(System.getenv("SPRING_DATASOURCE_PASSWORD"))) {
+        if (readCredentialsFromUrl && hasText(parsed.password) && !hasText(System.getenv("SPRING_DATASOURCE_PASSWORD"))) {
             System.setProperty("spring.datasource.password", parsed.password);
         }
     }
 
-    private static ParsedPostgresUrl parse(String databaseUrl) {
+    static ParsedPostgresUrl parse(String databaseUrl) {
         try {
             URI uri = new URI(databaseUrl);
             String scheme = uri.getScheme();
             if (!"postgres".equalsIgnoreCase(scheme) && !"postgresql".equalsIgnoreCase(scheme)) {
-                throw new IllegalArgumentException("DATABASE_URL must use postgres:// or postgresql:// scheme.");
+                throw new IllegalArgumentException("Postgres URL must use postgres:// or postgresql:// scheme.");
             }
 
             String host = uri.getHost();
             String path = uri.getPath();
             if (!hasText(host) || !hasText(path) || "/".equals(path)) {
-                throw new IllegalArgumentException("DATABASE_URL must include host and database name.");
+                throw new IllegalArgumentException("Postgres URL must include host and database name.");
             }
 
             int port = uri.getPort() > 0 ? uri.getPort() : 5432;
@@ -55,8 +71,9 @@ public final class FlyPostgresEnvironment {
                     .append(':')
                     .append(port)
                     .append(path);
-            if (hasText(uri.getQuery())) {
-                jdbcUrl.append('?').append(uri.getQuery());
+            String query = normalizeQuery(uri.getRawQuery());
+            if (hasText(query)) {
+                jdbcUrl.append('?').append(query);
             }
 
             String username = null;
@@ -74,8 +91,27 @@ public final class FlyPostgresEnvironment {
 
             return new ParsedPostgresUrl(jdbcUrl.toString(), username, password);
         } catch (URISyntaxException ex) {
-            throw new IllegalArgumentException("DATABASE_URL is not a valid URI.", ex);
+            throw new IllegalArgumentException("Postgres URL is not a valid URI.", ex);
         }
+    }
+
+    private static String normalizeQuery(String rawQuery) {
+        if (!hasText(rawQuery)) {
+            return rawQuery;
+        }
+
+        StringBuilder normalized = new StringBuilder();
+        String[] parts = rawQuery.split("&");
+        for (String part : parts) {
+            if (!hasText(part) || part.startsWith("channel_binding=")) {
+                continue;
+            }
+            if (normalized.length() > 0) {
+                normalized.append('&');
+            }
+            normalized.append(part);
+        }
+        return normalized.toString();
     }
 
     private static String decode(String value) {
@@ -90,10 +126,10 @@ public final class FlyPostgresEnvironment {
         return value != null && value.trim().length() > 0;
     }
 
-    private static final class ParsedPostgresUrl {
-        private final String jdbcUrl;
-        private final String username;
-        private final String password;
+    static final class ParsedPostgresUrl {
+        final String jdbcUrl;
+        final String username;
+        final String password;
 
         private ParsedPostgresUrl(String jdbcUrl, String username, String password) {
             this.jdbcUrl = jdbcUrl;
