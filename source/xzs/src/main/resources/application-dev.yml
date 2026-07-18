@@ -4,6 +4,7 @@ logging:
 xzs:
   web:
     static:
+      use-local: ${XZS_WEB_STATIC_USE_LOCAL:true}
       admin-root: ${XZS_ADMIN_STATIC_ROOT:../../frontend/apps/admin/}
       student-root: ${XZS_STUDENT_STATIC_ROOT:../../frontend/apps/student/}
 

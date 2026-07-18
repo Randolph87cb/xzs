@@ -96,4 +96,23 @@ if (-not $SkipBackend) {
     Assert-LastExitCode -Name "Package backend"
 }
 
+if (-not $SkipSync) {
+    $scriptPath = Join-Path $PSScriptRoot "verify-web-static-consistency.ps1"
+    Write-Output "==> Verify web static consistency"
+    if ($SkipAdmin -and $SkipStudent) {
+        Write-Output "Running: $scriptPath -SkipAdmin -SkipStudent -SkipHttpCheck"
+        & $scriptPath -SkipAdmin -SkipStudent -SkipHttpCheck
+    } elseif ($SkipAdmin) {
+        Write-Output "Running: $scriptPath -SkipAdmin -SkipHttpCheck"
+        & $scriptPath -SkipAdmin -SkipHttpCheck
+    } elseif ($SkipStudent) {
+        Write-Output "Running: $scriptPath -SkipStudent -SkipHttpCheck"
+        & $scriptPath -SkipStudent -SkipHttpCheck
+    } else {
+        Write-Output "Running: $scriptPath -SkipHttpCheck"
+        & $scriptPath -SkipHttpCheck
+    }
+    Assert-LastExitCode -Name "Verify web static consistency"
+}
+
 Write-Output "Build all completed."

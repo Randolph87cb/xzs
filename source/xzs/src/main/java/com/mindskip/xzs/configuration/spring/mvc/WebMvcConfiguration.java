@@ -29,6 +29,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     private static final String CLASSPATH_STUDENT_STATIC = "classpath:/static/student/static/";
     private static final String ADMIN_ROOT_PROPERTY = "xzs.web.static.admin-root";
     private static final String STUDENT_ROOT_PROPERTY = "xzs.web.static.student-root";
+    private static final String USE_LOCAL_STATIC_PROPERTY = "xzs.web.static.use-local";
     private static final String DEFAULT_ADMIN_ROOT = "../../frontend/apps/admin/";
     private static final String DEFAULT_STUDENT_ROOT = "../../frontend/apps/student/";
 
@@ -51,7 +52,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        if (isDevProfile()) {
+        if (isDevProfile() || isLocalStaticEnabled()) {
             addDevResourceHandlers(registry);
             return;
         }
@@ -96,6 +97,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     private boolean isDevProfile() {
         return Arrays.asList(environment.getActiveProfiles()).contains(DEV_PROFILE);
+    }
+
+    private boolean isLocalStaticEnabled() {
+        return Boolean.TRUE.equals(environment.getProperty(USE_LOCAL_STATIC_PROPERTY, Boolean.class, false));
     }
 
     private String normalizeRootLocation(String root) {

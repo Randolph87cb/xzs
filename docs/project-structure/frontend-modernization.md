@@ -154,6 +154,42 @@ pnpm --dir frontend verify:admin-ui
 .\scripts\verify-admin-static.ps1
 ```
 
+本地 Neon test branch 启动后端优先使用统一入口；该脚本会加载 `.env.neon-test`、设置本地代理绕过、默认构建 admin/student、同步后端静态资源、执行启动前文件级一致性校验，并从 `source/xzs` 受控启动 Spring Boot。正常启动前如果 BaseUrl 已有 `/admin/index.html` 或 `/student/index.html` 可访问，脚本会默认失败，避免启动新进程后误校验旧服务；默认启动后会等待两个入口可访问，再自动执行一次 HTTP 一致性校验：
+
+```powershell
+.\scripts\start-local-neon.ps1
+```
+
+如果明确要校验当前已有本地服务，不启动新后端：
+
+```powershell
+.\scripts\start-local-neon.ps1 -UseExistingService
+```
+
+如果只需要检查当前构建、同步目录和运行中 HTTP 服务是否一致，不启动后端：
+
+```powershell
+.\scripts\start-local-neon.ps1 -CheckOnly
+```
+
+前端改动后的静态资源一致性验收使用：
+
+```powershell
+.\scripts\verify-web-static-consistency.ps1
+```
+
+服务未启动时可只做文件级校验；默认仍要求 `source/xzs/target/classes/static` 存在并一致：
+
+```powershell
+.\scripts\verify-web-static-consistency.ps1 -SkipHttpCheck
+```
+
+只有确认后端启用了本地 Vite 静态资源直读模式，才允许显式跳过运行目录缺失检查：
+
+```powershell
+.\scripts\verify-web-static-consistency.ps1 -SkipHttpCheck -AllowMissingRuntimeStatic
+```
+
 或进入 `frontend` 后运行：
 
 ```powershell
@@ -168,7 +204,9 @@ pnpm --filter @xzs/student build
 
 - `scripts/build-student.ps1` 默认使用 `pnpm --filter @xzs/student run build` 构建 Vue 3 学生端。
 - `scripts/build-admin.ps1` 默认使用 `pnpm --filter @xzs/admin run build` 构建 Vue 3 管理端。
-- `scripts/sync-web-static.ps1` 默认把 `frontend/apps/student/student` 和 `frontend/apps/admin/admin` 同步到 `source/xzs/src/main/resources/static`。
+- `scripts/sync-web-static.ps1` 默认把 `frontend/apps/student/student` 和 `frontend/apps/admin/admin` 同步到 `source/xzs/src/main/resources/static`，并在 `source/xzs/target/classes/static` 存在时同步运行目录。
+- `scripts/verify-web-static-consistency.ps1` 会合并补充 `NO_PROXY/no_proxy` 中的 `localhost`、`127.0.0.1`、`::1`，比较 Vite 构建输出、`src/main/resources/static`、`target/classes/static`，并可检查运行中后端返回的 `/admin/index.html`、`/student/index.html` 入口 JS/CSS 是否一致；默认缺少 `target/classes/static` 会失败，只有本地直读 Vite 输出时才传 `-AllowMissingRuntimeStatic`。
+- 本地 Neon 启动脚本设置 `XZS_WEB_STATIC_USE_LOCAL=true`，允许 `prod` profile 在本地直接读取 Vite 构建输出目录；生产环境默认不开启该开关，仍使用 classpath 静态资源。
 - 后端 jar 内 `/student/index.html` 由 Vue 3 + Vite 产物提供。
 - 后端 jar 内 `/admin/index.html` 由 Vue 3 + Vite 产物提供。
 
