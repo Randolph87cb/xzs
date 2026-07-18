@@ -5,6 +5,7 @@ import com.mindskip.xzs.configuration.spring.mvc.WebMvcConfiguration;
 import com.mindskip.xzs.configuration.spring.security.SecurityConfigurer;
 import com.mindskip.xzs.configuration.spring.wx.TokenHandlerInterceptor;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,7 +26,8 @@ public class CorsConfigurationCompatibilityTest {
         CorsRegistry registry = new CorsRegistry();
         WebMvcConfiguration configuration = new WebMvcConfiguration(
                 mock(TokenHandlerInterceptor.class),
-                mock(SystemConfig.class));
+                mock(SystemConfig.class),
+                mock(Environment.class));
 
         configuration.addCorsMappings(registry);
 
