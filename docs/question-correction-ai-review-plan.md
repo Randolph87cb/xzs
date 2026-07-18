@@ -10,7 +10,7 @@
 
 ## 结论
 
-推荐先抽一个跨教师端和学生端复用的“错题上下文展示组件”，补齐教师审核接口的解析字段；再新增教师级 AI 审核配置和 AI 审核建议接口。AI 审核建议默认只回填审核表单，不直接落库为最终审核结果，仍由老师确认保存，避免误判直接影响学生记录。
+推荐先抽一个跨教师端和学生端复用的“错题上下文展示组件”，补齐教师审核接口的解析字段；再新增教师级 AI 审核配置和“学生提交后自动 AI 预审”能力。AI 预审结果保存为建议记录，老师打开审核详情时直接看到结果并可一键采用或调整，但最终通过/驳回仍由老师确认保存。
 
 ## 需求拆解
 
@@ -70,15 +70,19 @@
   - 前端构建：执行 `pnpm --dir frontend -r build` 或项目已有等价构建命令。
   - 组件测试：补充 `question-renderer` 针对答案格式化和选项去重的单元测试。
 
-### 3. 老师配置大模型 API 并用于 AI 审核，配置保存到老师数据中
+### 3. 老师配置大模型 API，学生提交后自动跑 AI 预审，老师审核时直接展示
 
 - 当前现状：
   - 管理端个人资料页可保存基础资料，但没有 AI 配置。
   - `t_user` 没有 AI 配置字段，`UserMapper` 是显式列映射，直接扩用户表需要同步较多映射。
   - 项目中未发现现成的大模型服务封装。
+  - 学生提交改错的事务入口是 `/api/student/question/correction/submit`；现有逻辑只写入或更新 `t_question_correction_record`，没有提交后任务。
+  - 项目已有 `ApplicationEventPublisher` 使用方式，但未发现现成 `@Async` 或事务提交后回调模式。
 - 判断：
   - API key 属于敏感信息，不建议明文返回前端。
   - “保存到老师的数据中”可以通过以 `teacher_user_id` 为唯一键的一对一配置表实现，比直接扩 `t_user` 更低耦合，也便于后续增加不同 provider 参数。
+  - AI 调用不应放在学生提交事务内同步执行；大模型接口慢、超时或失败时，不应影响学生提交成功。
+  - 老师审核要节省时间，应在审核列表或审核详情中展示“AI 预审状态”和最新建议，而不是要求老师手动点击触发。
 - 修改方案：
   - 新增 Flyway 迁移 `V4__add_teacher_ai_review_config.sql`，创建表 `t_teacher_ai_review_config`：
     - `id serial primary key`
@@ -91,6 +95,22 @@
     - `prompt text`
     - `create_time timestamp(6)`
     - `modify_time timestamp(6)`
+  - 同一个迁移或后续迁移中新增 AI 预审记录表 `t_question_correction_ai_review_record`：
+    - `id serial primary key`
+    - `correction_id int4 not null`
+    - `teacher_user_id int4`
+    - `trigger_type varchar(32) not null default 'AUTO_SUBMIT'`
+    - `status varchar(32) not null`，取值建议为 `PENDING/RUNNING/SUCCESS/FAILED/SKIPPED`
+    - `review_result varchar(32)`，取值建议为 `APPROVED/REJECTED/UNCERTAIN`
+    - `review_comment text`
+    - `confidence numeric(5, 4)`
+    - `reason text`
+    - `raw_content text`
+    - `error_message text`
+    - `request_time timestamp(6)`
+    - `finish_time timestamp(6)`
+    - `create_time timestamp(6)`
+    - 索引：`(correction_id, create_time desc)`，便于审核详情取最新一条。
   - API key 存储：
     - 后端用服务端环境变量提供加密密钥，例如 `XZS_AI_CONFIG_SECRET`。
     - 保存时加密 `apiKey`；查询配置时只返回 `hasApiKey: true/false`，不返回明文 key。
@@ -99,24 +119,38 @@
     - `POST /api/admin/questionCorrection/ai/config/select`
     - `POST /api/admin/questionCorrection/ai/config/edit`
     - 仅角色为老师或管理员可访问；老师只能读写自己的配置，管理员可按后续需要扩展。
-  - 后端新增 AI 审核建议接口：
-    - `POST /api/admin/questionCorrection/ai/review`
+  - 后端新增自动预审服务：
+    - 在学生提交新改错或被驳回后重新提交时，先完成 `t_question_correction_record` 写入或更新。
+    - 事务提交后触发 AI 预审任务，推荐使用 `TransactionSynchronizationManager.registerSynchronization(... afterCommit ...)` 或 `@TransactionalEventListener(phase = AFTER_COMMIT)`。
+    - 预审任务根据错题所属班级找到负责老师；优先使用有 AI 配置且 `enabled = true` 的老师配置。若找不到配置，写入 `SKIPPED` 记录，原因是“负责老师未配置 AI 审核”。
+    - 任务先插入 `PENDING/RUNNING` 记录，再组装题干、选项、解析、学生答案、正确答案、学生错误原因、学生正确思路、历史审核意见，调用 OpenAI-compatible Chat Completions 接口。
+    - 成功后把 `reviewResult/reviewComment/confidence/reason/rawContent` 写入 AI 预审记录；失败后写入 `FAILED/error_message`，不修改学生改错记录的 `review_status`。
+    - 为避免重复触发，提交或重新提交同一 `correction_id` 时只保留最新建议为展示依据；可以允许多条历史记录，但详情接口按 `create_time desc, id desc limit 1` 取最新。
+  - 后端审核查询接口扩展：
+    - `/api/admin/questionCorrection/page` 返回 `ai_review_status`、`ai_review_result`、`ai_review_confidence`、`ai_review_time`，便于老师在列表上优先处理。
+    - `/api/admin/questionCorrection/select/{id}` 返回 `aiReview` 对象，包含最新 AI 预审状态、建议结果、建议意见、理由、置信度、错误信息和完成时间。
+    - 仍复用 `correctionScopeSql(...)` 校验老师只能看到自己班级范围内的 AI 预审结果。
+  - 可选保留手动重跑接口：
+    - `POST /api/admin/questionCorrection/ai/retry`
     - 入参：`correctionId`
-    - 后端按现有班级权限复用 `correctionScopeSql(...)` 校验老师能否审核该记录。
-    - 后端组装题干、选项、解析、学生答案、正确答案、学生错误原因、学生正确思路、历史审核意见，调用 OpenAI-compatible Chat Completions 接口。
-    - 返回结构：`reviewResult`、`reviewComment`、`confidence`、`reason`、`rawContent`。
+    - 仅用于 AI 失败、老师修改配置后补跑、或希望刷新建议的场景；不是主流程按钮。
   - 教师端页面：
     - 在个人资料页增加“AI 审核配置”区域，仅老师角色优先显示，管理员可显示但标注适用于老师审核。
-    - 在改错审核弹窗增加“AI 审核”按钮；调用成功后把 `reviewResult/reviewComment` 填入现有审核表单，老师再点击“保存审核”。
-    - 未配置或配置不可用时，按钮给出明确提示并引导到个人资料页。
+    - 在改错审核列表增加 AI 状态列：未配置、预审中、建议通过、建议驳回、不确定、失败。
+    - 在改错审核弹窗顶部展示最新 AI 预审卡片，包括建议结果、建议意见、理由、置信度和失败原因。
+    - AI 结果为 `APPROVED/REJECTED` 时，可自动预填现有审核表单；老师可以直接保存，也可以修改审核意见后保存。
+    - 若 AI 状态为 `PENDING/RUNNING`，页面展示“AI 预审中”，可通过刷新详情获取最新结果。
+    - 若未配置或失败，直接展示原因；可提供“去配置”或“重跑 AI 预审”入口，但不作为常规审核必点步骤。
   - 审核记录：
     - 最终保存仍走现有 `/review/edit`，`reviewer_id/reviewer_name` 仍是老师。
-    - 可选增加 `ai_suggestion` 字段或新建 `t_question_correction_ai_review_record` 保存 AI 原始建议，便于追踪。主推荐先新增独立 AI 建议记录表，避免污染人工审核历史。
+    - 人工审核历史 `t_question_correction_review_record` 不直接混入 AI 原始建议；AI 建议保存在 `t_question_correction_ai_review_record`，便于区分“机器建议”和“老师最终审核”。
 - 影响范围：
   - `source/xzs/src/main/resources/db/migration/V4__add_teacher_ai_review_config.sql`
   - `source/xzs/src/main/java/com/mindskip/xzs/controller/admin/QuestionCorrectionController.java` 或拆出 `QuestionCorrectionAiController`
   - 新增 `TeacherAiReviewConfig` domain/service/repository 或在初期沿用 `JdbcTemplate`
   - 新增 AI client/service，例如 `QuestionCorrectionAiReviewService`
+  - `source/xzs/src/main/java/com/mindskip/xzs/controller/student/QuestionCorrectionController.java`
+  - 新增提交后事件、监听器或事务 afterCommit 任务，例如 `QuestionCorrectionSubmittedEvent`、`QuestionCorrectionAiReviewListener`
   - `frontend/apps/admin/src/views/profile/ProfileView.vue`
   - `frontend/apps/admin/src/views/question/QuestionCorrectionReviewView.vue`
   - `frontend/packages/api-client/src/adminOperations.ts`
@@ -124,20 +158,26 @@
   - 数据库：启动后确认 Flyway 应用到 V4，`t_teacher_ai_review_config` 存在，`teacher_user_id` 唯一约束生效。
   - 配置接口：老师保存 baseUrl/model/apiKey 后，再查询只返回 `hasApiKey`，不返回明文；空 key 更新不覆盖旧 key。
   - 权限：老师 A 不能对老师 B 班级错题调用 AI 审核；学生不能访问配置和 AI 审核接口。
-  - AI 审核：使用一个 OpenAI-compatible mock 服务或本地 stub，确认请求内容包含题干、解析、学生答案、正确答案、学生改错内容；响应能回填审核表单。
-  - 人工确认：AI 回填后不点“保存审核”时数据库审核状态不变；点击保存后才更新 `review_status` 和审核历史。
+  - 自动触发：学生提交新改错后，提交接口快速返回成功，事务提交后生成 AI 预审记录；重新提交被驳回记录时生成新的 AI 预审记录。
+  - 失败隔离：mock 大模型超时或返回错误时，学生提交仍成功，AI 记录变为 `FAILED`，审核详情展示失败原因。
+  - AI 审核：使用一个 OpenAI-compatible mock 服务或本地 stub，确认请求内容包含题干、解析、学生答案、正确答案、学生改错内容；响应能保存到 AI 预审记录。
+  - 老师审核：打开审核列表可看到 AI 状态；打开详情能直接看到 AI 建议并预填审核表单。
+  - 人工确认：AI 建议生成后不点“保存审核”时 `t_question_correction_record.review_status` 仍为 `SUBMITTED`；点击保存后才更新最终审核状态和人工审核历史。
 
 ## 执行顺序
 
 1. 先补教师端解析字段和展示，完成需求 1。
 2. 抽共享题目上下文组件，并替换教师审核弹窗和学生错题详情，完成需求 2。
 3. 增加 AI 配置表、配置接口和个人资料页配置区域。
-4. 增加 AI 审核建议接口和教师审核弹窗按钮。
-5. 补充测试与手工验收。
+4. 增加 AI 预审记录表、提交后自动触发任务和 AI 调用服务。
+5. 扩展教师审核列表和详情，直接展示最新 AI 预审结果并预填审核表单。
+6. 补充测试与手工验收。
 
 ## 风险与待确认
 
-- AI 审核是否允许“一键直接通过/驳回”：主推荐是不直接落库，必须老师确认。如果业务希望自动保存，需要补审核责任标识和误判回滚流程。
+- AI 审核是否允许自动通过/驳回：主推荐是不自动改最终审核状态，必须老师确认。如果业务希望 AI 自动终审，需要补审核责任标识、置信度阈值、误判回滚和家长/学生可见说明。
 - 大模型接口类型：主推荐按 OpenAI-compatible Chat Completions 设计；如果使用其他厂商专有协议，需要确认 provider、鉴权头和响应格式。
 - API key 加密密钥来源：需要部署环境提供 `XZS_AI_CONFIG_SECRET`。没有该密钥时应禁止保存 key，不能降级明文存储。
 - 是否记录 AI 原文：建议记录，但要避免把 API key、学生隐私或过长 prompt 写入日志。
+- 自动触发使用哪个老师配置：主推荐按错题所属班级负责老师配置执行；若一个班级未来支持多个老师，需要明确优先级或全部老师共享班级级配置。
+- AI 预审任务执行器：需要设置超时、重试次数和并发上限，避免大量学生同时提交时耗尽后端线程或大模型额度。
