@@ -1,5 +1,7 @@
 # 前端最终架构分阶段迁移路线
 
+本文保留为已完成迁移路线和后续优化参考。当前 Web 前端事实来源优先读取 `docs/project-structure/frontend-modernization.md`、`docs/project-structure/web-student.md` 和 `docs/project-structure/web-admin.md`。
+
 ## 目标
 
 本路线面向最终架构迁移，不再以 Vue 2 过渡为目标。迁移目标是把现有管理端和学生端从 Vue 2.7 + Vue CLI 4 迁移到 Vue 3 + Vite 的现代前端架构，并重点解决以下问题：
@@ -553,4 +555,4 @@ server:
 
 该路线已按覆盖式策略执行完成。学生端和管理端默认生产构建均来自 `frontend/apps/*`，旧 Vue 2 Web 工程已删除，不再保留新旧并行入口。
 
-最终阶段报告见 `docs/frontend-modernization-stage9-final-cutover-cleanup.md`。后续优化应围绕构建 chunk、题目渲染缓存、大试卷分批渲染和发布文档站更新展开。
+历史阶段报告已清理，后续优化应围绕构建 chunk、题目渲染缓存、大试卷分批渲染和发布文档站更新展开。

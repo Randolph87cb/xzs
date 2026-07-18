@@ -16,7 +16,7 @@ xzs/
 ├── deploy/              # 设备和环境专用部署资产
 │   └── raspberry-pi/    # 树莓派 systemd 服务模板、数据库初始化、备份和恢复脚本
 ├── docker/              # Docker 部署材料，包含 compose 和 Docker 运维参考
-├── docs/                # 已构建的项目文档站静态文件、结构拆分文档和题库资料
+├── docs/                # 当前维护文档、历史静态文档站、结构拆分文档和题库资料
 │   ├── project-structure/ # 项目结构拆分文档
 │   └── question-bank/   # 随项目版本管理的真题题库 Markdown 资料和解析生成 prompt 模板
 ├── release/             # 已构建发布包：后端 jar 与前端静态包
@@ -45,21 +45,17 @@ xzs/
 - `database-deploy.md`：数据库、发布包与部署资产。
 - `reading-guide.md`：按业务链路阅读代码的建议入口。
 
-## 构建优化文档
+## 当前维护文档
 
 - `docs/project-health-improvement-plan.md`：项目工程健康改进计划与分阶段执行建议。
 - `docs/build-performance-optimization-plan.md`：构建与运行性能优化分阶段方案。
-- `docs/vue3-vite-migration-roadmap.md`：Vue 3 + Vite 长期迁移路线图。
-- `docs/frontend-modernization-migration-roadmap.md`：覆盖式 Vue 3 + Vite 前端重构路线。
-- `docs/frontend-modernization-stage1-student-shell.md`：学生端现代前端骨架阶段验收报告。
-- `docs/frontend-modernization-stage2-auth.md`：学生端认证链路阶段验收报告。
-- `docs/frontend-modernization-stage3-question-renderer.md`：题目渲染包阶段验收报告。
-- `docs/frontend-modernization-stage4-student-core-loop.md`：学生端核心业务阶段验收报告。
-- `docs/frontend-modernization-stage5-student-cutover.md`：学生端生产入口覆盖切换报告。
-- `docs/frontend-modernization-stage6-admin-shell.md`：管理端 Vue 3 + Vite 基础壳阶段验收报告。
-- `docs/frontend-modernization-stage7-admin-question-ueditor.md`：管理端题库与 UEditor 闭环阶段验收报告。
-- `docs/frontend-modernization-stage8-admin-cutover.md`：管理端生产入口覆盖切换报告。
-- `docs/frontend-modernization-stage9-final-cutover-cleanup.md`：Vue 3 覆盖迁移最终清理报告。
+- `docs/frontend-modernization-migration-roadmap.md`：已完成的覆盖式 Vue 3 + Vite 前端重构路线和后续优化方向。
 - `docs/database-migration-flyway.md`：Flyway 数据库迁移、基线和后续迁移规范说明。
 - `docs/fly-managed-postgres-deployment.md`：Fly.io 冷启动按量部署说明。
 - `docs/raspberry-pi-deployment.md`：树莓派运行目录、systemd 服务、数据库初始化、备份和恢复说明。
+- `docs/fly-to-raspberry-pi-data-migration-plan.md`：Fly.io 到树莓派 Docker 数据迁移、主备约定和备份恢复方案。
+- `docs/question-markdown-import.md`：管理端 Markdown 题目导入格式。
+
+## 历史静态文档站
+
+`docs/guide/`、`docs/assets/`、`docs/index.html`、`docs/404.html`、`docs/favicon.ico` 和 `docs/logo.png` 是上游静态文档站构建产物，仅作历史参考。当前开发、数据库、部署和前端结构事实以本目录拆分文档、根目录 `AGENTS.md`、`docker/README.md` 以及对应专题文档为准。

@@ -12,7 +12,7 @@
 - PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`；后端 Flyway 迁移脚本在 `source/xzs/src/main/resources/db/migration`。
 - 真题题库 Markdown 资料在 `docs/question-bank`。
 - 本地构建、测量、静态资源同步、维护和数据导入脚本在 `scripts`。
-- 构建性能优化方案和迁移评估文档在 `docs/build-performance-optimization-plan.md`、`docs/vue3-vite-migration-roadmap.md`、`docs/frontend-modernization-migration-roadmap.md`。
+- 构建性能优化方案和已完成的现代前端迁移路线在 `docs/build-performance-optimization-plan.md`、`docs/frontend-modernization-migration-roadmap.md`。
 - Fly.io 冷启动按量部署说明在 `docs/fly-managed-postgres-deployment.md`；根目录 `Dockerfile` 和 `fly.toml` 是 Fly 部署入口。
 - 树莓派部署说明在 `docs/raspberry-pi-deployment.md`；对应 systemd 服务模板和数据库初始化、备份、恢复脚本在 `deploy/raspberry-pi`。
 - 发布包与部署材料分别在 `release`、`docker` 和 `deploy`。
@@ -21,7 +21,14 @@
 
 - 树莓派迁移、性能、备份、恢复或故障排查任务开始前，先确认当前实际部署方式是 Docker Compose、systemd/Jar 还是其他方式。
 - 用户已说明树莓派使用 Docker 时，优先读取 `docker/README.md` 和 `docker/docker-compose.yml`，再结合 `docs/fly-to-raspberry-pi-data-migration-plan.md` 判断迁移、备份和冷备流程。
-- 未确认部署方式时，不要直接套用 `deploy/raspberry-pi` 的 systemd/Jar 流程。
+- 未确认部署方式时，不要直接套用 `deploy/raspberry-pi` 的 systemd/Jar 流程；`docs/raspberry-pi-deployment.md` 只代表 systemd/Jar 直部署路线。
+
+## docs 目录使用规则
+
+- `docs/project-structure/`、`docs/question-bank/`、部署说明和可执行运维文档是当前事实来源。
+- `docs/guide/`、`docs/assets/` 和 `docs/index.html` 是上游静态文档站构建产物，只作历史参考，不作为当前开发、数据库或部署事实来源。
+- 一次性计划、阶段报告和复盘文档完成后默认不要长期留在 `docs` 顶层；确需保留时应明确归档或合并到当前维护文档。
+- 学生端和管理端 Web 生产入口已经统一为 Vue 3 + Vite 的 `frontend/apps/student` 和 `frontend/apps/admin`，不再新增或恢复 Vue 2 / Vue CLI 生产入口。
 
 ## 项目结构文档
 
