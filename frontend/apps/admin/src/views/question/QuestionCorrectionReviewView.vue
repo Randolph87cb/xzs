@@ -124,6 +124,23 @@
                 </el-tag>
               </div>
 
+              <section class="correction-workbench__review-block correction-workbench__student-submission">
+                <div class="correction-workbench__student-submission-header">
+                  <h3>学生提交内容</h3>
+                  <p>学生填写的改错说明</p>
+                </div>
+                <div class="correction-workbench__student-answer">
+                  <div>
+                    <h3>我错在哪里</h3>
+                    <p>{{ detail.student_wrong_reason || '暂无填写' }}</p>
+                  </div>
+                  <div>
+                    <h3>正确思路是什么</h3>
+                    <p>{{ detail.student_correct_thinking || '暂无填写' }}</p>
+                  </div>
+                </div>
+              </section>
+
               <section class="correction-workbench__review-block">
                 <h3>审核草稿</h3>
                 <el-form class="correction-workbench__form" label-position="top" :disabled="!canReview">
@@ -234,20 +251,6 @@
                 </template>
                 <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
               </section>
-            </section>
-
-            <section class="correction-workbench__card">
-              <h2>学生改错</h2>
-              <div class="correction-workbench__student-answer">
-                <div>
-                  <h3>我错在哪里</h3>
-                  <p>{{ detail.student_wrong_reason || '暂无填写' }}</p>
-                </div>
-                <div>
-                  <h3>正确思路是什么</h3>
-                  <p>{{ detail.student_correct_thinking || '暂无填写' }}</p>
-                </div>
-              </div>
             </section>
 
             <section class="correction-workbench__card">
@@ -1144,6 +1147,31 @@ function parseAnswerArray(value?: string | null) {
 .correction-workbench__student-answer {
   display: grid;
   gap: 10px;
+}
+
+.correction-workbench__student-submission {
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #cfe0ff;
+  border-radius: 6px;
+  background: #f9fbff;
+}
+
+.correction-workbench__student-submission-header {
+  display: grid;
+  gap: 4px;
+}
+
+.correction-workbench__student-submission-header p {
+  margin: 0;
+  color: var(--xzs-text-muted);
+  font-size: 12px;
+}
+
+.correction-workbench__student-submission .correction-workbench__student-answer {
+  max-height: min(280px, 34vh);
+  overflow: auto;
+  padding-right: 2px;
 }
 
 .correction-workbench__student-answer > div {
