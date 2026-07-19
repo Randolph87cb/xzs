@@ -1,163 +1,169 @@
-# Docker Compose 部署
+# Docker Compose 生产部署
 
-本目录提供当前 PostgreSQL 版的 Docker Compose 示例。后端容器直接运行仓库发布制品 `release/java/xzs-3.9.0.jar`，数据库容器首次启动时读取 `sql/xzs-postgresql.sql` 初始化数据。
+本目录保存树莓派生产环境的 Docker Compose 配置。当前环境约定固定为：
 
-## 前置条件
+- 树莓派是生产环境，连接 Neon `production` branch。
+- Fly.io 是测试环境，连接 Neon `test` branch。
+- 本地是开发环境，连接 Neon `test` branch。
 
-- 已安装 Docker 与 Docker Compose v2。
-- `release/java/xzs-3.9.0.jar` 已存在。
-- `sql/xzs-postgresql.sql` 已存在。
+树莓派生产环境不再通过 compose 启动本地 PostgreSQL，也不再挂载本地 jar。应用以完整 Docker 镜像运行，镜像内已经包含后端 Jar、管理端和学生端静态资源。
 
-## 从仓库根目录启动
+树莓派和 Fly 测试环境共用同一个根目录 `Dockerfile`。公共镜像构建、运行参数和环境差异见 `docs/container-image-deployment.md`。
 
-```powershell
-docker compose -f .\docker\docker-compose.yml up -d
+## 镜像
+
+默认镜像：
+
+```text
+crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:latest
 ```
 
-查看日志：
+推荐每次发布同时推送两个 tag：
+
+- `latest`：树莓派默认更新目标。
+- Git 短提交号，例如 `aa08063f`：用于精确回滚。
+
+本地构建并推送 `linux/arm64` 镜像：
 
 ```powershell
-docker compose -f .\docker\docker-compose.yml logs -f java
+docker buildx build --platform linux/arm64 `
+  -t crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:<git-sha> `
+  -t crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:latest `
+  -f Dockerfile `
+  --push .
 ```
 
-停止服务：
+## 树莓派首次部署
 
-```powershell
-docker compose -f .\docker\docker-compose.yml down
+在树莓派上准备应用目录：
+
+```sh
+sudo mkdir -p /opt/apps/xzs
+sudo chown -R "$USER:$USER" /opt/apps/xzs
+cd /opt/apps/xzs
 ```
 
-## 从 docker 目录启动
+复制仓库中的两个文件到 `/opt/apps/xzs`：
+
+```text
+docker-compose.yml
+.env.production.example
+```
+
+把模板复制为真实环境文件：
+
+```sh
+cp .env.production.example .env
+chmod 600 .env
+```
+
+编辑 `.env`：
+
+```sh
+nano .env
+```
+
+必须替换：
+
+- `SPRING_DATASOURCE_URL`：Neon `production` branch 原始连接串。
+- `XZS_AI_CONFIG_SECRET`：生产环境固定密钥，32 字符或更长。该值用于加密/解密老师保存的大模型 API Key，换值后旧密文需要重新保存。
+
+不要把 `.env` 提交到 Git，也不要发到聊天记录或日志里。
+
+登录阿里云 ACR：
+
+```sh
+sudo docker login --username=randolph87 crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com
+```
+
+启动：
+
+```sh
+docker compose pull
+docker compose up -d
+docker compose ps
+docker logs --tail=100 xzs-app
+```
+
+验证：
+
+```sh
+curl -fsS http://127.0.0.1:8000/api/health
+curl -I http://127.0.0.1:8000/student/index.html
+curl -I http://127.0.0.1:8000/admin/index.html
+```
+
+公网域名接在反向代理或 Cloudflare 后时，再从开发机验证：
 
 ```powershell
-cd .\docker
+.\scripts\test-remote-deployment.ps1 -BaseUrl "https://gesp-csp-quiz.randolph87.top"
+```
+
+## 日常更新
+
+在开发机推送新镜像后，树莓派执行：
+
+```sh
+cd /opt/apps/xzs
+docker compose pull
+docker compose up -d
+docker image prune -f
+docker logs --tail=100 xzs-app
+```
+
+如果要固定部署某个版本，把 `.env` 里的 `XZS_IMAGE` 改成具体 tag，例如：
+
+```text
+XZS_IMAGE=crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:aa08063f
+```
+
+再执行：
+
+```sh
+docker compose pull
 docker compose up -d
 ```
 
-查看日志：
+## 回滚
 
-```powershell
-docker compose logs -f java
-```
-
-停止服务：
-
-```powershell
-docker compose down
-```
-
-## 服务说明
-
-- `postgres`：PostgreSQL 15，默认创建 `xzs` 数据库和 `xzs` 用户，数据持久化到命名卷 `xzs-postgres-data`。
-- `java`：Java 8 运行环境，挂载 `../release/java` 到 `/usr/local/xzs/release:ro`，运行 `/usr/local/xzs/release/xzs-3.9.0.jar`。
-- 后端生产配置通过 `SPRING_DATASOURCE_URL`、`SPRING_DATASOURCE_USERNAME`、`SPRING_DATASOURCE_PASSWORD` 注入。
-
-访问地址：
-
-- 学生端：`http://ip:8000/student`
-- 管理端：`http://ip:8000/admin`
-
-如需重新初始化数据库，需要先停止服务并删除 `xzs-postgres-data` 数据卷。删除数据卷会清空数据库，请先备份。
-
-## 运行参数参考
-
-树莓派或低资源主机上优先通过 `docker/docker-compose.yml` 的 `java.command` 和环境变量调整运行参数。改动前先记录当前 `docker compose ps`、`docker compose logs --tail 200 java` 和数据库连接池日志，避免把网络缓存、冷启动或数据库慢查询误判为 JVM 问题。
-
-JVM 参数可从小内存保守值开始，例如：
-
-```yaml
-command: >
-  sh -c "java -Duser.timezone=Asia/Shanghai -Dspring.profiles.active=prod
-  -Xms128m -Xmx384m -XX:+UseSerialGC
-  -jar /usr/local/xzs/release/xzs-3.9.0.jar"
-```
-
-Undertow 和 Hikari 参数建议通过环境变量覆盖 Spring Boot 配置，按实际并发逐步调整：
-
-```yaml
-environment:
-  SERVER_UNDERTOW_IO_THREADS: 2
-  SERVER_UNDERTOW_WORKER_THREADS: 16
-  SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 5
-  SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: 1
-  SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 30000
-```
-
-如果站点前面接了 Cloudflare，性能排查时同时检查：
-
-- 静态资源是否命中缓存：查看响应头 `cf-cache-status`、`cache-control`、`etag`。
-- HTML 是否被错误缓存：管理端、学生端入口 HTML 通常不应长时间强缓存。
-- 首次访问慢是否来自后端冷启动、数据库唤醒或 Cloudflare 回源，而不是前端包体。
-- 变更静态资源后是否需要清理 Cloudflare 缓存或等待哈希资源自然更新。
-
-## 数据备份
-
-Docker 部署时 PostgreSQL 数据保存在命名卷 `xzs-postgres-data`。日常备份建议使用 `pg_dump --format custom` 生成逻辑备份，不建议直接复制 Docker volume 作为唯一备份。
-
-当前部署环境已经固定：树莓派是生产环境，Fly.io 是测试环境，本地是开发环境。树莓派生产环境应连接 Neon `production` branch；Fly 和本地应连接 Neon `test` branch。
-
-如果树莓派继续使用 Docker Compose 运行 Java 服务，Compose 中的数据库环境变量也应指向 Neon `production` branch，而不是本地 Docker PostgreSQL 或 Fly 测试库，除非正在做离线恢复演练。
-
-手动备份示例：
+把 `.env` 中的 `XZS_IMAGE` 改回上一版 Git 短提交 tag，然后重新拉取启动：
 
 ```sh
-sudo mkdir -p /opt/xzs/backups
-timestamp="$(date +%Y%m%d-%H%M%S)"
-docker exec -e PGPASSWORD='<db-password>' xzs-postgres pg_dump \
-  --host 127.0.0.1 \
-  --port 5432 \
-  --username xzs \
-  --dbname xzs \
-  --format custom \
-  --no-owner \
-  --no-privileges \
-  > "/opt/xzs/backups/xzs-${timestamp}.dump"
+cd /opt/apps/xzs
+docker compose pull
+docker compose up -d
+docker logs --tail=100 xzs-app
 ```
 
-`<db-password>` 以实际 Compose 配置为准；仓库示例值为 `xzs_change_me`，生产环境应替换。
-
-恢复备份时先停止应用容器，保留 PostgreSQL 容器运行。仓库示例容器名为 `xzs-java`，当前树莓派生产部署可能是 `xzs-app`，执行前先用 `docker ps` 确认：
+如果应用启动失败，先查看：
 
 ```sh
-APP_CONTAINER=xzs-app
-docker stop "$APP_CONTAINER"
-docker cp /opt/xzs/backups/<backup-file>.dump xzs-postgres:/tmp/xzs-restore.dump
-docker exec -e PGPASSWORD='<db-password>' xzs-postgres pg_restore \
-  --host 127.0.0.1 \
-  --port 5432 \
-  --username xzs \
-  --dbname xzs \
-  --clean \
-  --if-exists \
-  --no-owner \
-  --no-privileges \
-  /tmp/xzs-restore.dump
-docker start "$APP_CONTAINER"
+docker compose ps
+docker logs --tail=200 xzs-app
 ```
 
-恢复后建议执行：
+## 资源参数
+
+默认 compose 针对树莓派做了保守配置：
+
+```text
+JAVA_TOOL_OPTIONS=-Xms128m -Xmx512m -XX:+UseSerialGC
+SERVER_UNDERTOW_IO_THREADS=2
+SERVER_UNDERTOW_WORKER_THREADS=16
+SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=4
+SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=1
+```
+
+如果内存吃紧，可先把 `JAVA_TOOL_OPTIONS` 中的 `-Xmx512m` 降到 `-Xmx384m`。调整前后都检查：
 
 ```sh
-docker compose -f ./docker/docker-compose.yml logs --tail 100 postgres
-docker compose -f ./docker/docker-compose.yml logs --tail 100 java
-docker exec -e PGPASSWORD='<db-password>' xzs-postgres psql \
-  --host 127.0.0.1 \
-  --username xzs \
-  --dbname xzs \
-  --command "select count(*) from t_question;"
+docker stats xzs-app
+free -h
+df -h
 ```
 
-## Fly 测试环境
+## 数据库与备份
 
-Fly.io 现在固定为测试环境，不再作为生产冷备写入目标。Fly 测试环境使用 Neon `test` branch，部署入口是：
+生产数据库在 Neon `production` branch。树莓派 compose 不启动本地 PostgreSQL，生产备份应围绕 Neon production 制定。旧的本地 Docker PostgreSQL 迁移流程只作为历史参考，不再作为当前生产默认方案。
 
-```powershell
-.\scripts\deploy-fly-neon-test.ps1
-```
-
-不要把树莓派生产数据 dump 恢复到 Fly Postgres，也不要把 Fly 当作生产写入目标。Fly Postgres 相关内容只保留为历史迁移或回滚参考。
-
-生产备份应围绕 Neon `production` branch 制定，不再通过 Fly Postgres 冷备承接日常生产备份。
-
-## 从 Fly.io 迁移到树莓派 Docker
-
-`docs/fly-to-raspberry-pi-data-migration-plan.md` 是历史迁移方案，只用于理解从 Fly Postgres 切换到树莓派 Docker PostgreSQL 的旧流程。当前长期方案以树莓派生产环境 + Neon `production` branch、Fly 测试环境 + Neon `test` branch 为准。
+Fly.io 现在固定为测试环境，不作为生产冷备写入目标，不要把生产数据 dump 恢复到 Fly Postgres。

@@ -1,39 +1,24 @@
 services:
-  postgres:
-    image: postgres:15
-    container_name: xzs-postgres
+  app:
+    image: ${XZS_IMAGE:-crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:latest}
+    container_name: xzs-app
     restart: always
     environment:
-      POSTGRES_DB: xzs
-      POSTGRES_USER: xzs
-      POSTGRES_PASSWORD: xzs_change_me
-      TZ: Asia/Shanghai
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - xzs-postgres-data:/var/lib/postgresql/data
-      - ../sql/xzs-postgresql.sql:/docker-entrypoint-initdb.d/01-xzs-postgresql.sql:ro
-
-  java:
-    image: eclipse-temurin:8-jre
-    container_name: xzs-java
-    restart: always
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/xzs
-      SPRING_DATASOURCE_USERNAME: xzs
-      SPRING_DATASOURCE_PASSWORD: xzs_change_me
+      SPRING_PROFILES_ACTIVE: prod
+      SERVER_PORT: 8000
       XZS_LOG_PATH: /usr/log/xzs/
       TZ: Asia/Shanghai
-    command: >
-      sh -c "java -Duser.timezone=Asia/Shanghai -Dspring.profiles.active=prod
-      -jar /usr/local/xzs/release/xzs-3.9.0.jar"
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--Xms128m -Xmx512m -XX:+UseSerialGC}
+      SERVER_UNDERTOW_IO_THREADS: ${SERVER_UNDERTOW_IO_THREADS:-2}
+      SERVER_UNDERTOW_WORKER_THREADS: ${SERVER_UNDERTOW_WORKER_THREADS:-16}
+      SERVER_UNDERTOW_BUFFER_SIZE: ${SERVER_UNDERTOW_BUFFER_SIZE:-512}
+      SERVER_UNDERTOW_DIRECT_BUFFERS: ${SERVER_UNDERTOW_DIRECT_BUFFERS:-false}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:?set Neon production SPRING_DATASOURCE_URL in docker/.env}
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:-4}
+      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:-1}
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:-30000}
+      XZS_AI_CONFIG_SECRET: ${XZS_AI_CONFIG_SECRET:?set production XZS_AI_CONFIG_SECRET in docker/.env}
     ports:
-      - "8000:8000"
+      - "${XZS_HOST_PORT:-8000}:8000"
     volumes:
-      - ../release/java:/usr/local/xzs/release:ro
       - ./log:/usr/log/xzs/
-
-volumes:
-  xzs-postgres-data:

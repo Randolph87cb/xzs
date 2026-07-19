@@ -24,9 +24,11 @@
 `docker` 目录保存 Docker 部署材料：
 
 - `docker/docker-compose.yml`：compose 配置。
-- `docker/README.md`：Docker Compose 启动、日志、JVM/Undertow/Hikari 参数、Cloudflare 缓存检查、Fly 测试环境约定和 Docker PostgreSQL 备份恢复说明。
+- `docker/.env.production.example`：树莓派生产环境 env 模板，真实 `.env` 必须在树莓派本机维护并连接 Neon `production` branch。
+- `docker/README.md`：Docker Compose 启动、日志、JVM/Undertow/Hikari 参数、Cloudflare 缓存检查、ACR 镜像更新和回滚说明。
+- `docs/container-image-deployment.md`：树莓派和 Fly 共用 `Dockerfile` 的容器镜像、运行参数、模板入口和验证入口说明。
 
-Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postgresql.sql` 作为数据库初始化脚本。后端容器运行 `release/java/xzs-3.9.0.jar`；`docker/release` 不再保存同名 jar 副本，避免发布制品来源不一致。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，仓库不再附带 docker-compose 二进制。
+当前树莓派 Docker Compose 只运行应用容器，镜像来自阿里云 ACR，镜像内已包含后端 Jar、管理端和学生端静态资源。生产数据库在 Neon `production` branch，Compose 不再默认启动本地 PostgreSQL，也不再挂载 `release/java/xzs-3.9.0.jar`。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，仓库不再附带 docker-compose 二进制。
 
 ## Neon 数据库
 

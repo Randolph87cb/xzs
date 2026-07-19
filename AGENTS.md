@@ -14,13 +14,13 @@
 - 本地构建、测量、静态资源同步、维护和数据导入脚本在 `scripts`。
 - 构建性能优化方案和已完成的现代前端迁移路线在 `docs/build-performance-optimization-plan.md`、`docs/frontend-modernization-migration-roadmap.md`。
 - Fly.io 冷启动按量部署说明在 `docs/fly-managed-postgres-deployment.md`；根目录 `Dockerfile` 和 `fly.toml` 是 Fly 部署入口。
-- 树莓派部署说明在 `docs/raspberry-pi-deployment.md`；对应 systemd 服务模板和数据库初始化、备份、恢复脚本在 `deploy/raspberry-pi`。
+- 树莓派部署说明在 `docs/raspberry-pi-deployment.md` 和 `docker/README.md`；树莓派与 Fly 共用容器镜像的说明在 `docs/container-image-deployment.md`；对应 systemd 服务模板和数据库初始化、备份、恢复脚本在 `deploy/raspberry-pi`。
 - 发布包与部署材料分别在 `release`、`docker` 和 `deploy`。
 
 ## 树莓派与 Docker 运维入口
 
 - 树莓派迁移、性能、备份、恢复或故障排查任务开始前，先确认当前实际部署方式是 Docker Compose、systemd/Jar 还是其他方式。
-- 用户已说明树莓派使用 Docker 时，优先读取 `docker/README.md` 和 `docker/docker-compose.yml`，再结合 `docs/fly-to-raspberry-pi-data-migration-plan.md` 判断迁移、备份和冷备流程。
+- 用户已说明树莓派使用 Docker 时，优先读取 `docs/container-image-deployment.md`、`docker/README.md` 和 `docker/docker-compose.yml`；历史迁移问题再结合 `docs/fly-to-raspberry-pi-data-migration-plan.md`。
 - 未确认部署方式时，不要直接套用 `deploy/raspberry-pi` 的 systemd/Jar 流程；`docs/raspberry-pi-deployment.md` 只代表 systemd/Jar 直部署路线。
 
 ## Neon 数据库配置约定
