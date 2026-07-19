@@ -14,6 +14,13 @@
 
 推荐把右侧“审核处理”和“AI 预审结构”合并成一个普通滚动面板，取消 sticky 浮层；面板内部按从上到下固定为：审核表单、AI 概览、AI 详细原因。审核意见 textarea 只能填入明确的学生可见字段 `studentFeedback`，不能再兜底使用可能是老师口吻的 `reviewComment`。
 
+## 本次确认范围
+
+- 单题 AI 按钮放入合并后的右侧面板中，位置放在 AI 概览标题右侧或概览区底部，文案继续使用“AI 预审当前题 / 重新预审当前题”。
+- 页面顶部继续保留“AI 批量预审”按钮。
+- AI prompt 保持当前 JSON 字段结构：`reviewResult`、`teacherReason`、`studentFeedback`、`missingPoints`、`confidence`。
+- 本次实现重点是 UI 合并、按钮位置、学生可见草稿填充来源收紧；不新增数据库字段，不改变 AI 接口路径。
+
 ## 需求拆解
 
 ### 1. 取消右侧审核处理浮窗
@@ -67,8 +74,8 @@
 - 修改方案：
   - 前端自动填入 textarea 的来源改为：
     - 首选：`aiReview.studentFeedback`。
-    - 只有在明确判定为旧记录且没有 `teacherReason/reason` 时，才允许兼容 `reviewComment`。
-    - 不再直接用 `reviewComment` 无条件兜底。
+    - 不再把 `reviewComment`、`teacherReason`、`reason` 等字段兜底写入 textarea。
+    - 旧字段 `reviewComment` 只在 AI 详细原因里标注为“旧字段兼容”展示，供老师参考。
   - `getStudentVisibleAiFeedback()` 改名或拆分为更明确的函数：
     - `getAiStudentFeedbackDraft()`：只返回可写入 textarea 的学生反馈。
     - `getAiTeacherReason()`：只用于 AI 详细原因展示。
@@ -83,26 +90,22 @@
   - 构造 AI 记录：`studentFeedback` 和 `teacherReason` 同时存在，textarea 只填 `studentFeedback`。
   - 旧记录仅有 `reviewComment` 时仍可显示，但需在 UI 上标注“旧字段兼容”，避免误认为新结构。
 
-### 4. 强化后端 AI 输出约束
+### 4. 后端 AI 输出约束（本次不改）
 
 - 当前现状：
   - 后端 prompt 已要求 `studentFeedback` 面向学生，但仍允许模型在内容里出现“建议返回”“学生已经”等老师口吻。
   - `parseSuggestion()` 里 `studentFeedback` 缺失时会使用 `reviewComment/suggestion` 兜底。
 - 判断：
   - 仅靠前端防守不够，模型输出也要更明确地约束语气和字段职责。
-- 修改方案：
-  - 调整 `QuestionCorrectionAiReviewService.buildMessages()` prompt：
-    - `studentFeedback` 必须直接写给学生，用第二人称或明确指令口吻。
-    - 禁止出现“建议通过”“建议驳回”“老师可以”“学生已经”等给老师看的话。
-    - `teacherReason` 才能写判断依据、审核倾向和内部分析。
-  - 调整 `parseSuggestion()`：
-    - 新结构中不再把 `reason/teacherReason` 转成 `studentFeedback`。
-    - `reviewComment/suggestion` 只作为旧模型兼容字段，并在前端不默认自动应用。
-  - 可选增加简单清洗/检测：
-    - 如果 `studentFeedback` 包含明显老师口吻关键词，前端不自动应用，只显示为“需老师改写”。
-- 影响范围：
+- 本次确认：
+  - 用户已确认 prompt 继续使用当前 JSON 字段结构：`reviewResult`、`teacherReason`、`studentFeedback`、`missingPoints`、`confidence`。
+  - 本次不修改后端 prompt、AI 接口路径、数据库结构或解析兼容策略。
+- 后续可选方案：
+  - 如果后续仍出现 `studentFeedback` 里混入老师口吻，再单独调整 `QuestionCorrectionAiReviewService.buildMessages()` 的字段说明和语气约束。
+  - 如果旧模型字段长期存在，再单独评估历史记录清洗或重跑 AI 预审。
+- 后续影响范围：
   - `source/xzs/src/main/java/com/mindskip/xzs/service/QuestionCorrectionAiReviewService.java`
-- 验证方案：
+- 后续验证方案：
   - 单元级或最小方法测试：模拟 JSON 缺失 `studentFeedback` 时不会生成老师理由作为学生反馈。
   - 手动 AI 预审一题，确认 textarea 内容是直接给学生看的修改建议。
 
@@ -110,7 +113,7 @@
 
 1. 前端先取消 sticky 浮层并合并右侧面板，解决“挡住点不到”的即时问题。
 2. 前端收紧自动填入逻辑，只允许 `studentFeedback` 自动进入 textarea。
-3. 后端 prompt 和解析兜底同步收紧，减少后续 AI 返回老师口吻内容。
+3. 保持后端 prompt JSON 结构不变，前端只把 `studentFeedback` 当作学生可见草稿。
 4. 浏览器验证管理端真实页面，并用至少两条 AI 记录覆盖“新结构”和“旧兼容”。
 
 ## 风险与待确认

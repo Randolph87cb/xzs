@@ -116,7 +116,7 @@
           </section>
 
           <aside class="correction-workbench__side-panel">
-            <section class="correction-workbench__card correction-workbench__review-card">
+            <section class="correction-workbench__card correction-workbench__review-panel">
               <div class="correction-workbench__section-header">
                 <h2>审核处理</h2>
                 <el-tag size="small" :type="statusTagType(detail.review_status)">
@@ -124,90 +124,116 @@
                 </el-tag>
               </div>
 
-              <el-form class="correction-workbench__form" label-position="top" :disabled="!canReview">
-                <el-form-item label="审核结果">
-                  <el-radio-group
-                    v-model="reviewForm.reviewResult"
-                    class="correction-workbench__decision-group"
-                    @change="markReviewFormEdited"
-                  >
-                    <el-radio-button :value="NO_DECISION">不采纳 AI</el-radio-button>
-                    <el-radio-button value="APPROVED">通过</el-radio-button>
-                    <el-radio-button value="REJECTED">驳回</el-radio-button>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item label="审核意见">
-                  <el-input
-                    v-model="reviewForm.reviewComment"
-                    type="textarea"
-                    :rows="7"
-                    placeholder="填写学生可见的审核意见。驳回时请说明需要补充或修正的内容。"
-                    @input="markReviewFormEdited"
-                  />
-                </el-form-item>
-              </el-form>
+              <section class="correction-workbench__review-block">
+                <h3>审核草稿</h3>
+                <el-form class="correction-workbench__form" label-position="top" :disabled="!canReview">
+                  <el-form-item label="审核结果">
+                    <el-radio-group
+                      v-model="reviewForm.reviewResult"
+                      class="correction-workbench__decision-group"
+                      @change="markReviewFormEdited"
+                    >
+                      <el-radio-button :value="NO_DECISION">不采纳 AI</el-radio-button>
+                      <el-radio-button value="APPROVED">通过</el-radio-button>
+                      <el-radio-button value="REJECTED">驳回</el-radio-button>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item label="审核意见">
+                    <el-input
+                      v-model="reviewForm.reviewComment"
+                      type="textarea"
+                      :rows="7"
+                      placeholder="填写学生可见的审核意见。驳回时请说明需要补充或修正的内容。"
+                      @input="markReviewFormEdited"
+                    />
+                  </el-form-item>
+                </el-form>
 
-              <p v-if="aiDraftApplied" class="correction-workbench__draft-note">
-                已将 AI 的学生可见建议填入草稿，保存前仍需老师确认。
-              </p>
-              <div class="correction-workbench__actions-row">
-                <el-button v-if="canApplyAiSuggestion" plain @click="applyAiSuggestionManually">应用 AI 建议</el-button>
-                <el-button :loading="reviewing" :disabled="!canReview" @click="saveReview(false)">仅保存</el-button>
-                <el-button type="primary" :loading="reviewing" :disabled="!canReview" @click="saveReview(true)">
-                  保存并下一题
-                </el-button>
-              </div>
-            </section>
-
-            <section class="correction-workbench__card correction-workbench__ai-card">
-              <div class="correction-workbench__section-header">
-                <h2>AI 预审建议</h2>
-                <el-tag size="small" :type="aiStatusTagType(currentAiReview?.status, currentAiReview?.reviewResult)">
-                  {{ aiStatusText(currentAiReview?.status, currentAiReview?.reviewResult) }}
-                </el-tag>
-              </div>
-
-              <template v-if="currentAiReview">
-                <dl class="correction-workbench__ai-summary">
-                  <div>
-                    <dt>建议</dt>
-                    <dd>{{ currentAiReview.reviewResult ? aiResultText(currentAiReview.reviewResult) : '暂无' }}</dd>
-                  </div>
-                  <div>
-                    <dt>置信度</dt>
-                    <dd>{{ formatConfidence(currentAiReview.confidence) }}</dd>
-                  </div>
-                  <div class="correction-workbench__ai-summary-block">
-                    <dt>缺失点</dt>
-                    <dd>
-                      <ul v-if="currentAiReview.missingPoints.length > 0" class="correction-workbench__ai-list">
-                        <li v-for="point in currentAiReview.missingPoints" :key="point">{{ point }}</li>
-                      </ul>
-                      <span v-else>暂无</span>
-                    </dd>
-                  </div>
-                  <div class="correction-workbench__ai-summary-block">
-                    <dt>给老师看的理由</dt>
-                    <dd>{{ currentAiReview.teacherReason || currentAiReview.reason || '暂无' }}</dd>
-                  </div>
-                  <div class="correction-workbench__ai-summary-block">
-                    <dt>返回给学生的建议</dt>
-                    <dd>{{ currentAiReview.studentFeedback || currentAiReview.reviewComment || '暂无' }}</dd>
-                  </div>
-                  <div class="correction-workbench__ai-summary-block">
-                    <dt>错误信息</dt>
-                    <dd class="correction-workbench__danger-text">{{ currentAiReview.errorMessage || '暂无' }}</dd>
-                  </div>
-                </dl>
-                <p v-if="currentAiReview.finishTime" class="correction-workbench__muted-text">
-                  完成时间：{{ currentAiReview.finishTime }}
+                <p v-if="aiDraftApplied" class="correction-workbench__draft-note">
+                  已将 AI 的学生可见建议填入草稿，保存前仍需老师确认。
                 </p>
-              </template>
-              <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
+                <p
+                  v-else-if="currentAiReview?.status === 'SUCCESS' && !currentAiStudentFeedbackDraft"
+                  class="correction-workbench__muted-text"
+                >
+                  AI 未返回学生可见建议，请老师手动填写或重新预审。
+                </p>
+                <div class="correction-workbench__actions-row">
+                  <el-button v-if="canApplyAiSuggestion" plain @click="applyAiSuggestionManually">应用 AI 建议</el-button>
+                  <el-button :loading="reviewing" :disabled="!canReview" @click="saveReview(false)">仅保存</el-button>
+                  <el-button type="primary" :loading="reviewing" :disabled="!canReview" @click="saveReview(true)">
+                    保存并下一题
+                  </el-button>
+                </div>
+              </section>
 
-              <el-button type="primary" plain :loading="aiCurrentLoading" @click="runAiReviewForCurrent">
-                {{ currentAiReview ? '重新预审当前题' : 'AI 预审当前题' }}
-              </el-button>
+              <section class="correction-workbench__review-block correction-workbench__ai-overview">
+                <div class="correction-workbench__section-header">
+                  <div>
+                    <h3>AI 概览</h3>
+                    <el-tag size="small" :type="aiStatusTagType(currentAiReview?.status, currentAiReview?.reviewResult)">
+                      {{ aiStatusText(currentAiReview?.status, currentAiReview?.reviewResult) }}
+                    </el-tag>
+                  </div>
+                  <el-button type="primary" plain :loading="aiCurrentLoading" @click="runAiReviewForCurrent">
+                    {{ currentAiReview ? '重新预审当前题' : 'AI 预审当前题' }}
+                  </el-button>
+                </div>
+
+                <template v-if="currentAiReview">
+                  <dl class="correction-workbench__ai-summary">
+                    <div>
+                      <dt>建议</dt>
+                      <dd>{{ currentAiReview.reviewResult ? aiResultText(currentAiReview.reviewResult) : '暂无' }}</dd>
+                    </div>
+                    <div>
+                      <dt>置信度</dt>
+                      <dd>{{ formatConfidence(currentAiReview.confidence) }}</dd>
+                    </div>
+                    <div class="correction-workbench__ai-summary-block">
+                      <dt>缺失点</dt>
+                      <dd>
+                        <ul v-if="currentAiReview.missingPoints.length > 0" class="correction-workbench__ai-list">
+                          <li v-for="point in currentAiReview.missingPoints" :key="point">{{ point }}</li>
+                        </ul>
+                        <span v-else>暂无</span>
+                      </dd>
+                    </div>
+                  </dl>
+                </template>
+                <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
+              </section>
+
+              <section class="correction-workbench__review-block">
+                <h3>AI 详细原因</h3>
+                <template v-if="currentAiReview">
+                  <dl class="correction-workbench__ai-summary">
+                    <div class="correction-workbench__ai-summary-block">
+                      <dt>给老师看的理由</dt>
+                      <dd>{{ currentAiReview.teacherReason || currentAiReview.reason || '暂无' }}</dd>
+                    </div>
+                    <div class="correction-workbench__ai-summary-block">
+                      <dt>返回给学生的建议</dt>
+                      <dd>{{ currentAiStudentFeedbackDraft || '暂无' }}</dd>
+                    </div>
+                    <div
+                      v-if="!currentAiStudentFeedbackDraft && currentAiReview.reviewComment"
+                      class="correction-workbench__ai-summary-block"
+                    >
+                      <dt>旧字段兼容</dt>
+                      <dd>{{ currentAiReview.reviewComment }}</dd>
+                    </div>
+                    <div class="correction-workbench__ai-summary-block">
+                      <dt>错误信息</dt>
+                      <dd class="correction-workbench__danger-text">{{ currentAiReview.errorMessage || '暂无' }}</dd>
+                    </div>
+                  </dl>
+                  <p v-if="currentAiReview.finishTime" class="correction-workbench__muted-text">
+                    完成时间：{{ currentAiReview.finishTime }}
+                  </p>
+                </template>
+                <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
+              </section>
             </section>
 
             <section class="correction-workbench__card">
@@ -342,11 +368,17 @@ const currentAiReview = computed<NormalizedAiReview | null>(() => {
   if (!detail.value) return null
   return normalizeAiReview(detail.value)
 })
+const currentAiStudentFeedbackDraft = computed(() => {
+  const aiReview = currentAiReview.value
+  return aiReview ? getAiStudentFeedbackDraft(aiReview) : ''
+})
 const canReview = computed(() => detail.value?.review_status === 'SUBMITTED')
 const canApplyAiSuggestion = computed(() => {
   const aiReview = currentAiReview.value
   if (!canReview.value || !aiReview || aiReview.status !== 'SUCCESS') return false
-  return Boolean(getStudentVisibleAiFeedback(aiReview) || aiReview.reviewResult === 'APPROVED' || aiReview.reviewResult === 'REJECTED')
+  return Boolean(
+    getAiStudentFeedbackDraft(aiReview) || aiReview.reviewResult === 'APPROVED' || aiReview.reviewResult === 'REJECTED'
+  )
 })
 const reviewQuestion = computed(() => {
   if (!detail.value) return null
@@ -597,7 +629,7 @@ function applyAiSuggestion(aiReview: NormalizedAiReview, manuallyApplied: boolea
     reviewForm.reviewResult = NO_DECISION
   }
 
-  const studentFeedback = getStudentVisibleAiFeedback(aiReview)
+  const studentFeedback = getAiStudentFeedbackDraft(aiReview)
   if (studentFeedback) {
     reviewForm.reviewComment = studentFeedback
     applied = true
@@ -607,8 +639,14 @@ function applyAiSuggestion(aiReview: NormalizedAiReview, manuallyApplied: boolea
     aiDraftApplied.value = true
     reviewFormEdited.value = manuallyApplied
     if (manuallyApplied) {
-      ElMessage.success('已应用 AI 建议草稿')
+      if (studentFeedback) {
+        ElMessage.success('已应用 AI 建议草稿')
+      } else {
+        ElMessage.warning('已应用 AI 审核结果；AI 未返回学生可见建议，请老师手动填写或重新预审')
+      }
     }
+  } else if (manuallyApplied) {
+    ElMessage.warning('AI 未返回可应用的审核建议，请老师手动审核或重新预审')
   }
 }
 
@@ -773,8 +811,8 @@ function normalizeMissingPoints(value?: string[] | string | null) {
   return [trimmed]
 }
 
-function getStudentVisibleAiFeedback(aiReview: NormalizedAiReview) {
-  return aiReview.studentFeedback?.trim() || aiReview.reviewComment?.trim() || ''
+function getAiStudentFeedbackDraft(aiReview: NormalizedAiReview) {
+  return aiReview.studentFeedback?.trim() || ''
 }
 
 function formatConfidence(value?: number | string) {
@@ -863,6 +901,7 @@ function parseAnswerArray(value?: string | null) {
 .correction-workbench__queue-header h2,
 .correction-workbench__panel-header h2,
 .correction-workbench__section-header h2,
+.correction-workbench__review-block h3,
 .correction-workbench__card h2,
 .correction-workbench__student-answer h3,
 .correction-workbench__panel-header p,
@@ -877,6 +916,11 @@ function parseAnswerArray(value?: string | null) {
 .correction-workbench__card h2 {
   color: var(--xzs-text);
   font-size: 18px;
+}
+
+.correction-workbench__review-block h3 {
+  color: var(--xzs-text);
+  font-size: 15px;
 }
 
 .correction-workbench__panel-header p {
@@ -981,17 +1025,32 @@ function parseAnswerArray(value?: string | null) {
   overflow: auto;
 }
 
-.correction-workbench__review-card {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  box-shadow: 0 10px 24px rgb(16 32 63 / 7%);
-}
-
 .correction-workbench__card {
   display: grid;
   gap: 12px;
   padding: 14px 16px;
+}
+
+.correction-workbench__review-panel {
+  gap: 16px;
+}
+
+.correction-workbench__review-block {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.correction-workbench__review-block + .correction-workbench__review-block {
+  padding-top: 16px;
+  border-top: 1px solid var(--xzs-border);
+}
+
+.correction-workbench__ai-overview .correction-workbench__section-header > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
 .correction-workbench__form {
@@ -1021,9 +1080,12 @@ function parseAnswerArray(value?: string | null) {
   gap: 10px;
 }
 
-.correction-workbench__ai-card {
+.correction-workbench__ai-overview {
   background: #f9fbff;
-  border-color: #cfe0ff;
+  margin: 0 -16px;
+  padding: 16px;
+  border-top: 1px solid #cfe0ff;
+  border-bottom: 1px solid #cfe0ff;
 }
 
 .correction-workbench__ai-comment,
