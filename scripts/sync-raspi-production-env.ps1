@@ -1,10 +1,13 @@
 param(
   [string]$LocalEnvPath = "docker/.env.production",
+  [string]$LocalComposePath = "docker/docker-compose.yml",
   [string]$RootEnvPath = ".env",
   [string]$RemoteAppDir = "/opt/apps/gesp-csp-quiz",
   [string]$Hostname = "rp.randolph87.top",
   [string]$User = "caobin",
   [switch]$Restart,
+  [switch]$SkipPull,
+  [switch]$Verify,
   [switch]$AllowPlaceholders
 )
 
@@ -14,11 +17,16 @@ if (-not (Test-Path -LiteralPath $LocalEnvPath)) {
   throw "Local production env file not found: $LocalEnvPath. Copy docker/.env.production.example to docker/.env.production and fill production values first."
 }
 
+if (-not (Test-Path -LiteralPath $LocalComposePath)) {
+  throw "Local compose file not found: $LocalComposePath"
+}
+
 if (-not (Test-Path -LiteralPath $RootEnvPath)) {
   throw "Root env file not found: $RootEnvPath. It must contain MY_SSH_KEY for my-rp."
 }
 
 $resolvedLocalEnv = (Resolve-Path -LiteralPath $LocalEnvPath).Path
+$resolvedLocalCompose = (Resolve-Path -LiteralPath $LocalComposePath).Path
 $resolvedRootEnv = (Resolve-Path -LiteralPath $RootEnvPath).Path
 
 $localEnvText = Get-Content -Raw -LiteralPath $resolvedLocalEnv
@@ -37,8 +45,40 @@ if (-not $AllowPlaceholders) {
   }
 }
 
+function ConvertTo-ComposeSafeEnv {
+  param(
+    [string]$SourcePath,
+    [string]$TargetPath
+  )
+
+  $lines = Get-Content -LiteralPath $SourcePath
+  $converted = foreach ($line in $lines) {
+    if ($line -notmatch '^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=(.*)$') {
+      $line
+      continue
+    }
+
+    $key = $Matches[1]
+    $value = $Matches[2].Trim()
+    if (-not $value.Contains('$') -or ($value.StartsWith("'") -and $value.EndsWith("'"))) {
+      $line
+      continue
+    }
+
+    if ($value.StartsWith('"') -and $value.EndsWith('"')) {
+      $value = $value.Substring(1, $value.Length - 2)
+    }
+
+    $escapedValue = $value.Replace("'", "\'")
+    "$key='$escapedValue'"
+  }
+
+  Set-Content -LiteralPath $TargetPath -Value $converted -Encoding UTF8
+}
+
 $python = Get-Command python -ErrorAction Stop
 $tempScript = [System.IO.Path]::ChangeExtension([System.IO.Path]::GetTempFileName(), ".py")
+$tempEnv = [System.IO.Path]::ChangeExtension([System.IO.Path]::GetTempFileName(), ".env")
 
 $pythonSource = @'
 import base64
@@ -78,11 +118,14 @@ def free_port():
 
 
 local_env = Path(os.environ["SYNC_LOCAL_ENV"])
+local_compose = Path(os.environ["SYNC_LOCAL_COMPOSE"])
 root_env = Path(os.environ["SYNC_ROOT_ENV"])
 remote_app_dir = os.environ["SYNC_REMOTE_APP_DIR"]
 hostname = os.environ["SYNC_HOSTNAME"]
 user = os.environ["SYNC_USER"]
 restart = os.environ.get("SYNC_RESTART") == "1"
+skip_pull = os.environ.get("SYNC_SKIP_PULL") == "1"
+verify = os.environ.get("SYNC_VERIFY") == "1"
 
 password = read_env_value(root_env, "MY_SSH_KEY")
 if not password:
@@ -124,18 +167,41 @@ try:
         allow_agent=False,
     )
 
-    remote_tmp = f"/tmp/gesp-csp-quiz-env-{int(time.time())}.tmp"
+    stamp = int(time.time())
+    remote_env_tmp = f"/tmp/gesp-csp-quiz-env-{stamp}.tmp"
+    remote_compose_tmp = f"/tmp/gesp-csp-quiz-compose-{stamp}.tmp"
     sftp = client.open_sftp()
-    sftp.put(str(local_env), remote_tmp)
+    sftp.put(str(local_env), remote_env_tmp)
+    sftp.put(str(local_compose), remote_compose_tmp)
     sftp.close()
 
     restart_block = ""
     if restart:
-        restart_block = r'''
-docker compose --env-file .env pull app
+        pull_block = "" if skip_pull else "docker compose --env-file .env pull app\n"
+        verify_block = ""
+        if verify:
+            verify_block = r'''
+printf '\n--- health ---\n'
+for i in $(seq 1 30); do
+  if curl -fsS http://127.0.0.1:8000/api/health; then
+    printf '\nHEALTH_OK\n'
+    break
+  fi
+  sleep 2
+  if [ "$i" = "30" ]; then
+    printf '\nHEALTH_FAIL\n'
+    docker logs --tail=120 xzs-app | sed -n '/password/Id; /SPRING_DATASOURCE/Id; p'
+    exit 1
+  fi
+done
+printf '\n--- pages ---\n'
+curl -I --max-time 10 http://127.0.0.1:8000/student/index.html | head -n 1
+curl -I --max-time 10 http://127.0.0.1:8000/admin/index.html | head -n 1
+'''
+        restart_block = pull_block + r'''
 docker compose --env-file .env up -d --remove-orphans
 docker compose --env-file .env ps
-'''
+''' + verify_block
 
     script = f'''
 set -eu
@@ -148,10 +214,15 @@ if [ -f .env ]; then
   cp -a .env "$backup_dir/.env"
   chmod 600 "$backup_dir/.env"
 fi
-mv {shlex.quote(remote_tmp)} .env
+if [ -f docker-compose.yml ]; then
+  cp -a docker-compose.yml "$backup_dir/docker-compose.yml"
+fi
+mv {shlex.quote(remote_env_tmp)} .env
+mv {shlex.quote(remote_compose_tmp)} docker-compose.yml
 chmod 600 .env
 docker compose --env-file .env config >/dev/null
 printf 'SYNCED_ENV=%s\n' "$APP_DIR/.env"
+printf 'SYNCED_COMPOSE=%s\n' "$APP_DIR/docker-compose.yml"
 printf 'BACKUP_DIR=%s\n' "$APP_DIR/$backup_dir"
 printf 'COMPOSE_CHECK=ok\n'
 {restart_block}
@@ -176,23 +247,31 @@ finally:
 '@
 
 try {
+  ConvertTo-ComposeSafeEnv -SourcePath $resolvedLocalEnv -TargetPath $tempEnv
   Set-Content -LiteralPath $tempScript -Value $pythonSource -Encoding UTF8
-  $env:SYNC_LOCAL_ENV = $resolvedLocalEnv
+  $env:SYNC_LOCAL_ENV = $tempEnv
+  $env:SYNC_LOCAL_COMPOSE = $resolvedLocalCompose
   $env:SYNC_ROOT_ENV = $resolvedRootEnv
   $env:SYNC_REMOTE_APP_DIR = $RemoteAppDir
   $env:SYNC_HOSTNAME = $Hostname
   $env:SYNC_USER = $User
   $env:SYNC_RESTART = if ($Restart) { "1" } else { "0" }
+  $env:SYNC_SKIP_PULL = if ($SkipPull) { "1" } else { "0" }
+  $env:SYNC_VERIFY = if ($Verify) { "1" } else { "0" }
   & $python.Source $tempScript
   if ($LASTEXITCODE -ne 0) {
     throw "sync failed with exit code $LASTEXITCODE"
   }
 } finally {
   Remove-Item -LiteralPath $tempScript -Force -ErrorAction SilentlyContinue
+  Remove-Item -LiteralPath $tempEnv -Force -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_LOCAL_ENV -ErrorAction SilentlyContinue
+  Remove-Item Env:\SYNC_LOCAL_COMPOSE -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_ROOT_ENV -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_REMOTE_APP_DIR -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_HOSTNAME -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_USER -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_RESTART -ErrorAction SilentlyContinue
+  Remove-Item Env:\SYNC_SKIP_PULL -ErrorAction SilentlyContinue
+  Remove-Item Env:\SYNC_VERIFY -ErrorAction SilentlyContinue
 }
