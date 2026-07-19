@@ -65,6 +65,60 @@ function Import-DotEnv {
     Write-Output "Loaded $loaded environment variables from $Path"
 }
 
+function New-LocalSecret {
+    $bytes = New-Object byte[] 32
+    [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
+    return [Convert]::ToBase64String($bytes)
+}
+
+function Ensure-LocalAiConfigSecret {
+    param([string]$Path)
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        throw "Environment file not found: $Path"
+    }
+
+    $lines = @(Get-Content -LiteralPath $Path -Encoding UTF8)
+    $secretPattern = '^\s*XZS_AI_CONFIG_SECRET\s*='
+    $secretLineIndex = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match $secretPattern) {
+            $secretLineIndex = $i
+            break
+        }
+    }
+
+    if ($secretLineIndex -ge 0) {
+        $separatorIndex = $lines[$secretLineIndex].IndexOf("=")
+        $currentValue = ""
+        if ($separatorIndex -ge 0) {
+            $currentValue = $lines[$secretLineIndex].Substring($separatorIndex + 1).Trim()
+        }
+
+        if (-not [string]::IsNullOrWhiteSpace($currentValue)) {
+            Write-Output "AI config secret is present in local env file."
+            return
+        }
+
+        $lines[$secretLineIndex] = "XZS_AI_CONFIG_SECRET=$(New-LocalSecret)"
+        Set-Content -LiteralPath $Path -Value $lines -Encoding UTF8
+        Write-Output "Generated missing XZS_AI_CONFIG_SECRET in local env file."
+        return
+    }
+
+    $updatedLines = New-Object System.Collections.Generic.List[string]
+    foreach ($line in $lines) {
+        $updatedLines.Add($line)
+    }
+    if ($updatedLines.Count -gt 0 -and -not [string]::IsNullOrWhiteSpace($updatedLines[$updatedLines.Count - 1])) {
+        $updatedLines.Add("")
+    }
+    $updatedLines.Add("# Local-only encryption secret for saved AI review API keys. Do not commit real values.")
+    $updatedLines.Add("XZS_AI_CONFIG_SECRET=$(New-LocalSecret)")
+    Set-Content -LiteralPath $Path -Value $updatedLines -Encoding UTF8
+    Write-Output "Generated XZS_AI_CONFIG_SECRET in local env file."
+}
+
 function Set-NoProxyValue {
     param([string[]]$RequiredHosts)
 
@@ -196,6 +250,7 @@ if (-not $EnvFile) {
     $EnvFile = Join-Path $workspaceRoot ".env.neon-test"
 }
 
+Ensure-LocalAiConfigSecret -Path $EnvFile
 Import-DotEnv -Path $EnvFile
 Set-NoProxyValue -RequiredHosts @("localhost", "127.0.0.1", "::1")
 

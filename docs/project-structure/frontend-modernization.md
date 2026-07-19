@@ -160,6 +160,8 @@ pnpm --dir frontend verify:admin-ui
 .\scripts\start-local-neon.ps1
 ```
 
+脚本会在 `.env.neon-test` 缺少 `XZS_AI_CONFIG_SECRET` 时自动生成本地随机值，用于加密保存的 AI 预审 API Key；该值只保存在被 Git 忽略的本地 env 文件中，不会写入可提交文件。已有后端进程不会自动读取新生成的值，需要重启后端。
+
 如果明确要校验当前已有本地服务，不启动新后端：
 
 ```powershell

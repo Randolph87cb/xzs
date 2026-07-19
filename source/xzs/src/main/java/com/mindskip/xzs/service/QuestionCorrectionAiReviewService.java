@@ -100,7 +100,7 @@ public class QuestionCorrectionAiReviewService {
         }
         if (StringUtils.isNotBlank(request.getApiKey())) {
             if (StringUtils.isBlank(configSecret)) {
-                return "服务端未配置 XZS_AI_CONFIG_SECRET，不能保存 API Key";
+                return "服务端未配置 XZS_AI_CONFIG_SECRET，不能保存 API Key；本地请使用 scripts/start-local-neon.ps1 自动生成后重启服务";
             }
             apiKeyCipher = encrypt(request.getApiKey().trim());
         }
@@ -384,7 +384,7 @@ public class QuestionCorrectionAiReviewService {
 
     private String decrypt(String cipherText) {
         if (StringUtils.isBlank(configSecret)) {
-            throw new IllegalStateException("服务端未配置 XZS_AI_CONFIG_SECRET，不能读取 API Key");
+            throw new IllegalStateException("服务端未配置 XZS_AI_CONFIG_SECRET，不能读取 API Key；本地请使用 scripts/start-local-neon.ps1 自动生成后重启服务");
         }
         try {
             byte[] combined = Base64.getDecoder().decode(cipherText);

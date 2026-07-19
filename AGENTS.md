@@ -30,6 +30,7 @@
 - 生产使用 Neon `production` branch；本地直接启动 Java 服务、构建后验收和测试环境使用 Neon `test` branch。不要用本地测试服务连接 `production` branch，除非用户明确要求只读排查。
 - 本地真实配置写入 `.env.neon-test`，该文件被 Git 忽略；可提交模板为 `.env.neon-test.example`。不要把 Neon 密码、完整连接串或 Fly/Neon secrets 写入可提交文档、脚本或日志。
 - 本地 Neon test branch 启动后端优先使用 `scripts/start-local-neon.ps1`，由脚本统一完成前端构建、静态资源同步、启动前文件级一致性校验、`spring-boot:run` 受控启动和启动后 HTTP 一致性校验；正常启动前如果 BaseUrl 已有 `/admin/index.html` 或 `/student/index.html` 可访问，脚本默认失败，需先停止旧服务，或显式传 `-UseExistingService` 只校验已有服务并退出。
+- `scripts/start-local-neon.ps1` 会在 `.env.neon-test` 缺少 `XZS_AI_CONFIG_SECRET` 时自动生成本地随机值，用于加密老师保存的 AI 预审 API Key；不要把真实值写入可提交文件。已用其它方式启动的后端不会自动读取新值，需要重启。
 - 修改管理端或学生端 Web 前端后，验收必须运行 `scripts/verify-web-static-consistency.ps1`，或通过 `scripts/start-local-neon.ps1` / `scripts/build-all.ps1` 的内置校验通过；`verify-web-static-consistency.ps1` 会合并设置 localhost NO_PROXY，默认要求 `source/xzs/target/classes/static` 存在并一致，只有确认后端本地直读 Vite 输出时才允许显式传 `-AllowMissingRuntimeStatic`；需要确认运行中服务时不要传 `-SkipHttpCheck`。
 - Hikari 在 Neon 免费/低配环境默认使用保守配置：`SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE=3`、`SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE=1`。提高并发前先检查 Neon 连接数、冷启动和查询耗时。
 - Neon branch 管理约定：`test` branch 可从 `production` branch reset 或重建以复制生产数据；reset 会丢弃 `test` branch 上的测试写入，执行前先确认没有需要保留的数据。
