@@ -141,9 +141,12 @@ body {
 }
 
 .admin-layout__aside {
+  flex: 0 0 auto;
+  overflow-x: hidden;
   border-right: 1px solid var(--xzs-border);
   color: var(--xzs-text-muted);
   background: var(--xzs-surface);
+  transition: width 0.18s ease;
 }
 
 .admin-layout__brand {
@@ -154,6 +157,11 @@ body {
   padding: 0 18px;
   border-bottom: 1px solid var(--xzs-border);
   color: var(--xzs-text);
+}
+
+.admin-layout__aside.is-collapsed .admin-layout__brand {
+  justify-content: center;
+  padding: 0 12px;
 }
 
 .admin-layout__mark {
@@ -185,6 +193,14 @@ body {
   margin-right: 8px;
 }
 
+.admin-layout__menu.el-menu--collapse {
+  width: 64px;
+}
+
+.admin-layout__menu.el-menu--collapse .admin-layout__menu-icon {
+  margin-right: 0;
+}
+
 .admin-layout__header {
   display: flex;
   align-items: center;
@@ -207,6 +223,10 @@ body {
   color: var(--xzs-primary);
   font-size: 18px;
   font-weight: 700;
+}
+
+.admin-layout__collapse-button {
+  flex: 0 0 auto;
 }
 
 .admin-layout__tabs {
@@ -529,7 +549,7 @@ body {
 }
 
 @media (max-width: 900px) {
-  .admin-layout__aside {
+  .admin-layout__aside:not(.is-collapsed) {
     width: 184px !important;
   }
 

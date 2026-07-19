@@ -223,6 +223,9 @@ export interface AdminQuestionCorrectionItem {
   ai_review_comment?: string
   ai_review_confidence?: number | string
   ai_review_reason?: string
+  ai_review_teacher_reason?: string
+  ai_review_student_feedback?: string
+  ai_review_missing_points?: string[]
   ai_review_error_message?: string
   ai_review_time?: string
   aiReview?: AdminQuestionCorrectionAiReview | null
@@ -238,8 +241,17 @@ export interface AdminQuestionCorrectionAiReview {
   reviewComment?: string
   confidence?: number | string
   reason?: string
+  teacherReason?: string
+  studentFeedback?: string
+  missingPoints?: string[]
   errorMessage?: string
   finishTime?: string
+}
+
+export interface AdminQuestionCorrectionAiReviewResponse {
+  correctionId: number
+  reviewStatus: NonNullable<AdminQuestionCorrectionItem['review_status']>
+  aiReview: AdminQuestionCorrectionAiReview | null
 }
 
 export interface AdminQuestionCorrectionReviewRecord {
@@ -447,10 +459,8 @@ export function saveAdminQuestionCorrectionReview(
 
 export function reviewAdminQuestionCorrectionWithAi(
   id: number
-): Promise<ApiResponse<AdminQuestionCorrectionAiReview | AdminQuestionCorrectionItem | null>> {
-  return post<AdminQuestionCorrectionAiReview | AdminQuestionCorrectionItem | null>(
-    `/api/admin/questionCorrection/ai/review/${id}`
-  )
+): Promise<ApiResponse<AdminQuestionCorrectionAiReviewResponse>> {
+  return post<AdminQuestionCorrectionAiReviewResponse>(`/api/admin/questionCorrection/ai/review/${id}`)
 }
 
 export function reviewAdminQuestionCorrectionsWithAiBatch(

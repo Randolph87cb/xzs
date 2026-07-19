@@ -15,14 +15,20 @@
           <el-tag size="small" type="info">{{ total }} 条</el-tag>
         </div>
 
-        <el-tabs v-model="activeCorrectionLayer" class="question-error__tabs" @tab-change="handleLayerChange">
-          <el-tab-pane v-for="layer in correctionLayers" :key="layer.key" :name="layer.key">
-            <template #label>
-              <span>{{ layer.label }}</span>
-              <span class="question-error__tab-count">{{ layerCount(layer.key) }}</span>
-            </template>
-          </el-tab-pane>
-        </el-tabs>
+        <div class="question-error__status-grid" aria-label="改错状态筛选">
+          <button
+            v-for="layer in correctionLayers"
+            :key="layer.key"
+            type="button"
+            class="question-error__status-filter"
+            :class="{ 'is-active': activeCorrectionLayer === layer.key }"
+            :aria-pressed="activeCorrectionLayer === layer.key"
+            @click="handleLayerChange(layer.key)"
+          >
+            <span class="question-error__status-label">{{ layer.label }}</span>
+            <span class="question-error__status-count">{{ layerCount(layer.key) }}</span>
+          </button>
+        </div>
 
         <div v-if="filteredQuestions.length > 0" class="question-error__queue-list">
           <button
@@ -95,10 +101,10 @@
 
               <el-form v-if="canSubmitCorrection" class="question-error__inline-form" label-position="top">
                 <el-form-item label="我错在哪里">
-                  <el-input v-model="correctionForm.wrongReason" type="textarea" :rows="5" />
+                  <el-input v-model="correctionForm.wrongReason" type="textarea" :rows="6" />
                 </el-form-item>
                 <el-form-item label="正确思路是什么">
-                  <el-input v-model="correctionForm.correctThinking" type="textarea" :rows="5" />
+                  <el-input v-model="correctionForm.correctThinking" type="textarea" :rows="6" />
                 </el-form-item>
                 <el-form-item>
                   <el-button :loading="submitting" type="primary" @click="submitCorrectionForm">
@@ -120,13 +126,13 @@
               <el-empty v-else description="还没有提交改错" :image-size="72" />
             </section>
 
-            <section class="question-error__card">
-              <div class="question-error__section-header">
-                <h2>历史</h2>
+            <details class="question-error__history">
+              <summary>
+                <span>历史</span>
                 <el-tag size="small" :type="correctionTagType(selectedCorrectionLayer)">
                   {{ selectedCorrectionStatusText }}
                 </el-tag>
-              </div>
+              </summary>
 
               <el-timeline v-if="correction" class="question-error__timeline">
                 <el-timeline-item
@@ -140,7 +146,7 @@
                 </el-timeline-item>
               </el-timeline>
               <el-empty v-else description="暂无改错历史" :image-size="72" />
-            </section>
+            </details>
           </aside>
         </template>
         <el-empty v-else description="请选择错题" />
@@ -299,7 +305,8 @@ function handlePageChange(page: number) {
   loadQuestions()
 }
 
-function handleLayerChange() {
+function handleLayerChange(layer: CorrectionLayerKey) {
+  activeCorrectionLayer.value = layer
   selectFirstQuestionInCurrentLayer()
 }
 
@@ -437,7 +444,7 @@ function questionTypeText(type: number) {
 
 .question-error__workspace {
   display: grid;
-  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
   gap: 14px;
   min-height: 620px;
 }
@@ -446,7 +453,8 @@ function questionTypeText(type: number) {
 .question-error__detail,
 .question-error__question-panel,
 .question-error__card,
-.question-error__rejection {
+.question-error__rejection,
+.question-error__history {
   min-width: 0;
   border: 1px solid var(--xzs-border);
   border-radius: 6px;
@@ -480,34 +488,6 @@ function questionTypeText(type: number) {
   font-size: 18px;
 }
 
-.question-error__tabs {
-  min-width: 0;
-  padding: 0 12px;
-}
-
-.question-error__tabs :deep(.el-tabs__header) {
-  margin-bottom: 8px;
-}
-
-.question-error__tabs :deep(.el-tabs__nav-wrap::after) {
-  height: 1px;
-}
-
-.question-error__tab-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  margin-left: 6px;
-  padding: 0 6px;
-  border-radius: 10px;
-  background: var(--xzs-surface-blue);
-  color: var(--xzs-text-muted);
-  font-size: 12px;
-  line-height: 20px;
-}
-
 .question-error__queue-list {
   display: grid;
   align-content: start;
@@ -517,12 +497,68 @@ function questionTypeText(type: number) {
   overflow: auto;
 }
 
+.question-error__status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+  padding: 0 12px 10px;
+}
+
+.question-error__status-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+  min-height: 36px;
+  padding: 7px 9px;
+  border: 1px solid var(--xzs-border);
+  border-radius: 6px;
+  color: var(--xzs-text-muted);
+  text-align: left;
+  white-space: nowrap;
+  background: var(--xzs-surface);
+  cursor: pointer;
+}
+
+.question-error__status-filter:hover,
+.question-error__status-filter.is-active {
+  border-color: var(--xzs-primary);
+  color: var(--xzs-primary);
+  background: var(--xzs-surface-blue);
+}
+
+.question-error__status-label {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.question-error__status-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 78%);
+  color: currentColor;
+  font-size: 12px;
+  line-height: 20px;
+}
+
 .question-error__queue-item {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   min-width: 0;
-  padding: 12px;
+  padding: 10px 12px;
   border: 1px solid transparent;
   border-radius: 6px;
   color: var(--xzs-text);
@@ -564,7 +600,7 @@ function questionTypeText(type: number) {
 
 .question-error__detail {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 420px);
   min-height: 620px;
   overflow: hidden;
 }
@@ -595,7 +631,8 @@ function questionTypeText(type: number) {
 }
 
 .question-error__card,
-.question-error__rejection {
+.question-error__rejection,
+.question-error__history {
   display: grid;
   gap: 12px;
   padding: 14px 16px;
@@ -622,6 +659,14 @@ function questionTypeText(type: number) {
   min-width: 0;
 }
 
+.question-error__inline-form :deep(.el-form-item) {
+  margin-bottom: 14px;
+}
+
+.question-error__inline-form :deep(.el-form-item:last-child) {
+  margin-bottom: 0;
+}
+
 .question-error__correction-content {
   display: grid;
   gap: 12px;
@@ -642,6 +687,26 @@ function questionTypeText(type: number) {
 
 .question-error__timeline {
   padding-left: 4px;
+}
+
+.question-error__history {
+  color: var(--xzs-text);
+}
+
+.question-error__history summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--xzs-text);
+  font-size: 16px;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.question-error__history summary::-webkit-details-marker {
+  display: none;
 }
 
 @media (max-width: 1180px) {

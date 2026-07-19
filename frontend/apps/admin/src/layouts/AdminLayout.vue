@@ -1,14 +1,20 @@
 <template>
   <el-container class="admin-layout">
-    <el-aside class="admin-layout__aside" width="232px">
+    <el-aside class="admin-layout__aside" :class="{ 'is-collapsed': isAsideCollapsed }" :width="asideWidth">
       <div class="admin-layout__brand">
         <img class="admin-layout__mark" :src="appIconUrl" alt="" />
-        <div class="admin-layout__brand-text">
+        <div v-show="!isAsideCollapsed" class="admin-layout__brand-text">
           <strong>信息学客观题一本通</strong>
           <span>信息学智能组卷</span>
         </div>
       </div>
-      <el-menu router :default-active="route.path" class="admin-layout__menu">
+      <el-menu
+        router
+        :collapse="isAsideCollapsed"
+        :collapse-transition="false"
+        :default-active="route.path"
+        class="admin-layout__menu"
+      >
         <template v-for="item in visibleAdminMenus" :key="item.path">
           <el-sub-menu v-if="item.children?.length" :index="item.path">
             <template #title>
@@ -31,6 +37,16 @@
     <el-container>
       <el-header class="admin-layout__header">
         <div class="admin-layout__header-left">
+          <el-tooltip :content="isAsideCollapsed ? '展开菜单' : '收起菜单'" placement="bottom">
+            <el-button
+              class="admin-layout__collapse-button"
+              :icon="isAsideCollapsed ? Expand : Fold"
+              circle
+              text
+              :aria-label="isAsideCollapsed ? '展开菜单' : '收起菜单'"
+              @click="toggleAside"
+            />
+          </el-tooltip>
           <div class="admin-layout__title">管理后台</div>
           <nav class="admin-layout__tabs" aria-label="后台视图">
             <RouterLink
@@ -61,8 +77,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { Bell, Collection, DataLine, EditPen, QuestionFilled, Reading, Search, Tickets } from '@element-plus/icons-vue'
+import { computed, ref } from 'vue'
+import {
+  Bell,
+  Collection,
+  DataLine,
+  EditPen,
+  Expand,
+  Fold,
+  QuestionFilled,
+  Reading,
+  Search,
+  Tickets
+} from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { adminMenus, type AdminMenuIconMap, type AdminMenuItem } from '@/router'
 import { useUserStore } from '@/stores/user'
@@ -78,6 +105,9 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const appIconUrl = `${import.meta.env.BASE_URL}app-icon.svg`
+const asideStorageKey = 'xzs-admin-aside-collapsed'
+const isAsideCollapsed = ref(readAsideCollapsed())
+const asideWidth = computed(() => (isAsideCollapsed.value ? '64px' : '232px'))
 const userInitial = computed(() => (userStore.userInfo?.userName ?? userStore.userName ?? 'A').slice(0, 1).toUpperCase())
 const adminHeaderTabs = [
   { title: '数据看板', path: '/dashboard', isActive: (path: string) => path === '/dashboard' },
@@ -107,6 +137,15 @@ const visibleAdminMenus = computed(() => {
     })
     .filter((item): item is AdminMenuItem => Boolean(item))
 })
+
+function readAsideCollapsed() {
+  return window.localStorage.getItem(asideStorageKey) === '1'
+}
+
+function toggleAside() {
+  isAsideCollapsed.value = !isAsideCollapsed.value
+  window.localStorage.setItem(asideStorageKey, isAsideCollapsed.value ? '1' : '0')
+}
 
 async function handleLogout() {
   await userStore.logout()

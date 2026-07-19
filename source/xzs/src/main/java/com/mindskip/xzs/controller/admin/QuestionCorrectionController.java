@@ -1,5 +1,7 @@
 package com.mindskip.xzs.controller.admin;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.User;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class QuestionCorrectionController extends BaseApiController {
 
     private static final int AI_REVIEW_BATCH_LIMIT = 50;
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final JdbcTemplate jdbcTemplate;
     private final ClassScopeService classScopeService;
@@ -46,6 +49,9 @@ public class QuestionCorrectionController extends BaseApiController {
         args.add(pageSize);
         args.add(offset);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(pageSql(filter), args.toArray());
+        for (Map<String, Object> row : list) {
+            row.put("aiReview", latestAiReview(row));
+        }
 
         Map<String, Object> result = new HashMap<>();
         result.put("list", list);
@@ -246,7 +252,8 @@ public class QuestionCorrectionController extends BaseApiController {
                 "tc.content::jsonb ->> 'questionItemObjects' as items, " +
                 "tc.content::jsonb ->> 'analyze' as analyze, " +
                 "ai.status as ai_review_status, ai.review_result as ai_review_result, ai.review_comment as ai_review_comment, " +
-                "ai.confidence as ai_review_confidence, ai.reason as ai_review_reason, ai.error_message as ai_review_error_message, " +
+                "ai.confidence as ai_review_confidence, ai.reason as ai_review_reason, ai.teacher_reason as ai_review_teacher_reason, " +
+                "ai.student_feedback as ai_review_student_feedback, ai.missing_points as ai_review_missing_points, ai.error_message as ai_review_error_message, " +
                 "ai.finish_time as ai_review_time " +
                 "from t_question_correction_record c " +
                 "join t_user u on u.id = c.user_id " +
@@ -259,7 +266,7 @@ public class QuestionCorrectionController extends BaseApiController {
 
     private String latestAiReviewJoinSql() {
         return "left join lateral (" +
-                "  select status, review_result, review_comment, confidence, reason, error_message, finish_time " +
+                "  select status, review_result, review_comment, confidence, reason, teacher_reason, student_feedback, missing_points, error_message, finish_time " +
                 "  from t_question_correction_ai_review_record ar " +
                 "  where ar.correction_id = c.id " +
                 "  order by ar.create_time desc, ar.id desc limit 1" +
@@ -271,20 +278,74 @@ public class QuestionCorrectionController extends BaseApiController {
             return null;
         }
         Map<String, Object> aiReview = new HashMap<>();
+        String teacherReason = StringUtils.defaultIfBlank(asString(row.get("ai_review_teacher_reason")), asString(row.get("ai_review_reason")));
+        String studentFeedback = StringUtils.defaultIfBlank(asString(row.get("ai_review_student_feedback")), asString(row.get("ai_review_comment")));
+        List<String> missingPoints = parseMissingPointsValue(row.get("ai_review_missing_points"));
+        row.put("ai_review_teacher_reason", teacherReason);
+        row.put("ai_review_student_feedback", studentFeedback);
+        row.put("ai_review_missing_points", missingPoints);
         aiReview.put("status", row.get("ai_review_status"));
         aiReview.put("reviewResult", row.get("ai_review_result"));
-        aiReview.put("reviewComment", row.get("ai_review_comment"));
+        aiReview.put("reviewComment", StringUtils.defaultIfBlank(asString(row.get("ai_review_comment")), studentFeedback));
         aiReview.put("confidence", row.get("ai_review_confidence"));
         aiReview.put("reason", row.get("ai_review_reason"));
+        aiReview.put("teacherReason", teacherReason);
+        aiReview.put("studentFeedback", studentFeedback);
+        aiReview.put("missingPoints", missingPoints);
         aiReview.put("errorMessage", row.get("ai_review_error_message"));
         aiReview.put("finishTime", row.get("ai_review_time"));
         return aiReview;
     }
 
+    private List<String> parseMissingPointsValue(Object value) {
+        if (value == null) {
+            return new ArrayList<>();
+        }
+        if (value instanceof List) {
+            List<String> result = new ArrayList<>();
+            for (Object item : (List<?>) value) {
+                String text = StringUtils.trimToNull(asString(item));
+                if (text != null) {
+                    result.add(text);
+                }
+            }
+            return result;
+        }
+        try {
+            JsonNode root = MAPPER.readTree(asString(value));
+            List<String> result = new ArrayList<>();
+            if (root.isArray()) {
+                for (JsonNode item : root) {
+                    String text = StringUtils.trimToNull(item.asText(null));
+                    if (text != null) {
+                        result.add(text);
+                    }
+                }
+            } else {
+                String text = StringUtils.trimToNull(root.asText(null));
+                if (text != null) {
+                    result.add(text);
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            String text = StringUtils.trimToNull(asString(value));
+            List<String> result = new ArrayList<>();
+            if (text != null) {
+                result.add(text);
+            }
+            return result;
+        }
+    }
+
+    private String asString(Object value) {
+        return value == null ? null : String.valueOf(value);
+    }
+
     private void addFailure(List<Map<String, Object>> failures, Integer correctionId, String status, Map<String, Object> aiReview) {
         Object message = aiReview == null ? null : aiReview.get("error_message");
         if (message == null && aiReview != null) {
-            message = aiReview.get("reason");
+            message = StringUtils.defaultIfBlank(asString(aiReview.get("teacherReason")), asString(aiReview.get("reason")));
         }
         addFailure(failures, correctionId, status, message == null ? null : String.valueOf(message));
     }

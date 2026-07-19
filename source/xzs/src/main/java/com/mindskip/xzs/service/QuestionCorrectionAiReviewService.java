@@ -41,7 +41,7 @@ public class QuestionCorrectionAiReviewService {
     private static final String OPENAI_COMPATIBLE_USER_AGENT =
             "XZS/3.9.0 (OpenAI-compatible AI review; Windows; Java)";
     private static final String DEFAULT_PROMPT =
-            "你是信息学客观题错题改正审核助手。请只给老师预审建议，不要替老师做最终审核。";
+            "你是信息学客观题错题改正审核助手。请只给老师预审建议，不要替老师做最终审核，也不要要求系统自动通过或驳回。";
 
     private final JdbcTemplate jdbcTemplate;
     private final String configSecret;
@@ -205,11 +205,15 @@ public class QuestionCorrectionAiReviewService {
             String rawContent = callOpenAiCompatible(context, config, apiKey);
             AiSuggestion suggestion = parseSuggestion(rawContent);
             jdbcTemplate.update(
-                    "update t_question_correction_ai_review_record set status = 'SUCCESS', review_result = ?, review_comment = ?, confidence = ?, reason = ?, raw_content = ?, finish_time = now() where id = ?",
+                    "update t_question_correction_ai_review_record set status = 'SUCCESS', review_result = ?, review_comment = ?, confidence = ?, reason = ?, " +
+                            "teacher_reason = ?, student_feedback = ?, missing_points = ?::jsonb, raw_content = ?, finish_time = now() where id = ?",
                     suggestion.reviewResult,
                     suggestion.reviewComment,
                     suggestion.confidence,
                     suggestion.reason,
+                    suggestion.teacherReason,
+                    suggestion.studentFeedback,
+                    suggestion.missingPointsJson,
                     rawContent,
                     recordId);
             return selectReviewRecord(recordId);
@@ -271,8 +275,9 @@ public class QuestionCorrectionAiReviewService {
         Map<String, String> user = new HashMap<>();
         user.put("role", "user");
         user.put("content",
-                "请审核学生的错题改正是否说明了错误原因，并给出合理正确思路。只能输出 JSON：" +
-                        "{\"reviewResult\":\"APPROVED|REJECTED|UNCERTAIN\",\"reviewComment\":\"给老师的审核意见\",\"confidence\":0.0,\"reason\":\"简短理由\"}\n\n" +
+                "请审核学生的错题改正是否说明了错误原因，并给出合理正确思路。你只能生成预审建议，不能替老师做最终审核，不能要求系统自动通过或驳回。只能输出 JSON：" +
+                        "{\"reviewResult\":\"APPROVED|REJECTED|UNCERTAIN\",\"teacherReason\":\"给老师看的判断依据\",\"studentFeedback\":\"可直接返回给学生的反馈\",\"missingPoints\":[\"还缺少的关键点\"],\"confidence\":0.0}\n" +
+                        "字段要求：teacherReason 面向老师，可说明内部判断依据；studentFeedback 面向学生，语气应适合直接作为审核意见；missingPoints 必须是字符串数组；confidence 取 0 到 1。\n\n" +
                         "题型：" + valueText(context.get("question_type")) + "\n" +
                         "题干：" + valueText(context.get("title")) + "\n" +
                         "选项：" + valueText(context.get("items")) + "\n" +
@@ -292,8 +297,14 @@ public class QuestionCorrectionAiReviewService {
         JsonNode root = MAPPER.readTree(json);
         AiSuggestion suggestion = new AiSuggestion();
         suggestion.reviewResult = normalizeReviewResult(root.path("reviewResult").asText(null));
-        suggestion.reviewComment = StringUtils.defaultIfBlank(root.path("reviewComment").asText(null), root.path("suggestion").asText(null));
-        suggestion.reason = root.path("reason").asText(null);
+        suggestion.teacherReason = StringUtils.defaultIfBlank(root.path("teacherReason").asText(null), root.path("reason").asText(null));
+        suggestion.studentFeedback = StringUtils.defaultIfBlank(
+                root.path("studentFeedback").asText(null),
+                StringUtils.defaultIfBlank(root.path("reviewComment").asText(null), root.path("suggestion").asText(null)));
+        suggestion.reviewComment = suggestion.studentFeedback;
+        suggestion.reason = suggestion.teacherReason;
+        suggestion.missingPoints = readMissingPoints(root.get("missingPoints"));
+        suggestion.missingPointsJson = MAPPER.writeValueAsString(suggestion.missingPoints);
         if (root.has("confidence") && root.get("confidence").isNumber()) {
             BigDecimal confidence = root.get("confidence").decimalValue();
             if (confidence.compareTo(BigDecimal.ZERO) < 0) {
@@ -307,7 +318,31 @@ public class QuestionCorrectionAiReviewService {
         if (StringUtils.isBlank(suggestion.reviewComment)) {
             suggestion.reviewComment = "AI 未给出明确审核意见，请老师人工判断。";
         }
+        if (StringUtils.isBlank(suggestion.studentFeedback)) {
+            suggestion.studentFeedback = suggestion.reviewComment;
+        }
         return suggestion;
+    }
+
+    private List<String> readMissingPoints(JsonNode node) {
+        List<String> missingPoints = new ArrayList<>();
+        if (node == null || node.isMissingNode() || node.isNull()) {
+            return missingPoints;
+        }
+        if (node.isArray()) {
+            for (JsonNode item : node) {
+                String text = StringUtils.trimToNull(item.asText(null));
+                if (text != null) {
+                    missingPoints.add(text);
+                }
+            }
+            return missingPoints;
+        }
+        String text = StringUtils.trimToNull(node.asText(null));
+        if (text != null) {
+            missingPoints.add(text);
+        }
+        return missingPoints;
     }
 
     private String extractJson(String rawContent) {
@@ -340,9 +375,9 @@ public class QuestionCorrectionAiReviewService {
                                                      String message, String rawContent) {
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
                 "insert into t_question_correction_ai_review_record " +
-                        "(correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, raw_content, error_message, finish_time, create_time) " +
-                        "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now()) " +
-                        "returning id, correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, raw_content, error_message, request_time, finish_time, create_time",
+                        "(correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, teacher_reason, student_feedback, missing_points, raw_content, error_message, finish_time, create_time) " +
+                        "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, null, ?, ?, now(), now()) " +
+                        "returning id, correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, teacher_reason, student_feedback, missing_points, raw_content, error_message, request_time, finish_time, create_time",
                 correctionId,
                 teacherUserId,
                 StringUtils.defaultIfBlank(triggerType, "AUTO_SUBMIT"),
@@ -351,23 +386,70 @@ public class QuestionCorrectionAiReviewService {
                 reviewComment,
                 confidence,
                 message,
+                message,
+                reviewComment,
                 rawContent,
                 message);
         if (rows.isEmpty()) {
             return Collections.emptyMap();
         }
-        return rows.get(0);
+        return normalizeReviewRecord(rows.get(0));
     }
 
     private Map<String, Object> selectReviewRecord(Integer recordId) {
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(
-                "select id, correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, raw_content, error_message, request_time, finish_time, create_time " +
+                "select id, correction_id, teacher_user_id, trigger_type, status, review_result, review_comment, confidence, reason, teacher_reason, student_feedback, missing_points, raw_content, error_message, request_time, finish_time, create_time " +
                         "from t_question_correction_ai_review_record where id = ?",
                 recordId);
         if (rows.isEmpty()) {
             return Collections.emptyMap();
         }
-        return rows.get(0);
+        return normalizeReviewRecord(rows.get(0));
+    }
+
+    private Map<String, Object> normalizeReviewRecord(Map<String, Object> source) {
+        Map<String, Object> result = new HashMap<>(source);
+        String teacherReason = StringUtils.defaultIfBlank(asString(source.get("teacher_reason")), asString(source.get("reason")));
+        String studentFeedback = StringUtils.defaultIfBlank(asString(source.get("student_feedback")), asString(source.get("review_comment")));
+        List<String> missingPoints = parseMissingPointsValue(source.get("missing_points"));
+
+        result.put("reviewComment", StringUtils.defaultIfBlank(asString(source.get("review_comment")), studentFeedback));
+        result.put("teacherReason", teacherReason);
+        result.put("studentFeedback", studentFeedback);
+        result.put("missingPoints", missingPoints);
+        result.put("reviewResult", source.get("review_result"));
+        result.put("errorMessage", source.get("error_message"));
+        result.put("finishTime", source.get("finish_time"));
+        return result;
+    }
+
+    private List<String> parseMissingPointsValue(Object value) {
+        if (value == null) {
+            return Collections.emptyList();
+        }
+        if (value instanceof List) {
+            List<String> result = new ArrayList<>();
+            for (Object item : (List<?>) value) {
+                String text = StringUtils.trimToNull(asString(item));
+                if (text != null) {
+                    result.add(text);
+                }
+            }
+            return result;
+        }
+        try {
+            return readMissingPoints(MAPPER.readTree(asString(value)));
+        } catch (Exception e) {
+            String text = StringUtils.trimToNull(asString(value));
+            if (text == null) {
+                return Collections.emptyList();
+            }
+            return Collections.singletonList(text);
+        }
+    }
+
+    private String asString(Object value) {
+        return value == null ? null : String.valueOf(value);
     }
 
     private String encrypt(String plainText) {
@@ -419,6 +501,10 @@ public class QuestionCorrectionAiReviewService {
         private String reviewComment;
         private BigDecimal confidence;
         private String reason;
+        private String teacherReason;
+        private String studentFeedback;
+        private List<String> missingPoints = Collections.emptyList();
+        private String missingPointsJson;
     }
 
     public static class SaveConfigRequest {

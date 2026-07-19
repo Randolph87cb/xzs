@@ -23,7 +23,7 @@
         <el-button text @click="handleLogout">退出</el-button>
       </div>
     </el-header>
-    <el-main class="shell__main">
+    <el-main class="shell__main" :class="{ 'shell__main--wide': $route.path === '/question/index' }">
       <RouterView />
     </el-main>
   </el-container>
@@ -118,6 +118,10 @@ async function handleLogout() {
   width: min(1180px, calc(100vw - 32px));
   margin: 0 auto;
   padding: 24px 0;
+}
+
+.shell__main--wide {
+  width: min(1440px, calc(100vw - 32px));
 }
 
 @media (max-width: 920px) {

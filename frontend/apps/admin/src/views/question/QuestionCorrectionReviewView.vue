@@ -62,12 +62,17 @@
             @click="selectCorrection(row.id)"
           >
             <span class="correction-workbench__queue-title">{{ stripHtml(row.title) || '无题干' }}</span>
-            <span class="correction-workbench__queue-meta">
+            <span class="correction-workbench__queue-submeta">
               <span>{{ row.real_name || row.user_name || '未知学生' }}</span>
+              <el-tag size="small" :type="statusTagType(row.review_status)">
+                {{ statusText(row.review_status) }}
+              </el-tag>
+            </span>
+            <span class="correction-workbench__queue-meta">
               <el-tag size="small" :type="aiStatusTagType(row.ai_review_status, row.ai_review_result)">
                 {{ aiStatusText(row.ai_review_status, row.ai_review_result) }}
               </el-tag>
-              <span>{{ row.submit_time || '-' }}</span>
+              <span>{{ formatQueueTime(row.submit_time) }}</span>
             </span>
           </button>
         </div>
@@ -78,7 +83,7 @@
           class="correction-workbench__pagination"
           v-model:current-page="query.pageIndex"
           v-model:page-size="query.pageSize"
-          small
+          size="small"
           background
           layout="prev, pager, next"
           :page-sizes="[10, 20, 50]"
@@ -121,22 +126,32 @@
 
               <el-form class="correction-workbench__form" label-position="top" :disabled="!canReview">
                 <el-form-item label="审核结果">
-                  <el-radio-group v-model="reviewForm.reviewResult">
-                    <el-radio label="APPROVED">通过</el-radio>
-                    <el-radio label="REJECTED">驳回</el-radio>
+                  <el-radio-group
+                    v-model="reviewForm.reviewResult"
+                    class="correction-workbench__decision-group"
+                    @change="markReviewFormEdited"
+                  >
+                    <el-radio-button :value="NO_DECISION">不采纳 AI</el-radio-button>
+                    <el-radio-button value="APPROVED">通过</el-radio-button>
+                    <el-radio-button value="REJECTED">驳回</el-radio-button>
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item label="审核意见">
                   <el-input
                     v-model="reviewForm.reviewComment"
                     type="textarea"
-                    :rows="4"
-                    placeholder="驳回时必须填写，说明需要学生补充或修正的内容"
+                    :rows="7"
+                    placeholder="填写学生可见的审核意见。驳回时请说明需要补充或修正的内容。"
+                    @input="markReviewFormEdited"
                   />
                 </el-form-item>
               </el-form>
 
+              <p v-if="aiDraftApplied" class="correction-workbench__draft-note">
+                已将 AI 的学生可见建议填入草稿，保存前仍需老师确认。
+              </p>
               <div class="correction-workbench__actions-row">
+                <el-button v-if="canApplyAiSuggestion" plain @click="applyAiSuggestionManually">应用 AI 建议</el-button>
                 <el-button :loading="reviewing" :disabled="!canReview" @click="saveReview(false)">仅保存</el-button>
                 <el-button type="primary" :loading="reviewing" :disabled="!canReview" @click="saveReview(true)">
                   保存并下一题
@@ -153,28 +168,39 @@
               </div>
 
               <template v-if="currentAiReview">
-                <p v-if="currentAiReview.reviewComment" class="correction-workbench__ai-comment">
-                  {{ currentAiReview.reviewComment }}
-                </p>
                 <dl class="correction-workbench__ai-summary">
-                  <div v-if="currentAiReview.reviewResult">
+                  <div>
                     <dt>建议</dt>
-                    <dd>{{ aiResultText(currentAiReview.reviewResult) }}</dd>
+                    <dd>{{ currentAiReview.reviewResult ? aiResultText(currentAiReview.reviewResult) : '暂无' }}</dd>
                   </div>
-                  <div v-if="currentAiReview.confidence !== undefined && currentAiReview.confidence !== null">
+                  <div>
                     <dt>置信度</dt>
-                    <dd>{{ currentAiReview.confidence }}</dd>
+                    <dd>{{ formatConfidence(currentAiReview.confidence) }}</dd>
                   </div>
-                  <div v-if="currentAiReview.finishTime">
-                    <dt>完成时间</dt>
-                    <dd>{{ currentAiReview.finishTime }}</dd>
+                  <div class="correction-workbench__ai-summary-block">
+                    <dt>缺失点</dt>
+                    <dd>
+                      <ul v-if="currentAiReview.missingPoints.length > 0" class="correction-workbench__ai-list">
+                        <li v-for="point in currentAiReview.missingPoints" :key="point">{{ point }}</li>
+                      </ul>
+                      <span v-else>暂无</span>
+                    </dd>
+                  </div>
+                  <div class="correction-workbench__ai-summary-block">
+                    <dt>给老师看的理由</dt>
+                    <dd>{{ currentAiReview.teacherReason || currentAiReview.reason || '暂无' }}</dd>
+                  </div>
+                  <div class="correction-workbench__ai-summary-block">
+                    <dt>返回给学生的建议</dt>
+                    <dd>{{ currentAiReview.studentFeedback || currentAiReview.reviewComment || '暂无' }}</dd>
+                  </div>
+                  <div class="correction-workbench__ai-summary-block">
+                    <dt>错误信息</dt>
+                    <dd class="correction-workbench__danger-text">{{ currentAiReview.errorMessage || '暂无' }}</dd>
                   </div>
                 </dl>
-                <p v-if="currentAiReview.reason" class="correction-workbench__muted-text">
-                  理由：{{ currentAiReview.reason }}
-                </p>
-                <p v-if="currentAiReview.errorMessage" class="correction-workbench__danger-text">
-                  失败原因：{{ currentAiReview.errorMessage }}
+                <p v-if="currentAiReview.finishTime" class="correction-workbench__muted-text">
+                  完成时间：{{ currentAiReview.finishTime }}
                 </p>
               </template>
               <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
@@ -241,6 +267,48 @@ import {
   type QuestionCorrectionAiReviewStatus
 } from '@xzs/api-client'
 
+const NO_DECISION = ''
+type ReviewResultDraft = AdminQuestionCorrectionReviewRequest['reviewResult'] | typeof NO_DECISION
+type AiReviewCompat = AdminQuestionCorrectionAiReview & {
+  teacherReason?: string | null
+  studentFeedback?: string | null
+  missingPoints?: string[] | string | null
+  rawContent?: string | null
+  review_result?: QuestionCorrectionAiReviewResult | null
+  review_comment?: string | null
+  teacher_reason?: string | null
+  student_feedback?: string | null
+  missing_points?: string[] | string | null
+  error_message?: string | null
+  finish_time?: string | null
+}
+type CorrectionItemCompat = AdminQuestionCorrectionItem & {
+  ai_review_teacher_reason?: string | null
+  ai_review_student_feedback?: string | null
+  ai_review_missing_points?: string[] | string | null
+}
+interface NormalizedAiReview {
+  status?: QuestionCorrectionAiReviewStatus
+  reviewResult?: QuestionCorrectionAiReviewResult
+  reviewComment?: string
+  confidence?: number | string
+  reason?: string
+  teacherReason?: string
+  studentFeedback?: string
+  missingPoints: string[]
+  errorMessage?: string
+  finishTime?: string
+}
+interface SelectCorrectionOptions {
+  preserveReviewDraft?: boolean
+}
+interface ReviewFormDraftSnapshot {
+  id: number
+  reviewResult: ReviewResultDraft
+  reviewComment: string
+  edited: boolean
+}
+
 const loading = ref(false)
 const detailLoading = ref(false)
 const reviewing = ref(false)
@@ -258,27 +326,28 @@ const query = reactive<AdminQuestionCorrectionPageRequest>({
   pageIndex: 1,
   pageSize: 10
 })
-const reviewForm = reactive<AdminQuestionCorrectionReviewRequest>({
+const reviewForm = reactive<{
+  id: number
+  reviewResult: ReviewResultDraft
+  reviewComment: string
+}>({
   id: 0,
-  reviewResult: 'APPROVED',
+  reviewResult: NO_DECISION,
   reviewComment: ''
 })
+const reviewFormEdited = ref(false)
+const aiDraftApplied = ref(false)
 
-const currentAiReview = computed<AdminQuestionCorrectionAiReview | null>(() => {
+const currentAiReview = computed<NormalizedAiReview | null>(() => {
   if (!detail.value) return null
-  if (detail.value.aiReview) return detail.value.aiReview
-  if (!detail.value.ai_review_status) return null
-  return {
-    status: detail.value.ai_review_status,
-    reviewResult: detail.value.ai_review_result,
-    reviewComment: detail.value.ai_review_comment,
-    confidence: detail.value.ai_review_confidence,
-    reason: detail.value.ai_review_reason,
-    errorMessage: detail.value.ai_review_error_message,
-    finishTime: detail.value.ai_review_time
-  }
+  return normalizeAiReview(detail.value)
 })
 const canReview = computed(() => detail.value?.review_status === 'SUBMITTED')
+const canApplyAiSuggestion = computed(() => {
+  const aiReview = currentAiReview.value
+  if (!canReview.value || !aiReview || aiReview.status !== 'SUCCESS') return false
+  return Boolean(getStudentVisibleAiFeedback(aiReview) || aiReview.reviewResult === 'APPROVED' || aiReview.reviewResult === 'REJECTED')
+})
 const reviewQuestion = computed(() => {
   if (!detail.value) return null
   return {
@@ -339,7 +408,9 @@ async function selectFirstQueueRecord() {
   await selectCorrection(firstRecord.id)
 }
 
-async function selectCorrection(id: number) {
+async function selectCorrection(id: number, options: SelectCorrectionOptions = {}) {
+  const reviewDraftSnapshot =
+    options.preserveReviewDraft && detail.value?.id === id ? createReviewFormDraftSnapshot() : null
   selectedId.value = id
   detailLoading.value = true
   try {
@@ -349,7 +420,11 @@ async function selectCorrection(id: number) {
       clearDetail()
       return
     }
-    resetReviewForm(detail.value)
+    if (reviewDraftSnapshot && detail.value.review_status === 'SUBMITTED') {
+      restoreReviewFormDraft(reviewDraftSnapshot)
+    } else {
+      resetReviewForm(detail.value)
+    }
   } finally {
     detailLoading.value = false
   }
@@ -380,13 +455,18 @@ async function saveReview(goNext: boolean) {
     ElMessage.error('驳回时请填写审核意见')
     return
   }
+  if (reviewForm.reviewResult !== 'APPROVED' && reviewForm.reviewResult !== 'REJECTED') {
+    ElMessage.error('请先选择通过或驳回')
+    return
+  }
 
   const currentId = reviewForm.id
   const nextId = goNext ? nextSubmittedRecordId(currentId) : null
   reviewing.value = true
   try {
     const result = await saveAdminQuestionCorrectionReview({
-      ...reviewForm,
+      id: reviewForm.id,
+      reviewResult: reviewForm.reviewResult,
       reviewComment: reviewForm.reviewComment?.trim()
     })
     ElMessage.success(result.message || '改错审核已保存')
@@ -417,7 +497,7 @@ async function runAiReviewForCurrent() {
   try {
     const result = await reviewAdminQuestionCorrectionWithAi(id)
     ElMessage.success(result.message || 'AI 预审已触发')
-    await selectCorrection(id)
+    await selectCorrection(id, { preserveReviewDraft: reviewFormEdited.value })
     await loadQueue()
   } finally {
     aiCurrentLoading.value = false
@@ -461,13 +541,75 @@ async function runAiBatchReview() {
 
 function resetReviewForm(record: AdminQuestionCorrectionItem) {
   reviewForm.id = record.id
+  reviewFormEdited.value = false
+  aiDraftApplied.value = false
   if (record.review_status === 'APPROVED' || record.review_status === 'REJECTED') {
     reviewForm.reviewResult = record.review_status
     reviewForm.reviewComment = record.review_comment ?? ''
     return
   }
-  reviewForm.reviewResult = 'APPROVED'
+  reviewForm.reviewResult = NO_DECISION
   reviewForm.reviewComment = ''
+  applyAiDraftIfAllowed(record)
+}
+
+function createReviewFormDraftSnapshot(): ReviewFormDraftSnapshot {
+  return {
+    id: reviewForm.id,
+    reviewResult: reviewForm.reviewResult,
+    reviewComment: reviewForm.reviewComment,
+    edited: reviewFormEdited.value
+  }
+}
+
+function restoreReviewFormDraft(snapshot: ReviewFormDraftSnapshot) {
+  reviewForm.id = snapshot.id
+  reviewForm.reviewResult = snapshot.reviewResult
+  reviewForm.reviewComment = snapshot.reviewComment
+  reviewFormEdited.value = snapshot.edited
+  aiDraftApplied.value = false
+}
+
+function markReviewFormEdited() {
+  reviewFormEdited.value = true
+  aiDraftApplied.value = false
+}
+
+function applyAiDraftIfAllowed(record: AdminQuestionCorrectionItem) {
+  if (record.review_status !== 'SUBMITTED' || reviewFormEdited.value) return
+  const aiReview = normalizeAiReview(record)
+  if (!aiReview || aiReview.status !== 'SUCCESS') return
+  applyAiSuggestion(aiReview, false)
+}
+
+function applyAiSuggestionManually() {
+  const aiReview = currentAiReview.value
+  if (!aiReview) return
+  applyAiSuggestion(aiReview, true)
+}
+
+function applyAiSuggestion(aiReview: NormalizedAiReview, manuallyApplied: boolean) {
+  let applied = false
+  if (aiReview.reviewResult === 'APPROVED' || aiReview.reviewResult === 'REJECTED') {
+    reviewForm.reviewResult = aiReview.reviewResult
+    applied = true
+  } else if (aiReview.reviewResult === 'UNCERTAIN') {
+    reviewForm.reviewResult = NO_DECISION
+  }
+
+  const studentFeedback = getStudentVisibleAiFeedback(aiReview)
+  if (studentFeedback) {
+    reviewForm.reviewComment = studentFeedback
+    applied = true
+  }
+
+  if (applied) {
+    aiDraftApplied.value = true
+    reviewFormEdited.value = manuallyApplied
+    if (manuallyApplied) {
+      ElMessage.success('已应用 AI 建议草稿')
+    }
+  }
 }
 
 function nextSubmittedRecordId(currentId: number) {
@@ -480,8 +622,10 @@ function clearDetail() {
   selectedId.value = null
   detail.value = null
   reviewForm.id = 0
-  reviewForm.reviewResult = 'APPROVED'
+  reviewForm.reviewResult = NO_DECISION
   reviewForm.reviewComment = ''
+  reviewFormEdited.value = false
+  aiDraftApplied.value = false
 }
 
 function statusText(status?: string) {
@@ -541,6 +685,93 @@ function stripHtml(value?: string) {
   return (value ?? '').replace(/<[^>]*>/g, '').slice(0, 120)
 }
 
+function normalizeAiReview(record: AdminQuestionCorrectionItem): NormalizedAiReview | null {
+  const compatibleRecord = record as CorrectionItemCompat
+  if (compatibleRecord.aiReview) {
+    const nestedReview = normalizeAiReviewObject(compatibleRecord.aiReview as AiReviewCompat)
+    return {
+      status: nestedReview.status ?? compatibleRecord.ai_review_status,
+      reviewResult: nestedReview.reviewResult ?? compatibleRecord.ai_review_result,
+      reviewComment: nestedReview.reviewComment ?? compatibleRecord.ai_review_comment,
+      confidence: nestedReview.confidence ?? compatibleRecord.ai_review_confidence,
+      reason: nestedReview.reason ?? compatibleRecord.ai_review_reason,
+      teacherReason: nestedReview.teacherReason ?? compatibleRecord.ai_review_teacher_reason ?? undefined,
+      studentFeedback: nestedReview.studentFeedback ?? compatibleRecord.ai_review_student_feedback ?? undefined,
+      missingPoints:
+        nestedReview.missingPoints.length > 0
+          ? nestedReview.missingPoints
+          : normalizeMissingPoints(compatibleRecord.ai_review_missing_points),
+      errorMessage: nestedReview.errorMessage ?? compatibleRecord.ai_review_error_message,
+      finishTime: nestedReview.finishTime ?? compatibleRecord.ai_review_time
+    }
+  }
+  if (!compatibleRecord.ai_review_status) return null
+  return {
+    status: compatibleRecord.ai_review_status,
+    reviewResult: compatibleRecord.ai_review_result,
+    reviewComment: compatibleRecord.ai_review_comment,
+    confidence: compatibleRecord.ai_review_confidence,
+    reason: compatibleRecord.ai_review_reason,
+    teacherReason: compatibleRecord.ai_review_teacher_reason ?? undefined,
+    studentFeedback: compatibleRecord.ai_review_student_feedback ?? undefined,
+    missingPoints: normalizeMissingPoints(compatibleRecord.ai_review_missing_points),
+    errorMessage: compatibleRecord.ai_review_error_message,
+    finishTime: compatibleRecord.ai_review_time
+  }
+}
+
+function normalizeAiReviewObject(aiReview: AiReviewCompat): NormalizedAiReview {
+  return {
+    status: aiReview.status,
+    reviewResult: aiReview.reviewResult ?? aiReview.review_result ?? undefined,
+    reviewComment: aiReview.reviewComment ?? aiReview.review_comment ?? undefined,
+    confidence: aiReview.confidence,
+    reason: aiReview.reason,
+    teacherReason: aiReview.teacherReason ?? aiReview.teacher_reason ?? undefined,
+    studentFeedback: aiReview.studentFeedback ?? aiReview.student_feedback ?? undefined,
+    missingPoints: normalizeMissingPoints(aiReview.missingPoints ?? aiReview.missing_points),
+    errorMessage: aiReview.errorMessage ?? aiReview.error_message ?? undefined,
+    finishTime: aiReview.finishTime ?? aiReview.finish_time ?? undefined
+  }
+}
+
+function normalizeMissingPoints(value?: string[] | string | null) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean)
+  }
+  if (typeof value !== 'string') return []
+  const trimmed = value.trim()
+  if (!trimmed) return []
+  try {
+    const parsed = JSON.parse(trimmed) as unknown
+    if (Array.isArray(parsed)) {
+      return parsed.map((item) => String(item).trim()).filter(Boolean)
+    }
+  } catch {
+    // Plain text missing-point summaries from legacy responses are shown as one item.
+  }
+  return [trimmed]
+}
+
+function getStudentVisibleAiFeedback(aiReview: NormalizedAiReview) {
+  return aiReview.studentFeedback?.trim() || aiReview.reviewComment?.trim() || ''
+}
+
+function formatConfidence(value?: number | string) {
+  if (value === undefined || value === null || value === '') return '暂无'
+  const numericValue = Number(value)
+  if (!Number.isFinite(numericValue)) return String(value)
+  if (numericValue >= 0 && numericValue <= 1) {
+    return `${Math.round(numericValue * 100)}%`
+  }
+  return String(value)
+}
+
+function formatQueueTime(value?: string) {
+  if (!value) return '-'
+  return value.replace(/^(\d{4})-(\d{2})-(\d{2})\s+/, '$2-$3 ')
+}
+
 function parseAnswerArray(value?: string | null) {
   if (typeof value === 'string') {
     const trimmed = value.trim()
@@ -572,7 +803,7 @@ function parseAnswerArray(value?: string | null) {
 
 .correction-workbench__layout {
   display: grid;
-  grid-template-columns: minmax(280px, 330px) minmax(0, 1fr);
+  grid-template-columns: minmax(224px, 248px) minmax(0, 1fr);
   gap: 14px;
   min-height: 620px;
 }
@@ -644,10 +875,10 @@ function parseAnswerArray(value?: string | null) {
 
 .correction-workbench__queue-item {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   min-width: 0;
-  padding: 12px;
+  padding: 10px 11px;
   border: 1px solid transparent;
   border-radius: 6px;
   color: var(--xzs-text);
@@ -666,19 +897,29 @@ function parseAnswerArray(value?: string | null) {
   display: -webkit-box;
   overflow: hidden;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 1.45;
   overflow-wrap: anywhere;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
+.correction-workbench__queue-submeta,
 .correction-workbench__queue-meta {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  min-width: 0;
   color: var(--xzs-text-muted);
   font-size: 12px;
+}
+
+.correction-workbench__queue-submeta > span:first-child,
+.correction-workbench__queue-meta > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .correction-workbench__pagination {
@@ -689,7 +930,7 @@ function parseAnswerArray(value?: string | null) {
 
 .correction-workbench__workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(400px, 440px);
   min-height: 620px;
   overflow: hidden;
 }
@@ -719,6 +960,13 @@ function parseAnswerArray(value?: string | null) {
   overflow: auto;
 }
 
+.correction-workbench__review-card {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 10px 24px rgb(16 32 63 / 7%);
+}
+
 .correction-workbench__card {
   display: grid;
   gap: 12px;
@@ -729,6 +977,22 @@ function parseAnswerArray(value?: string | null) {
   min-width: 0;
 }
 
+.correction-workbench__decision-group {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+}
+
+.correction-workbench__decision-group :deep(.el-radio-button__inner) {
+  width: 100%;
+}
+
+.correction-workbench__draft-note {
+  margin: -2px 0 0;
+  color: var(--xzs-primary);
+  font-size: 12px;
+}
+
 .correction-workbench__actions-row {
   display: flex;
   flex-wrap: wrap;
@@ -737,8 +1001,8 @@ function parseAnswerArray(value?: string | null) {
 }
 
 .correction-workbench__ai-card {
-  background: #f8fbf8;
-  border-color: #bfe8c8;
+  background: #f9fbff;
+  border-color: #cfe0ff;
 }
 
 .correction-workbench__ai-comment,
@@ -759,11 +1023,19 @@ function parseAnswerArray(value?: string | null) {
 .correction-workbench__ai-summary {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
 }
 
 .correction-workbench__ai-summary div {
   min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--xzs-border);
+  border-radius: 6px;
+  background: var(--xzs-surface);
+}
+
+.correction-workbench__ai-summary .correction-workbench__ai-summary-block {
+  grid-column: 1 / -1;
 }
 
 .correction-workbench__ai-summary dt {
@@ -775,6 +1047,15 @@ function parseAnswerArray(value?: string | null) {
   margin: 2px 0 0;
   overflow-wrap: anywhere;
   font-weight: 600;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.correction-workbench__ai-list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
 }
 
 .correction-workbench__student-answer {
