@@ -15,7 +15,7 @@
 默认镜像：
 
 ```text
-crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:latest
+crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-quiz:latest
 ```
 
 推荐每次发布同时推送两个 tag：
@@ -27,8 +27,8 @@ crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:latest
 
 ```powershell
 docker buildx build --platform linux/arm64 `
-  -t crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:<git-sha> `
-  -t crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:latest `
+  -t crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-quiz:<git-sha> `
+  -t crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-quiz:latest `
   -f Dockerfile `
   --push .
 ```
@@ -38,12 +38,12 @@ docker buildx build --platform linux/arm64 `
 在树莓派上准备应用目录：
 
 ```sh
-sudo mkdir -p /opt/apps/xzs
-sudo chown -R "$USER:$USER" /opt/apps/xzs
-cd /opt/apps/xzs
+sudo mkdir -p /opt/apps/gesp-csp-quiz
+sudo chown -R "$USER:$USER" /opt/apps/gesp-csp-quiz
+cd /opt/apps/gesp-csp-quiz
 ```
 
-复制仓库中的两个文件到 `/opt/apps/xzs`：
+复制仓库中的两个文件到 `/opt/apps/gesp-csp-quiz`：
 
 ```text
 docker-compose.yml
@@ -104,7 +104,7 @@ curl -I http://127.0.0.1:8000/admin/index.html
 在开发机推送新镜像后，树莓派执行：
 
 ```sh
-cd /opt/apps/xzs
+cd /opt/apps/gesp-csp-quiz
 docker compose pull
 docker compose up -d
 docker image prune -f
@@ -114,7 +114,7 @@ docker logs --tail=100 xzs-app
 如果要固定部署某个版本，把 `.env` 里的 `XZS_IMAGE` 改成具体 tag，例如：
 
 ```text
-XZS_IMAGE=crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/xzs:aa08063f
+XZS_IMAGE=crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-quiz:aa08063f
 ```
 
 再执行：
@@ -129,7 +129,7 @@ docker compose up -d
 把 `.env` 中的 `XZS_IMAGE` 改回上一版 Git 短提交 tag，然后重新拉取启动：
 
 ```sh
-cd /opt/apps/xzs
+cd /opt/apps/gesp-csp-quiz
 docker compose pull
 docker compose up -d
 docker logs --tail=100 xzs-app
