@@ -70,6 +70,18 @@ nano .env
 
 不要把 `.env` 提交到 Git，也不要发到聊天记录或日志里。
 
+也可以固定使用“本地填写、脚本复制”的方式：在开发机把模板复制为 `docker/.env.production`，填好生产配置后执行：
+
+```powershell
+.\scripts\sync-raspi-production-env.ps1
+```
+
+脚本会把本地 `docker/.env.production` 复制到树莓派 `/opt/apps/gesp-csp-quiz/.env`，备份远端旧 `.env`，并只做 compose 配置校验。确认要同步配置并切换容器时执行：
+
+```powershell
+.\scripts\sync-raspi-production-env.ps1 -Restart
+```
+
 登录阿里云 ACR：
 
 ```sh
