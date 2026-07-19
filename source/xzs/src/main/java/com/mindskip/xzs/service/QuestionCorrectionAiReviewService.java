@@ -38,6 +38,8 @@ public class QuestionCorrectionAiReviewService {
     private static final Logger logger = LoggerFactory.getLogger(QuestionCorrectionAiReviewService.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String PROVIDER = "openai_compatible";
+    private static final String OPENAI_COMPATIBLE_USER_AGENT =
+            "XZS/3.9.0 (OpenAI-compatible AI review; Windows; Java)";
     private static final String DEFAULT_PROMPT =
             "你是信息学客观题错题改正审核助手。请只给老师预审建议，不要替老师做最终审核。";
 
@@ -243,6 +245,8 @@ public class QuestionCorrectionAiReviewService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.set(HttpHeaders.USER_AGENT, OPENAI_COMPATIBLE_USER_AGENT);
         headers.setBearerAuth(apiKey);
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
