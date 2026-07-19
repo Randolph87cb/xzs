@@ -351,10 +351,10 @@ const canApplyAiSuggestion = computed(() => {
 const reviewQuestion = computed(() => {
   if (!detail.value) return null
   return {
-    title: detail.value.title ?? '',
+    title: toPlainText(detail.value.title),
     questionType: Number(detail.value.question_type ?? 0),
     items: detail.value.items ?? [],
-    analyze: detail.value.analyze ?? '',
+    analyze: toPlainText(detail.value.analyze),
     correct: detail.value.correct ?? '',
     correctArray: parseAnswerArray(detail.value.correct)
   }
@@ -681,8 +681,28 @@ function aiStatusTagType(
   return 'info'
 }
 
-function stripHtml(value?: string) {
-  return (value ?? '').replace(/<[^>]*>/g, '').slice(0, 120)
+function stripHtml(value?: unknown): string {
+  return toPlainText(value).replace(/<[^>]*>/g, '').slice(0, 120)
+}
+
+function toPlainText(value?: unknown): string {
+  if (value === undefined || value === null) return ''
+  if (typeof value === 'string') return value
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value)
+  if (Array.isArray(value)) {
+    return value.map((item) => toPlainText(item)).filter(Boolean).join(' ')
+  }
+  if (typeof value === 'object') {
+    const record = value as Record<string, unknown>
+    return (
+      toPlainText(record.content) ||
+      toPlainText(record.text) ||
+      toPlainText(record.titleContent) ||
+      toPlainText(record.value) ||
+      JSON.stringify(value)
+    )
+  }
+  return String(value)
 }
 
 function normalizeAiReview(record: AdminQuestionCorrectionItem): NormalizedAiReview | null {
@@ -767,9 +787,10 @@ function formatConfidence(value?: number | string) {
   return String(value)
 }
 
-function formatQueueTime(value?: string) {
-  if (!value) return '-'
-  return value.replace(/^(\d{4})-(\d{2})-(\d{2})\s+/, '$2-$3 ')
+function formatQueueTime(value?: unknown): string {
+  const text = toPlainText(value)
+  if (!text) return '-'
+  return text.replace(/^(\d{4})-(\d{2})-(\d{2})\s+/, '$2-$3 ')
 }
 
 function parseAnswerArray(value?: string | null) {
