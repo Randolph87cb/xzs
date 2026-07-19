@@ -78,6 +78,8 @@
     - 如果当前记录仍是待审核，且老师尚未手动编辑审核结果/审核意见，则自动填入：
       - `reviewForm.reviewResult = ai.reviewResult === APPROVED ? APPROVED : REJECTED`；`UNCERTAIN` 不自动改结果。
       - `reviewForm.reviewComment = ai.studentFeedback || ai.reviewComment`。
+    - `reviewForm.reviewComment` 只能填“返回给学生的建议”这类学生可见内容；`teacherReason`、内部判断依据、置信度说明只在 AI 结构化卡片里展示，不能混入最终给学生看的审核意见。
+    - 如果新结构里 `studentFeedback` 为空，才兼容回退到旧字段 `reviewComment`；不要用 `teacherReason` 作为兜底，避免把老师内部判断口吻直接发给学生。
     - 如果老师已经编辑过，显示“应用 AI 建议”按钮，由老师手动覆盖。
   - AI 建议卡片改为结构化摘要，不再只是长段落：
     - 建议：通过 / 驳回 / 不确定。
@@ -110,7 +112,7 @@
   - 后端 prompt 改为要求 JSON：
     - `reviewResult`: `APPROVED|REJECTED|UNCERTAIN`
     - `teacherReason`: 给老师看的判断依据。
-    - `studentFeedback`: 可直接放入审核意见给学生看的反馈。
+    - `studentFeedback`: 可直接放入审核意见给学生看的反馈，也是前端自动填入审核意见 textarea 的标准字段。
     - `missingPoints`: 学生改错还缺哪些关键点，数组。
     - `confidence`: `0-1`
   - 新增 Flyway 迁移：
@@ -121,6 +123,9 @@
     - 旧 `reason` 映射为 `teacherReason`。
     - 旧 `review_comment` 映射为 `studentFeedback` 或 `reviewComment`。
   - 前端类型同步扩展。
+  - 管理端展示时区分两层内容：
+    - 审核表单 textarea：只显示 `studentFeedback/reviewComment`，面向学生。
+    - AI 结构化卡片：显示 `teacherReason`、`missingPoints`、`confidence`，面向老师。
 - 影响范围：
   - `source/xzs/src/main/java/com/mindskip/xzs/service/QuestionCorrectionAiReviewService.java`
   - `source/xzs/src/main/resources/db/migration`
@@ -141,6 +146,10 @@
 - 修改方案：
   - 页面主宽度从 `1180px` 放宽到 `min(1440px, calc(100vw - 32px))`，只针对错题本页面或学生 Shell 增加页面级宽屏模式。
   - 队列宽度压缩到 `220-260px`。
+  - 队列状态筛选不能用会被压缩成竖向长条的横向胶囊；建议改为队列顶部 `2x2` 紧凑状态格，或允许横向 chip 正常换行：
+    - 每个状态格固定最小高度 `32-36px`，内部用“状态名 + 数字”左右分布。
+    - 文字只允许横向显示和省略，不允许通过极窄宽度把中文挤成竖排。
+    - 当前状态用浅底色和边框高亮，保持点击区域清晰。
   - 右侧改错栏宽度建议 `380-440px`。
   - 老师驳回意见放在右侧最顶部的红色提示卡中，始终在提交表单上方。
   - 表单 textarea 调整为 `6` 行左右，按钮紧跟表单，不被历史区挤到下方。
@@ -171,4 +180,7 @@
 
 ## 视觉参考
 
-视觉稿位于 `.tmp/question-correction-layout-mockup.html`，截图输出为 `.tmp/question-correction-layout-mockup.png`。
+视觉稿位于 `.tmp/question-correction-layout-mockup.html`，截图输出为：
+
+- 管理端：`.tmp/question-correction-admin-mockup.png`
+- 学生端：`.tmp/question-correction-student-mockup.png`
