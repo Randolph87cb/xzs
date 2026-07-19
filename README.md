@@ -28,7 +28,7 @@
 
 本项目基于开源考试系统 PostgreSQL 版改造，后端使用 Java + Spring Boot，Web 端使用 Vue 3 + Vite，保留微信小程序学生端源码。项目支持本地构建、Docker 部署、Fly.io 冷启动部署和树莓派部署。
 
-当前 Fly.io 部署应用名建议使用 `gesp-csp-quiz`，默认访问地址为 `https://gesp-csp-quiz.fly.dev`。
+当前部署环境约定：树莓派是生产环境，使用 Neon `production` branch；Fly.io 是测试环境，应用名 `gesp-csp-quiz`，默认访问地址 `https://gesp-csp-quiz.fly.dev`，使用 Neon `test` branch；本地是开发环境，也使用 Neon `test` branch。Fly 测试环境部署入口为 `scripts/deploy-fly-neon-test.ps1`。
 
 ### 上游参考地址
 

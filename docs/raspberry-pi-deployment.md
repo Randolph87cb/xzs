@@ -1,6 +1,10 @@
 # Raspberry Pi 部署说明
 
-本文说明将信息学客观题一本通后端 Jar、PostgreSQL 和 systemd 服务部署到树莓派的推荐流程。普通运行时不建议在树莓派上执行 Maven、前端构建或其他构建期任务；应在开发机或 CI 构建完成后，只拷贝运行所需资产。
+本文说明将信息学客观题一本通后端 Jar 和 systemd 服务部署到树莓派的推荐流程。当前部署环境约定中，树莓派是生产环境，应连接 Neon `production` branch；Fly.io 是测试环境，本地是开发环境，二者连接 Neon `test` branch。
+
+普通运行时不建议在树莓派上执行 Maven、前端构建或其他构建期任务；应在开发机或 CI 构建完成后，只拷贝运行所需资产。
+
+本文保留本机 PostgreSQL 初始化、备份和恢复流程，适用于离线演练、历史部署或明确选择本机数据库的场景。当前生产服务优先通过环境变量 `SPRING_DATASOURCE_URL` 指向 Neon `production` branch，不应连接 Fly 测试库或 Neon `test` branch。
 
 ## 运行目录
 

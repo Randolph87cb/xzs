@@ -24,7 +24,7 @@
 `docker` 目录保存 Docker 部署材料：
 
 - `docker/docker-compose.yml`：compose 配置。
-- `docker/README.md`：Docker Compose 启动、日志、JVM/Undertow/Hikari 参数、Cloudflare 缓存检查、Fly 冷备和 Docker PostgreSQL 备份恢复说明。
+- `docker/README.md`：Docker Compose 启动、日志、JVM/Undertow/Hikari 参数、Cloudflare 缓存检查、Fly 测试环境约定和 Docker PostgreSQL 备份恢复说明。
 
 Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postgresql.sql` 作为数据库初始化脚本。后端容器运行 `release/java/xzs-3.9.0.jar`；`docker/release` 不再保存同名 jar 副本，避免发布制品来源不一致。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，仓库不再附带 docker-compose 二进制。
 
@@ -32,8 +32,9 @@ Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postg
 
 当前线上数据库默认使用 Neon PostgreSQL：
 
-- 生产数据使用 Neon `production` branch。
-- 本地构建服务测试和测试环境使用 Neon `test` branch，避免测试写入污染生产数据。
+- 部署环境固定为：树莓派是生产环境，Fly.io 是测试环境，本地是开发环境。
+- 树莓派生产环境使用 Neon `production` branch。
+- Fly 测试环境和本地开发环境使用 Neon `test` branch，避免测试写入污染生产数据。
 - 后端支持将 Neon 原始连接串直接写入 `SPRING_DATASOURCE_URL`，格式为 `postgresql://<user>:<password>@<branch-host>/<database>?sslmode=require&channel_binding=require`。启动时会自动转换为 JDBC URL，并移除当前 PostgreSQL JDBC 驱动不支持的 `channel_binding` 参数。
 - 如果连接串已经包含用户名和密码，不需要额外配置 `SPRING_DATASOURCE_USERNAME` 和 `SPRING_DATASOURCE_PASSWORD`；显式环境变量仍可覆盖连接串中的用户信息。
 - 本地真实测试配置写入 `.env.neon-test`，模板见 `.env.neon-test.example`。`.env.neon-test` 和其他 `.env*` 真实环境文件被 Git 忽略，禁止提交完整连接串、密码或 Fly/Neon secrets。
@@ -47,8 +48,9 @@ Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postg
 - `Dockerfile`：多阶段构建，先构建 Vue 3 + Vite 管理端和学生端，再将产物复制到 Spring Boot static，最后打包运行 jar。
 - `fly.toml`：Fly App 配置模板，默认内部端口为 `8000`。
 - `docs/fly-managed-postgres-deployment.md`：Fly.io Web App 部署、Neon 数据库 secret 配置，以及历史 Fly Postgres 冷启动方案说明。
+- `scripts/deploy-fly-neon-test.ps1`：从被 Git 忽略的 `.env.neon-test` 导入 Neon `test` branch secret，部署 Fly 测试环境，并运行远端健康检查。
 
-当前 Fly Web App 默认连接 Neon PostgreSQL，不再依赖 Fly Postgres 作为主库。Fly 旧 Postgres App `xzs-pg-cb867393296` 已停止，仅作为历史迁移来源或回滚参考；销毁旧 App 或 Volume 前必须先取得用户明确确认。
+当前 Fly Web App 是测试环境，必须连接 Neon `test` branch，不再依赖 Fly Postgres 作为主库，也不连接 Neon `production` branch。Fly 旧 Postgres App `xzs-pg-cb867393296` 已停止，仅作为历史迁移来源或回滚参考；销毁旧 App 或 Volume 前必须先取得用户明确确认。
 
 ## 树莓派部署
 
@@ -59,9 +61,9 @@ Docker Compose 使用 PostgreSQL，并挂载仓库根目录下的 `sql/xzs-postg
 - `deploy/raspberry-pi/backup-db.sh`：使用 `pg_dump --format custom` 生成带时间戳的数据库备份，并按保留数量清理旧备份。
 - `deploy/raspberry-pi/restore-db.sh`：从指定备份恢复数据库，要求显式确认后执行。
 - `docs/raspberry-pi-deployment.md`：树莓派运行目录、部署资产安装、数据库初始化、systemd 启停、备份、恢复和健康检查说明。
-- `docs/fly-to-raspberry-pi-data-migration-plan.md`：从 Fly.io Postgres 迁移到树莓派 Docker PostgreSQL 的演练、最终切换、远端数据更新约定、Fly 冷备同步和后续备份方案。
+- `docs/fly-to-raspberry-pi-data-migration-plan.md`：历史迁移方案，仅作为 Fly Postgres 到树莓派 Docker PostgreSQL 的历史切换参考；当前生产环境使用树莓派 + Neon `production` branch。
 
-树莓派普通运行时不承担 Maven 或前端构建任务；应在开发机或 CI 构建完成后，只复制后端 jar、SQL 脚本和运行所需部署资产。
+树莓派是生产环境。树莓派普通运行时不承担 Maven 或前端构建任务；应在开发机或 CI 构建完成后，只复制后端 jar、SQL 脚本和运行所需部署资产，并确保生产服务连接 Neon `production` branch。
 
 ## 集成部署提示
 

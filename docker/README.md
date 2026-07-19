@@ -93,9 +93,9 @@ environment:
 
 Docker 部署时 PostgreSQL 数据保存在命名卷 `xzs-postgres-data`。日常备份建议使用 `pg_dump --format custom` 生成逻辑备份，不建议直接复制 Docker volume 作为唯一备份。
 
-如果树莓派是主服务节点，可以继续保留 Fly.io 作为低成本冷启动冷备节点：定期从树莓派导出 `.dump`，再恢复到 Fly Postgres。完整流程见 `docs/fly-to-raspberry-pi-data-migration-plan.md`。
+当前部署环境已经固定：树莓派是生产环境，Fly.io 是测试环境，本地是开发环境。树莓派生产环境应连接 Neon `production` branch；Fly 和本地应连接 Neon `test` branch。
 
-当前生产约定是：更新远端数据时先更新树莓派 Docker PostgreSQL，验证 `https://gesp-csp-quiz.randolph87.top` 后，再把树莓派 dump 同步到 Fly 冷备。不要把 Fly 当作默认写入目标。
+如果树莓派继续使用 Docker Compose 运行 Java 服务，Compose 中的数据库环境变量也应指向 Neon `production` branch，而不是本地 Docker PostgreSQL 或 Fly 测试库，除非正在做离线恢复演练。
 
 手动备份示例：
 
@@ -146,20 +146,18 @@ docker exec -e PGPASSWORD='<db-password>' xzs-postgres psql \
   --command "select count(*) from t_question;"
 ```
 
-## Fly 冷备
+## Fly 测试环境
 
-树莓派作为主节点时，Fly.io 可以保留为冷备环境。建议只在明确维护窗口内执行同步：
+Fly.io 现在固定为测试环境，不再作为生产冷备写入目标。Fly 测试环境使用 Neon `test` branch，部署入口是：
 
-1. 树莓派主库执行 `pg_dump --format custom --no-owner --no-privileges`。
-2. 将 `.dump` 上传到受控位置或本地开发机。
-3. 停止 Fly 应用写入流量，确认不会产生双写。
-4. 对 Fly Postgres 执行 `pg_restore --clean --if-exists --no-owner --no-privileges`。
-5. 启动 Fly 应用后做只读抽样检查，再保持冷备停机或低成本待机。
+```powershell
+.\scripts\deploy-fly-neon-test.ps1
+```
 
-不要把 Fly 冷备恢复当作默认日常备份替代品；主节点仍应保留本地定时备份和至少一份异地备份。
+不要把树莓派生产数据 dump 恢复到 Fly Postgres，也不要把 Fly 当作生产写入目标。Fly Postgres 相关内容只保留为历史迁移或回滚参考。
 
-后续文档或脚本中提到“远端数据更新”时，默认目标是树莓派主站；Fly 只接收从树莓派导出的冷备快照。
+生产备份应围绕 Neon `production` branch 制定，不再通过 Fly Postgres 冷备承接日常生产备份。
 
 ## 从 Fly.io 迁移到树莓派 Docker
 
-如果树莓派使用 Docker Compose 作为长期主环境，按 `docs/fly-to-raspberry-pi-data-migration-plan.md` 执行。该文档包含演练迁移、最终停写切换、Fly 冷备同步、本机定时备份和恢复演练策略。
+`docs/fly-to-raspberry-pi-data-migration-plan.md` 是历史迁移方案，只用于理解从 Fly Postgres 切换到树莓派 Docker PostgreSQL 的旧流程。当前长期方案以树莓派生产环境 + Neon `production` branch、Fly 测试环境 + Neon `test` branch 为准。

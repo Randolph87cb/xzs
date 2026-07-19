@@ -25,9 +25,10 @@
 
 ## Neon 数据库配置约定
 
-- 当前在线数据库默认使用 Neon PostgreSQL；Fly Web App、测试环境和本地构建服务测试都应通过环境变量连接 Neon，不再默认使用 Fly Postgres。
+- 当前在线数据库默认使用 Neon PostgreSQL；部署环境固定为：树莓派是生产环境，Fly.io 是测试环境，本地是开发环境。
+- 树莓派生产环境必须连接 Neon `production` branch；Fly 测试环境和本地开发环境必须连接 Neon `test` branch。除非用户明确要求只读排查，不要让测试或本地服务连接 `production` branch。
+- Fly Web App 部署必须使用 `scripts/deploy-fly-neon-test.ps1` 从 `.env.neon-test` 导入 secret 并部署；不要手工把 `.env.neon-test` 内容打印到日志、聊天或可提交文件。
 - Neon 连接优先使用原始 URL 形式写入 `SPRING_DATASOURCE_URL`，例如 `postgresql://<user>:<password>@<branch-host>/<database>?sslmode=require&channel_binding=require`。后端启动入口会自动转换为 Spring JDBC URL，并移除当前 JDBC 驱动不支持的 `channel_binding` 参数。
-- 生产使用 Neon `production` branch；本地直接启动 Java 服务、构建后验收和测试环境使用 Neon `test` branch。不要用本地测试服务连接 `production` branch，除非用户明确要求只读排查。
 - 本地真实配置写入 `.env.neon-test`，该文件被 Git 忽略；可提交模板为 `.env.neon-test.example`。不要把 Neon 密码、完整连接串或 Fly/Neon secrets 写入可提交文档、脚本或日志。
 - 本地 Neon test branch 启动后端优先使用 `scripts/start-local-neon.ps1`，由脚本统一完成前端构建、静态资源同步、启动前文件级一致性校验、`spring-boot:run` 受控启动和启动后 HTTP 一致性校验；正常启动前如果 BaseUrl 已有 `/admin/index.html` 或 `/student/index.html` 可访问，脚本默认失败，需先停止旧服务，或显式传 `-UseExistingService` 只校验已有服务并退出。
 - `scripts/start-local-neon.ps1` 会在 `.env.neon-test` 缺少 `XZS_AI_CONFIG_SECRET` 时自动生成本地随机值，用于加密老师保存的 AI 预审 API Key；不要把真实值写入可提交文件。已用其它方式启动的后端不会自动读取新值，需要重启。

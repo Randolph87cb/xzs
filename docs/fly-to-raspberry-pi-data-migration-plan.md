@@ -1,5 +1,7 @@
 # Fly.io 到树莓派 Docker 数据迁移与备份方案
 
+> 历史文档说明：本文记录的是旧阶段“Fly Postgres -> 树莓派 Docker PostgreSQL”的迁移与冷备方案，仅作为历史回滚和旧流程参考。当前部署环境已经固定为：树莓派是生产环境，连接 Neon `production` branch；Fly.io 是测试环境，连接 Neon `test` branch；本地是开发环境，连接 Neon `test` branch。不要再按本文把树莓派生产数据同步到 Fly Postgres，也不要把 Fly 作为生产冷备写入目标。
+
 ## 背景与现状
 
 - 已确认 Fly.io 当前 Web App 为 `gesp-csp-quiz`，默认访问地址为 `https://gesp-csp-quiz.fly.dev`。
