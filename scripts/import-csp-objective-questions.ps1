@@ -306,7 +306,14 @@ existing_question AS (
         AND q.import_question_order = i.import_question_order
       )
       OR q.question_code = i.question_code
-    ORDER BY q.id
+    ORDER BY
+      CASE
+        WHEN q.import_batch = (SELECT import_batch FROM incoming)
+         AND q.import_source = (SELECT import_source FROM incoming)
+         AND q.import_question_order = (SELECT import_question_order FROM incoming)
+        THEN 0 ELSE 1
+      END,
+      q.id
     LIMIT 1
 ),
 updated_content AS (

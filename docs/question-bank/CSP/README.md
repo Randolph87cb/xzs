@@ -83,6 +83,27 @@ powershell -ExecutionPolicy Bypass -File .\scripts\generate-csp-question-analysi
 powershell -ExecutionPolicy Bypass -File .\scripts\import-csp-objective-questions.ps1 -SqlOnly
 ```
 
+同步生产库题目并按 CSP-J1/CSP-S1 第一轮真题组卷：
+
+```powershell
+# 本地 dry-run，确认 600 题与 14 张试卷 manifest
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1 -DryRun
+
+# 只生成 SQL，不读取或连接生产库
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1 -SqlOnly
+
+# 读取 docker\.env.production 的 SPRING_DATASOURCE_URL，只读检查远端 schema、subject、已有题目和试卷数量
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1 -VerifyRemote
+
+# 幂等写入：先导入/更新 CSP_OBJECTIVE_MD 题目，再创建/更新 14 张固定试卷
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1
+
+# 写入后强校验：要求远端 600 题、14 张试卷、frame 题目引用全部匹配，且抽样题面无来源标记、解析非空
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1 -VerifyRemote -ExpectSynced
+```
+
+`sync-csp-objective-papers.ps1` 默认从 `docker\.env.production` 读取 `SPRING_DATASOURCE_URL`，脚本输出不打印连接串、用户名、密码或 token。组卷使用现有系统 frame JSON：`t_text_content.content` 保存标题数组，标题项包含 `name` 和 `questionItems`，每个题目项包含 `id` 与 `itemOrder`；试卷按稳定名称和 `paper_type = 1` 匹配更新，避免重复创建。
+
 ## 主流程：控制当前已登录浏览器
 
 1. 人工确认 Edge 或浏览器已登录洛谷有题，例如能访问 `https://ti.luogu.com.cn/problemset/1035`，页面标题类似 `1035 - CSP 2020 提高级第一轮`。
