@@ -439,6 +439,10 @@ function normalizeProblemset(target, problemset, url, sourceMode) {
         year: target.year,
         group: target.group,
         source: "luogu-youti",
+        import_batch: "CSP_OBJECTIVE_MD",
+        import_source: `CSP-${target.group}/${target.year}-CSP-${target.group}1.md`,
+        import_question_order: questionNo,
+        question_code: `CSP-${target.year}-${target.group}1-${String(questionNo).padStart(3, "0")}`,
         luoguId: problem.id || null,
         url,
         questionNo,
@@ -453,6 +457,7 @@ function normalizeProblemset(target, problemset, url, sourceMode) {
         })),
         answer,
         explanation: "",
+        analysis_status: "pending",
         rawText: normalizeMarkdownText(problem.description || ""),
         raw: sanitizeRaw({
           problem: {
@@ -592,23 +597,15 @@ function formatMarkdown(set) {
   const lines = [
     `# ${set.problemsetName}`,
     "",
-    `- 来源：洛谷有题`,
-    `- URL：${set.url}`,
     `- 年份：${set.year}`,
     `- 组别：CSP-${set.group}1`,
     `- 题目数：${set.questions.length}`,
+    `- 解析状态：${set.questions.some((question) => !question.explanation) ? "待生成" : "已补全"}`,
     "",
   ];
 
   for (const question of set.questions) {
     lines.push(`## 第 ${question.questionNo} 题`);
-    lines.push("");
-    lines.push(
-      `【来源：洛谷有题；试卷：${set.problemsetId}；原题：${question.parentProblemNo}` +
-        (question.subQuestionNo ? `-${question.subQuestionNo}` : "") +
-        (question.luoguId ? `；洛谷题目ID：${question.luoguId}` : "") +
-        "】"
-    );
     lines.push("");
     lines.push(question.stemMarkdown || question.rawText || "");
     lines.push("");
