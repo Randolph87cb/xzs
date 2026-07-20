@@ -1,0 +1,3078 @@
+{
+  "year": 2020,
+  "group": "S",
+  "source": "luogu-youti",
+  "problemsetId": 1035,
+  "problemsetName": "CSP 2020 提高级第一轮",
+  "url": "https://ti.luogu.com.cn/problemset/1035",
+  "sourceMode": "window._feInjection",
+  "questions": [
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 858,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 1,
+      "parentProblemNo": 1,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "请选出以下最大的数（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$(550)_{10}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$(777)_{8}$"
+        },
+        {
+          "prefix": "C",
+          "content": "$2^{10}$"
+        },
+        {
+          "prefix": "D",
+          "content": "$(22F)_{16}$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "请选出以下最大的数（ ）。",
+      "raw": {
+        "problem": {
+          "id": 858,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376432
+        },
+        "question": {
+          "choices": [
+            "$(550)_{10}$ ",
+            " $(777)_{8}$ ",
+            "$2^{10}$",
+            " $(22F)_{16}$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 859,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 2,
+      "parentProblemNo": 2,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "操作系统的功能是（  ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "负责外设与主机之间的信息交换"
+        },
+        {
+          "prefix": "B",
+          "content": "控制和管理计算机系统的各种硬件和软件资源的使用"
+        },
+        {
+          "prefix": "C",
+          "content": "负责诊断机器的故障"
+        },
+        {
+          "prefix": "D",
+          "content": "将源程序编译成目标程序"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "操作系统的功能是（  ）",
+      "raw": {
+        "problem": {
+          "id": 859,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1602562425
+        },
+        "question": {
+          "choices": [
+            "负责外设与主机之间的信息交换 ",
+            "控制和管理计算机系统的各种硬件和软件资源的使用 ",
+            "负责诊断机器的故障 ",
+            "将源程序编译成目标程序"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 860,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 3,
+      "parentProblemNo": 3,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "现有一段 $8$ 分钟的视频文件，它的播放速度是每秒 $24$ 帧图像，每帧图像是  一幅分辨率为 $2048\\times 1024$ 像素的 $32$ 位真彩色图像。请问要存储这段原始无压缩视频，需要多大的存储空间？（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "30G"
+        },
+        {
+          "prefix": "B",
+          "content": "90G"
+        },
+        {
+          "prefix": "C",
+          "content": "150G"
+        },
+        {
+          "prefix": "D",
+          "content": "450G"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "现有一段 $8$ 分钟的视频文件，它的播放速度是每秒 $24$ 帧图像，每帧图像是  一幅分辨率为 $2048\\times 1024$ 像素的 $32$ 位真彩色图像。请问要存储这段原始无压缩视频，需要多大的存储空间？（ ）。",
+      "raw": {
+        "problem": {
+          "id": 860,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376456
+        },
+        "question": {
+          "choices": [
+            "30G ",
+            "90G ",
+            "150G ",
+            "450G"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 861,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 4,
+      "parentProblemNo": 4,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "今有一空栈 $S$，对下列待进栈的数据元素序列 $a,b,c,d,e,f$ 依次进行：进栈，进栈，出栈，进栈，进栈，出栈的操作，则此操作完成后，栈底元素为（  ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "b"
+        },
+        {
+          "prefix": "B",
+          "content": "a"
+        },
+        {
+          "prefix": "C",
+          "content": "d"
+        },
+        {
+          "prefix": "D",
+          "content": "c"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "今有一空栈 $S$，对下列待进栈的数据元素序列 $a,b,c,d,e,f$ 依次进行：进栈，进栈，出栈，进栈，进栈，出栈的操作，则此操作完成后，栈底元素为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 861,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376465
+        },
+        "question": {
+          "choices": [
+            "b",
+            " a",
+            " d",
+            " c"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 862,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 5,
+      "parentProblemNo": 5,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "将 $(2, 7, 10, 18)$ 分别存储到某个地址区间为 $0\\sim 10$ 的哈希表中，如果哈希函数 $h(x)=$（  ），将**不会**产生冲突，其中 $a \\bmod b$ 表示 $a$ 除以 $b$ 的余数。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$x^2 \\bmod{11}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$2x \\bmod{11}$"
+        },
+        {
+          "prefix": "C",
+          "content": "$x \\bmod{11}$"
+        },
+        {
+          "prefix": "D",
+          "content": "$\\lfloor \\dfrac{x}{2} \\rfloor \\bmod{11}$，其中$\\lfloor \\dfrac{x}{2} \\rfloor$ 表示 $\\dfrac{x}{2}$ 下取整"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "将 $(2, 7, 10, 18)$ 分别存储到某个地址区间为 $0\\sim 10$ 的哈希表中，如果哈希函数 $h(x)=$（  ），将**不会**产生冲突，其中 $a \\bmod b$ 表示 $a$ 除以 $b$ 的余数。",
+      "raw": {
+        "problem": {
+          "id": 862,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376517
+        },
+        "question": {
+          "choices": [
+            "$x^2 \\bmod{11}$ ",
+            "$2x \\bmod{11}$",
+            " $x \\bmod{11}$",
+            " $\\lfloor \\dfrac{x}{2} \\rfloor \\bmod{11}$，其中$\\lfloor \\dfrac{x}{2} \\rfloor$ 表示 $\\dfrac{x}{2}$ 下取整"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 863,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 6,
+      "parentProblemNo": 6,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "下列哪些问题**不能**用贪心法精确求解？（  ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "霍夫曼编码问题"
+        },
+        {
+          "prefix": "B",
+          "content": "0-1 背包问题"
+        },
+        {
+          "prefix": "C",
+          "content": "最小生成树问题"
+        },
+        {
+          "prefix": "D",
+          "content": "单源最短路径问题"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "下列哪些问题**不能**用贪心法精确求解？（  ）",
+      "raw": {
+        "problem": {
+          "id": 863,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376525
+        },
+        "question": {
+          "choices": [
+            "霍夫曼编码问题 ",
+            "0-1 背包问题 ",
+            "最小生成树问题 ",
+            "单源最短路径问题"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 864,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 7,
+      "parentProblemNo": 7,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "具有 $n$ 个顶点，$e$ 条边的图采用邻接表存储结构，进行深度优先遍历运算的时间复杂度为（  ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n+e)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n^2)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(e^2)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n)$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "具有 $n$ 个顶点，$e$ 条边的图采用邻接表存储结构，进行深度优先遍历运算的时间复杂度为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 864,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376535
+        },
+        "question": {
+          "choices": [
+            "$O(n+e)$ ",
+            "$O(n^2)$ ",
+            "$O(e^2)$ ",
+            "$O(n)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 865,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 8,
+      "parentProblemNo": 8,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "二分图是指能将顶点划分成两个部分，每一部分内的顶点间没有边相连的简单无向图。那么，$24$ 个顶点的二分图**至多**有（ ）条边。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "144"
+        },
+        {
+          "prefix": "B",
+          "content": "100"
+        },
+        {
+          "prefix": "C",
+          "content": "48"
+        },
+        {
+          "prefix": "D",
+          "content": "122"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二分图是指能将顶点划分成两个部分，每一部分内的顶点间没有边相连的简单无向图。那么，$24$ 个顶点的二分图**至多**有（ ）条边。",
+      "raw": {
+        "problem": {
+          "id": 865,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376692
+        },
+        "question": {
+          "choices": [
+            "144 ",
+            "100 ",
+            "48",
+            " 122"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 866,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 9,
+      "parentProblemNo": 9,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "广度优先搜索时，一定需要用到的数据结构是(  )",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "栈"
+        },
+        {
+          "prefix": "B",
+          "content": "二叉树"
+        },
+        {
+          "prefix": "C",
+          "content": "队列"
+        },
+        {
+          "prefix": "D",
+          "content": "哈希表"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "广度优先搜索时，一定需要用到的数据结构是(  )",
+      "raw": {
+        "problem": {
+          "id": 866,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1602562880
+        },
+        "question": {
+          "choices": [
+            "栈 ",
+            "二叉树",
+            " 队列 ",
+            "哈希表 "
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 867,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 10,
+      "parentProblemNo": 10,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "—个班学生分组做游戏，如果每组三人就多两人，每组五人就多三人，每组七人就多四人，问这个班的学生人数 $n$ 在以下哪个区间？已知 $n<60$。(  ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$30<n<40$"
+        },
+        {
+          "prefix": "B",
+          "content": "$40<n<50$"
+        },
+        {
+          "prefix": "C",
+          "content": "$50<n<60$"
+        },
+        {
+          "prefix": "D",
+          "content": "$20<n<30$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "—个班学生分组做游戏，如果每组三人就多两人，每组五人就多三人，每组七人就多四人，问这个班的学生人数 $n$ 在以下哪个区间？已知 $n<60$。(  ）",
+      "raw": {
+        "problem": {
+          "id": 867,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658376713
+        },
+        "question": {
+          "choices": [
+            "$30<n<40$ ",
+            "$40<n<50$ ",
+            "$50<n<60$ ",
+            "$20<n<30$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 868,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 11,
+      "parentProblemNo": 11,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "小明想通过走楼梯来锻炼身体，假设从第 $1$ 层走到第 $2$ 层消耗 $10$ 卡热量，接着从第 $2$ 层走到第 $3$ 层消耗 $20$ 卡热量，再从第 $3$ 层走到第 $4$ 层消耗 $30$ 卡热量，依此类推，从第 $k$ 层走到第 $k+1$ 层消耗 $10k$ 卡热量 $(k>1)$？如果小明想从 $1$ 层开始，通过连续向上爬楼梯消耗 $1000$ 卡热量，至少要爬到第几层楼？ （  ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "14"
+        },
+        {
+          "prefix": "B",
+          "content": "16"
+        },
+        {
+          "prefix": "C",
+          "content": "15"
+        },
+        {
+          "prefix": "D",
+          "content": "13"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "小明想通过走楼梯来锻炼身体，假设从第 $1$ 层走到第 $2$ 层消耗 $10$ 卡热量，接着从第 $2$ 层走到第 $3$ 层消耗 $20$ 卡热量，再从第 $3$ 层走到第 $4$ 层消耗 $30$ 卡热量，依此类推，从第 $k$ 层走到第 $k+1$ 层消耗 $10k$ 卡热量 $(k>1)$？如果小明想从 $1$ 层开始，通过连续向上爬楼梯消耗 $1000$ 卡热量，至少要爬到第几层楼？ （  ）。",
+      "raw": {
+        "problem": {
+          "id": 868,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658377176
+        },
+        "question": {
+          "choices": [
+            "14 ",
+            "16",
+            " 15",
+            " 13"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 869,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 12,
+      "parentProblemNo": 12,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "表达式 `a*(b+c)-d` 的后缀表达形式为（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$\\texttt{abc*+d-}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$\\texttt{-+*abcd}$"
+        },
+        {
+          "prefix": "C",
+          "content": "$\\texttt{abcd*+-}$"
+        },
+        {
+          "prefix": "D",
+          "content": "$\\texttt{abc+*d-}$"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "表达式 `a*(b+c)-d` 的后缀表达形式为（ ）。",
+      "raw": {
+        "problem": {
+          "id": 869,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658377204
+        },
+        "question": {
+          "choices": [
+            "$\\texttt{abc*+d-}$ ",
+            " $\\texttt{-+*abcd}$ ",
+            " $\\texttt{abcd*+-}$ ",
+            " $\\texttt{abc+*d-}$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 870,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 13,
+      "parentProblemNo": 13,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "从一个 $4 \\times 4$ 的棋盘中选取不在同一行也不在同一列上的两个方格，共有（ ）种方法。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "60"
+        },
+        {
+          "prefix": "B",
+          "content": "72"
+        },
+        {
+          "prefix": "C",
+          "content": "86"
+        },
+        {
+          "prefix": "D",
+          "content": "64"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "从一个 $4 \\times 4$ 的棋盘中选取不在同一行也不在同一列上的两个方格，共有（ ）种方法。",
+      "raw": {
+        "problem": {
+          "id": 870,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658377212
+        },
+        "question": {
+          "choices": [
+            "60",
+            "72",
+            "86",
+            "64"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 871,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 14,
+      "parentProblemNo": 14,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "对一个 $n$ 个顶点、$m$ 条边的带权有向简单图用 Dijkstra 算法计算单源最短路时，如果不使用堆或其它优先队列进行优化，则其时间复杂度为（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O((m + n^2) \\log n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(mn + n^3)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O((m + n) \\log n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^2)$"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "对一个 $n$ 个顶点、$m$ 条边的带权有向简单图用 Dijkstra 算法计算单源最短路时，如果不使用堆或其它优先队列进行优化，则其时间复杂度为（ ）。",
+      "raw": {
+        "problem": {
+          "id": 871,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658377222
+        },
+        "question": {
+          "choices": [
+            "$O((m + n^2) \\log n)$",
+            "$O(mn + n^3)$",
+            "$O((m + n) \\log n)$ ",
+            "$O(n^2)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 872,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 15,
+      "parentProblemNo": 15,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "1948 年，（ ）将热力学中的熵引入信息通信领域，标志着信息论研究的开端。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "欧拉(Leonhard Euler)"
+        },
+        {
+          "prefix": "B",
+          "content": "冯·诺伊曼(John von Neumann)"
+        },
+        {
+          "prefix": "C",
+          "content": "克劳德·香农(Claude Shannon)"
+        },
+        {
+          "prefix": "D",
+          "content": "图灵(Alan Turing)"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "1948 年，（ ）将热力学中的熵引入信息通信领域，标志着信息论研究的开端。",
+      "raw": {
+        "problem": {
+          "id": 872,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658377228
+        },
+        "question": {
+          "choices": [
+            "欧拉(Leonhard Euler) ",
+            "冯·诺伊曼(John von Neumann) ",
+            "克劳德·香农(Claude Shannon) ",
+            "图灵(Alan Turing)"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 873,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 16,
+      "parentProblemNo": 16,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。\n\n子题 1",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。",
+      "raw": {
+        "problem": {
+          "id": 873,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658377358
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 873,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 17,
+      "parentProblemNo": 16,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。\n\n子题 2",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。",
+      "raw": {
+        "problem": {
+          "id": 873,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658377358
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 873,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 18,
+      "parentProblemNo": 16,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。\n\n子题 3",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。",
+      "raw": {
+        "problem": {
+          "id": 873,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658377358
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 873,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 19,
+      "parentProblemNo": 16,
+      "subQuestionNo": 4,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。\n\n子题 4",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。",
+      "raw": {
+        "problem": {
+          "id": 873,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658377358
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 873,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 20,
+      "parentProblemNo": 16,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。\n\n子题 5",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "127"
+        },
+        {
+          "prefix": "B",
+          "content": "126"
+        },
+        {
+          "prefix": "C",
+          "content": "128"
+        },
+        {
+          "prefix": "D",
+          "content": "125"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。",
+      "raw": {
+        "problem": {
+          "id": 873,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658377358
+        },
+        "question": {
+          "choices": [
+            "127",
+            " 126",
+            " 128",
+            " 125"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 873,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 21,
+      "parentProblemNo": 16,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。\n\n子题 6",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "若输出为偶数，则输入的 $d[i]$ 中**最多**有两个偶数"
+        },
+        {
+          "prefix": "B",
+          "content": "若输出为奇数，则输入的 $d[i]$ 中**至少**有两个奇数"
+        },
+        {
+          "prefix": "C",
+          "content": "若输出为偶数，则输入的 $d[i]$ 中**至少**有两个偶数"
+        },
+        {
+          "prefix": "D",
+          "content": "若输出为奇数，则输入的 $d[i]$ 中**最多**有两个奇数"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}\n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题\n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。",
+      "raw": {
+        "problem": {
+          "id": 873,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658377358
+        },
+        "question": {
+          "choices": [
+            "若输出为偶数，则输入的 $d[i]$ 中**最多**有两个偶数 ",
+            "若输出为奇数，则输入的 $d[i]$ 中**至少**有两个奇数 ",
+            "若输出为偶数，则输入的 $d[i]$ 中**至少**有两个偶数 ",
+            "若输出为奇数，则输入的 $d[i]$ 中**最多**有两个奇数"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 874,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 22,
+      "parentProblemNo": 17,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。\n\n子题 1",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。",
+      "raw": {
+        "problem": {
+          "id": 874,
+          "type": "MultipleSelection",
+          "score": 13,
+          "page": 1,
+          "createTime": 1660888909
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 874,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 23,
+      "parentProblemNo": 17,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。\n\n子题 2",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。",
+      "raw": {
+        "problem": {
+          "id": 874,
+          "type": "MultipleSelection",
+          "score": 13,
+          "page": 1,
+          "createTime": 1660888909
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 874,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 24,
+      "parentProblemNo": 17,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 2.5,
+      "stemMarkdown": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。\n\n子题 3",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n \\log n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(\\log n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^2)$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。",
+      "raw": {
+        "problem": {
+          "id": 874,
+          "type": "MultipleSelection",
+          "score": 13,
+          "page": 1,
+          "createTime": 1660888909
+        },
+        "question": {
+          "choices": [
+            "$O(n \\log n)$ ",
+            "$O(n)$ ",
+            "$O(\\log n)$ ",
+            "$O(n^2)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 874,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 25,
+      "parentProblemNo": 17,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 2.5,
+      "stemMarkdown": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。\n\n子题 4",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n^2)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n \\log n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(\\log n)$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。",
+      "raw": {
+        "problem": {
+          "id": 874,
+          "type": "MultipleSelection",
+          "score": 13,
+          "page": 1,
+          "createTime": 1660888909
+        },
+        "question": {
+          "choices": [
+            "$O(n^2)$",
+            " $O(n)$ ",
+            "$O(n \\log n)$",
+            " $O(\\log n)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 874,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 26,
+      "parentProblemNo": 17,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 2.5,
+      "stemMarkdown": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。\n\n子题 5",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n), O(n^2)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n),O(n \\log n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n \\log n),O(n^2)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n \\log n),O(n \\log n)$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。",
+      "raw": {
+        "problem": {
+          "id": 874,
+          "type": "MultipleSelection",
+          "score": 13,
+          "page": 1,
+          "createTime": 1660888909
+        },
+        "question": {
+          "choices": [
+            "$O(n), O(n^2)$ ",
+            "$O(n),O(n \\log n)$ ",
+            "$O(n \\log n),O(n^2)$ ",
+            "$O(n \\log n),O(n \\log n)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 874,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 27,
+      "parentProblemNo": 17,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 2.5,
+      "stemMarkdown": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。\n\n子题 6",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(\\log n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n \\log n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^2)$"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}\n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。",
+      "raw": {
+        "problem": {
+          "id": 874,
+          "type": "MultipleSelection",
+          "score": 13,
+          "page": 1,
+          "createTime": 1660888909
+        },
+        "question": {
+          "choices": [
+            "$O(n)$ ",
+            "$O(\\log n)$ ",
+            "$O(n \\log n)$ ",
+            "$O(n^2)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2.5,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 875,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 28,
+      "parentProblemNo": 18,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。\n\n子题 1",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。",
+      "raw": {
+        "problem": {
+          "id": 875,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658377974
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 875,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 29,
+      "parentProblemNo": 18,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。\n\n子题 2",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。",
+      "raw": {
+        "problem": {
+          "id": 875,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658377974
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 875,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 30,
+      "parentProblemNo": 18,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。\n\n子题 3",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。",
+      "raw": {
+        "problem": {
+          "id": 875,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658377974
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 875,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 31,
+      "parentProblemNo": 18,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 2.5,
+      "stemMarkdown": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。\n\n子题 4",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "49"
+        },
+        {
+          "prefix": "B",
+          "content": "50"
+        },
+        {
+          "prefix": "C",
+          "content": "100"
+        },
+        {
+          "prefix": "D",
+          "content": "-1"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。",
+      "raw": {
+        "problem": {
+          "id": 875,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658377974
+        },
+        "question": {
+          "choices": [
+            "49",
+            " 50",
+            " 100",
+            " -1"
+          ],
+          "allowMultiChoices": false,
+          "score": 2.5,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 875,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 32,
+      "parentProblemNo": 18,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 4,
+      "stemMarkdown": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。\n\n子题 5",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "56"
+        },
+        {
+          "prefix": "B",
+          "content": "84"
+        },
+        {
+          "prefix": "C",
+          "content": "102"
+        },
+        {
+          "prefix": "D",
+          "content": "68"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。",
+      "raw": {
+        "problem": {
+          "id": 875,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658377974
+        },
+        "question": {
+          "choices": [
+            "56",
+            "84",
+            "102",
+            "68"
+          ],
+          "allowMultiChoices": false,
+          "score": 4,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 875,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 33,
+      "parentProblemNo": 18,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 4,
+      "stemMarkdown": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。\n\n子题 6",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "若 $n,m$ 均为奇数，则输出**可能**小于 0。"
+        },
+        {
+          "prefix": "B",
+          "content": "若 $n,m$ 均为偶数，则输出**可能**小于 $0$。"
+        },
+        {
+          "prefix": "C",
+          "content": "若 $n$ 为奇数、$m$ 为偶数，则输出**可能**小于 $0$。"
+        },
+        {
+          "prefix": "D",
+          "content": "若 $n$ 为偶数、$m$ 为奇数，则输出**可能**小于 $0$。"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题\n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为\n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。",
+      "raw": {
+        "problem": {
+          "id": 875,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658377974
+        },
+        "question": {
+          "choices": [
+            "若 $n,m$ 均为奇数，则输出**可能**小于 0。 ",
+            "若 $n,m$ 均为偶数，则输出**可能**小于 $0$。",
+            " 若 $n$ 为奇数、$m$ 为偶数，则输出**可能**小于 $0$。 ",
+            "若 $n$ 为偶数、$m$ 为奇数，则输出**可能**小于 $0$。"
+          ],
+          "allowMultiChoices": false,
+          "score": 4,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 876,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 34,
+      "parentProblemNo": 19,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 1",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`w[j] / v[j] < w[j+1] / v[j+1]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`w[j] / v[j] > w[j +1] / v[j+1]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`v[j] * w[j+1] <  v[j+1]  *  w[j]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`w[j] * v[j+1] <  w[j+1]  *  v[j]`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 876,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1754317573
+        },
+        "question": {
+          "choices": [
+            "`w[j] / v[j] < w[j+1] / v[j+1]`",
+            " `w[j] / v[j] > w[j +1] / v[j+1]` ",
+            " `v[j] * w[j+1] <  v[j+1]  *  w[j]` ",
+            " `w[j] * v[j+1] <  w[j+1]  *  v[j]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 876,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 35,
+      "parentProblemNo": 19,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 2",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`w[1] <= B`"
+        },
+        {
+          "prefix": "B",
+          "content": "`v[1] <= B`"
+        },
+        {
+          "prefix": "C",
+          "content": "`w[1] >= B`"
+        },
+        {
+          "prefix": "D",
+          "content": "` v[1] >= B`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 876,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1754317573
+        },
+        "question": {
+          "choices": [
+            "`w[1] <= B`",
+            "`v[1] <= B`",
+            "`w[1] >= B`",
+            "` v[1] >= B`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 876,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 36,
+      "parentProblemNo": 19,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 3",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`print(v[1],w[1]); return 0;`"
+        },
+        {
+          "prefix": "B",
+          "content": "`curV = 0; curW = 0;`"
+        },
+        {
+          "prefix": "C",
+          "content": "`print(w[1], v[1]); return 0;`"
+        },
+        {
+          "prefix": "D",
+          "content": "`curV = v[1]; curW = w[1];`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 876,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1754317573
+        },
+        "question": {
+          "choices": [
+            "`print(v[1],w[1]); return 0;` ",
+            "`curV = 0; curW = 0;` ",
+            "`print(w[1], v[1]); return 0;`",
+            "`curV = v[1]; curW = w[1];`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 876,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 37,
+      "parentProblemNo": 19,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 4",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`curW * v[i] + curV * w[i], v[i]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`(curW - w[i]) * v[i] + (B - curV) * w[i], v[i]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`curW + v[i], w[i]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`curW * v[i] + (B - curV) * w[i], v[i]`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 876,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1754317573
+        },
+        "question": {
+          "choices": [
+            "`curW * v[i] + curV * w[i], v[i]` ",
+            "`(curW - w[i]) * v[i] + (B - curV) * w[i], v[i]` ",
+            "`curW + v[i], w[i]`",
+            "`curW * v[i] + (B - curV) * w[i], v[i]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 876,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 38,
+      "parentProblemNo": 19,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 5",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`curW,curV`"
+        },
+        {
+          "prefix": "B",
+          "content": "`curW, 1`"
+        },
+        {
+          "prefix": "C",
+          "content": "`curV, curW`"
+        },
+        {
+          "prefix": "D",
+          "content": "`curV, 1`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n\n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n\n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n\n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n}\n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n\n1) ①处应填（ ）\n\n3) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 876,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1754317573
+        },
+        "question": {
+          "choices": [
+            "`curW,curV`",
+            " `curW, 1` ",
+            "`curV, curW` ",
+            "`curV, 1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 877,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 39,
+      "parentProblemNo": 20,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 1",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`x >>= 1`"
+        },
+        {
+          "prefix": "B",
+          "content": "`x ^=  x &(x ^ (x + 1))`"
+        },
+        {
+          "prefix": "C",
+          "content": "`x  -=  x | -x`"
+        },
+        {
+          "prefix": "D",
+          "content": "`x  ^=  x &(x ^ (x - 1))`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 877,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1662775934
+        },
+        "question": {
+          "choices": [
+            "`x >>= 1`",
+            " `x ^=  x &(x ^ (x + 1))` ",
+            "`x  -=  x | -x` ",
+            "`x  ^=  x &(x ^ (x - 1))`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 877,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 40,
+      "parentProblemNo": 20,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 2",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`(a & MS) << B`"
+        },
+        {
+          "prefix": "B",
+          "content": "`a >> B`"
+        },
+        {
+          "prefix": "C",
+          "content": "`a & (1 << B)`"
+        },
+        {
+          "prefix": "D",
+          "content": "`a & (MS << B)`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 877,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1662775934
+        },
+        "question": {
+          "choices": [
+            "`(a & MS) << B` ",
+            "`a >> B`",
+            " `a & (1 << B)` ",
+            "`a & (MS << B)`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 877,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 41,
+      "parentProblemNo": 20,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 3",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`-INF`"
+        },
+        {
+          "prefix": "B",
+          "content": "`Max[y][x]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`0`"
+        },
+        {
+          "prefix": "D",
+          "content": "`Max[x][y]`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 877,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1662775934
+        },
+        "question": {
+          "choices": [
+            "`-INF` ",
+            "`Max[y][x]`",
+            " `0` ",
+            "`Max[x][y]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 877,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 42,
+      "parentProblemNo": 20,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 4",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`Max[x][z] + w(y ^ z)`"
+        },
+        {
+          "prefix": "B",
+          "content": "`Max[x][z] + w(a ^ z)`"
+        },
+        {
+          "prefix": "C",
+          "content": "`Max[x][z] + w(x ^ (z << B))`"
+        },
+        {
+          "prefix": "D",
+          "content": "`Max[x][z] + w(x ^ z)`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 877,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1662775934
+        },
+        "question": {
+          "choices": [
+            "`Max[x][z] + w(y ^ z)`",
+            " `Max[x][z] + w(a ^ z)` ",
+            "`Max[x][z] + w(x ^ (z << B))` ",
+            "`Max[x][z] + w(x ^ z)`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 877,
+      "url": "https://ti.luogu.com.cn/problemset/1035",
+      "questionNo": 43,
+      "parentProblemNo": 20,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n子题 5",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`to_max(Max[y][z], v + w(a ^ (z << B)))`"
+        },
+        {
+          "prefix": "B",
+          "content": "`to_max(Max[z][y], v + w((x ^ z) << B))`"
+        },
+        {
+          "prefix": "C",
+          "content": "`to_max(Max[z][y], v + w(a ^ (z << B)))`"
+        },
+        {
+          "prefix": "D",
+          "content": "`to_max(Max[x][z], v + w(y ^ z))`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x)\n{\n    int s = x;\n    while(x)\n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y)\n{\n    if(x < y)\n        x = y;\n}\n\nint main()\n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++)\n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）",
+      "raw": {
+        "problem": {
+          "id": 877,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1662775934
+        },
+        "question": {
+          "choices": [
+            "`to_max(Max[y][z], v + w(a ^ (z << B)))` ",
+            "`to_max(Max[z][y], v + w((x ^ z) << B))` ",
+            "`to_max(Max[z][y], v + w(a ^ (z << B)))`",
+            " `to_max(Max[x][z], v + w(y ^ z))`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    }
+  ],
+  "raw": {
+    "id": 1035,
+    "name": "CSP 2020 提高级第一轮",
+    "description": "CSP 2020 提高级第一轮（C++）",
+    "duration": 7200,
+    "problems": [
+      {
+        "score": 2,
+        "page": 1,
+        "id": 858,
+        "type": "MultipleSelection",
+        "description": "请选出以下最大的数（ ）。",
+        "createTime": 1658376432,
+        "questions": [
+          {
+            "choices": [
+              "$(550)_{10}$ ",
+              " $(777)_{8}$ ",
+              "$2^{10}$",
+              " $(22F)_{16}$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 859,
+        "type": "MultipleSelection",
+        "description": "操作系统的功能是（  ）\n\n",
+        "createTime": 1602562425,
+        "questions": [
+          {
+            "choices": [
+              "负责外设与主机之间的信息交换 ",
+              "控制和管理计算机系统的各种硬件和软件资源的使用 ",
+              "负责诊断机器的故障 ",
+              "将源程序编译成目标程序"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 860,
+        "type": "MultipleSelection",
+        "description": "现有一段 $8$ 分钟的视频文件，它的播放速度是每秒 $24$ 帧图像，每帧图像是  一幅分辨率为 $2048\\times 1024$ 像素的 $32$ 位真彩色图像。请问要存储这段原始无压缩视频，需要多大的存储空间？（ ）。\n",
+        "createTime": 1658376456,
+        "questions": [
+          {
+            "choices": [
+              "30G ",
+              "90G ",
+              "150G ",
+              "450G"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 861,
+        "type": "MultipleSelection",
+        "description": "今有一空栈 $S$，对下列待进栈的数据元素序列 $a,b,c,d,e,f$ 依次进行：进栈，进栈，出栈，进栈，进栈，出栈的操作，则此操作完成后，栈底元素为（  ）。\n",
+        "createTime": 1658376465,
+        "questions": [
+          {
+            "choices": [
+              "b",
+              " a",
+              " d",
+              " c"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 862,
+        "type": "MultipleSelection",
+        "description": "将 $(2, 7, 10, 18)$ 分别存储到某个地址区间为 $0\\sim 10$ 的哈希表中，如果哈希函数 $h(x)=$（  ），将**不会**产生冲突，其中 $a \\bmod b$ 表示 $a$ 除以 $b$ 的余数。\n\n",
+        "createTime": 1658376517,
+        "questions": [
+          {
+            "choices": [
+              "$x^2 \\bmod{11}$ ",
+              "$2x \\bmod{11}$",
+              " $x \\bmod{11}$",
+              " $\\lfloor \\dfrac{x}{2} \\rfloor \\bmod{11}$，其中$\\lfloor \\dfrac{x}{2} \\rfloor$ 表示 $\\dfrac{x}{2}$ 下取整"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 863,
+        "type": "MultipleSelection",
+        "description": "下列哪些问题**不能**用贪心法精确求解？（  ）\n\n\n",
+        "createTime": 1658376525,
+        "questions": [
+          {
+            "choices": [
+              "霍夫曼编码问题 ",
+              "0-1 背包问题 ",
+              "最小生成树问题 ",
+              "单源最短路径问题"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 864,
+        "type": "MultipleSelection",
+        "description": "具有 $n$ 个顶点，$e$ 条边的图采用邻接表存储结构，进行深度优先遍历运算的时间复杂度为（  ）。\n",
+        "createTime": 1658376535,
+        "questions": [
+          {
+            "choices": [
+              "$O(n+e)$ ",
+              "$O(n^2)$ ",
+              "$O(e^2)$ ",
+              "$O(n)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 865,
+        "type": "MultipleSelection",
+        "description": "二分图是指能将顶点划分成两个部分，每一部分内的顶点间没有边相连的简单无向图。那么，$24$ 个顶点的二分图**至多**有（ ）条边。 \n",
+        "createTime": 1658376692,
+        "questions": [
+          {
+            "choices": [
+              "144 ",
+              "100 ",
+              "48",
+              " 122"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 866,
+        "type": "MultipleSelection",
+        "description": "广度优先搜索时，一定需要用到的数据结构是(  )\n",
+        "createTime": 1602562880,
+        "questions": [
+          {
+            "choices": [
+              "栈 ",
+              "二叉树",
+              " 队列 ",
+              "哈希表 "
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 867,
+        "type": "MultipleSelection",
+        "description": "—个班学生分组做游戏，如果每组三人就多两人，每组五人就多三人，每组七人就多四人，问这个班的学生人数 $n$ 在以下哪个区间？已知 $n<60$。(  ）\n\n",
+        "createTime": 1658376713,
+        "questions": [
+          {
+            "choices": [
+              "$30<n<40$ ",
+              "$40<n<50$ ",
+              "$50<n<60$ ",
+              "$20<n<30$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 868,
+        "type": "MultipleSelection",
+        "description": "小明想通过走楼梯来锻炼身体，假设从第 $1$ 层走到第 $2$ 层消耗 $10$ 卡热量，接着从第 $2$ 层走到第 $3$ 层消耗 $20$ 卡热量，再从第 $3$ 层走到第 $4$ 层消耗 $30$ 卡热量，依此类推，从第 $k$ 层走到第 $k+1$ 层消耗 $10k$ 卡热量 $(k>1)$？如果小明想从 $1$ 层开始，通过连续向上爬楼梯消耗 $1000$ 卡热量，至少要爬到第几层楼？ （  ）。\n\n",
+        "createTime": 1658377176,
+        "questions": [
+          {
+            "choices": [
+              "14 ",
+              "16",
+              " 15",
+              " 13"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 869,
+        "type": "MultipleSelection",
+        "description": "表达式 `a*(b+c)-d` 的后缀表达形式为（ ）。\n\n",
+        "createTime": 1658377204,
+        "questions": [
+          {
+            "choices": [
+              "$\\texttt{abc*+d-}$ ",
+              " $\\texttt{-+*abcd}$ ",
+              " $\\texttt{abcd*+-}$ ",
+              " $\\texttt{abc+*d-}$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 870,
+        "type": "MultipleSelection",
+        "description": "从一个 $4 \\times 4$ 的棋盘中选取不在同一行也不在同一列上的两个方格，共有（ ）种方法。\n\n",
+        "createTime": 1658377212,
+        "questions": [
+          {
+            "choices": [
+              "60",
+              "72",
+              "86",
+              "64"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 871,
+        "type": "MultipleSelection",
+        "description": "对一个 $n$ 个顶点、$m$ 条边的带权有向简单图用 Dijkstra 算法计算单源最短路时，如果不使用堆或其它优先队列进行优化，则其时间复杂度为（ ）。\n\n",
+        "createTime": 1658377222,
+        "questions": [
+          {
+            "choices": [
+              "$O((m + n^2) \\log n)$",
+              "$O(mn + n^3)$",
+              "$O((m + n) \\log n)$ ",
+              "$O(n^2)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 872,
+        "type": "MultipleSelection",
+        "description": "1948 年，（ ）将热力学中的熵引入信息通信领域，标志着信息论研究的开端。\n\n",
+        "createTime": 1658377228,
+        "questions": [
+          {
+            "choices": [
+              "欧拉(Leonhard Euler) ",
+              "冯·诺伊曼(John von Neumann) ",
+              "克劳德·香农(Claude Shannon) ",
+              "图灵(Alan Turing)"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 12,
+        "page": 1,
+        "id": 873,
+        "type": "MultipleSelection",
+        "description": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n\n1.\n```\n#include <iostream>\nusing namespace std;\n\nint n;\nint d[1000];\n\nint main() {\n  cin >> n;\n  for (int i = 0; i < n; ++i)\n    cin >> d[i];\n  int ans = -1;\n  for (int i = 0; i < n; ++i)\n    for (int j = 0; j < n; ++j)\n      if (d[i] < d[j])\n         ans = max(ans, d[i] + d[j] - (d[i] & d[j]));\n    cout << ans;\n    return 0;\n}                 \n\n```\n  假设输入的 $n$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，完成下面的判断题和单选题：\n  \n- 判断题 \n\n  1)  $n$ 必须小于 $1000$,否则程序**可能**会发生运行错误。（ ）\n\n  2)  输出一定大于等于 $0$。（ ）\n\n  3)  若将第 13 行的 `j=0` 改为 `j = i + 1` 程序输出**可能**会改变。 （ ）\n\n  4)  将第 14 行的 `d[i] < d[j]` 改为 `d[i] != d[j]`，程序输出**不会**改变。（ ）\n\n- 单选题 \n\n  5)  若输入 $n$ 为 $100$，且输出为 $127$，则输入的 $d[i]$ 中不可能有（  ）。\n\n\n  6)  若输出的数大于 $0$，则下面说法正确的是(  ）。\n\n",
+        "createTime": 1658377358,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "127",
+              " 126",
+              " 128",
+              " 125"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "若输出为偶数，则输入的 $d[i]$ 中**最多**有两个偶数 ",
+              "若输出为奇数，则输入的 $d[i]$ 中**至少**有两个奇数 ",
+              "若输出为偶数，则输入的 $d[i]$ 中**至少**有两个偶数 ",
+              "若输出为奇数，则输入的 $d[i]$ 中**最多**有两个奇数"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 13,
+        "page": 1,
+        "id": 874,
+        "type": "MultipleSelection",
+        "description": "2.\n```\n#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint n;\nint d[10000];\n\nint find(int L, int R, int k) {\n    int x = rand() % (R - L + 1) + L;\n    swap(d[L], d[x]);\n    int a = L + 1, b = R;\n    while (a < b) {\n        while (a < b && d[a] < d[L])\n            ++a;\n        while (a < b && d[b] >= d[L])\n            --b;\n        swap(d[a], d[b]);\n    }\n    if (d[a] < d[L])\n        ++a;\n    if (a - L == k)\n        return d[L];\n    if (a - L < k)\n        return find(a, R, k - (a - L));\n    return find(L + 1, a - 1, k);\n}\n\nint main() {\n    int k;\n    cin >> n;\n    cin >> k;\n    for (int i = 0; i < n; ++i)\n        cin >> d[i];\n    cout << find(0, n - 1, k);\n    return 0;\n}              \n```\n\n\n假设输入的 $n,k$ 和 $d[i]$ 都是不超过 $10000$ 的正整数，且 $k$ 不超过 $n$，并假设 `rand()` 函数产生的是均匀的随机数，完成下面的判断题和单选题：\n\n- 判断题\n\n  1) 第 $9$ 行的 $x$ 的数值范围是 $L+1$ 到 $R$，即 $[L+1,R]$。（ ）\n\n  2) 将第 $19$ 行的 `d[a]` 改为 `d[b]`，程序不会发生运行错误。（ ）\n\n\n- 单选题\n\n  3) （2.5 分）当输入的 $d[i]$ 是严格**单调递增**序列时，第 17 行的 `swap` 平均执行次数是( )。【编者注：本题为错题，请选择 A 获取对应的分数】\n\n\n  4) （2.5 分）当输入的 $d[i]$ 是严格**单调递减**序列时，第 17 行的 `swap` 平均执行次数是( )。\n\n\n\n  5) （2.5 分）若输入的 $d[i]$ 为 $i$，此程序①平均的时间复杂度和②最坏情况下的时间复杂度分别是( )。\n\n\n  6) （2.5 分）若输入的 $d[i]$ 都为同一个数，此程序平均的时间复杂度是( )。\n",
+        "createTime": 1660888909,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "$O(n \\log n)$ ",
+              "$O(n)$ ",
+              "$O(\\log n)$ ",
+              "$O(n^2)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "$O(n^2)$",
+              " $O(n)$ ",
+              "$O(n \\log n)$",
+              " $O(\\log n)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "$O(n), O(n^2)$ ",
+              "$O(n),O(n \\log n)$ ",
+              "$O(n \\log n),O(n^2)$ ",
+              "$O(n \\log n),O(n \\log n)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "$O(n)$ ",
+              "$O(\\log n)$ ",
+              "$O(n \\log n)$ ",
+              "$O(n^2)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2.5,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 1,
+        "id": 875,
+        "type": "MultipleSelection",
+        "description": "3.\n```\n#include <iostream>\n#include <queue>\nusing namespace std;\n\nconst int maxl = 20000000;\n\nclass Map {\n    struct item {\n        string key; int value;\n    } d[maxl];\n    int cnt;\n  public:\n    int find(string x) {\n        for (int i = 0; i < cnt; ++i)\n            if (d[i].key == x)\n                return d[i].value;\n        return -1;\n    }\n    static int end() { return -1; }\n    void insert(string k, int v) {\n        d[cnt].key = k; d[cnt++].value = v;\n    }\n} s[2];\n\nclass Queue {\n    string q[maxl];\n    int head, tail;\n  public:\n    void pop() { ++head; }\n    string front() { return q[head + 1]; }\n    bool empty() { return head == tail; }\n    void push(string x) { q[++tail] = x;  }\n} q[2];\n\nstring st0, st1;\nint m;\n\nstring LtoR(string s, int L, int R) {\n    string t = s;\n    char tmp = t[L];\n    for (int i = L; i < R; ++i)\n        t[i] = t[i + 1];\n    t[R] = tmp;\n    return t;\n}\n\nstring RtoL(string s, int L, int R) {\n    string t = s;\n    char tmp = t[R];\n    for (int i = R; i > L; --i)\n        t[i] = t[i - 1];\n    t[L] = tmp;\n    return t;\n}\n\nbool check(string st , int p, int step) {\n    if (s[p].find(st) != s[p].end())\n        return false;\n    ++step;\n    if (s[p ^ 1].find(st) == s[p].end()) {\n        s[p].insert(st, step);\n        q[p].push(st);\n        return false;\n    }\n    cout << s[p ^ 1].find(st) + step << endl;\n    return true;\n}\n\nint main() {\n    cin >> st0 >> st1;\n    int len = st0.length();\n    if (len != st1.length()) {\n        cout << -1 << endl;\n        return 0;\n    }\n    if (st0 == st1) {\n        cout << 0 << endl;\n        return 0;\n    }\n    cin >> m;\n    s[0].insert(st0, 0); s[1].insert(st1, 0);\n    q[0].push(st0); q[1].push(st1);\n    for (int p = 0;\n            !(q[0].empty() && q[1].empty());\n            p ^= 1) {\n        string st = q[p].front(); q[p].pop();\n        int step = s[p].find(st);\n        if ((p == 0 &&\n                (check(LtoR(st, m, len - 1), p, step) ||\n                 check(RtoL(st, 0, m), p, step)))\n                ||\n                (p == 1 &&\n                 (check(LtoR(st, 0, m), p, step) ||\n                  check(RtoL(st, m, len - 1), p, step))))\n            return 0;\n    }\n    cout << -1 << endl;\n    return 0;\n}\n\n```\n\n- 判断题\n\n1) 输出**可能**为 $0$。（ ）\n\n2) 若输入的两个字符串长度均为 $101$ 时，则 $m=0$ 时的输出与 $m=100$ 时的输出是一样的。（ ）\n\n3) 若两个字符串的长度均为 $n$，则最坏情况下，此程序的时间复杂度为 $O(n!)$。（ ）\n\n\n- 单选题 \n\n4)  （2.5 分）若输入的第一个字符串长度由 $100$ 个不同的字符构成，第二个字符串是第一个字符串的倒序，输入的 $m$ 为 $0$，则输出为（ ）。\n\n\n\n5)  （4 分）己知当输入为 `0123\\n3210\\n1` 时输出为 $4$，当输入为      `012345\\n543210\\n1` 时输出为 $14$，当输入为 `01234567\\n76543210\\n1` 时输出为 $28$，则当输入为`0123456789ab\\nba9876543210\\nl` 输出为   \n( ）。其中 `\\n` 为换行符。\n\n\n6) （4 分）若两个字符串的长度均为 $n$，且 $0<m<n-1$，且两个字符串的构成相同（即任何一个字符在两个字符串中出现的次数均相同），则下列说法**正确**的是（ ）。提示：考虑输入与输出有多少对字符前后顺序不一样。\n",
+        "createTime": 1658377974,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "49",
+              " 50",
+              " 100",
+              " -1"
+            ],
+            "allowMultiChoices": false,
+            "score": 2.5,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "56",
+              "84",
+              "102",
+              "68"
+            ],
+            "allowMultiChoices": false,
+            "score": 4,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "若 $n,m$ 均为奇数，则输出**可能**小于 0。 ",
+              "若 $n,m$ 均为偶数，则输出**可能**小于 $0$。",
+              " 若 $n$ 为奇数、$m$ 为偶数，则输出**可能**小于 $0$。 ",
+              "若 $n$ 为偶数、$m$ 为奇数，则输出**可能**小于 $0$。"
+            ],
+            "allowMultiChoices": false,
+            "score": 4,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 1,
+        "id": 876,
+        "type": "MultipleSelection",
+        "description": "三、完善程序（单选题，每小题 $3$ 分，共计 $30$ 分）\n\n1.（分数背包）小 S 有 $n$ 块蛋糕，编号从 $1$ 到 $n$。第 $i$ 块蛋糕的价值是 $w_i$，体积是 $v_i$。他有一个大小为 $B$ 的盒子来装这些蛋糕，也就是说装入盒子的蛋糕的体积总和不能超过 $B$。他打算选择一些蛋糕装入盒子，他希望盒子里装的蛋糕的价值之和尽量大。\n  \n  为了使盒子里的蛋糕价值之和更大，他可以任意切割蛋糕。具体来说，他可以选择一个 $a(0<a<1)$，并将一块价值是 $w$，体积为 $v$ 的蛋糕切割成两 块，其中一块的价值是 $a\\times w$，体积是 $a\\times v$，另一块的价值是$(1-a)\\times w$，体积是 $(1-a)\\times v$。他可以重复无限次切割操作。\n  \n  现要求编程输出最大可能的价值，以分数的形式输出。\n\n  比如 $n=3,B=8$，三块蛋糕的价值分别是 $4,4,2$，体积分别是 $5,3,2$。那么最优的方案就是将体积为 $5$ 的蛋糕切成两份，一份体积是 $3$，价值是 $2.4$，另一份体积是 $2$，价值是 $1.6$，然后把体积是 $3$ 的那部分和后两块蛋糕打包进盒子。最优的价值之和是 $8.4$，故程序输出 $\\dfrac{42}{5}$。\n\n输入的数据范围为：$1\\leq n\\leq 1000$，$1\\leq B\\leq 10^5$，$1\\leq w_i,v_i\\leq 100$。\n\n  提示：将所有的蛋糕按照性价比 $\\dfrac{w_i}{v_i}$ 可从大到小排序后进行贪心选择。\n  \n  试补全程序。\n\n```\n#include <cstdio>\nusing namespace std;\n\nconst int maxn = 1005;\n\nint n, B, w[maxn], v[maxn];\n\nint gcd(int u, int v) {\n    if (v == 0)\n        return u;\n    return gcd(v, u % v);\n} \n\nvoid print(int w, int v) {\n    int d = gcd(w, v);\n    w = w / d;\n    v = v / d;\n    if (v == 1)\n        printf(\"%d\\n\", w);\n    else\n        printf(\"%d/%d\\n\" w, v);\n}\nvoid swap(int &x, int &y) {\n    int t = x; x = y; y = t;\n}\n\nint main() {\n    scanf(\"%d %d\" &n, &B);\n    for (int i = 1; i <= n; i ++) {\n        scanf(\"%d %d\", &w[i], &v[i]);\n    }\n    for (int i = 1; i < n; i ++)\n        for (int j = 1; j < n; j ++)\n            if (①) {\n                swap(w[j], w[j + 1]);\n                swap(v[j], v[j + 1]);\n            }\n    int curV, curW;\n    if  (②) {\n        ③\n    } else {\n        print(B * w[1] , v[1]);\n        return 0;\n    }\n    for (int i = 2; i <= n; i ++)\n        if (curV + v[i] <= B) {\n            curV += v[i];\n            curW += w[i];\n        } else {\n            print (④);\n            return 0;\n        }\n    print(⑤);\n    return 0;\n}\n```\n   \n1) ①处应填（ ）                                      \n       \n3) ②处应填（ ）                                      \n\n\n3) ③处应填（ ）\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n",
+        "createTime": 1754317573,
+        "questions": [
+          {
+            "choices": [
+              "`w[j] / v[j] < w[j+1] / v[j+1]`",
+              " `w[j] / v[j] > w[j +1] / v[j+1]` ",
+              " `v[j] * w[j+1] <  v[j+1]  *  w[j]` ",
+              " `w[j] * v[j+1] <  w[j+1]  *  v[j]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`w[1] <= B`",
+              "`v[1] <= B`",
+              "`w[1] >= B`",
+              "` v[1] >= B`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`print(v[1],w[1]); return 0;` ",
+              "`curV = 0; curW = 0;` ",
+              "`print(w[1], v[1]); return 0;`",
+              "`curV = v[1]; curW = w[1];`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`curW * v[i] + curV * w[i], v[i]` ",
+              "`(curW - w[i]) * v[i] + (B - curV) * w[i], v[i]` ",
+              "`curW + v[i], w[i]`",
+              "`curW * v[i] + (B - curV) * w[i], v[i]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`curW,curV`",
+              " `curW, 1` ",
+              "`curV, curW` ",
+              "`curV, 1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 1,
+        "id": 877,
+        "type": "MultipleSelection",
+        "description": "2.（最优子序列）取 $m = 16$，给出长度为 $n$ 的整数序列 $a_1,a_2,\\dots,a_n(0 \\le a_i < 2^m)$。对于一个二进制数 $x$，定义其分值 $w(x)$ 为 $x + \\operatorname {popcnt}(x)$，其中 $\\operatorname{popcnt}(x)$ 表示 $x$ 二进制表示中 $1$ 的个数。对于一个子序列  $b_1,b_2,\\dots,b_k$，定义其子序列分值 $S$ 为 $w(b_1 \\oplus b_2) + w(b_2 \\oplus b_3) + w(b_3 \\oplus b_4) + \\cdots + w(b_{k-1} \\oplus b_k)$。其中 $\\oplus$ 表示按位异或。对于空子序列，规定其子序列分值为 $0$ 求一个子序列使得其子序列分值最大，输出这个最大值。\n\n输入第一行包含一个整数 $n(1 \\le n \\le 40000)$ 接下来一行包含 $n$ 个整数 $a_1,a_2,\\cdots,a_n$。\n\n提示：考虑优化朴素的动态规划算法，将前 $\\dfrac{m}{2}$ 位和后 $\\dfrac{m}{2}$ 位分开计算。\n\n`Max[x][y]` 表示当前的子序列下一个位置的高 $8$ 位是 $x$、最后一个位置的低 $8$ 位是 $y$ 时的最大价值。\n\n试补全程序。\n\n```\n#include <iostream>\n\nusing namespace std;\n\ntypedef long long LL;\n\nconst int MAXN = 40000, M = 16, B = M >> 1, MS = (1 << B) - 1;\nconst LL INF = 1000000000000000LL;\nLL Max[MS + 4][MS + 4];\n\nint w(int x) \n{\n    int s = x;\n    while(x) \n    {\n        ①;\n        s++;\n    }\n    return s;\n}\n\nvoid to_max(LL &x, LL y) \n{\n    if(x < y)\n        x = y;\n}\n\nint main() \n{\n    int n;\n    LL ans = 0;\n    cin >> n;\n    for(int x = 0; x <= MS; x++)\n        for(int y = 0; y <= MS; y++)\n            Max[x][y] = -INF;\n    for(int i = 1; i <= n ; i++) \n    {\n        LL a;\n        cin >> a;\n        int x = ② , y = a & MS;\n        LL v = ③;\n        for(int z = 0; z < = MS; z++)\n            to_max(v, ④);\n        for(int z = 0; z < = MS; z++)\n            ⑤;\n        to_max(ans , v);\n    }\n    cout << ans << endl;\n    return 0;\n}\n```\n1) ①处应填（ ）\n\n\n2) ②处应填（ ）\n\n\n3) ③处应填（ ）\n\n\n4) ④处应填（ ）\n\n5) ⑤处应填（ ）\n\n",
+        "createTime": 1662775934,
+        "questions": [
+          {
+            "choices": [
+              "`x >>= 1`",
+              " `x ^=  x &(x ^ (x + 1))` ",
+              "`x  -=  x | -x` ",
+              "`x  ^=  x &(x ^ (x - 1))`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`(a & MS) << B` ",
+              "`a >> B`",
+              " `a & (1 << B)` ",
+              "`a & (MS << B)`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`-INF` ",
+              "`Max[y][x]`",
+              " `0` ",
+              "`Max[x][y]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`Max[x][z] + w(y ^ z)`",
+              " `Max[x][z] + w(a ^ z)` ",
+              "`Max[x][z] + w(x ^ (z << B))` ",
+              "`Max[x][z] + w(x ^ z)`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`to_max(Max[y][z], v + w(a ^ (z << B)))` ",
+              "`to_max(Max[z][y], v + w((x ^ z) << B))` ",
+              "`to_max(Max[z][y], v + w(a ^ (z << B)))`",
+              " `to_max(Max[x][z], v + w(y ^ z))`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

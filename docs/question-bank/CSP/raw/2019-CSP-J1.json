@@ -1,0 +1,3066 @@
+{
+  "year": 2019,
+  "group": "J",
+  "source": "luogu-youti",
+  "problemsetId": 1030,
+  "problemsetName": "CSP 2019 入门级第一轮",
+  "url": "https://ti.luogu.com.cn/problemset/1030",
+  "sourceMode": "window._feInjection",
+  "questions": [
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 768,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 1,
+      "parentProblemNo": 1,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "中国的国家顶级域名是（）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": ".cn"
+        },
+        {
+          "prefix": "B",
+          "content": ".ch"
+        },
+        {
+          "prefix": "C",
+          "content": ".chn"
+        },
+        {
+          "prefix": "D",
+          "content": ".china"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "中国的国家顶级域名是（）",
+      "raw": {
+        "problem": {
+          "id": 768,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1576034752
+        },
+        "question": {
+          "choices": [
+            ".cn",
+            ".ch",
+            ".chn",
+            ".china"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 769,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 2,
+      "parentProblemNo": 2,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "二进制数 $\\text{11 1011 1001 0111}$ 和 $\\text{01 0110 1110 1011}$ 进行按位与运算的结果是（）。\n\n> 编者注：原题为“逻辑与”，但是根据题意应当是按位与。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$\\text{01 0010 1000 1011}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$\\text{01 0010 1001 0011}$"
+        },
+        {
+          "prefix": "C",
+          "content": "$\\text{01 0010 1000 0001}$"
+        },
+        {
+          "prefix": "D",
+          "content": "$\\text{01 0010 1000 0011}$"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "二进制数 $\\text{11 1011 1001 0111}$ 和 $\\text{01 0110 1110 1011}$ 进行按位与运算的结果是（）。\n\n> 编者注：原题为“逻辑与”，但是根据题意应当是按位与。",
+      "raw": {
+        "problem": {
+          "id": 769,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1663074597
+        },
+        "question": {
+          "choices": [
+            "$\\text{01 0010 1000 1011}$ ",
+            " $\\text{01 0010 1001 0011}$ ",
+            " $\\text{01 0010 1000 0001}$ ",
+            " $\\text{01 0010 1000 0011}$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 770,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 3,
+      "parentProblemNo": 3,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "一个 $32$ 位整型变量占用（）个字节。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "32"
+        },
+        {
+          "prefix": "B",
+          "content": "128"
+        },
+        {
+          "prefix": "C",
+          "content": "4"
+        },
+        {
+          "prefix": "D",
+          "content": "8"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "一个 $32$ 位整型变量占用（）个字节。",
+      "raw": {
+        "problem": {
+          "id": 770,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369492
+        },
+        "question": {
+          "choices": [
+            "32 ",
+            " 128 ",
+            " 4 ",
+            " 8"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 771,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 4,
+      "parentProblemNo": 4,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "若有如下程序段，其中 `s`、`a`、`b`、`c` 均已定义为整型变量,且 `a`、`c` 均已赋值（`c` 大于 $0$）\n```cpp\ns = a;\nfor （b = 1; b <= c; b++） s = s - 1;\n```\n则与上述程序段功能等价的赋值语句是（）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`s = a - c;`"
+        },
+        {
+          "prefix": "B",
+          "content": "`s = a - b;`"
+        },
+        {
+          "prefix": "C",
+          "content": "`s = s - c;`"
+        },
+        {
+          "prefix": "D",
+          "content": "`s = b - c;`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "若有如下程序段，其中 `s`、`a`、`b`、`c` 均已定义为整型变量,且 `a`、`c` 均已赋值（`c` 大于 $0$）\n```cpp\ns = a;\nfor （b = 1; b <= c; b++） s = s - 1;\n```\n则与上述程序段功能等价的赋值语句是（）",
+      "raw": {
+        "problem": {
+          "id": 771,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369607
+        },
+        "question": {
+          "choices": [
+            " `s = a - c;` ",
+            " `s = a - b;` ",
+            " `s = s - c;` ",
+            " `s = b - c;`"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 772,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 5,
+      "parentProblemNo": 5,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "设有 $100$ 个已排好序的数据元素，采用折半查找时，最大比较次数为（）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "7"
+        },
+        {
+          "prefix": "B",
+          "content": "10"
+        },
+        {
+          "prefix": "C",
+          "content": "6"
+        },
+        {
+          "prefix": "D",
+          "content": "8"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "设有 $100$ 个已排好序的数据元素，采用折半查找时，最大比较次数为（）",
+      "raw": {
+        "problem": {
+          "id": 772,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369659
+        },
+        "question": {
+          "choices": [
+            "7\t",
+            " 10\t",
+            " 6\t",
+            " 8"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 773,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 6,
+      "parentProblemNo": 6,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "链表不具有的特点是（）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "插入删除不需要移动元素"
+        },
+        {
+          "prefix": "B",
+          "content": "不必事先估计存储空间"
+        },
+        {
+          "prefix": "C",
+          "content": "所需空间与线性表长度成正比"
+        },
+        {
+          "prefix": "D",
+          "content": "可随机访问任一元素"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "链表不具有的特点是（）",
+      "raw": {
+        "problem": {
+          "id": 773,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1571798595
+        },
+        "question": {
+          "choices": [
+            "插入删除不需要移动元素\t    ",
+            "不必事先估计存储空间 ",
+            "所需空间与线性表长度成正比\t",
+            "可随机访问任一元素"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 774,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 7,
+      "parentProblemNo": 7,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "把 $8$ 个同样的球放在 $5$ 个同样的袋子里，允许有的袋子空着不放，问共有多少种不同的分法？（）\n\n提示：如果 $8$ 个球都放在一个袋子里，无论是哪个袋子，都只算同一种分法。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "22"
+        },
+        {
+          "prefix": "B",
+          "content": "24"
+        },
+        {
+          "prefix": "C",
+          "content": "18"
+        },
+        {
+          "prefix": "D",
+          "content": "20"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "把 $8$ 个同样的球放在 $5$ 个同样的袋子里，允许有的袋子空着不放，问共有多少种不同的分法？（）\n\n提示：如果 $8$ 个球都放在一个袋子里，无论是哪个袋子，都只算同一种分法。",
+      "raw": {
+        "problem": {
+          "id": 774,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369680
+        },
+        "question": {
+          "choices": [
+            "22\t",
+            " 24\t",
+            " 18\t",
+            " 20"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 775,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 8,
+      "parentProblemNo": 8,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "一棵二叉树如右图所示，若采用顺序存储结构，即用一维数组元素存储该二叉树中的结点（根结点的下标为 $1$，若某结点的下标为 $i$，则其左孩子位于下标 $2i$ 处、右孩子位于下标 $2i+1$ 处），则该数组的最大下标至少为（）。\n![](https://cdn.luogu.com.cn/upload/image_hosting/7d58dfs8.png?x-oss-process=image/resize,m_lfit,h_170,w_225)",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "6"
+        },
+        {
+          "prefix": "B",
+          "content": "10"
+        },
+        {
+          "prefix": "C",
+          "content": "15"
+        },
+        {
+          "prefix": "D",
+          "content": "12"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "一棵二叉树如右图所示，若采用顺序存储结构，即用一维数组元素存储该二叉树中的结点（根结点的下标为 $1$，若某结点的下标为 $i$，则其左孩子位于下标 $2i$ 处、右孩子位于下标 $2i+1$ 处），则该数组的最大下标至少为（）。\n![](https://cdn.luogu.com.cn/upload/image_hosting/7d58dfs8.png?x-oss-process=image/resize,m_lfit,h_170,w_225)",
+      "raw": {
+        "problem": {
+          "id": 775,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369874
+        },
+        "question": {
+          "choices": [
+            "6\t",
+            " 10\t",
+            " 15   ",
+            " 12"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 776,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 9,
+      "parentProblemNo": 9,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "$100$ 以内最大的素数是（）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "89"
+        },
+        {
+          "prefix": "B",
+          "content": "97"
+        },
+        {
+          "prefix": "C",
+          "content": "91"
+        },
+        {
+          "prefix": "D",
+          "content": "93"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "$100$ 以内最大的素数是（）。",
+      "raw": {
+        "problem": {
+          "id": 776,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369883
+        },
+        "question": {
+          "choices": [
+            "89",
+            "97",
+            "91",
+            " 93"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 777,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 10,
+      "parentProblemNo": 10,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "$319$ 和 $377$ 的最大公约数是（）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "27"
+        },
+        {
+          "prefix": "B",
+          "content": "33"
+        },
+        {
+          "prefix": "C",
+          "content": "29"
+        },
+        {
+          "prefix": "D",
+          "content": "31"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "$319$ 和 $377$ 的最大公约数是（）。",
+      "raw": {
+        "problem": {
+          "id": 777,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369898
+        },
+        "question": {
+          "choices": [
+            "27",
+            "33",
+            "29",
+            " 31"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 778,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 11,
+      "parentProblemNo": 11,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "新学期开学了，小胖想减肥，健身教练给小胖制定了两个训练方案。\n\n- 方案一：每次连续跑 $3$ 公里可以消耗 $300$ 千卡（耗时半小时）；\n- 方案二：每次连续跑 $5$ 公里可以消耗 $600$ 千卡（耗时 $1$ 小时）。\n\n小胖每周周一到周四能抽出半小时跑步，周五到周日能抽出一小时跑步。\n另外，教练建议小胖每周最多跑21公里，否则会损伤膝盖。\n请问如果小胖想严格执行教练的训练方案，并且不想损伤膝盖，每周最多通过跑步消耗多少千卡？（）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "3000"
+        },
+        {
+          "prefix": "B",
+          "content": "2500"
+        },
+        {
+          "prefix": "C",
+          "content": "2400"
+        },
+        {
+          "prefix": "D",
+          "content": "2520"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "新学期开学了，小胖想减肥，健身教练给小胖制定了两个训练方案。\n\n- 方案一：每次连续跑 $3$ 公里可以消耗 $300$ 千卡（耗时半小时）；\n- 方案二：每次连续跑 $5$ 公里可以消耗 $600$ 千卡（耗时 $1$ 小时）。\n\n小胖每周周一到周四能抽出半小时跑步，周五到周日能抽出一小时跑步。\n另外，教练建议小胖每周最多跑21公里，否则会损伤膝盖。\n请问如果小胖想严格执行教练的训练方案，并且不想损伤膝盖，每周最多通过跑步消耗多少千卡？（）",
+      "raw": {
+        "problem": {
+          "id": 778,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658369927
+        },
+        "question": {
+          "choices": [
+            "3000\t",
+            " 2500\t",
+            " 2400\t",
+            " 2520"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 779,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 12,
+      "parentProblemNo": 12,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "—副纸牌除掉大小王有 $52$ 张牌，四种花色，每种花色 $13$ 张。\n\n假设从这 $52$ 张牌中随机抽取 $13$ 张纸牌，则至少（）张牌的花色一致。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "4"
+        },
+        {
+          "prefix": "B",
+          "content": "2"
+        },
+        {
+          "prefix": "C",
+          "content": "3"
+        },
+        {
+          "prefix": "D",
+          "content": "5"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "—副纸牌除掉大小王有 $52$ 张牌，四种花色，每种花色 $13$ 张。\n\n假设从这 $52$ 张牌中随机抽取 $13$ 张纸牌，则至少（）张牌的花色一致。",
+      "raw": {
+        "problem": {
+          "id": 779,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1756966770
+        },
+        "question": {
+          "choices": [
+            "4\t",
+            " 2\t",
+            " 3\t",
+            " 5"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 780,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 13,
+      "parentProblemNo": 13,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "—些数字可以颠倒过来看，例如 $0,1,8$ 颠倒过来还是本身，$6$ 颠倒过来是 $9$，$9$ 颠倒过来看还是 $6$，其他数字颠倒过来都不构成数字。\n类似的，一些多位数也可以颠倒过来看，比如 $106$ 颠倒过来是 $901$。假设某个城市的车牌只由 $5$ 位数字组成，每一位都可以取 $0$ 到 $9$。\n请问这个城市最多有多少个车牌倒过来恰好还是原来的车牌？（）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "60"
+        },
+        {
+          "prefix": "B",
+          "content": "125"
+        },
+        {
+          "prefix": "C",
+          "content": "75"
+        },
+        {
+          "prefix": "D",
+          "content": "100"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "—些数字可以颠倒过来看，例如 $0,1,8$ 颠倒过来还是本身，$6$ 颠倒过来是 $9$，$9$ 颠倒过来看还是 $6$，其他数字颠倒过来都不构成数字。\n类似的，一些多位数也可以颠倒过来看，比如 $106$ 颠倒过来是 $901$。假设某个城市的车牌只由 $5$ 位数字组成，每一位都可以取 $0$ 到 $9$。\n请问这个城市最多有多少个车牌倒过来恰好还是原来的车牌？（）",
+      "raw": {
+        "problem": {
+          "id": 780,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658370019
+        },
+        "question": {
+          "choices": [
+            "60\t",
+            " 125\t",
+            " 75\t",
+            " 100"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 781,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 14,
+      "parentProblemNo": 14,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "假设一棵二叉树的后序遍历序列为 $\\texttt{DGJHEBIFCA}$，中序遍历序列为 $\\texttt{DBGEHJACIF}$，则其前序遍历序列为（）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$\\texttt{ABCDEFGHIJ}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$\\texttt{ABDEGHJCFI}$"
+        },
+        {
+          "prefix": "C",
+          "content": "$\\texttt{ABDEGJHCFI}$"
+        },
+        {
+          "prefix": "D",
+          "content": "$\\texttt{ABDEGHJFIC}$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "假设一棵二叉树的后序遍历序列为 $\\texttt{DGJHEBIFCA}$，中序遍历序列为 $\\texttt{DBGEHJACIF}$，则其前序遍历序列为（）。",
+      "raw": {
+        "problem": {
+          "id": 781,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658370201
+        },
+        "question": {
+          "choices": [
+            "$\\texttt{ABCDEFGHIJ}$",
+            "$\\texttt{ABDEGHJCFI}$",
+            "$\\texttt{ABDEGJHCFI}$",
+            "$\\texttt{ABDEGHJFIC}$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 782,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 15,
+      "parentProblemNo": 15,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "以下哪个奖项是计算机科学领域的最高奖？（）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "图灵奖"
+        },
+        {
+          "prefix": "B",
+          "content": "鲁班奖"
+        },
+        {
+          "prefix": "C",
+          "content": "诺贝尔奖"
+        },
+        {
+          "prefix": "D",
+          "content": "普利策奖"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "以下哪个奖项是计算机科学领域的最高奖？（）",
+      "raw": {
+        "problem": {
+          "id": 782,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1571799037
+        },
+        "question": {
+          "choices": [
+            "图灵奖",
+            "鲁班奖",
+            "诺贝尔奖",
+            "普利策奖"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 783,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 16,
+      "parentProblemNo": 16,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。\n\n子题 1：输入的字符串只能由小写字母或大写字母组成。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。",
+      "raw": {
+        "problem": {
+          "id": 783,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370424
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 783,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 17,
+      "parentProblemNo": 16,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。\n\n子题 2：若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。",
+      "raw": {
+        "problem": {
+          "id": 783,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370424
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 783,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 18,
+      "parentProblemNo": 16,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。\n\n子题 3：若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。",
+      "raw": {
+        "problem": {
+          "id": 783,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370424
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 783,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 19,
+      "parentProblemNo": 16,
+      "subQuestionNo": 4,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。\n\n子题 4：若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。",
+      "raw": {
+        "problem": {
+          "id": 783,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370424
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 783,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 20,
+      "parentProblemNo": 16,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。\n\n子题 5：若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "18"
+        },
+        {
+          "prefix": "B",
+          "content": "6"
+        },
+        {
+          "prefix": "C",
+          "content": "10"
+        },
+        {
+          "prefix": "D",
+          "content": "1"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。",
+      "raw": {
+        "problem": {
+          "id": 783,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370424
+        },
+        "question": {
+          "choices": [
+            "18",
+            "6",
+            "10",
+            "1"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 783,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 21,
+      "parentProblemNo": 16,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。\n\n子题 6：若输入的字符串长度为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "36"
+        },
+        {
+          "prefix": "B",
+          "content": "100000"
+        },
+        {
+          "prefix": "C",
+          "content": "1"
+        },
+        {
+          "prefix": "D",
+          "content": "128"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）\n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\n```\n\n- 判断题\n\n1. 输入的字符串只能由小写字母或大写字母组成。（）\n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）\n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）\n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）\n\n- 选择题\n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。\n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。",
+      "raw": {
+        "problem": {
+          "id": 783,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370424
+        },
+        "question": {
+          "choices": [
+            "36",
+            "100000",
+            "1",
+            "128"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 784,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 22,
+      "parentProblemNo": 17,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）\n\n子题 1：当 $m>0$ 时，输出的值一定小于 $2n$。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）",
+      "raw": {
+        "problem": {
+          "id": 784,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370947
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 784,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 23,
+      "parentProblemNo": 17,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）\n\n子题 2：执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）",
+      "raw": {
+        "problem": {
+          "id": 784,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370947
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 784,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 24,
+      "parentProblemNo": 17,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）\n\n子题 3：`a[i]` 和 `b[i]` 不可能同时大于 $0$。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）",
+      "raw": {
+        "problem": {
+          "id": 784,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370947
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 784,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 25,
+      "parentProblemNo": 17,
+      "subQuestionNo": 4,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）\n\n子题 4：右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）",
+      "raw": {
+        "problem": {
+          "id": 784,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370947
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 784,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 26,
+      "parentProblemNo": 17,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）\n\n子题 5：若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$2n-2m$"
+        },
+        {
+          "prefix": "B",
+          "content": "$2n+2$"
+        },
+        {
+          "prefix": "C",
+          "content": "$2n-2$"
+        },
+        {
+          "prefix": "D",
+          "content": "$2n$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）",
+      "raw": {
+        "problem": {
+          "id": 784,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370947
+        },
+        "question": {
+          "choices": [
+            "$2n-2m$",
+            " $2n+2$",
+            " $2n-2$",
+            " $2n$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 784,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 27,
+      "parentProblemNo": 17,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）\n\n子题 6：若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$2n-2$"
+        },
+        {
+          "prefix": "B",
+          "content": "$2n$"
+        },
+        {
+          "prefix": "C",
+          "content": "$2m$"
+        },
+        {
+          "prefix": "D",
+          "content": "$2n-2m$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题\n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）\n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）\n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）\n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题\n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）\n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）",
+      "raw": {
+        "problem": {
+          "id": 784,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 1,
+          "createTime": 1658370947
+        },
+        "question": {
+          "choices": [
+            "$2n-2$",
+            " $2n$",
+            " $2m$ ",
+            " $2n-2m$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 785,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 28,
+      "parentProblemNo": 18,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。\n\n子题 1：如果 $a$ 数组有重复的数字，则程序运行时会发生错误。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。",
+      "raw": {
+        "problem": {
+          "id": 785,
+          "type": "MultipleSelection",
+          "score": 16,
+          "page": 1,
+          "createTime": 1658371423
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 785,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 29,
+      "parentProblemNo": 18,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。\n\n子题 2：如果 $b$ 数组全为 $0$，则输出为 $0$。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。",
+      "raw": {
+        "problem": {
+          "id": 785,
+          "type": "MultipleSelection",
+          "score": 16,
+          "page": 1,
+          "createTime": 1658371423
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 785,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 30,
+      "parentProblemNo": 18,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。\n\n子题 3：当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "5000"
+        },
+        {
+          "prefix": "B",
+          "content": "600"
+        },
+        {
+          "prefix": "C",
+          "content": "6"
+        },
+        {
+          "prefix": "D",
+          "content": "100"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。",
+      "raw": {
+        "problem": {
+          "id": 785,
+          "type": "MultipleSelection",
+          "score": 16,
+          "page": 1,
+          "createTime": 1658371423
+        },
+        "question": {
+          "choices": [
+            "5000",
+            " 600",
+            " 6",
+            " 100 "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 785,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 31,
+      "parentProblemNo": 18,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。\n\n子题 4：当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "100"
+        },
+        {
+          "prefix": "B",
+          "content": "6"
+        },
+        {
+          "prefix": "C",
+          "content": "5000"
+        },
+        {
+          "prefix": "D",
+          "content": "600"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。",
+      "raw": {
+        "problem": {
+          "id": 785,
+          "type": "MultipleSelection",
+          "score": 16,
+          "page": 1,
+          "createTime": 1658371423
+        },
+        "question": {
+          "choices": [
+            "100",
+            " 6",
+            " 5000",
+            "600  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 785,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 32,
+      "parentProblemNo": 18,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。\n\n子题 5：当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "386"
+        },
+        {
+          "prefix": "B",
+          "content": "383"
+        },
+        {
+          "prefix": "C",
+          "content": "384"
+        },
+        {
+          "prefix": "D",
+          "content": "385"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。",
+      "raw": {
+        "problem": {
+          "id": 785,
+          "type": "MultipleSelection",
+          "score": 16,
+          "page": 1,
+          "createTime": 1658371423
+        },
+        "question": {
+          "choices": [
+            "386",
+            " 383",
+            " 384",
+            "385  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 785,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 33,
+      "parentProblemNo": 18,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 4,
+      "stemMarkdown": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。\n\n子题 6：（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "582"
+        },
+        {
+          "prefix": "B",
+          "content": "580"
+        },
+        {
+          "prefix": "C",
+          "content": "579"
+        },
+        {
+          "prefix": "D",
+          "content": "581"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题\n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）\n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）\n\n- 选择题\n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。\n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。\n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。",
+      "raw": {
+        "problem": {
+          "id": 785,
+          "type": "MultipleSelection",
+          "score": 16,
+          "page": 1,
+          "createTime": 1658371423
+        },
+        "question": {
+          "choices": [
+            "582",
+            " 580",
+            " 579",
+            " 581 "
+          ],
+          "allowMultiChoices": false,
+          "score": 4,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 786,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 34,
+      "parentProblemNo": 19,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 1：①处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`n%2`"
+        },
+        {
+          "prefix": "B",
+          "content": "`0`"
+        },
+        {
+          "prefix": "C",
+          "content": "`t`"
+        },
+        {
+          "prefix": "D",
+          "content": "`1`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 786,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658371690
+        },
+        "question": {
+          "choices": [
+            "`n%2`",
+            "`0`",
+            "`t`",
+            "`1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 786,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 35,
+      "parentProblemNo": 19,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 2：②处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`x-step,y-step`"
+        },
+        {
+          "prefix": "B",
+          "content": "`x,y-step`"
+        },
+        {
+          "prefix": "C",
+          "content": "`x-step,y`"
+        },
+        {
+          "prefix": "D",
+          "content": "`x,y`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 786,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658371690
+        },
+        "question": {
+          "choices": [
+            "`x-step,y-step`",
+            "`x,y-step`",
+            "`x-step,y`",
+            "`x,y`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 786,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 36,
+      "parentProblemNo": 19,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 3：③处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`x-step,y-step`"
+        },
+        {
+          "prefix": "B",
+          "content": "`x+step,y+step`"
+        },
+        {
+          "prefix": "C",
+          "content": "`x-step,y`"
+        },
+        {
+          "prefix": "D",
+          "content": "`x,y-step`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 786,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658371690
+        },
+        "question": {
+          "choices": [
+            "`x-step,y-step`",
+            "`x+step,y+step`",
+            "`x-step,y`",
+            "`x,y-step`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 786,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 37,
+      "parentProblemNo": 19,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 4：④处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`n-1,n%2`"
+        },
+        {
+          "prefix": "B",
+          "content": "`n,0`"
+        },
+        {
+          "prefix": "C",
+          "content": "`n,n%2`"
+        },
+        {
+          "prefix": "D",
+          "content": "`n-1,0`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 786,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658371690
+        },
+        "question": {
+          "choices": [
+            "`n-1,n%2`",
+            "`n,0`",
+            "`n,n%2`",
+            "`n-1,0`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 786,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 38,
+      "parentProblemNo": 19,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 5：⑤处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`1<<(n+1)`"
+        },
+        {
+          "prefix": "B",
+          "content": "`1<<n`"
+        },
+        {
+          "prefix": "C",
+          "content": "`n+1`"
+        },
+        {
+          "prefix": "D",
+          "content": "`1<<(n-1)`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0\n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？\n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0\n0 1\n```\n\n矩阵变幻 $2$ 次后：\n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。\n\n提示：\n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；\n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。\n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\n```\n\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 786,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1658371690
+        },
+        "question": {
+          "choices": [
+            "`1<<(n+1)`",
+            "`1<<n`",
+            "`n+1`",
+            "`1<<(n-1)`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 787,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 39,
+      "parentProblemNo": 20,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 1：①处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`++cnt[i]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`++cnt[b[i]]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`++cnt[a[i] * maxs + b[i]]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`++cnt[a[i]]`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 787,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1659495363
+        },
+        "question": {
+          "choices": [
+            "`++cnt[i]` ",
+            " `++cnt[b[i]]` ",
+            " `++cnt[a[i] * maxs + b[i]]` ",
+            " `++cnt[a[i]]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 787,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 40,
+      "parentProblemNo": 20,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 2：②处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`ord[--cnt[a[i]]] = i`"
+        },
+        {
+          "prefix": "B",
+          "content": "`ord[--cnt[b[i]]] = a[i]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`ord[--cnt[a[i]]] = b[i]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`ord[--cnt[b[i]]] = i`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 787,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1659495363
+        },
+        "question": {
+          "choices": [
+            "`ord[--cnt[a[i]]] = i` ",
+            " `ord[--cnt[b[i]]] = a[i]` ",
+            " `ord[--cnt[a[i]]] = b[i]` ",
+            " `ord[--cnt[b[i]]] = i`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 787,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 41,
+      "parentProblemNo": 20,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 3：③处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`++cnt[b[i]]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`++cnt[a[i] * maxs + b[i]]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`++cnt[a[i]]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`++cnt[i]`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 787,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1659495363
+        },
+        "question": {
+          "choices": [
+            "`++cnt[b[i]]` ",
+            " `++cnt[a[i] * maxs + b[i]]` ",
+            " `++cnt[a[i]]` ",
+            " `++cnt[i]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 787,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 42,
+      "parentProblemNo": 20,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 4：④处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`res[--cnt[a[ord[i]]]] = ord[i]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`res[--cnt[b[ord[i]]]] = ord[i]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`res[--cnt[b[i]]] = ord[i]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`res[--cnt[a[i]]] = ord[i]`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 787,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1659495363
+        },
+        "question": {
+          "choices": [
+            "`res[--cnt[a[ord[i]]]] = ord[i]` ",
+            " `res[--cnt[b[ord[i]]]] = ord[i]` ",
+            " `res[--cnt[b[i]]] = ord[i]` ",
+            " `res[--cnt[a[i]]] = ord[i]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2019,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 787,
+      "url": "https://ti.luogu.com.cn/problemset/1030",
+      "questionNo": 43,
+      "parentProblemNo": 20,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）\n\n子题 5：⑤处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`a[i], b[i]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`a[res[i]], b[res[i]]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`a[ord[res[i]]],b[ord[res[i]]]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`a[res[ord[i]]],b[res[ord[i]]]`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。\n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。\n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。\n\n从小到大排序后输出。\n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。\n\n试补全程序。\n\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i)\n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）\n\n②处应填（）\n\n③处应填（）\n\n④处应填（）\n\n⑤处应填（）",
+      "raw": {
+        "problem": {
+          "id": 787,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1659495363
+        },
+        "question": {
+          "choices": [
+            "`a[i], b[i]` ",
+            " `a[res[i]], b[res[i]]` ",
+            " `a[ord[res[i]]],b[ord[res[i]]]` ",
+            " `a[res[ord[i]]],b[res[ord[i]]]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    }
+  ],
+  "raw": {
+    "id": 1030,
+    "name": "CSP 2019 入门级第一轮",
+    "description": "CSP 2019 入门级第一轮（C++）",
+    "duration": 7200,
+    "problems": [
+      {
+        "score": 2,
+        "page": 1,
+        "id": 768,
+        "type": "MultipleSelection",
+        "description": "中国的国家顶级域名是（）",
+        "createTime": 1576034752,
+        "questions": [
+          {
+            "choices": [
+              ".cn",
+              ".ch",
+              ".chn",
+              ".china"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 769,
+        "type": "MultipleSelection",
+        "description": "二进制数 $\\text{11 1011 1001 0111}$ 和 $\\text{01 0110 1110 1011}$ 进行按位与运算的结果是（）。\n\n> 编者注：原题为“逻辑与”，但是根据题意应当是按位与。",
+        "createTime": 1663074597,
+        "questions": [
+          {
+            "choices": [
+              "$\\text{01 0010 1000 1011}$ ",
+              " $\\text{01 0010 1001 0011}$ ",
+              " $\\text{01 0010 1000 0001}$ ",
+              " $\\text{01 0010 1000 0011}$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 770,
+        "type": "MultipleSelection",
+        "description": "一个 $32$ 位整型变量占用（）个字节。",
+        "createTime": 1658369492,
+        "questions": [
+          {
+            "choices": [
+              "32 ",
+              " 128 ",
+              " 4 ",
+              " 8"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 771,
+        "type": "MultipleSelection",
+        "description": "若有如下程序段，其中 `s`、`a`、`b`、`c` 均已定义为整型变量,且 `a`、`c` 均已赋值（`c` 大于 $0$）  \n```cpp\ns = a;  \nfor （b = 1; b <= c; b++） s = s - 1;  \n```\n则与上述程序段功能等价的赋值语句是（）  ",
+        "createTime": 1658369607,
+        "questions": [
+          {
+            "choices": [
+              " `s = a - c;` ",
+              " `s = a - b;` ",
+              " `s = s - c;` ",
+              " `s = b - c;`"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 772,
+        "type": "MultipleSelection",
+        "description": "设有 $100$ 个已排好序的数据元素，采用折半查找时，最大比较次数为（）",
+        "createTime": 1658369659,
+        "questions": [
+          {
+            "choices": [
+              "7\t",
+              " 10\t",
+              " 6\t",
+              " 8"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 773,
+        "type": "MultipleSelection",
+        "description": "链表不具有的特点是（）",
+        "createTime": 1571798595,
+        "questions": [
+          {
+            "choices": [
+              "插入删除不需要移动元素\t    ",
+              "不必事先估计存储空间 ",
+              "所需空间与线性表长度成正比\t",
+              "可随机访问任一元素"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 774,
+        "type": "MultipleSelection",
+        "description": "把 $8$ 个同样的球放在 $5$ 个同样的袋子里，允许有的袋子空着不放，问共有多少种不同的分法？（）  \n\n提示：如果 $8$ 个球都放在一个袋子里，无论是哪个袋子，都只算同一种分法。",
+        "createTime": 1658369680,
+        "questions": [
+          {
+            "choices": [
+              "22\t",
+              " 24\t",
+              " 18\t",
+              " 20"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 775,
+        "type": "MultipleSelection",
+        "description": "一棵二叉树如右图所示，若采用顺序存储结构，即用一维数组元素存储该二叉树中的结点（根结点的下标为 $1$，若某结点的下标为 $i$，则其左孩子位于下标 $2i$ 处、右孩子位于下标 $2i+1$ 处），则该数组的最大下标至少为（）。  \n![](https://cdn.luogu.com.cn/upload/image_hosting/7d58dfs8.png?x-oss-process=image/resize,m_lfit,h_170,w_225)",
+        "createTime": 1658369874,
+        "questions": [
+          {
+            "choices": [
+              "6\t",
+              " 10\t",
+              " 15   ",
+              " 12"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 776,
+        "type": "MultipleSelection",
+        "description": "$100$ 以内最大的素数是（）。",
+        "createTime": 1658369883,
+        "questions": [
+          {
+            "choices": [
+              "89",
+              "97",
+              "91",
+              " 93"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 777,
+        "type": "MultipleSelection",
+        "description": "$319$ 和 $377$ 的最大公约数是（）。",
+        "createTime": 1658369898,
+        "questions": [
+          {
+            "choices": [
+              "27",
+              "33",
+              "29",
+              " 31"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 778,
+        "type": "MultipleSelection",
+        "description": "新学期开学了，小胖想减肥，健身教练给小胖制定了两个训练方案。  \n\n- 方案一：每次连续跑 $3$ 公里可以消耗 $300$ 千卡（耗时半小时）；  \n- 方案二：每次连续跑 $5$ 公里可以消耗 $600$ 千卡（耗时 $1$ 小时）。  \n\n小胖每周周一到周四能抽出半小时跑步，周五到周日能抽出一小时跑步。  \n另外，教练建议小胖每周最多跑21公里，否则会损伤膝盖。  \n请问如果小胖想严格执行教练的训练方案，并且不想损伤膝盖，每周最多通过跑步消耗多少千卡？（）",
+        "createTime": 1658369927,
+        "questions": [
+          {
+            "choices": [
+              "3000\t",
+              " 2500\t",
+              " 2400\t",
+              " 2520"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 779,
+        "type": "MultipleSelection",
+        "description": "—副纸牌除掉大小王有 $52$ 张牌，四种花色，每种花色 $13$ 张。\n\n假设从这 $52$ 张牌中随机抽取 $13$ 张纸牌，则至少（）张牌的花色一致。",
+        "createTime": 1756966770,
+        "questions": [
+          {
+            "choices": [
+              "4\t",
+              " 2\t",
+              " 3\t",
+              " 5"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 780,
+        "type": "MultipleSelection",
+        "description": "—些数字可以颠倒过来看，例如 $0,1,8$ 颠倒过来还是本身，$6$ 颠倒过来是 $9$，$9$ 颠倒过来看还是 $6$，其他数字颠倒过来都不构成数字。  \n类似的，一些多位数也可以颠倒过来看，比如 $106$ 颠倒过来是 $901$。假设某个城市的车牌只由 $5$ 位数字组成，每一位都可以取 $0$ 到 $9$。  \n请问这个城市最多有多少个车牌倒过来恰好还是原来的车牌？（）\n",
+        "createTime": 1658370019,
+        "questions": [
+          {
+            "choices": [
+              "60\t",
+              " 125\t",
+              " 75\t",
+              " 100"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 781,
+        "type": "MultipleSelection",
+        "description": "假设一棵二叉树的后序遍历序列为 $\\texttt{DGJHEBIFCA}$，中序遍历序列为 $\\texttt{DBGEHJACIF}$，则其前序遍历序列为（）。",
+        "createTime": 1658370201,
+        "questions": [
+          {
+            "choices": [
+              "$\\texttt{ABCDEFGHIJ}$",
+              "$\\texttt{ABDEGHJCFI}$",
+              "$\\texttt{ABDEGJHCFI}$",
+              "$\\texttt{ABDEGHJFIC}$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 782,
+        "type": "MultipleSelection",
+        "description": "以下哪个奖项是计算机科学领域的最高奖？（）",
+        "createTime": 1571799037,
+        "questions": [
+          {
+            "choices": [
+              "图灵奖",
+              "鲁班奖",
+              "诺贝尔奖",
+              "普利策奖"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 12,
+        "page": 1,
+        "id": 783,
+        "type": "MultipleSelection",
+        "description": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ×；除特殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$分）  \n\n1.\n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nchar st[100];\nint main() {\n    scanf(\"%s\", st);\n    int n = strlen(st);\n    for (int i = 1; i <= n; ++i) {\n        if (n % i == 0) {\n            char c = st[i - 1];\n            if (c >= 'a')\n                st[i - 1] = c - 'a' + 'A';\n        }\n    }\n    printf(\"%s\", st);\n    return 0;\n}\t\t\n```\n\n- 判断题\t \n \t\n1. 输入的字符串只能由小写字母或大写字母组成。（）  \n2. 若将第 $8$ 行的 `i = 1` 改为 `i = 0`，程序运行时会发生错误。（）  \n3. 若将第 $8$ 行的 `i <= n` 改为 `i * i <= n`，程序运行结果不会改变。（）  \n4. 若输入的字符串全部由大写字母组成，那么输出的字符串就跟输入的字符串一样。（）  \n\n- 选择题  \n5. \t若输入的字符串长度为 $18$，那么输入的字符串跟输出的字符串相比，至多有（）个字符不同。  \n\n6. 若输入的字符串长度为（），那么输入的字符串跟输出的字符串相比，至多有 $36$ 个字符不同。  \n",
+        "createTime": 1658370424,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "18",
+              "6",
+              "10",
+              "1"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "36",
+              "100000",
+              "1",
+              "128"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 12,
+        "page": 1,
+        "id": 784,
+        "type": "MultipleSelection",
+        "description": "2.\n```\n#include<cstdio>\nusing namespace std;\nint n, m;\nint a[100], b[100];\n\nint main() {\n    scanf(\"%d%d\", &n, &m);\n    for (int i = 1; i <= n; ++i)\n        a[i] = b[i] = 0;\n    for (int i = 1; i <= m; ++i) {\n        int x, y;\n        scanf(\"%d%d\", &x, &y);\n        if (a[x] < y && b[y] < x) {\n            if (a[x] > 0)\n                b[a[x]] = 0;\n            if (b[y] > 0)\n                a[b[y]] = 0;\n            a[x] = y;\n            b[y] = x;\n        }\n    }\n    int ans = 0;\n    for (int i = 1; i <= n; ++i) {\n        if (a[i] == 0)\n            ++ans;\n        if (b[i] == 0)\n            ++ans;\n    }\n    printf(\"%d\", ans);\n    return 0;\n}\n```\n假设输入的 $n$ 和 $m$ 都是正整数，$x$ 和 $y$ 都是在 $[1,n]$ 的范围内的整数，完成下面的判断题和单选题：\n\n- 判断题  \n\n1.\t当 $m>0$ 时，输出的值一定小于 $2n$。（）  \n2.\t执行完第 $27$ 行的 `++ans` 时，$\\mathrm{ans}$ —定是偶数。（）  \n3.\t`a[i]` 和 `b[i]` 不可能同时大于 $0$。（）  \n4.\t右程序执行到第 13 行时，$x$ 总是小于 $y$，那么第 $15$ 行不会被执行。（）\n\n•选择题  \n\n5.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 两两不同，则输出的值为（）  \n6.\t若 $m$ 个 $x$ 两两不同，且 $m$ 个 $y$ 都相等，则输出的值为（）  ",
+        "createTime": 1658370947,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "$2n-2m$",
+              " $2n+2$",
+              " $2n-2$",
+              " $2n$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "$2n-2$",
+              " $2n$",
+              " $2m$ ",
+              " $2n-2m$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 16,
+        "page": 1,
+        "id": 785,
+        "type": "MultipleSelection",
+        "description": "3.\n```\n#include <iostream>\nusing namespace std;\nconst int maxn = 10000;\nint n;\nint a[maxn];\nint b[maxn];\nint f(int l, int r, int depth) {\n    if (l > r)\n        return 0;\n    int min = maxn, mink;\n    for (int i = l; i <= r; ++i) {\n        if (min > a[i]) {\n            min = a[i];\n            mink = i;\n        }\n    }\n    int lres = f(l, mink - 1, depth + 1);\n    int rres = f(mink + 1, r, depth + 1);\n    return lres + rres + depth * b[mink];\n}\nint main() {\n    cin >> n;\n    for (int i = 0; i < n; ++i)\n        cin >> a[i];\n    for (int i = 0; i < n; ++i)\n        cin >> b[i];\n    cout << f(0, n - 1, 1) << endl;\n    return 0;\n}\n```\n\n- 判断题  \n\n1.\t如果 $a$ 数组有重复的数字，则程序运行时会发生错误。（）  \n2.\t如果 $b$ 数组全为 $0$，则输出为 $0$。（）  \n\n- 选择题  \n\n3. 当 $n=100$ 时，最坏情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。  \n4. \t当 $n=100$ 时，最好情况下，与第 $12$ 行的比较运算执行的次数最接近的是：（）。   \n5.\t当 $n=10$ 时，若 $b$ 数组满足，对任意 $0\\leq i<n$，都有 `b[i] = i + 1`，那么输出最大为（）。   \n6.\t（4分）当 $n=100$ 时，若 $b$ 数组满足，对任意 $0 \\leq i < n$，都有 `b[i]=1`，那么输出最小为（）。  ",
+        "createTime": 1658371423,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "5000",
+              " 600",
+              " 6",
+              " 100 "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "100",
+              " 6",
+              " 5000",
+              "600  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "386",
+              " 383",
+              " 384",
+              "385  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "582",
+              " 580",
+              " 579",
+              " 581 "
+            ],
+            "allowMultiChoices": false,
+            "score": 4,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 1,
+        "id": 786,
+        "type": "MultipleSelection",
+        "description": "1.（矩阵变幻）有一个奇幻的矩阵，在不停的变幻，其变幻方式为：\n\n数字 $0$ 变成矩阵\n\n```\n0 0 \n0 1\n```\n\n数字 $1$ 变成矩阵\n\n```\n1 1\n1 0\n```\n\n最初该矩阵只有一个元素 $0$，变幻 $n$ 次后，矩阵会变成什么样？  \n\n例如，矩阵最初为：$[0]$；\n\n矩阵变幻 $1$ 次后：\n\n```\n0 0 \n0 1\n```\n\n矩阵变幻 $2$ 次后：  \n\n```\n0 0 0 0\n0 1 0 1\n0 0 1 1\n0 1 1 0\n```\n\n\n输入一行一个不超过 $10$ 的正整数 $n$。输出变幻 $n$ 次后的矩阵。\n\n试补全程序。  \n\n提示：  \n\n`<<` 表示二进制左移运算符，例如 $(11)_2$ `<<` $2 = (1100)_2$；   \n而 `^` 表示二进制异或运算符，它将两个参与运算的数中的每个对应的二进制位—进行比较，若两个二进制位相同，则运算结果的对应二进制位为 $0$ ，反之为 $1$。  \n\n```\n#include <cstdio>\nusing namespace std;\nint n;\nconst int max_size = 1 << 10;\n\nint res[max_size][max_size];\n\nvoid recursive(int x, int y, int n, int t) {\n    if (n == 0) {\n        res[x][y] = ①;\n        return;\n    }\n    int step = 1 << (n - 1);\n    recursive(②, n - 1, t);\n    recursive(x, y + step, n - 1, t);\n    recursive(x + step, y, n - 1, t);\n    recursive(③, n - 1, !t);\n}\n\nint main() {\n    scanf(\"%d\", &n);\n    recursive(0, 0, ④);\n    int size = ⑤;\n    for (int i = 0; i < size; i++) {\n        for (int j = 0; j < size; j++)\n            printf(\"%d\", res[i][j]);\n        puts(\"\");\n    }\n    return 0;\n}\t\n```\n\n①处应填（）     \n\n②处应填（）\t\n\n③处应填（）\t \n\n④处应填（） \n\n⑤处应填（）\t  \t",
+        "createTime": 1658371690,
+        "questions": [
+          {
+            "choices": [
+              "`n%2`",
+              "`0`",
+              "`t`",
+              "`1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`x-step,y-step`",
+              "`x,y-step`",
+              "`x-step,y`",
+              "`x,y`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`x-step,y-step`",
+              "`x+step,y+step`",
+              "`x-step,y`",
+              "`x,y-step`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`n-1,n%2`",
+              "`n,0`",
+              "`n,n%2`",
+              "`n-1,0`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`1<<(n+1)`",
+              "`1<<n`",
+              "`n+1`",
+              "`1<<(n-1)`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 1,
+        "id": 787,
+        "type": "MultipleSelection",
+        "description": "2.（计数排序）计数排序是一个广泛使用的排序方法。下面的程序使用双关键字计数排序，将 $n$ 对 $10000$ 以内的整数，从小到大排序。  \n\n例如有三对整数 $(3,4)$、$(2,4)$、$(3,3)$，那么排序之后应该是 $(2,4)$、$(3,3)$、$(3,4)$ 。  \n\n输入第一行为 $n$，接下来 $n$ 行，第 $i$ 行有两个数 $a[i]$ 和 $b[i]$，分别表示第 $i$ 对整数的第一关键字和第二关键字。  \n\n从小到大排序后输出。  \n\n数据范围 $1<n<10^7$，$1<a[i],b[i]<10^4$。\n\n提示：应先对第二关键字排序，再对第一关键字排序。数组 `ord[]` 存储第二关键字排序的结果，数组 `res[]` 存储双关键字排序的结果。  \n\n试补全程序。\n  \n```\n#include <cstdio>\n#include <cstring>\nusing namespace std;\nconst int maxn = 10000000;\nconst int maxs = 10000;\n\nint n;\nunsigned a[maxn], b[maxn],res[maxn], ord[maxn];\nunsigned cnt[maxs + 1];\nint main() {\n    scanf(\"%d\", &n);\n    for (int i = 0; i < n; ++i) \n        scanf(\"%d%d\", &a[i], &b[i]);\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ①; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i) \n        cnt[i + 1] += cnt[i];\n    for (int i = 0; i < n; ++i)\n        ②; // 记录初步排序结果\n    memset(cnt, 0, sizeof(cnt));\n    for (int i = 0; i < n; ++i)\n        ③; // 利用 cnt 数组统计数量\n    for (int i = 0; i < maxs; ++i)\n        cnt[i + 1] += cnt[i];\n    for (int i = n - 1; i >= 0; --i)\n        ④ // 记录最终排序结果\n    for (int i = 0; i < n; i++)\n        printf(\"%d %d\", ⑤);\n\n    return 0;\n}\n```\n①处应填（）  \n\n②处应填（）  \n\n③处应填（）   \n\n④处应填（）  \n\n⑤处应填（）  ",
+        "createTime": 1659495363,
+        "questions": [
+          {
+            "choices": [
+              "`++cnt[i]` ",
+              " `++cnt[b[i]]` ",
+              " `++cnt[a[i] * maxs + b[i]]` ",
+              " `++cnt[a[i]]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`ord[--cnt[a[i]]] = i` ",
+              " `ord[--cnt[b[i]]] = a[i]` ",
+              " `ord[--cnt[a[i]]] = b[i]` ",
+              " `ord[--cnt[b[i]]] = i`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`++cnt[b[i]]` ",
+              " `++cnt[a[i] * maxs + b[i]]` ",
+              " `++cnt[a[i]]` ",
+              " `++cnt[i]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`res[--cnt[a[ord[i]]]] = ord[i]` ",
+              " `res[--cnt[b[ord[i]]]] = ord[i]` ",
+              " `res[--cnt[b[i]]] = ord[i]` ",
+              " `res[--cnt[a[i]]] = ord[i]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`a[i], b[i]` ",
+              " `a[res[i]], b[res[i]]` ",
+              " `a[ord[res[i]]],b[ord[res[i]]]` ",
+              " `a[res[ord[i]]],b[res[ord[i]]]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,3054 @@
+{
+  "year": 2021,
+  "group": "J",
+  "source": "luogu-youti",
+  "problemsetId": 1036,
+  "problemsetName": "CSP 2021 入门级第一轮",
+  "url": "https://ti.luogu.com.cn/problemset/1036",
+  "sourceMode": "window._feInjection",
+  "questions": [
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 878,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 1,
+      "parentProblemNo": 1,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "以下不属于面向对象程序设计语言的是（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "C++"
+        },
+        {
+          "prefix": "B",
+          "content": "Python"
+        },
+        {
+          "prefix": "C",
+          "content": "Java"
+        },
+        {
+          "prefix": "D",
+          "content": "C"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "以下不属于面向对象程序设计语言的是（ ）。",
+      "raw": {
+        "problem": {
+          "id": 878,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1656052473
+        },
+        "question": {
+          "choices": [
+            "C++",
+            "Python",
+            "Java",
+            "C"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 879,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 2,
+      "parentProblemNo": 2,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "以下奖项与计算机领域最相关的是（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "奥斯卡奖"
+        },
+        {
+          "prefix": "B",
+          "content": "图灵奖"
+        },
+        {
+          "prefix": "C",
+          "content": "诺贝尔奖"
+        },
+        {
+          "prefix": "D",
+          "content": "普利策奖"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "以下奖项与计算机领域最相关的是（ ）。",
+      "raw": {
+        "problem": {
+          "id": 879,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1654948858
+        },
+        "question": {
+          "choices": [
+            "奥斯卡奖 ",
+            "图灵奖 ",
+            "诺贝尔奖 ",
+            "普利策奖"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 880,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 3,
+      "parentProblemNo": 3,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "目前主流的计算机储存数据最终都是转换成（ ）数据进行储存。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "二进制"
+        },
+        {
+          "prefix": "B",
+          "content": "十进制"
+        },
+        {
+          "prefix": "C",
+          "content": "八进制"
+        },
+        {
+          "prefix": "D",
+          "content": "十六进制"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "目前主流的计算机储存数据最终都是转换成（ ）数据进行储存。",
+      "raw": {
+        "problem": {
+          "id": 880,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1654948927
+        },
+        "question": {
+          "choices": [
+            "二进制 ",
+            "十进制 ",
+            "八进制 ",
+            "十六进制"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 881,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 4,
+      "parentProblemNo": 4,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "以比较作为基本运算，在 $N$ 个数中找出最大数，最坏情况下所需要的最少的比较次数为 （ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$N^{2}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$N$"
+        },
+        {
+          "prefix": "C",
+          "content": "$N-1$"
+        },
+        {
+          "prefix": "D",
+          "content": "$N+1$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "以比较作为基本运算，在 $N$ 个数中找出最大数，最坏情况下所需要的最少的比较次数为 （ ）。",
+      "raw": {
+        "problem": {
+          "id": 881,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658379533
+        },
+        "question": {
+          "choices": [
+            "$N^{2}$",
+            "$N$",
+            "$N-1$",
+            "$N+1$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 883,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 5,
+      "parentProblemNo": 5,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "对于入栈顺序为 $a, b, c, d, e$ 的序列，下列（ ）不是合法的出栈序列。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$a, b, c, d, e$"
+        },
+        {
+          "prefix": "B",
+          "content": "$e, d, c, b, a$"
+        },
+        {
+          "prefix": "C",
+          "content": "$b, a, c, d, e$"
+        },
+        {
+          "prefix": "D",
+          "content": "$c, d, a, e, b$"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "对于入栈顺序为 $a, b, c, d, e$ 的序列，下列（ ）不是合法的出栈序列。",
+      "raw": {
+        "problem": {
+          "id": 883,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658379646
+        },
+        "question": {
+          "choices": [
+            "$a, b, c, d, e$",
+            "$e, d, c, b, a$",
+            "$b, a, c, d, e$",
+            "$c, d, a, e, b$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 884,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 6,
+      "parentProblemNo": 6,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "对于有 $n$ 个顶点、$m$ 条边的无向连通图 $(m>n)$，需要删掉（  ）条边才能使其成为一棵树。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$n-1$"
+        },
+        {
+          "prefix": "B",
+          "content": "$m-n$"
+        },
+        {
+          "prefix": "C",
+          "content": "$m-n-1$"
+        },
+        {
+          "prefix": "D",
+          "content": "$m-n+1$"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "对于有 $n$ 个顶点、$m$ 条边的无向连通图 $(m>n)$，需要删掉（  ）条边才能使其成为一棵树。",
+      "raw": {
+        "problem": {
+          "id": 884,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658379675
+        },
+        "question": {
+          "choices": [
+            "$n-1$",
+            "$m-n$",
+            "$m-n-1$",
+            "$m-n+1$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 886,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 7,
+      "parentProblemNo": 7,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "二进制数 $101.11$ 对应的十进制数是（  ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "6.5"
+        },
+        {
+          "prefix": "B",
+          "content": "5.5"
+        },
+        {
+          "prefix": "C",
+          "content": "5.75"
+        },
+        {
+          "prefix": "D",
+          "content": "5.25"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "二进制数 $101.11$ 对应的十进制数是（  ）。",
+      "raw": {
+        "problem": {
+          "id": 886,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658379888
+        },
+        "question": {
+          "choices": [
+            "6.5",
+            "5.5",
+            "5.75",
+            "5.25"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 887,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 8,
+      "parentProblemNo": 8,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "如果一棵二叉树只有根结点，那么这棵二叉树高度为 $1$。请问高度为 $5$ 的完全二叉树有 （ ）种不同的形态？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "16"
+        },
+        {
+          "prefix": "B",
+          "content": "15"
+        },
+        {
+          "prefix": "C",
+          "content": "17"
+        },
+        {
+          "prefix": "D",
+          "content": "32"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "如果一棵二叉树只有根结点，那么这棵二叉树高度为 $1$。请问高度为 $5$ 的完全二叉树有 （ ）种不同的形态？",
+      "raw": {
+        "problem": {
+          "id": 887,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658379896
+        },
+        "question": {
+          "choices": [
+            "16",
+            "15",
+            "17",
+            "32"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 888,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 9,
+      "parentProblemNo": 9,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "表达式 $\\texttt{a*(b+c)*d}$ 的后缀表达式为(  )，其中 $\\texttt{*}$ 和 $\\texttt{ + }$ 是运算符。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$\\texttt{**a+bcd}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$\\texttt{abc+*d*}$"
+        },
+        {
+          "prefix": "C",
+          "content": "$\\texttt{abc+d**}$"
+        },
+        {
+          "prefix": "D",
+          "content": "$\\texttt{*a*+bcd}$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "表达式 $\\texttt{a*(b+c)*d}$ 的后缀表达式为(  )，其中 $\\texttt{*}$ 和 $\\texttt{ + }$ 是运算符。",
+      "raw": {
+        "problem": {
+          "id": 888,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658379983
+        },
+        "question": {
+          "choices": [
+            "$\\texttt{**a+bcd}$ ",
+            " $\\texttt{abc+*d*}$ ",
+            " $\\texttt{abc+d**}$ ",
+            " $\\texttt{*a*+bcd}$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 889,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 10,
+      "parentProblemNo": 10,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "$6$ 个人，两个人组一队，总共组成三队，不区分队伍的编号。不同的组队情况有（ ）种。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "10"
+        },
+        {
+          "prefix": "B",
+          "content": "15"
+        },
+        {
+          "prefix": "C",
+          "content": "30"
+        },
+        {
+          "prefix": "D",
+          "content": "20"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "$6$ 个人，两个人组一队，总共组成三队，不区分队伍的编号。不同的组队情况有（ ）种。",
+      "raw": {
+        "problem": {
+          "id": 889,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658379995
+        },
+        "question": {
+          "choices": [
+            "10",
+            "15",
+            "30",
+            "20"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 890,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 11,
+      "parentProblemNo": 11,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "在数据压缩编码中的哈夫曼编码方法，在本质上是一种（  ）的策略。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "枚举"
+        },
+        {
+          "prefix": "B",
+          "content": "贪心"
+        },
+        {
+          "prefix": "C",
+          "content": "递归"
+        },
+        {
+          "prefix": "D",
+          "content": "动态规划"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "在数据压缩编码中的哈夫曼编码方法，在本质上是一种（  ）的策略。",
+      "raw": {
+        "problem": {
+          "id": 890,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1654949640
+        },
+        "question": {
+          "choices": [
+            "枚举 ",
+            "贪心 ",
+            "递归 ",
+            "动态规划"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 891,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 12,
+      "parentProblemNo": 12,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "由 $1,1,2,2,3$ 这五个数字组成不同的三位数有（  ）种。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "18"
+        },
+        {
+          "prefix": "B",
+          "content": "15"
+        },
+        {
+          "prefix": "C",
+          "content": "12"
+        },
+        {
+          "prefix": "D",
+          "content": "24"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "由 $1,1,2,2,3$ 这五个数字组成不同的三位数有（  ）种。",
+      "raw": {
+        "problem": {
+          "id": 891,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658380010
+        },
+        "question": {
+          "choices": [
+            "18",
+            "15",
+            "12",
+            "24"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 892,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 13,
+      "parentProblemNo": 13,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "考虑如下递归算法\n\n```cpp\nsolve(n)\n     if n<=1 return 1\n      else if n>=5 return n*solve(n-2)\n      else return n*solve(n-1)\n```\n\n则调用 `solve(7)` 得到的返回结果为（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "105"
+        },
+        {
+          "prefix": "B",
+          "content": "840"
+        },
+        {
+          "prefix": "C",
+          "content": "210"
+        },
+        {
+          "prefix": "D",
+          "content": "420"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "考虑如下递归算法\n\n```cpp\nsolve(n)\n     if n<=1 return 1\n      else if n>=5 return n*solve(n-2)\n      else return n*solve(n-1)\n```\n\n则调用 `solve(7)` 得到的返回结果为（ ）。",
+      "raw": {
+        "problem": {
+          "id": 892,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658380025
+        },
+        "question": {
+          "choices": [
+            "105",
+            "840",
+            "210",
+            "420"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 893,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 14,
+      "parentProblemNo": 14,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "以 $a$ 为起点，对下边的无向图进行深度优先遍历，则 $b,c,d,e$ 四个点中有可能作为最后一个遍历到的点的个数为（ ）。\n![](https://ipic.luogu.com.cn/2yir4.png)",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "1"
+        },
+        {
+          "prefix": "B",
+          "content": "2"
+        },
+        {
+          "prefix": "C",
+          "content": "3"
+        },
+        {
+          "prefix": "D",
+          "content": "4"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "以 $a$ 为起点，对下边的无向图进行深度优先遍历，则 $b,c,d,e$ 四个点中有可能作为最后一个遍历到的点的个数为（ ）。\n![](https://ipic.luogu.com.cn/2yir4.png)",
+      "raw": {
+        "problem": {
+          "id": 893,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1659342314
+        },
+        "question": {
+          "choices": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 894,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 15,
+      "parentProblemNo": 15,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "有四个人要从 A 点坐一条船过河到 B 点，船一开始在 A 点。该船一次最多可坐两个人。 已知这四个人中每个人独自坐船的过河时间分别为 $1, 2, 4, 8$，且两个人坐船的过河时间为两人独自过河时间的较大者。则最短（ ）时间可以让四个人都过河到 B 点（包括从 B 点把船开回 A 点的时间）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "14"
+        },
+        {
+          "prefix": "B",
+          "content": "15"
+        },
+        {
+          "prefix": "C",
+          "content": "16"
+        },
+        {
+          "prefix": "D",
+          "content": "17"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "有四个人要从 A 点坐一条船过河到 B 点，船一开始在 A 点。该船一次最多可坐两个人。 已知这四个人中每个人独自坐船的过河时间分别为 $1, 2, 4, 8$，且两个人坐船的过河时间为两人独自过河时间的较大者。则最短（ ）时间可以让四个人都过河到 B 点（包括从 B 点把船开回 A 点的时间）。",
+      "raw": {
+        "problem": {
+          "id": 894,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1659342323
+        },
+        "question": {
+          "choices": [
+            "14",
+            "15",
+            "16",
+            "17"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 895,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 16,
+      "parentProblemNo": 16,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`\n\n子题 1：输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`",
+      "raw": {
+        "problem": {
+          "id": 895,
+          "type": "MultipleSelection",
+          "score": 10.5,
+          "page": 2,
+          "createTime": 1659342329
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 895,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 17,
+      "parentProblemNo": 16,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`\n\n子题 2：输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`",
+      "raw": {
+        "problem": {
+          "id": 895,
+          "type": "MultipleSelection",
+          "score": 10.5,
+          "page": 2,
+          "createTime": 1659342329
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 895,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 18,
+      "parentProblemNo": 16,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`\n\n子题 3：当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`",
+      "raw": {
+        "problem": {
+          "id": 895,
+          "type": "MultipleSelection",
+          "score": 10.5,
+          "page": 2,
+          "createTime": 1659342329
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 895,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 19,
+      "parentProblemNo": 16,
+      "subQuestionNo": 4,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`\n\n子题 4：当输入为 `1 511998` 时，输出为 `18`。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`",
+      "raw": {
+        "problem": {
+          "id": 895,
+          "type": "MultipleSelection",
+          "score": 10.5,
+          "page": 2,
+          "createTime": 1659342329
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 895,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 20,
+      "parentProblemNo": 16,
+      "subQuestionNo": 5,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`\n\n子题 5：将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`",
+      "raw": {
+        "problem": {
+          "id": 895,
+          "type": "MultipleSelection",
+          "score": 10.5,
+          "page": 2,
+          "createTime": 1659342329
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 895,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 21,
+      "parentProblemNo": 16,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`\n\n子题 6：当输入为 `2 -65536 2147483647` 时，输出为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`65532 33`"
+        },
+        {
+          "prefix": "B",
+          "content": "`65552 32`"
+        },
+        {
+          "prefix": "C",
+          "content": "`65535 34`"
+        },
+        {
+          "prefix": "D",
+          "content": "`65554 33`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`\nB. `65552 32`\nC. `65535 34`\nD. `65554 33`",
+      "raw": {
+        "problem": {
+          "id": 895,
+          "type": "MultipleSelection",
+          "score": 10.5,
+          "page": 2,
+          "createTime": 1659342329
+        },
+        "question": {
+          "choices": [
+            "`65532 33` ",
+            " `65552 32` ",
+            " `65535 34` ",
+            " `65554 33`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 896,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 22,
+      "parentProblemNo": 17,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。\n\n子题 1：输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 896,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 2,
+          "createTime": 1658380594
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 896,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 23,
+      "parentProblemNo": 17,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。\n\n子题 2：可能存在输入不同，但输出的第二行相同的情形。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 896,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 2,
+          "createTime": 1658380594
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 896,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 24,
+      "parentProblemNo": 17,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。\n\n子题 3：输出的第一行为 $\\texttt -1$。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 896,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 2,
+          "createTime": 1658380594
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 896,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 25,
+      "parentProblemNo": 17,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。\n\n子题 4：设输入字符串长度为 $n$，`decode` 函数的时间复杂度为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(\\sqrt{n})$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n \\log n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^2)$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 896,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 2,
+          "createTime": 1658380594
+        },
+        "question": {
+          "choices": [
+            "$O(\\sqrt{n})$",
+            "$O(n)$",
+            "$O(n \\log n)$",
+            "$O(n^2)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 896,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 26,
+      "parentProblemNo": 17,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。\n\n子题 5：当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`csp`"
+        },
+        {
+          "prefix": "B",
+          "content": "`csq`"
+        },
+        {
+          "prefix": "C",
+          "content": "`CSP`"
+        },
+        {
+          "prefix": "D",
+          "content": "`Csp`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 896,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 2,
+          "createTime": 1658380594
+        },
+        "question": {
+          "choices": [
+            "`csp`",
+            "`csq`",
+            "`CSP`",
+            "`Csp`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 896,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 27,
+      "parentProblemNo": 17,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3.5,
+      "stemMarkdown": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。\n\n子题 6：（3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`ccf2021`"
+        },
+        {
+          "prefix": "B",
+          "content": "`ccf2022`"
+        },
+        {
+          "prefix": "C",
+          "content": "`ccf 2021`"
+        },
+        {
+          "prefix": "D",
+          "content": "`ccf 2022`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 896,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 2,
+          "createTime": 1658380594
+        },
+        "question": {
+          "choices": [
+            "`ccf2021`",
+            "`ccf2022`",
+            "`ccf 2021`",
+            "`ccf 2022`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3.5,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 897,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 28,
+      "parentProblemNo": 18,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。\n\n子题 1：若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。",
+      "raw": {
+        "problem": {
+          "id": 897,
+          "type": "MultipleSelection",
+          "score": 15.5,
+          "page": 2,
+          "createTime": 1658381976
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 897,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 29,
+      "parentProblemNo": 18,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 2,
+      "stemMarkdown": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。\n\n子题 2：（2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。",
+      "raw": {
+        "problem": {
+          "id": 897,
+          "type": "MultipleSelection",
+          "score": 15.5,
+          "page": 2,
+          "createTime": 1658381976
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 897,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 30,
+      "parentProblemNo": 18,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 2,
+      "stemMarkdown": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。\n\n子题 3：（2 分） 在执行完 `init",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。",
+      "raw": {
+        "problem": {
+          "id": 897,
+          "type": "MultipleSelection",
+          "score": 15.5,
+          "page": 2,
+          "createTime": 1658381976
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 897,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 31,
+      "parentProblemNo": 18,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。\n\n子题 4：`init` 函数的时间复杂度为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n \\log n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n\\sqrt{n})$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^2)$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。",
+      "raw": {
+        "problem": {
+          "id": 897,
+          "type": "MultipleSelection",
+          "score": 15.5,
+          "page": 2,
+          "createTime": 1658381976
+        },
+        "question": {
+          "choices": [
+            "$O(n)$",
+            "$O(n \\log n)$",
+            "$O(n\\sqrt{n})$",
+            "$O(n^2)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 897,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 32,
+      "parentProblemNo": 18,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。\n\n子题 5：在执行完 `init",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "23"
+        },
+        {
+          "prefix": "B",
+          "content": "24"
+        },
+        {
+          "prefix": "C",
+          "content": "25"
+        },
+        {
+          "prefix": "D",
+          "content": "26"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。",
+      "raw": {
+        "problem": {
+          "id": 897,
+          "type": "MultipleSelection",
+          "score": 15.5,
+          "page": 2,
+          "createTime": 1658381976
+        },
+        "question": {
+          "choices": [
+            "23",
+            "24",
+            "25",
+            "26"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 897,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 33,
+      "parentProblemNo": 18,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 4,
+      "stemMarkdown": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。\n\n子题 6：（4 分） 当输入为 $\\texttt{1000}$ 时，输出为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`15 1340`"
+        },
+        {
+          "prefix": "B",
+          "content": "`15 2340`"
+        },
+        {
+          "prefix": "C",
+          "content": "`16 2340`"
+        },
+        {
+          "prefix": "D",
+          "content": "`16 1340`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。",
+      "raw": {
+        "problem": {
+          "id": 897,
+          "type": "MultipleSelection",
+          "score": 15.5,
+          "page": 2,
+          "createTime": 1658381976
+        },
+        "question": {
+          "choices": [
+            "`15 1340`",
+            "`15 2340`",
+            "`16 2340`",
+            "`16 1340`"
+          ],
+          "allowMultiChoices": false,
+          "score": 4,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 898,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 34,
+      "parentProblemNo": 19,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n子题 1：①处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`i < n`"
+        },
+        {
+          "prefix": "B",
+          "content": "`c < n`"
+        },
+        {
+          "prefix": "C",
+          "content": "`i < n - 1`"
+        },
+        {
+          "prefix": "D",
+          "content": "`c < n - 1`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`",
+      "raw": {
+        "problem": {
+          "id": 898,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658380939
+        },
+        "question": {
+          "choices": [
+            "`i < n`",
+            "`c < n`",
+            "`i < n - 1`",
+            "`c < n - 1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 898,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 35,
+      "parentProblemNo": 19,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n子题 2：②处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`i % 2 == 0`"
+        },
+        {
+          "prefix": "B",
+          "content": "`i % 2 == 1`"
+        },
+        {
+          "prefix": "C",
+          "content": "`p`"
+        },
+        {
+          "prefix": "D",
+          "content": "`!p`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`",
+      "raw": {
+        "problem": {
+          "id": 898,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658380939
+        },
+        "question": {
+          "choices": [
+            "`i % 2 == 0`",
+            "`i % 2 == 1`",
+            "`p`",
+            "`!p`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 898,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 36,
+      "parentProblemNo": 19,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n子题 3：③处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`i++`"
+        },
+        {
+          "prefix": "B",
+          "content": "`i  =  (i  +  1)  %  n`"
+        },
+        {
+          "prefix": "C",
+          "content": "`c++`"
+        },
+        {
+          "prefix": "D",
+          "content": "`p ^=1`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`",
+      "raw": {
+        "problem": {
+          "id": 898,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658380939
+        },
+        "question": {
+          "choices": [
+            "`i++`",
+            "`i  =  (i  +  1)  %  n`",
+            "`c++`",
+            "`p ^=1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 898,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 37,
+      "parentProblemNo": 19,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n子题 4：④处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`i++`"
+        },
+        {
+          "prefix": "B",
+          "content": "`i  =  (i  +  1)  %  n`"
+        },
+        {
+          "prefix": "C",
+          "content": "`c++`"
+        },
+        {
+          "prefix": "D",
+          "content": "`p ^=1`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`",
+      "raw": {
+        "problem": {
+          "id": 898,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658380939
+        },
+        "question": {
+          "choices": [
+            "`i++`",
+            "`i  =  (i  +  1)  %  n`",
+            "`c++`",
+            "`p ^=1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 898,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 38,
+      "parentProblemNo": 19,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n子题 5：⑤处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`i++`"
+        },
+        {
+          "prefix": "B",
+          "content": "`i  =  (i  +  1)  %  n`"
+        },
+        {
+          "prefix": "C",
+          "content": "`c++`"
+        },
+        {
+          "prefix": "D",
+          "content": "`p ^=1`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）\nA.`i < n`\nB.`c < n`\nC.`i < n- 1`\nD.`c < n-1`\n\n35. ②处应填（ ）\nA.`i % 2 == 0`\nB.`i % 2 == 1`\nC.`p`\nD.`!p`\n\n36. ③处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n37. ④处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`\n\n38. ⑤处应填（ ）\nA.`i++  `\nB.`i = (i + 1) % n`\nC.`c++`\nD.`p ^= 1`",
+      "raw": {
+        "problem": {
+          "id": 898,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658380939
+        },
+        "question": {
+          "choices": [
+            "`i++`",
+            "`i  =  (i  +  1)  %  n`",
+            "`c++`",
+            "`p ^=1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 899,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 39,
+      "parentProblemNo": 20,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`\n\n子题 1：①处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`a.x != b.x ? a.x < b.x : a.id < b.id`"
+        },
+        {
+          "prefix": "B",
+          "content": "`a.x != b.x ? a.x < b.x : a.y < b.y`"
+        },
+        {
+          "prefix": "C",
+          "content": "`equals(a, b) ? a.id < b.id : a.x < b.x`"
+        },
+        {
+          "prefix": "D",
+          "content": "`equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`",
+      "raw": {
+        "problem": {
+          "id": 899,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658459404
+        },
+        "question": {
+          "choices": [
+            "`a.x != b.x ? a.x < b.x : a.id < b.id`",
+            "`a.x != b.x ? a.x < b.x : a.y < b.y`",
+            "`equals(a, b) ? a.id < b.id : a.x < b.x`",
+            "`equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 899,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 40,
+      "parentProblemNo": 20,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`\n\n子题 2：②处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`i == 0 || cmp(A[i], A[i - 1])`"
+        },
+        {
+          "prefix": "B",
+          "content": "`t == 0 || equals(A[i], A[t - 1])`"
+        },
+        {
+          "prefix": "C",
+          "content": "`i == 0 || !cmp(A[i], A[i - 1])`"
+        },
+        {
+          "prefix": "D",
+          "content": "`t == 0 || !equals(A[i], A[t - 1])`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`",
+      "raw": {
+        "problem": {
+          "id": 899,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658459404
+        },
+        "question": {
+          "choices": [
+            "`i == 0 || cmp(A[i], A[i - 1])`",
+            "`t == 0 || equals(A[i], A[t - 1])`",
+            "`i == 0 || !cmp(A[i], A[i - 1])`",
+            "`t == 0 || !equals(A[i], A[t - 1])`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 899,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 41,
+      "parentProblemNo": 20,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`\n\n子题 3：③处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`b - (b - a) / 2 + 1`"
+        },
+        {
+          "prefix": "B",
+          "content": "`(a + b + 1) >> 1`"
+        },
+        {
+          "prefix": "C",
+          "content": "`(a + b) >> 1`"
+        },
+        {
+          "prefix": "D",
+          "content": "`a + (b - a + 1) / 2`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`",
+      "raw": {
+        "problem": {
+          "id": 899,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658459404
+        },
+        "question": {
+          "choices": [
+            "`b - (b - a) / 2 + 1`",
+            "`(a + b + 1) >> 1`",
+            "`(a + b) >> 1`",
+            "`a + (b - a + 1) / 2`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 899,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 42,
+      "parentProblemNo": 20,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`\n\n子题 4：④处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`!cmp(A[mid], p)`"
+        },
+        {
+          "prefix": "B",
+          "content": "`cmp(A[mid], p)`"
+        },
+        {
+          "prefix": "C",
+          "content": "`cmp(p, A[mid])`"
+        },
+        {
+          "prefix": "D",
+          "content": "`!cmp(p, A[mid])`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`",
+      "raw": {
+        "problem": {
+          "id": 899,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658459404
+        },
+        "question": {
+          "choices": [
+            "`!cmp(A[mid], p)`",
+            "`cmp(A[mid], p)`",
+            "`cmp(p, A[mid])`",
+            "`!cmp(p, A[mid])`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "source": "luogu-youti",
+      "luoguId": 899,
+      "url": "https://ti.luogu.com.cn/problemset/1036",
+      "questionNo": 43,
+      "parentProblemNo": 20,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`\n\n子题 5：⑤处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`A[i].x == A[j].x`"
+        },
+        {
+          "prefix": "B",
+          "content": "`A[i].id < A[j].id`"
+        },
+        {
+          "prefix": "C",
+          "content": "`A[i].x == A[j].x && A[i].id < A[j].id`"
+        },
+        {
+          "prefix": "D",
+          "content": "`A[i].x < A[j].x && A[i].y < A[j].y`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )\nA. `a.x != b.x ? a.x < b.x : a.id < b.id`\nB. `a.x != b.x ? a.x < b.x : a.y < b.y`\nC. `equals(a, b) ? a.id < b.id : a.x < b.x`\nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )\nA. `i == 0 || cmp(A[i], A[i - 1])`\nB. `t == 0 || equals(A[i], A[t - 1])`\nC. `i == 0 || !cmp(A[i], A[i - 1])`\nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )\nA. `b - (b - a) / 2 + 1`\nB. `a + b + 1) >> 1`\nC. `(a + b) >> 1`\nD. `a + (b - a + 1) / 2`\n42. ④处应填 ( )\nA. `!cmp(A[mid], p)`\nB. `cmp(A[mid], p)`\nC. `cmp(p, A[mid])`\nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )\nA. `A[i].x == A[j].x`\nB. `A[i].id < A[j].id`\nC. `A[i].x == A[j].x && A[i].id < A[j].id`\nD. `A[i].x < A[j].x && A[i].y < A[j].y`",
+      "raw": {
+        "problem": {
+          "id": 899,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 3,
+          "createTime": 1658459404
+        },
+        "question": {
+          "choices": [
+            "`A[i].x == A[j].x` ",
+            "`A[i].id < A[j].id`",
+            "`A[i].x == A[j].x && A[i].id < A[j].id`",
+            "`A[i].x < A[j].x && A[i].y < A[j].y`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    }
+  ],
+  "raw": {
+    "id": 1036,
+    "name": "CSP 2021 入门级第一轮",
+    "description": "CSP 2021 入门级第一轮（C++）",
+    "duration": 7200,
+    "problems": [
+      {
+        "score": 2,
+        "page": 1,
+        "id": 878,
+        "type": "MultipleSelection",
+        "description": "以下不属于面向对象程序设计语言的是（ ）。",
+        "createTime": 1656052473,
+        "questions": [
+          {
+            "choices": [
+              "C++",
+              "Python",
+              "Java",
+              "C"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 879,
+        "type": "MultipleSelection",
+        "description": "以下奖项与计算机领域最相关的是（ ）。",
+        "createTime": 1654948858,
+        "questions": [
+          {
+            "choices": [
+              "奥斯卡奖 ",
+              "图灵奖 ",
+              "诺贝尔奖 ",
+              "普利策奖"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 880,
+        "type": "MultipleSelection",
+        "description": "目前主流的计算机储存数据最终都是转换成（ ）数据进行储存。",
+        "createTime": 1654948927,
+        "questions": [
+          {
+            "choices": [
+              "二进制 ",
+              "十进制 ",
+              "八进制 ",
+              "十六进制"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 881,
+        "type": "MultipleSelection",
+        "description": "以比较作为基本运算，在 $N$ 个数中找出最大数，最坏情况下所需要的最少的比较次数为 （ ）。",
+        "createTime": 1658379533,
+        "questions": [
+          {
+            "choices": [
+              "$N^{2}$",
+              "$N$",
+              "$N-1$",
+              "$N+1$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 883,
+        "type": "MultipleSelection",
+        "description": "对于入栈顺序为 $a, b, c, d, e$ 的序列，下列（ ）不是合法的出栈序列。",
+        "createTime": 1658379646,
+        "questions": [
+          {
+            "choices": [
+              "$a, b, c, d, e$",
+              "$e, d, c, b, a$",
+              "$b, a, c, d, e$",
+              "$c, d, a, e, b$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 884,
+        "type": "MultipleSelection",
+        "description": "对于有 $n$ 个顶点、$m$ 条边的无向连通图 $(m>n)$，需要删掉（  ）条边才能使其成为一棵树。\n\n",
+        "createTime": 1658379675,
+        "questions": [
+          {
+            "choices": [
+              "$n-1$",
+              "$m-n$",
+              "$m-n-1$",
+              "$m-n+1$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 886,
+        "type": "MultipleSelection",
+        "description": "二进制数 $101.11$ 对应的十进制数是（  ）。",
+        "createTime": 1658379888,
+        "questions": [
+          {
+            "choices": [
+              "6.5",
+              "5.5",
+              "5.75",
+              "5.25"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 887,
+        "type": "MultipleSelection",
+        "description": "如果一棵二叉树只有根结点，那么这棵二叉树高度为 $1$。请问高度为 $5$ 的完全二叉树有 （ ）种不同的形态？",
+        "createTime": 1658379896,
+        "questions": [
+          {
+            "choices": [
+              "16",
+              "15",
+              "17",
+              "32"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 888,
+        "type": "MultipleSelection",
+        "description": "表达式 $\\texttt{a*(b+c)*d}$ 的后缀表达式为(  )，其中 $\\texttt{*}$ 和 $\\texttt{ + }$ 是运算符。",
+        "createTime": 1658379983,
+        "questions": [
+          {
+            "choices": [
+              "$\\texttt{**a+bcd}$ ",
+              " $\\texttt{abc+*d*}$ ",
+              " $\\texttt{abc+d**}$ ",
+              " $\\texttt{*a*+bcd}$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 889,
+        "type": "MultipleSelection",
+        "description": "$6$ 个人，两个人组一队，总共组成三队，不区分队伍的编号。不同的组队情况有（ ）种。",
+        "createTime": 1658379995,
+        "questions": [
+          {
+            "choices": [
+              "10",
+              "15",
+              "30",
+              "20"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 890,
+        "type": "MultipleSelection",
+        "description": "在数据压缩编码中的哈夫曼编码方法，在本质上是一种（  ）的策略。",
+        "createTime": 1654949640,
+        "questions": [
+          {
+            "choices": [
+              "枚举 ",
+              "贪心 ",
+              "递归 ",
+              "动态规划"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 891,
+        "type": "MultipleSelection",
+        "description": "由 $1,1,2,2,3$ 这五个数字组成不同的三位数有（  ）种。",
+        "createTime": 1658380010,
+        "questions": [
+          {
+            "choices": [
+              "18",
+              "15",
+              "12",
+              "24"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 892,
+        "type": "MultipleSelection",
+        "description": "考虑如下递归算法\n\n```cpp\nsolve(n)  \n     if n<=1 return 1  \n      else if n>=5 return n*solve(n-2)  \n      else return n*solve(n-1)  \n```\n\n则调用 `solve(7)` 得到的返回结果为（ ）。\n",
+        "createTime": 1658380025,
+        "questions": [
+          {
+            "choices": [
+              "105",
+              "840",
+              "210",
+              "420"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 893,
+        "type": "MultipleSelection",
+        "description": "以 $a$ 为起点，对下边的无向图进行深度优先遍历，则 $b,c,d,e$ 四个点中有可能作为最后一个遍历到的点的个数为（ ）。\n![](https://ipic.luogu.com.cn/2yir4.png)",
+        "createTime": 1659342314,
+        "questions": [
+          {
+            "choices": [
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 894,
+        "type": "MultipleSelection",
+        "description": "有四个人要从 A 点坐一条船过河到 B 点，船一开始在 A 点。该船一次最多可坐两个人。 已知这四个人中每个人独自坐船的过河时间分别为 $1, 2, 4, 8$，且两个人坐船的过河时间为两人独自过河时间的较大者。则最短（ ）时间可以让四个人都过河到 B 点（包括从 B 点把船开回 A 点的时间）。",
+        "createTime": 1659342323,
+        "questions": [
+          {
+            "choices": [
+              "14",
+              "15",
+              "16",
+              "17"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 10.5,
+        "page": 2,
+        "id": 895,
+        "type": "MultipleSelection",
+        "description": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n## (1)\n![](https://ipic.luogu.com.cn/pu88q.jpg)\n### 判断题\n\n16. 输入的 $n$ 等于 $1001$ 时，程序**不会**发生下标越界。（ ）\n\n17. 输入的 $a[i]$ 必须全为正整数，否则程序将陷入死循环。（ ）\n\n18. 当输入为 `5 2 11 9 16 10` 时，输出为 `3 4 3 17 5`。（ ）\n\n19. 当输入为 `1 511998` 时，输出为 `18`。（ ）\n\n20. 将源代码中 `g` 函数的定义（$14\\sim 17$ 行）移到 main 函数的后面，程序可以正常编译运行。（ ）\n\n### 单选题\n\n21. 当输入为 `2 -65536 2147483647` 时，输出为（ ）。\n\nA. `65532 33`  \nB. `65552 32`     \nC. `65535 34`     \nD. `65554 33`  ",
+        "createTime": 1659342329,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`65532 33` ",
+              " `65552 32` ",
+              " `65535 34` ",
+              " `65554 33`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 14,
+        "page": 2,
+        "id": 896,
+        "type": "MultipleSelection",
+        "description": "## （2）\n\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/rddla3oo.png)\n\n### 判断题\n\n22. 输出的第二行一定是由小写字母、大写字母、数字和 $\\texttt +$、 $\\texttt /$、$\\texttt =$ 构成的字符串。（ ）\n\n23. 可能存在输入不同，但输出的第二行相同的情形。（ ）\n\n24. 输出的第一行为 $\\texttt -1$。（ ）\n\n### 单选题\n\n25. 设输入字符串长度为 $n$，`decode` 函数的时间复杂度为（ ）\n\n\n26. 当输入为 $\\texttt{Y3Nx}$ 时，输出的第二行为（）。\n\n\n27. （3.5 分）当输入为 $\\texttt{Y2NmIDIwMjE=}$ 时，输出的第二行为（  ）。\n",
+        "createTime": 1658380594,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "$O(\\sqrt{n})$",
+              "$O(n)$",
+              "$O(n \\log n)$",
+              "$O(n^2)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`csp`",
+              "`csq`",
+              "`CSP`",
+              "`Csp`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`ccf2021`",
+              "`ccf2022`",
+              "`ccf 2021`",
+              "`ccf 2022`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3.5,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15.5,
+        "page": 2,
+        "id": 897,
+        "type": "MultipleSelection",
+        "description": "## （3）\n![](https://ipic.luogu.com.cn/yzb73.png)\n![](https://ipic.luogu.com.cn/sykbe.png)\n\n\n**假设输入的 $x$ 是不超过 $1000$ 的自然数，完成下面的判断题和单选题：**\n\n### 判断题\n\n28. 若输入不为 $\\texttt 1$，把第 13 行删去**不会**影响输出的结果。（ ）\n\n29. （2 分） 第 25 行的 `f[i] / c[i * k]`可能存在无法整除而向下取整的情况。 （ ）\n\n30. （2 分） 在执行完 `init()` 后，`f` 数组不是单调递增的，但 `g` 数组是单调递增的。 （ ）\n\n### 单选题\n\n31. `init` 函数的时间复杂度为（ ）。\n\n32. 在执行完 `init()` 后，$f[1], f[2], f[3] \\dots f[100]$ 中有（）个等于 2。\n\n33. （4 分） 当输入为 $\\texttt{1000}$ 时，输出为（）。",
+        "createTime": 1658381976,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "$O(n)$",
+              "$O(n \\log n)$",
+              "$O(n\\sqrt{n})$",
+              "$O(n^2)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "23",
+              "24",
+              "25",
+              "26"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`15 1340`",
+              "`15 2340`",
+              "`16 2340`",
+              "`16 1340`"
+            ],
+            "allowMultiChoices": false,
+            "score": 4,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 3,
+        "id": 898,
+        "type": "MultipleSelection",
+        "description": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n**（1）（Josephus 问题）**  有 $n$ 个人围成一个圈，依次标号 $0$ 至 $n - 1$。从 $0$ 号开始，依次 $0 , 1 , 0 , 1 , \\dots$ 交替报数，报到 $1$ 的人会离开，直至圈中只剩下一个人。求最后剩下人的编号。\n\n试补全模拟程序。\n![](https://ipic.luogu.com.cn/k4gdx.png)\n\n34. ①处应填（ ）  \nA.`i < n`   \nB.`c < n`   \nC.`i < n- 1`   \nD.`c < n-1`  \n \n35. ②处应填（ ）   \nA.`i % 2 == 0`  \nB.`i % 2 == 1`  \nC.`p`  \nD.`!p` \n\n36. ③处应填（ ）  \nA.`i++  `   \nB.`i = (i + 1) % n`   \nC.`c++`  \nD.`p ^= 1`\n\n37. ④处应填（ ）  \nA.`i++  `   \nB.`i = (i + 1) % n`   \nC.`c++`  \nD.`p ^= 1`\n\n38. ⑤处应填（ ）  \nA.`i++  `   \nB.`i = (i + 1) % n`   \nC.`c++`  \nD.`p ^= 1`",
+        "createTime": 1658380939,
+        "questions": [
+          {
+            "choices": [
+              "`i < n`",
+              "`c < n`",
+              "`i < n - 1`",
+              "`c < n - 1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`i % 2 == 0`",
+              "`i % 2 == 1`",
+              "`p`",
+              "`!p`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`i++`",
+              "`i  =  (i  +  1)  %  n`",
+              "`c++`",
+              "`p ^=1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`i++`",
+              "`i  =  (i  +  1)  %  n`",
+              "`c++`",
+              "`p ^=1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`i++`",
+              "`i  =  (i  +  1)  %  n`",
+              "`c++`",
+              "`p ^=1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 3,
+        "id": 899,
+        "type": "MultipleSelection",
+        "description": "**（ 2 ） （矩形计数）** 平面上有 $n$ 个关键点，求有多少个四条边都和 $x$ 轴或者 $y$ 轴平行的矩形，满足四个顶点都是关键点。给出的关键点可能有重复，但完全重合的矩形只计一 次。\n![](https://ipic.luogu.com.cn/v7s04.webp)\n试补全枚举算法。\n\n39. ①处应填 ( )  \nA. `a.x != b.x ? a.x < b.x : a.id < b.id`  \nB. `a.x != b.x ? a.x < b.x : a.y < b.y`  \nC. `equals(a, b) ? a.id < b.id : a.x < b.x`  \nD. `equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`\n\n40. ②处应填 ( )  \nA. `i == 0 || cmp(A[i], A[i - 1])`  \nB. `t == 0 || equals(A[i], A[t - 1])`  \nC. `i == 0 || !cmp(A[i], A[i - 1])`  \nD. `t == 0 || !equals(A[i], A[t - 1])`\n41. ③处应填 ( )  \nA. `b - (b - a) / 2 + 1`  \nB. `a + b + 1) >> 1`  \nC. `(a + b) >> 1`  \nD. `a + (b - a + 1) / 2`  \n42. ④处应填 ( )  \nA. `!cmp(A[mid], p)`  \nB. `cmp(A[mid], p)`  \nC. `cmp(p, A[mid])`  \nD. `!cmp(p, A[mid])`\n43. ⑤处应填 ( )    \nA. `A[i].x == A[j].x`  \nB. `A[i].id < A[j].id`  \nC. `A[i].x == A[j].x && A[i].id < A[j].id`  \nD. `A[i].x < A[j].x && A[i].y < A[j].y`",
+        "createTime": 1658459404,
+        "questions": [
+          {
+            "choices": [
+              "`a.x != b.x ? a.x < b.x : a.id < b.id`",
+              "`a.x != b.x ? a.x < b.x : a.y < b.y`",
+              "`equals(a, b) ? a.id < b.id : a.x < b.x`",
+              "`equals(a, b) ? a.id < b.id : (a.x != b.x ? a.x < b.x : a.y < b.y)`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`i == 0 || cmp(A[i], A[i - 1])`",
+              "`t == 0 || equals(A[i], A[t - 1])`",
+              "`i == 0 || !cmp(A[i], A[i - 1])`",
+              "`t == 0 || !equals(A[i], A[t - 1])`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`b - (b - a) / 2 + 1`",
+              "`(a + b + 1) >> 1`",
+              "`(a + b) >> 1`",
+              "`a + (b - a + 1) / 2`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`!cmp(A[mid], p)`",
+              "`cmp(A[mid], p)`",
+              "`cmp(p, A[mid])`",
+              "`!cmp(p, A[mid])`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`A[i].x == A[j].x` ",
+              "`A[i].id < A[j].id`",
+              "`A[i].x == A[j].x && A[i].id < A[j].id`",
+              "`A[i].x < A[j].x && A[i].y < A[j].y`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

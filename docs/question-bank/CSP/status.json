@@ -1,0 +1,184 @@
+{
+  "startedAt": "2026-07-20T02:28:05.565Z",
+  "source": "https://ti.luogu.com.cn/",
+  "sourceMode": "injection",
+  "browserSource": "public-ephemeral-msedge",
+  "requestedTargets": [
+    {
+      "year": 2019,
+      "group": "J",
+      "levelName": "入门级",
+      "problemsetId": 1030
+    },
+    {
+      "year": 2019,
+      "group": "S",
+      "levelName": "提高级",
+      "problemsetId": 1031
+    },
+    {
+      "year": 2020,
+      "group": "J",
+      "levelName": "入门级",
+      "problemsetId": 1034
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "levelName": "提高级",
+      "problemsetId": 1035
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "levelName": "入门级",
+      "problemsetId": 1036
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "levelName": "提高级",
+      "problemsetId": 1037
+    },
+    {
+      "year": 2022,
+      "group": "J",
+      "levelName": "入门级",
+      "problemsetId": 1039
+    },
+    {
+      "year": 2022,
+      "group": "S",
+      "levelName": "提高级",
+      "problemsetId": 1040
+    },
+    {
+      "year": 2023,
+      "group": "J",
+      "levelName": "入门级",
+      "problemsetId": 1041
+    },
+    {
+      "year": 2023,
+      "group": "S",
+      "levelName": "提高级",
+      "problemsetId": 1042
+    },
+    {
+      "year": 2024,
+      "group": "J",
+      "levelName": "入门级",
+      "problemsetId": 1043
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "levelName": "提高级",
+      "problemsetId": 1044
+    },
+    {
+      "year": 2025,
+      "group": "J",
+      "levelName": "入门级",
+      "problemsetId": 1119
+    },
+    {
+      "year": 2025,
+      "group": "S",
+      "levelName": "提高级",
+      "problemsetId": 1120
+    }
+  ],
+  "extractedSets": [
+    {
+      "year": 2019,
+      "group": "J",
+      "problemsetId": 1030,
+      "questionCount": 43
+    },
+    {
+      "year": 2019,
+      "group": "S",
+      "problemsetId": 1031,
+      "questionCount": 43
+    },
+    {
+      "year": 2020,
+      "group": "J",
+      "problemsetId": 1034,
+      "questionCount": 43
+    },
+    {
+      "year": 2020,
+      "group": "S",
+      "problemsetId": 1035,
+      "questionCount": 43
+    },
+    {
+      "year": 2021,
+      "group": "J",
+      "problemsetId": 1036,
+      "questionCount": 43
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "problemsetId": 1037,
+      "questionCount": 43
+    },
+    {
+      "year": 2022,
+      "group": "J",
+      "problemsetId": 1039,
+      "questionCount": 44
+    },
+    {
+      "year": 2022,
+      "group": "S",
+      "problemsetId": 1040,
+      "questionCount": 43
+    },
+    {
+      "year": 2023,
+      "group": "J",
+      "problemsetId": 1041,
+      "questionCount": 42
+    },
+    {
+      "year": 2023,
+      "group": "S",
+      "problemsetId": 1042,
+      "questionCount": 43
+    },
+    {
+      "year": 2024,
+      "group": "J",
+      "problemsetId": 1043,
+      "questionCount": 42
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "problemsetId": 1044,
+      "questionCount": 42
+    },
+    {
+      "year": 2025,
+      "group": "J",
+      "problemsetId": 1119,
+      "questionCount": 43
+    },
+    {
+      "year": 2025,
+      "group": "S",
+      "problemsetId": 1120,
+      "questionCount": 43
+    }
+  ],
+  "failures": [],
+  "warnings": [
+    "No browser-session-manager session found for luogu-youti/prod/default/msedge."
+  ],
+  "wroteOutput": true,
+  "finishedAt": "2026-07-20T02:28:23.210Z"
+}

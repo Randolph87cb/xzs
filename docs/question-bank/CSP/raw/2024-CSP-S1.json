@@ -1,0 +1,3009 @@
+{
+  "year": 2024,
+  "group": "S",
+  "source": "luogu-youti",
+  "problemsetId": 1044,
+  "problemsetName": "CSP 2024 提高级第一轮",
+  "url": "https://ti.luogu.com.cn/problemset/1044",
+  "sourceMode": "window._feInjection",
+  "questions": [
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1363,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 1,
+      "parentProblemNo": 1,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "在 Linux 系统中，如果你想显示当前工作目录的路径，应该使用哪个命令？（ ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`pwd`"
+        },
+        {
+          "prefix": "B",
+          "content": "`cd`"
+        },
+        {
+          "prefix": "C",
+          "content": "`ls`"
+        },
+        {
+          "prefix": "D",
+          "content": "`echo`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "在 Linux 系统中，如果你想显示当前工作目录的路径，应该使用哪个命令？（ ）",
+      "raw": {
+        "problem": {
+          "id": 1363,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371253
+        },
+        "question": {
+          "choices": [
+            "`pwd` ",
+            " `cd` ",
+            " `ls` ",
+            " `echo`"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1364,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 2,
+      "parentProblemNo": 2,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "假设一个长度为 $n$ 的整数数组中每个元素值互不相同，且这个数组是无序的。要找到这个数组中最大元素的时间复杂度是多少？（ ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(\\log n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n \\log n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(1)$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "假设一个长度为 $n$ 的整数数组中每个元素值互不相同，且这个数组是无序的。要找到这个数组中最大元素的时间复杂度是多少？（ ）",
+      "raw": {
+        "problem": {
+          "id": 1364,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371308
+        },
+        "question": {
+          "choices": [
+            "$O(n)$ ",
+            " $O(\\log n)$ ",
+            " $O(n \\log n)$ ",
+            " $O(1)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1365,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 3,
+      "parentProblemNo": 3,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "在 C++ 中，以下哪个函数调用会造成栈溢出？（ ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`int foo() { return 0; }`"
+        },
+        {
+          "prefix": "B",
+          "content": "`int bar() { int x = 1; return x; }`"
+        },
+        {
+          "prefix": "C",
+          "content": "`void baz() { int a[1000]; baz(); }`"
+        },
+        {
+          "prefix": "D",
+          "content": "`void qux() { return; }`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "在 C++ 中，以下哪个函数调用会造成栈溢出？（ ）",
+      "raw": {
+        "problem": {
+          "id": 1365,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371381
+        },
+        "question": {
+          "choices": [
+            "`int foo() { return 0; }` ",
+            " `int bar() { int x = 1; return x; }` ",
+            " `void baz() { int a[1000]; baz(); }` ",
+            " `void qux() { return; }`"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1366,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 4,
+      "parentProblemNo": 4,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "在一场比赛中，有 $10$ 名选手参加，前三名将获得金、银、铜牌。若不允许并列，且每名选手只能获得一枚奖牌，则不同的颁奖方式共有多少种？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "120"
+        },
+        {
+          "prefix": "B",
+          "content": "720"
+        },
+        {
+          "prefix": "C",
+          "content": "504"
+        },
+        {
+          "prefix": "D",
+          "content": "1000"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "在一场比赛中，有 $10$ 名选手参加，前三名将获得金、银、铜牌。若不允许并列，且每名选手只能获得一枚奖牌，则不同的颁奖方式共有多少种？",
+      "raw": {
+        "problem": {
+          "id": 1366,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371542
+        },
+        "question": {
+          "choices": [
+            "120 ",
+            " 720 ",
+            " 504 ",
+            " 1000"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1367,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 5,
+      "parentProblemNo": 5,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "下面哪个数据结构最适合实现先进先出（FIFO）的功能？（ ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "栈"
+        },
+        {
+          "prefix": "B",
+          "content": "队列"
+        },
+        {
+          "prefix": "C",
+          "content": "线性表"
+        },
+        {
+          "prefix": "D",
+          "content": "二叉搜索树"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "下面哪个数据结构最适合实现先进先出（FIFO）的功能？（ ）",
+      "raw": {
+        "problem": {
+          "id": 1367,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371570
+        },
+        "question": {
+          "choices": [
+            "栈 ",
+            " 队列 ",
+            " 线性表 ",
+            " 二叉搜索树"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1368,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 6,
+      "parentProblemNo": 6,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "已知 $f(1) = 1$，且对于 $n \\geq 2$ 有 $f(n) = f(n - 1) + f(\\lfloor n/2\\rfloor )$，则 $f(4)$ 的值为？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "4"
+        },
+        {
+          "prefix": "B",
+          "content": "5"
+        },
+        {
+          "prefix": "C",
+          "content": "6"
+        },
+        {
+          "prefix": "D",
+          "content": "7"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "已知 $f(1) = 1$，且对于 $n \\geq 2$ 有 $f(n) = f(n - 1) + f(\\lfloor n/2\\rfloor )$，则 $f(4)$ 的值为？",
+      "raw": {
+        "problem": {
+          "id": 1368,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371620
+        },
+        "question": {
+          "choices": [
+            "4 ",
+            " 5 ",
+            " 6 ",
+            " 7"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1369,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 7,
+      "parentProblemNo": 7,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "假设有一个包含 $n$ 个顶点的无向图，且该图是欧拉图。以下关于该图的描述中哪一项不一定正确？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "所有顶点的度数均为偶数"
+        },
+        {
+          "prefix": "B",
+          "content": "该图连通"
+        },
+        {
+          "prefix": "C",
+          "content": "该图存在一个欧拉回路"
+        },
+        {
+          "prefix": "D",
+          "content": "该图的边数是奇数"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "假设有一个包含 $n$ 个顶点的无向图，且该图是欧拉图。以下关于该图的描述中哪一项不一定正确？",
+      "raw": {
+        "problem": {
+          "id": 1369,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371816
+        },
+        "question": {
+          "choices": [
+            "所有顶点的度数均为偶数 ",
+            " 该图连通 ",
+            " 该图存在一个欧拉回路 ",
+            " 该图的边数是奇数"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1370,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 8,
+      "parentProblemNo": 8,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "对数组进行二分查找的过程中，以下哪个条件必须满足？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "数组必须是有序的"
+        },
+        {
+          "prefix": "B",
+          "content": "数组必须是无序的"
+        },
+        {
+          "prefix": "C",
+          "content": "数组长度必须是 2 的幂"
+        },
+        {
+          "prefix": "D",
+          "content": "数组中的元素必须是整数"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "对数组进行二分查找的过程中，以下哪个条件必须满足？",
+      "raw": {
+        "problem": {
+          "id": 1370,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740371908
+        },
+        "question": {
+          "choices": [
+            "数组必须是有序的 ",
+            " 数组必须是无序的 ",
+            " 数组长度必须是 2 的幂 ",
+            " 数组中的元素必须是整数"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1371,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 9,
+      "parentProblemNo": 9,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "考虑一个自然数 $n$ 以及一个模数 $m$，你需要计算 $n$ 的逆元（即 $n$ 在模 $m$ 意义下的乘法逆元）。下列哪种算法最为适合？（ ）",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "使用暴力法依次尝试"
+        },
+        {
+          "prefix": "B",
+          "content": "使用扩展欧几里得算法"
+        },
+        {
+          "prefix": "C",
+          "content": "使用快速幂法"
+        },
+        {
+          "prefix": "D",
+          "content": "使用线性筛法"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "考虑一个自然数 $n$ 以及一个模数 $m$，你需要计算 $n$ 的逆元（即 $n$ 在模 $m$ 意义下的乘法逆元）。下列哪种算法最为适合？（ ）",
+      "raw": {
+        "problem": {
+          "id": 1371,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740372264
+        },
+        "question": {
+          "choices": [
+            "使用暴力法依次尝试 ",
+            " 使用扩展欧几里得算法 ",
+            " 使用快速幂法 ",
+            " 使用线性筛法"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1372,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 10,
+      "parentProblemNo": 10,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "在设计一个哈希表时，为了减少冲突，需要使用适当的哈希函数和冲突解决策略。已知某哈希表中有 $n$ 个键值对，表的装载因子为 $\\alpha (0 < \\alpha \\leq 1)$。在使用开放地址法解决冲突的过程中，最坏情况下查找一个元素的时间复杂度为（  ）？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(1)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(\\log n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(1/(1-\\alpha))$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n)$"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "在设计一个哈希表时，为了减少冲突，需要使用适当的哈希函数和冲突解决策略。已知某哈希表中有 $n$ 个键值对，表的装载因子为 $\\alpha (0 < \\alpha \\leq 1)$。在使用开放地址法解决冲突的过程中，最坏情况下查找一个元素的时间复杂度为（  ）？",
+      "raw": {
+        "problem": {
+          "id": 1372,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740372355
+        },
+        "question": {
+          "choices": [
+            "$O(1)$ ",
+            " $O(\\log n)$ ",
+            " $O(1/(1-\\alpha))$ ",
+            " $O(n)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1373,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 11,
+      "parentProblemNo": 11,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "假设有一棵 $h$ 层的完全二叉树，该树最多包含多少个结点？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$2^h-1$"
+        },
+        {
+          "prefix": "B",
+          "content": "$2^{h+1}-1$"
+        },
+        {
+          "prefix": "C",
+          "content": "$2^h$"
+        },
+        {
+          "prefix": "D",
+          "content": "$2^{h+1}$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "假设有一棵 $h$ 层的完全二叉树，该树最多包含多少个结点？",
+      "raw": {
+        "problem": {
+          "id": 1373,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1748612589
+        },
+        "question": {
+          "choices": [
+            "$2^h-1$ ",
+            " $2^{h+1}-1$ ",
+            " $2^h$ ",
+            " $2^{h+1}$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1374,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 12,
+      "parentProblemNo": 12,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "设有一个 $10$ 个顶点的完全图，每两个顶点之间都有一条边。有多少个长度为 $4$ 的环？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "120"
+        },
+        {
+          "prefix": "B",
+          "content": "210"
+        },
+        {
+          "prefix": "C",
+          "content": "630"
+        },
+        {
+          "prefix": "D",
+          "content": "5040"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "设有一个 $10$ 个顶点的完全图，每两个顶点之间都有一条边。有多少个长度为 $4$ 的环？",
+      "raw": {
+        "problem": {
+          "id": 1374,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740372585
+        },
+        "question": {
+          "choices": [
+            "120 ",
+            " 210 ",
+            " 630 ",
+            " 5040"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1375,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 13,
+      "parentProblemNo": 13,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "对于一个整数 $n$，定义 $f(n)$ 为 $n$ 的各位数字之和，问使 $f(f(x))=10$ 的最小自然数 $x$ 是多少？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "29"
+        },
+        {
+          "prefix": "B",
+          "content": "199"
+        },
+        {
+          "prefix": "C",
+          "content": "299"
+        },
+        {
+          "prefix": "D",
+          "content": "399"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "对于一个整数 $n$，定义 $f(n)$ 为 $n$ 的各位数字之和，问使 $f(f(x))=10$ 的最小自然数 $x$ 是多少？",
+      "raw": {
+        "problem": {
+          "id": 1375,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740373239
+        },
+        "question": {
+          "choices": [
+            "29 ",
+            " 199 ",
+            " 299 ",
+            " 399"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1376,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 14,
+      "parentProblemNo": 14,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "设有一个长度为 $n$ 的 $01$ 字符串，其中有 $k$ 个 $1$。每次操作可以交换相邻两个字符。在最坏情况下将这 $k$ 个 $1$ 移到字符串最右边所需要的交换次数是多少？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$k$"
+        },
+        {
+          "prefix": "B",
+          "content": "$k\\times (k-1)/2$"
+        },
+        {
+          "prefix": "C",
+          "content": "$(n-k)\\times k$"
+        },
+        {
+          "prefix": "D",
+          "content": "$(2n-k-1)\\times k/2$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "设有一个长度为 $n$ 的 $01$ 字符串，其中有 $k$ 个 $1$。每次操作可以交换相邻两个字符。在最坏情况下将这 $k$ 个 $1$ 移到字符串最右边所需要的交换次数是多少？",
+      "raw": {
+        "problem": {
+          "id": 1376,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740373429
+        },
+        "question": {
+          "choices": [
+            "$k$ ",
+            " $k\\times (k-1)/2$ ",
+            " $(n-k)\\times k$ ",
+            " $(2n-k-1)\\times k/2$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1377,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 15,
+      "parentProblemNo": 15,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "如图是一张包含 $7$ 个顶点的有向图，如果要删除其中一些边，使得从节点 $1$ 到节点 $7$ 没有可行路径，且删除的边数最少，请问总共有多少种可行的删除边的集合？（ ）\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/gjw5hvp1.png)",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "1"
+        },
+        {
+          "prefix": "B",
+          "content": "2"
+        },
+        {
+          "prefix": "C",
+          "content": "3"
+        },
+        {
+          "prefix": "D",
+          "content": "4"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "如图是一张包含 $7$ 个顶点的有向图，如果要删除其中一些边，使得从节点 $1$ 到节点 $7$ 没有可行路径，且删除的边数最少，请问总共有多少种可行的删除边的集合？（ ）\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/gjw5hvp1.png)",
+      "raw": {
+        "problem": {
+          "id": 1377,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1740373629
+        },
+        "question": {
+          "choices": [
+            "1 ",
+            " 2 ",
+            " 3 ",
+            " 4"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1378,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 16,
+      "parentProblemNo": 16,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）\n\n子题 1：当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1378,
+          "type": "MultipleSelection",
+          "score": 11.5,
+          "page": 1,
+          "createTime": 1746700219
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1378,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 17,
+      "parentProblemNo": 16,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）\n\n子题 2：当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1378,
+          "type": "MultipleSelection",
+          "score": 11.5,
+          "page": 1,
+          "createTime": 1746700219
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1378,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 18,
+      "parentProblemNo": 16,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）\n\n子题 3：假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1378,
+          "type": "MultipleSelection",
+          "score": 11.5,
+          "page": 1,
+          "createTime": 1746700219
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1378,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 19,
+      "parentProblemNo": 16,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）\n\n子题 4：函数 `int logic(int x, int y)` 的功能是",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "按位与"
+        },
+        {
+          "prefix": "B",
+          "content": "按位或"
+        },
+        {
+          "prefix": "C",
+          "content": "按位异或"
+        },
+        {
+          "prefix": "D",
+          "content": "以上都不是"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1378,
+          "type": "MultipleSelection",
+          "score": 11.5,
+          "page": 1,
+          "createTime": 1746700219
+        },
+        "question": {
+          "choices": [
+            "按位与 ",
+            " 按位或 ",
+            " 按位异或 ",
+            " 以上都不是"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1378,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 20,
+      "parentProblemNo": 16,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 4,
+      "stemMarkdown": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）\n\n子题 5：当输入为 `10 100 100` 时，输出的第 $100$ 个数是？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "91"
+        },
+        {
+          "prefix": "B",
+          "content": "94"
+        },
+        {
+          "prefix": "C",
+          "content": "95"
+        },
+        {
+          "prefix": "D",
+          "content": "98"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1378,
+          "type": "MultipleSelection",
+          "score": 11.5,
+          "page": 1,
+          "createTime": 1746700219
+        },
+        "question": {
+          "choices": [
+            "91 ",
+            " 94 ",
+            " 95 ",
+            " 98"
+          ],
+          "allowMultiChoices": false,
+          "score": 4,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1379,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 21,
+      "parentProblemNo": 17,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？\n\n子题 1：假设数组 dp 长度无限制，函数 `solve",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？",
+      "raw": {
+        "problem": {
+          "id": 1379,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 1,
+          "createTime": 1757384022
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1379,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 22,
+      "parentProblemNo": 17,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？\n\n子题 2：输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？",
+      "raw": {
+        "problem": {
+          "id": 1379,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 1,
+          "createTime": 1757384022
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1379,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 23,
+      "parentProblemNo": 17,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 2,
+      "stemMarkdown": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？\n\n子题 3：（2 分）在 $n \\leq 10$ 时，`solve",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？",
+      "raw": {
+        "problem": {
+          "id": 1379,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 1,
+          "createTime": 1757384022
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1379,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 24,
+      "parentProblemNo": 17,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？\n\n子题 4：当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$1024$"
+        },
+        {
+          "prefix": "B",
+          "content": "$11$"
+        },
+        {
+          "prefix": "C",
+          "content": "$10$"
+        },
+        {
+          "prefix": "D",
+          "content": "$0$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？",
+      "raw": {
+        "problem": {
+          "id": 1379,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 1,
+          "createTime": 1757384022
+        },
+        "question": {
+          "choices": [
+            "$1024$ ",
+            " $11$ ",
+            " $10$ ",
+            " $0$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1379,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 25,
+      "parentProblemNo": 17,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？\n\n子题 5：当 $n \\leq 6$ 时，`solve",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$65$"
+        },
+        {
+          "prefix": "B",
+          "content": "$211$"
+        },
+        {
+          "prefix": "C",
+          "content": "$665$"
+        },
+        {
+          "prefix": "D",
+          "content": "$2059$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？",
+      "raw": {
+        "problem": {
+          "id": 1379,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 1,
+          "createTime": 1757384022
+        },
+        "question": {
+          "choices": [
+            "$65$ ",
+            " $211$ ",
+            " $665$ ",
+            " $2059$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1379,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 26,
+      "parentProblemNo": 17,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？\n\n子题 6：若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$1477$"
+        },
+        {
+          "prefix": "B",
+          "content": "$1995$"
+        },
+        {
+          "prefix": "C",
+          "content": "$2059$"
+        },
+        {
+          "prefix": "D",
+          "content": "$2187$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？",
+      "raw": {
+        "problem": {
+          "id": 1379,
+          "type": "MultipleSelection",
+          "score": 14,
+          "page": 1,
+          "createTime": 1757384022
+        },
+        "question": {
+          "choices": [
+            "$1477$ ",
+            " $1995$ ",
+            " $2059$ ",
+            " $2187$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1380,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 27,
+      "parentProblemNo": 18,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）\n\n子题 1：假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1380,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 1,
+          "createTime": 1746700228
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1380,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 28,
+      "parentProblemNo": 18,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）\n\n子题 2：时间开销的瓶颈是 `init",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1380,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 1,
+          "createTime": 1746700228
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1380,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 29,
+      "parentProblemNo": 18,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）\n\n子题 3：若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1380,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 1,
+          "createTime": 1746700228
+        },
+        "question": {
+          "choices": [
+            "正确 ",
+            " 错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1380,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 30,
+      "parentProblemNo": 18,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）\n\n子题 4：在 `solve",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "二叉树的 BFS 序"
+        },
+        {
+          "prefix": "B",
+          "content": "二叉树的先序遍历"
+        },
+        {
+          "prefix": "C",
+          "content": "二叉树的中序遍历"
+        },
+        {
+          "prefix": "D",
+          "content": "二叉树的后序遍历"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1380,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 1,
+          "createTime": 1746700228
+        },
+        "question": {
+          "choices": [
+            "二叉树的 BFS 序 ",
+            " 二叉树的先序遍历 ",
+            " 二叉树的中序遍历 ",
+            " 二叉树的后序遍历"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1380,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 31,
+      "parentProblemNo": 18,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）\n\n子题 5：输入 $10$，输出的第一行是？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$83$"
+        },
+        {
+          "prefix": "B",
+          "content": "$424$"
+        },
+        {
+          "prefix": "C",
+          "content": "$54$"
+        },
+        {
+          "prefix": "D",
+          "content": "$110101000$"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1380,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 1,
+          "createTime": 1746700228
+        },
+        "question": {
+          "choices": [
+            "$83$ ",
+            " $424$ ",
+            " $54$ ",
+            " $110101000$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1380,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 32,
+      "parentProblemNo": 18,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）\n\n子题 6：输入 $16$，输出的第二行是？",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$7$"
+        },
+        {
+          "prefix": "B",
+          "content": "$9$"
+        },
+        {
+          "prefix": "C",
+          "content": "$10$"
+        },
+        {
+          "prefix": "D",
+          "content": "$12$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）",
+      "raw": {
+        "problem": {
+          "id": 1380,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 1,
+          "createTime": 1746700228
+        },
+        "question": {
+          "choices": [
+            "$7$ ",
+            " $9$ ",
+            " $10$ ",
+            " $12$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1381,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 33,
+      "parentProblemNo": 19,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`\n\n子题 1：① 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`an-a`"
+        },
+        {
+          "prefix": "B",
+          "content": "`an-a-1`"
+        },
+        {
+          "prefix": "C",
+          "content": "`ai`"
+        },
+        {
+          "prefix": "D",
+          "content": "`ai+1`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`",
+      "raw": {
+        "problem": {
+          "id": 1381,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1740377757
+        },
+        "question": {
+          "choices": [
+            "`an-a` ",
+            " `an-a-1` ",
+            " `ai` ",
+            " `ai+1`   "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1381,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 34,
+      "parentProblemNo": 19,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`\n\n子题 2：② 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`a[mid] > ai`"
+        },
+        {
+          "prefix": "B",
+          "content": "`a[mid] >= ai`"
+        },
+        {
+          "prefix": "C",
+          "content": "`a[mid] < ai`"
+        },
+        {
+          "prefix": "D",
+          "content": "`a[mid] <= ai`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`",
+      "raw": {
+        "problem": {
+          "id": 1381,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1740377757
+        },
+        "question": {
+          "choices": [
+            "`a[mid] > ai` ",
+            " `a[mid] >= ai` ",
+            " `a[mid] < ai` ",
+            " `a[mid] <= ai`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1381,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 35,
+      "parentProblemNo": 19,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`\n\n子题 3：③ 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`a+l`"
+        },
+        {
+          "prefix": "B",
+          "content": "`a+l+1`"
+        },
+        {
+          "prefix": "C",
+          "content": "`a+l-1`"
+        },
+        {
+          "prefix": "D",
+          "content": "`an-l`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`",
+      "raw": {
+        "problem": {
+          "id": 1381,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1740377757
+        },
+        "question": {
+          "choices": [
+            "`a+l` ",
+            " `a+l+1` ",
+            " `a+l-1` ",
+            " `an-l`  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1381,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 36,
+      "parentProblemNo": 19,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`\n\n子题 4：④ 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`a[n-1]+b[n-1]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`a[n]+b[n]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`2 * maxn`"
+        },
+        {
+          "prefix": "D",
+          "content": "`maxn`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`",
+      "raw": {
+        "problem": {
+          "id": 1381,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1740377757
+        },
+        "question": {
+          "choices": [
+            "`a[n-1]+b[n-1]` ",
+            " `a[n]+b[n]` ",
+            " `2 * maxn` ",
+            " `maxn`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1381,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 37,
+      "parentProblemNo": 19,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`\n\n子题 5：⑤ 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`get_rank(mid) < k`"
+        },
+        {
+          "prefix": "B",
+          "content": "`get_rank(mid) <= k`"
+        },
+        {
+          "prefix": "C",
+          "content": "`get_rank(mid) > k`"
+        },
+        {
+          "prefix": "D",
+          "content": "`get_rank(mid) >= k`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？\nA. `an-a`\nB. `an-a-1`\nC. `ai`\nD. `ai+1`\n2. ② 处应填（  ）？\nA. `a[mid] > ai`\nB. `a[mid] >= ai`\nC. `a[mid] < ai`\nD. `a[mid] <= ai`\n3. ③ 处应填（  ）？\nA. `a+l`\nB. `a+l+1`\nC. `a+l-1`\nD. `an-l`\n4. ④ 处应填（  ）？\nA. `a[n-1]+b[n-1]`\nB. `a[n]+b[n]`\nC. `2 * maxn`\nD. `maxn`\n5. ⑤ 处应填（  ）？\nA. `get_rank(mid) < k`\nB. `get_rank(mid) <= k`\nC. `get_rank(mid) > k`\nD. `get_rank(mid) >= k`",
+      "raw": {
+        "problem": {
+          "id": 1381,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1740377757
+        },
+        "question": {
+          "choices": [
+            "`get_rank(mid) < k` ",
+            " `get_rank(mid) <= k` ",
+            " `get_rank(mid) > k` ",
+            " `get_rank(mid) >= k`  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1382,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 38,
+      "parentProblemNo": 20,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`\n\n子题 1：① 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`upd(pre[b], n+b, dis[b], q)`"
+        },
+        {
+          "prefix": "B",
+          "content": "`upd(a, n+b, d, q)`"
+        },
+        {
+          "prefix": "C",
+          "content": "`upd(pre[b], b, dis[b], q)`"
+        },
+        {
+          "prefix": "D",
+          "content": "`upd(a, b, d, q)`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`",
+      "raw": {
+        "problem": {
+          "id": 1382,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1758202629
+        },
+        "question": {
+          "choices": [
+            "`upd(pre[b], n+b, dis[b], q)` ",
+            " `upd(a, n+b, d, q)` ",
+            " `upd(pre[b], b, dis[b], q)` ",
+            " `upd(a, b, d, q)` "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1382,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 39,
+      "parentProblemNo": 20,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`\n\n子题 2：② 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`make_pair(-d, b)`"
+        },
+        {
+          "prefix": "B",
+          "content": "`make_pair(d, b)`"
+        },
+        {
+          "prefix": "C",
+          "content": "`make_pair(b, d)`"
+        },
+        {
+          "prefix": "D",
+          "content": "`make_pair(-b, d)`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`",
+      "raw": {
+        "problem": {
+          "id": 1382,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1758202629
+        },
+        "question": {
+          "choices": [
+            "`make_pair(-d, b)` ",
+            " `make_pair(d, b)` ",
+            " `make_pair(b, d)` ",
+            " `make_pair(-b, d)` "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1382,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 40,
+      "parentProblemNo": 20,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`\n\n子题 3：③ 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`0xff`"
+        },
+        {
+          "prefix": "B",
+          "content": "`0x1f`"
+        },
+        {
+          "prefix": "C",
+          "content": "`0x3f`"
+        },
+        {
+          "prefix": "D",
+          "content": "`0x7f`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`",
+      "raw": {
+        "problem": {
+          "id": 1382,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1758202629
+        },
+        "question": {
+          "choices": [
+            "`0xff` ",
+            " `0x1f` ",
+            " `0x3f` ",
+            " `0x7f` "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1382,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 41,
+      "parentProblemNo": 20,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`\n\n子题 4：④ 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`upd(a, n+b, dis[a]+c, q)`"
+        },
+        {
+          "prefix": "B",
+          "content": "`upd(n+a, n+b, dis2[a]+c, q)`"
+        },
+        {
+          "prefix": "C",
+          "content": "`upd(n+a, b, dis2[a]+c, q)`"
+        },
+        {
+          "prefix": "D",
+          "content": "`upd(a, b, dis[a]+c, q)`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`",
+      "raw": {
+        "problem": {
+          "id": 1382,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1758202629
+        },
+        "question": {
+          "choices": [
+            "`upd(a, n+b, dis[a]+c, q)` ",
+            " `upd(n+a, n+b, dis2[a]+c, q)` ",
+            " `upd(n+a, b, dis2[a]+c, q)` ",
+            " `upd(a, b, dis[a]+c, q)`  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2024,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 1382,
+      "url": "https://ti.luogu.com.cn/problemset/1044",
+      "questionNo": 42,
+      "parentProblemNo": 20,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`\n\n子题 5：⑤ 处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`pre2[a%n]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`pre[a%n]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`pre2[a]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`pre[a%n]+1`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）\nA. `upd(pre[b], n+b, dis[b], q)`\nB. `upd(a, n+b, d, q)`\nC. `upd(pre[b], b, dis[b], q)`\nD. `upd(a, b, d, q)`\n\n2. ② 处应填（  ）\nA. `make_pair(-d, b)`\nB. `make_pair(d, b)`\nC. `make_pair(b, d)`\nD. `make_pair(-b, d)`\n\n3. ③ 处应填（  ）\nA. `0xff`\nB. `0x1f`\nC. `0x3f`\nD. `0x7f`\n\n4. ④ 处应填（  ）\nA. `upd(a, n+b, dis[a]+c, q)`\nB. `upd(n+a, n+b, dis2[a]+c, q)`\nC. `upd(n+a, b, dis2[a]+c, q)`\nD. `upd(a, b, dis[a]+c, q)`\n\n5. ⑤ 处应填（  ）\nA. `pre2[a%n]`\nB. `pre[a%n]`\nC. `pre2[a]`\nD. `pre[a%n]+1`",
+      "raw": {
+        "problem": {
+          "id": 1382,
+          "type": "MultipleSelection",
+          "score": 15,
+          "page": 1,
+          "createTime": 1758202629
+        },
+        "question": {
+          "choices": [
+            "`pre2[a%n]` ",
+            " `pre[a%n]` ",
+            " `pre2[a]` ",
+            " `pre[a%n]+1`   "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    }
+  ],
+  "raw": {
+    "id": 1044,
+    "name": "CSP 2024 提高级第一轮",
+    "description": "CSP 2024 提高级第一轮",
+    "duration": 7200,
+    "problems": [
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1363,
+        "type": "MultipleSelection",
+        "description": "在 Linux 系统中，如果你想显示当前工作目录的路径，应该使用哪个命令？（ ）",
+        "createTime": 1740371253,
+        "questions": [
+          {
+            "choices": [
+              "`pwd` ",
+              " `cd` ",
+              " `ls` ",
+              " `echo`"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1364,
+        "type": "MultipleSelection",
+        "description": "假设一个长度为 $n$ 的整数数组中每个元素值互不相同，且这个数组是无序的。要找到这个数组中最大元素的时间复杂度是多少？（ ）",
+        "createTime": 1740371308,
+        "questions": [
+          {
+            "choices": [
+              "$O(n)$ ",
+              " $O(\\log n)$ ",
+              " $O(n \\log n)$ ",
+              " $O(1)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1365,
+        "type": "MultipleSelection",
+        "description": "在 C++ 中，以下哪个函数调用会造成栈溢出？（ ）",
+        "createTime": 1740371381,
+        "questions": [
+          {
+            "choices": [
+              "`int foo() { return 0; }` ",
+              " `int bar() { int x = 1; return x; }` ",
+              " `void baz() { int a[1000]; baz(); }` ",
+              " `void qux() { return; }`"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1366,
+        "type": "MultipleSelection",
+        "description": "在一场比赛中，有 $10$ 名选手参加，前三名将获得金、银、铜牌。若不允许并列，且每名选手只能获得一枚奖牌，则不同的颁奖方式共有多少种？",
+        "createTime": 1740371542,
+        "questions": [
+          {
+            "choices": [
+              "120 ",
+              " 720 ",
+              " 504 ",
+              " 1000"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1367,
+        "type": "MultipleSelection",
+        "description": "下面哪个数据结构最适合实现先进先出（FIFO）的功能？（ ）",
+        "createTime": 1740371570,
+        "questions": [
+          {
+            "choices": [
+              "栈 ",
+              " 队列 ",
+              " 线性表 ",
+              " 二叉搜索树"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1368,
+        "type": "MultipleSelection",
+        "description": "已知 $f(1) = 1$，且对于 $n \\geq 2$ 有 $f(n) = f(n - 1) + f(\\lfloor n/2\\rfloor )$，则 $f(4)$ 的值为？",
+        "createTime": 1740371620,
+        "questions": [
+          {
+            "choices": [
+              "4 ",
+              " 5 ",
+              " 6 ",
+              " 7"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1369,
+        "type": "MultipleSelection",
+        "description": "假设有一个包含 $n$ 个顶点的无向图，且该图是欧拉图。以下关于该图的描述中哪一项不一定正确？",
+        "createTime": 1740371816,
+        "questions": [
+          {
+            "choices": [
+              "所有顶点的度数均为偶数 ",
+              " 该图连通 ",
+              " 该图存在一个欧拉回路 ",
+              " 该图的边数是奇数"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1370,
+        "type": "MultipleSelection",
+        "description": "对数组进行二分查找的过程中，以下哪个条件必须满足？",
+        "createTime": 1740371908,
+        "questions": [
+          {
+            "choices": [
+              "数组必须是有序的 ",
+              " 数组必须是无序的 ",
+              " 数组长度必须是 2 的幂 ",
+              " 数组中的元素必须是整数"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1371,
+        "type": "MultipleSelection",
+        "description": "考虑一个自然数 $n$ 以及一个模数 $m$，你需要计算 $n$ 的逆元（即 $n$ 在模 $m$ 意义下的乘法逆元）。下列哪种算法最为适合？（ ）",
+        "createTime": 1740372264,
+        "questions": [
+          {
+            "choices": [
+              "使用暴力法依次尝试 ",
+              " 使用扩展欧几里得算法 ",
+              " 使用快速幂法 ",
+              " 使用线性筛法"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1372,
+        "type": "MultipleSelection",
+        "description": "在设计一个哈希表时，为了减少冲突，需要使用适当的哈希函数和冲突解决策略。已知某哈希表中有 $n$ 个键值对，表的装载因子为 $\\alpha (0 < \\alpha \\leq 1)$。在使用开放地址法解决冲突的过程中，最坏情况下查找一个元素的时间复杂度为（  ）？",
+        "createTime": 1740372355,
+        "questions": [
+          {
+            "choices": [
+              "$O(1)$ ",
+              " $O(\\log n)$ ",
+              " $O(1/(1-\\alpha))$ ",
+              " $O(n)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1373,
+        "type": "MultipleSelection",
+        "description": "假设有一棵 $h$ 层的完全二叉树，该树最多包含多少个结点？",
+        "createTime": 1748612589,
+        "questions": [
+          {
+            "choices": [
+              "$2^h-1$ ",
+              " $2^{h+1}-1$ ",
+              " $2^h$ ",
+              " $2^{h+1}$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1374,
+        "type": "MultipleSelection",
+        "description": "设有一个 $10$ 个顶点的完全图，每两个顶点之间都有一条边。有多少个长度为 $4$ 的环？",
+        "createTime": 1740372585,
+        "questions": [
+          {
+            "choices": [
+              "120 ",
+              " 210 ",
+              " 630 ",
+              " 5040"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1375,
+        "type": "MultipleSelection",
+        "description": "对于一个整数 $n$，定义 $f(n)$ 为 $n$ 的各位数字之和，问使 $f(f(x))=10$ 的最小自然数 $x$ 是多少？",
+        "createTime": 1740373239,
+        "questions": [
+          {
+            "choices": [
+              "29 ",
+              " 199 ",
+              " 299 ",
+              " 399"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1376,
+        "type": "MultipleSelection",
+        "description": "设有一个长度为 $n$ 的 $01$ 字符串，其中有 $k$ 个 $1$。每次操作可以交换相邻两个字符。在最坏情况下将这 $k$ 个 $1$ 移到字符串最右边所需要的交换次数是多少？",
+        "createTime": 1740373429,
+        "questions": [
+          {
+            "choices": [
+              "$k$ ",
+              " $k\\times (k-1)/2$ ",
+              " $(n-k)\\times k$ ",
+              " $(2n-k-1)\\times k/2$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 1377,
+        "type": "MultipleSelection",
+        "description": "如图是一张包含 $7$ 个顶点的有向图，如果要删除其中一些边，使得从节点 $1$ 到节点 $7$ 没有可行路径，且删除的边数最少，请问总共有多少种可行的删除边的集合？（ ）\n\n![](https://cdn.luogu.com.cn/upload/image_hosting/gjw5hvp1.png)",
+        "createTime": 1740373629,
+        "questions": [
+          {
+            "choices": [
+              "1 ",
+              " 2 ",
+              " 3 ",
+              " 4"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 11.5,
+        "page": 1,
+        "id": 1378,
+        "type": "MultipleSelection",
+        "description": "### 二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √，错误填 ⨉ ；除特殊说明外，判断题 1.5 分，选择题 3 分，共计 40 分）\n\n### 第 1 题\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int N = 1000;\nint c[N];\n\nint logic(int x, int y) {\n    return (x & y) ^ ((x ^ y) | (~x & y));\n}\n\nvoid generate(int a, int b, int *c) {\n    for (int i = 0; i < b; i++)\n        c[i] = logic(a, i) % (b + 1);\n}\n\nvoid recursion(int depth, int *arr, int size) {\n    if (depth <= 0 || size <= 1) return;\n    int pivot = arr[0];\n    int i = 0, j = size - 1;\n    while (i <= j) {\n        while (arr[i] < pivot) i++;\n        while (arr[j] > pivot) j--;\n        if (i <= j) {\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n            i++; j--;\n        }\n    }\n    recursion(depth - 1, arr, j + 1);\n    recursion(depth - 1, arr + i, size - i);\n}\n\nint main() {\n    int a, b, d;\n    cin >> a >> b >> d;\n    generate(a, b, c);\n    recursion(d, c, b);\n    for (int i = 0; i < b; ++i) cout << c[i] << \" \";\n    cout << endl;\n}\n\n```\n\n### 判断题\n\n1. 当 $1000 \\geq d \\geq b$ 时，输出的序列是有序的。（  ）\n2. 当输入 `5 5 1` 时，输出为 `1 1 5 5 5`。（  ）\n3. 假设数组 $c$ 长度无限制，该程序所实现的算法的时间复杂度是 $O(b)$ 的。（  ）\n\n### 选择题\n\n1. 函数 `int logic(int x, int y)` 的功能是（  ）\n2. 当输入为 `10 100 100` 时，输出的第 $100$ 个数是？（  ）",
+        "createTime": 1746700219,
+        "questions": [
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "按位与 ",
+              " 按位或 ",
+              " 按位异或 ",
+              " 以上都不是"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "91 ",
+              " 94 ",
+              " 95 ",
+              " 98"
+            ],
+            "allowMultiChoices": false,
+            "score": 4,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 14,
+        "page": 1,
+        "id": 1379,
+        "type": "MultipleSelection",
+        "description": "### 第 2 题\n\n```cpp\n#include <iostream>\n#include <string>\nusing namespace std;\n\nconst int P = 998244353, N = 1e4 + 10, M = 20;\nint n, m;\nstring s;\nint dp[1 << M];\n\nint solve() {\n    dp[0] = 1;\n    for (int i = 0; i < n; ++i) {\n        for (int j = (1 << (m - 1)) - 1; j >= 0; --j) {\n            int k = (j << 1) | (s[i] - '0');\n            if (j != 0 || s[i] == '1')\n                dp[k] = (dp[k] + dp[j]) % P;\n        }\n    }\n    int ans = 0;\n    for (int i = 0; i < (1 << m); ++i) {\n        ans = (ans + 1ll * i * dp[i]) % P;\n    }\n    return ans;\n}\n\nint solve2() {\n    int ans = 0;\n    for (int i = 0; i < (1 << n); ++i) {\n        int cnt = 0;\n        int num = 0;\n        for (int j = 0; j < n; ++j) {\n            if (i & (1 << j)) {\n                num = num * 2 + (s[j] - '0');\n                cnt++;\n            }\n        }\n        if (cnt <= m) (ans += num) %= P;\n    }\n    return ans;\n}\n\nint main() {\n    cin >> n >> m;\n    cin >> s;\n    if (n <= 20) {\n        cout << solve2() << endl;\n    }\n    cout << solve() << endl;\n    return 0;\n}\n\n```\n\n假设输入的 $s$ 是包含 $n$ 个字符的 $01$ 串，完成下面的判断题和单选题。\n\n### 判断题\n\n1. 假设数组 dp 长度无限制，函数 `solve()` 所实现的算法的时间复杂度是 $O(n\\times 2^m)$。（  ）\n2. 输入 `11 2 10000000001` 时，程序输出两个数 32 和 23。（  ）\n3. （2 分）在 $n \\leq 10$ 时，`solve()` 的返回值始终小于 $4^{10}$。（  ）\n\n### 选择题\n\n1. 当 $n = 10$ 且 $m = 10$ 时，有多少种输入使得两行的结果完全一致？（  ）\n2. 当 $n \\leq 6$ 时，`solve()` 的最大可能返回值为（  ）？\n3. 若 $n = 8, m = 8$，`solve` 和 `solve2` 的返回值的最大可能的差值为（  ）？",
+        "createTime": 1757384022,
+        "questions": [
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "$1024$ ",
+              " $11$ ",
+              " $10$ ",
+              " $0$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "$65$ ",
+              " $211$ ",
+              " $665$ ",
+              " $2059$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "$1477$ ",
+              " $1995$ ",
+              " $2059$ ",
+              " $2187$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 13.5,
+        "page": 1,
+        "id": 1380,
+        "type": "MultipleSelection",
+        "description": "### 第 3 题\n\n```cpp\n#include <iostream>\n#include <cstring>\n#include <algorithm>\nusing namespace std;\n\nconst int maxn = 1000000 + 5;\nconst int P1 = 998244353, P2 = 1000000007;\nconst int B1 = 2, B2 = 31;\nconst int K1 = 0, K2 = 13;\n\ntypedef long long ll;\n\nint n;\nbool p[maxn];\nint p1[maxn], p2[maxn];\n\nstruct H {\n    int h1, h2, l;\n    H(bool b = false) {\n        h1 = b + K1;\n        h2 = b + K2;\n        l = 1;\n    }\n\n    H operator + (const H & h) const {\n        H hh;\n        hh.l = l + h.l;\n        hh.h1 = (1ll * h1 * p1[h.l] + h.h1) % P1;\n        hh.h2 = (1ll * h2 * p2[h.l] + h.h2) % P2;\n        return hh;\n    }\n\n    bool operator == (const H & h) const {\n        return l == h.l && h1 == h.h1 && h2 == h.h2;\n    }\n\n    bool operator < (const H & h) const {\n        if (l != h.l) return l < h.l;\n        else if (h1 != h.h1) return h1 < h.h1;\n        else return h2 < h.h2;\n    }\n} h[maxn];\n\nvoid init() {\n    memset(p, 1, sizeof(p));\n    p[0] = p[1] = false;\n    p1[0] = p2[0] = 1;\n    for (int i = 1; i <= n; ++i) {\n        p1[i] = (1ll * B1 * p1[i-1]) % P1;\n        p2[i] = (1ll * B2 * p2[i-1]) % P2;\n        if (!p[i]) continue;\n        for (int j = 2 * i; j <= n; j += i) {\n            p[j] = false;\n        }\n    }\n}\n\nint solve() {\n    for (int i = n; i; --i) {\n        h[i] = H(p[i]);\n        if (2 * i + 1 <= n) {\n            h[i] = h[2 * i] + h[i] + h[2 * i + 1];\n        } else if (2 * i <= n) {\n            h[i] = h[2 * i] + h[i];\n        }\n    }\n\n    cout << h[1].h1 << endl;\n    sort(h + 1, h + n + 1);\n    int m = unique(h + 1, h + n + 1) - (h + 1);\n    return m;\n}\n\nint main() {\n    cin >> n;\n    init();\n    cout << solve() << endl;\n}\n```\n\n### 判断题\n\n1. 假设程序运行前能自动将 `maxn` 改为 `n+1`，所实现的算法的时间复杂度是 $O(n \\log n)$。（  ）\n2. 时间开销的瓶颈是 `init()` 函数。（  ）\n3. 若修改常数 `B1` 或 `K1` 的值，该程序可能会输出不同的结果。（  ）\n\n### 选择题\n\n1. 在 `solve()` 函数中，`h[]` 的合并顺序可以看作是（  ）？\n2. 输入 $10$，输出的第一行是？（  ）\n3. 输入 $16$，输出的第二行是？（  ）",
+        "createTime": 1746700228,
+        "questions": [
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确 ",
+              " 错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "二叉树的 BFS 序 ",
+              " 二叉树的先序遍历 ",
+              " 二叉树的中序遍历 ",
+              " 二叉树的后序遍历"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "$83$ ",
+              " $424$ ",
+              " $54$ ",
+              " $110101000$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "$7$ ",
+              " $9$ ",
+              " $10$ ",
+              " $12$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 1,
+        "id": 1381,
+        "type": "MultipleSelection",
+        "description": "### 三、完善程序（单选题，每小题 3 分，共计 30 分）\n\n### 第 1 题\n\n**（序列合并）** 有两个长度为 $N$ 的单调不降序列 $A$ 和 $B$，序列的每个元素都是小于 $10^9$ 的非负整数。在 $A$ 和 $B$ 中各取一个数相加可以得到 $N^2$ 个和，求其中第 $K$ 小的和。上述参数满足 $N \\leq 10^5$ 和 $1 \\leq K \\leq N^2$。\n\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nconst int maxn = 100005;\n\nint n;\nlong long k;\nint a[maxn], b[maxn];\n\nint* upper_bound(int *a, int *an, int ai) {\n    int l = 0, r = ___①___;\n    while (l < r) {\n        int mid = (l+r)>>1;\n        if (___②___) {\n            r = mid;\n        } else {\n            l = mid + 1;\n        }\n    }\n    return ___③___;\n}\n\nlong long get_rank(int sum) {\n    long long rank = 0;\n    for (int i = 0; i < n; ++i) {\n        rank += upper_bound(b, b+n, sum - a[i]) - b;\n    }\n    return rank;\n}\n\nint solve() {\n    int l = 0, r = ___④___;\n    while (l < r) {\n        int mid = ((long long)l+r)>>1;\n        if (___⑤___) {\n            l = mid + 1;\n        } else {\n            r = mid;\n        }\n    }\n    return l;\n}\n\nint main() {\n    cin >> n >> k;\n    for (int i = 0; i < n; ++i) cin >> a[i];\n    for (int i = 0; i < n; ++i) cin >> b[i];\n    cout << solve() << endl;\n}\n\n```\n\n1. ① 处应填（  ）？    \nA. `an-a`    \nB. `an-a-1`    \nC. `ai`    \nD. `ai+1`    \n2. ② 处应填（  ）？    \nA. `a[mid] > ai`    \nB. `a[mid] >= ai`    \nC. `a[mid] < ai`    \nD. `a[mid] <= ai`    \n3. ③ 处应填（  ）？    \nA. `a+l`    \nB. `a+l+1`    \nC. `a+l-1`    \nD. `an-l`    \n4. ④ 处应填（  ）？    \nA. `a[n-1]+b[n-1]`    \nB. `a[n]+b[n]`    \nC. `2 * maxn`    \nD. `maxn`    \n5. ⑤ 处应填（  ）？    \nA. `get_rank(mid) < k`    \nB. `get_rank(mid) <= k`    \nC. `get_rank(mid) > k`    \nD. `get_rank(mid) >= k`    ",
+        "createTime": 1740377757,
+        "questions": [
+          {
+            "choices": [
+              "`an-a` ",
+              " `an-a-1` ",
+              " `ai` ",
+              " `ai+1`   "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`a[mid] > ai` ",
+              " `a[mid] >= ai` ",
+              " `a[mid] < ai` ",
+              " `a[mid] <= ai`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`a+l` ",
+              " `a+l+1` ",
+              " `a+l-1` ",
+              " `an-l`  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`a[n-1]+b[n-1]` ",
+              " `a[n]+b[n]` ",
+              " `2 * maxn` ",
+              " `maxn`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`get_rank(mid) < k` ",
+              " `get_rank(mid) <= k` ",
+              " `get_rank(mid) > k` ",
+              " `get_rank(mid) >= k`  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 15,
+        "page": 1,
+        "id": 1382,
+        "type": "MultipleSelection",
+        "description": "**（次短路）** 已知一个有 $n$ 个点 $m$ 条边的有向图 $G$，并且给定图中的两个点 $s$ 和 $t$，求次短路（长度严格大于最短路的最短路径）。如果不存在，输出一行 $-1$。如果存在，输出两行，第一行表示次短路的长度，第二行表示次短路的一个方案。\n\n\n```cpp\n#include <cstdio>\n#include <queue>\n#include <utility>\n#include <cstring>\nusing namespace std;\n\nconst int maxn = 2e5+10, maxm = 1e6+10, inf = 522133279;\n\nint n, m, s, t;\nint head[maxn], nxt[maxm], to[maxm], w[maxm], tot = 1;\nint dis[maxn<<1], *dis2;\nint pre[maxn<<1], *pre2;\nbool vis[maxn<<1];\n\nvoid add(int a, int b, int c) {\n    ++tot;\n    nxt[tot] = head[a];\n    to[tot] = b;\n    w[tot] = c;\n    head[a] = tot;\n}\n\nbool upd(int a, int b, int d, priority_queue<pair<int, int>> &q) {\n    if (d >= dis[b]) return false;\n    if (b < n) ___①___;\n    q.push(___②___);\n    dis[b] = d;\n    pre[b] = a;\n    return true;\n}\n\nvoid solve() {\n    priority_queue<pair<int, int>> q;\n    q.push(make_pair(0, s));\n    memset(dis, ___③___, sizeof(dis));\n    memset(pre, -1, sizeof(pre));\n    dis2 = dis+n;\n    pre2 = pre+n;\n    dis[s] = 0;\n    while (!q.empty()) {\n        int aa = q.top().second; q.pop();\n        if (vis[aa]) continue;\n        vis[aa] = true;\n        int a = aa % n;\n        for (int e = head[a]; e; e = nxt[e]) {\n            int b = to[e], c = w[e];\n            if (aa < n) {\n                if (!upd(a, b, dis[a]+c, q))\n                    ___④__;\n            } else {\n                upd(n+a, n+b, dis2[a]+c, q);\n        }\n    }\n}\n\nvoid out(int a) {\n    if (a != s) {\n        if (a < n) out(pre[a]);\n        else out(___⑤___);\n    }\n    printf(\"%d%c\", a%n+1, \" \\n\"[a == n+t]);\n}\n\nint main() {\n    scanf(\"%d%d%d%d\", &n, &m, &s, &t);\n    s--, t--;\n    for (int i = 0; i < m; ++i) {\n        int a, b, c;\n        scanf(\"%d%d%d\", &a, &b, &c);\n        add(a-1, b-1, c);\n    }\n    solve();\n    if (dis2[t] == inf) puts(\"-1\");\n    else {\n        printf(\"%d\\n\", dis2[t]);\n        out(n+t);\n    }\n}\n```\n\n1. ① 处应填（  ）    \nA. `upd(pre[b], n+b, dis[b], q)`    \nB. `upd(a, n+b, d, q)`    \nC. `upd(pre[b], b, dis[b], q)`    \nD. `upd(a, b, d, q)`    \n\n2. ② 处应填（  ）    \nA. `make_pair(-d, b)`    \nB. `make_pair(d, b)`    \nC. `make_pair(b, d)`    \nD. `make_pair(-b, d)`    \n\n3. ③ 处应填（  ）    \nA. `0xff`    \nB. `0x1f`   \nC. `0x3f`   \nD. `0x7f`    \n\n4. ④ 处应填（  ）    \nA. `upd(a, n+b, dis[a]+c, q)`    \nB. `upd(n+a, n+b, dis2[a]+c, q)`    \nC. `upd(n+a, b, dis2[a]+c, q)`    \nD. `upd(a, b, dis[a]+c, q)`    \n\n5. ⑤ 处应填（  ）    \nA. `pre2[a%n]`    \nB. `pre[a%n]`    \nC. `pre2[a]`    \nD. `pre[a%n]+1`    ",
+        "createTime": 1758202629,
+        "questions": [
+          {
+            "choices": [
+              "`upd(pre[b], n+b, dis[b], q)` ",
+              " `upd(a, n+b, d, q)` ",
+              " `upd(pre[b], b, dis[b], q)` ",
+              " `upd(a, b, d, q)` "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`make_pair(-d, b)` ",
+              " `make_pair(d, b)` ",
+              " `make_pair(b, d)` ",
+              " `make_pair(-b, d)` "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`0xff` ",
+              " `0x1f` ",
+              " `0x3f` ",
+              " `0x7f` "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`upd(a, n+b, dis[a]+c, q)` ",
+              " `upd(n+a, n+b, dis2[a]+c, q)` ",
+              " `upd(n+a, b, dis2[a]+c, q)` ",
+              " `upd(a, b, dis[a]+c, q)`  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`pre2[a%n]` ",
+              " `pre[a%n]` ",
+              " `pre2[a]` ",
+              " `pre[a%n]+1`   "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

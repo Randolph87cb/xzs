@@ -1,0 +1,3066 @@
+{
+  "year": 2021,
+  "group": "S",
+  "source": "luogu-youti",
+  "problemsetId": 1037,
+  "problemsetName": "CSP 2021 提高级第一轮",
+  "url": "https://ti.luogu.com.cn/problemset/1037",
+  "sourceMode": "window._feInjection",
+  "questions": [
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 900,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 1,
+      "parentProblemNo": 1,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "在 Linux 系统终端中，用于列出当前目录下所含的文件和子目录的命令为（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "ls"
+        },
+        {
+          "prefix": "B",
+          "content": "cd"
+        },
+        {
+          "prefix": "C",
+          "content": "cp"
+        },
+        {
+          "prefix": "D",
+          "content": "all"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "在 Linux 系统终端中，用于列出当前目录下所含的文件和子目录的命令为（ ）。",
+      "raw": {
+        "problem": {
+          "id": 900,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1654953467
+        },
+        "question": {
+          "choices": [
+            "ls",
+            "cd",
+            "cp",
+            "all"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 901,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 2,
+      "parentProblemNo": 2,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "二进制数 $00101010_{2}$ 和 $00010110_{2}$ 的和为（）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$00111100_{2}$"
+        },
+        {
+          "prefix": "B",
+          "content": "$01000000_{2}$"
+        },
+        {
+          "prefix": "C",
+          "content": "$00111100_{2}$"
+        },
+        {
+          "prefix": "D",
+          "content": "$01000010_{2}$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二进制数 $00101010_{2}$ 和 $00010110_{2}$ 的和为（）。",
+      "raw": {
+        "problem": {
+          "id": 901,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381918
+        },
+        "question": {
+          "choices": [
+            "$00111100_{2}$",
+            "$01000000_{2}$",
+            "$00111100_{2}$",
+            "$01000010_{2}$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 902,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 3,
+      "parentProblemNo": 3,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "在程序运行过程中，如果递归调用的层数过多，可能会由于（ ）引发错误。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "系统分配的栈空间溢出"
+        },
+        {
+          "prefix": "B",
+          "content": "系统分配的队列空间溢出"
+        },
+        {
+          "prefix": "C",
+          "content": "系统分配的链表空间溢出"
+        },
+        {
+          "prefix": "D",
+          "content": "系统分配的堆空间溢出"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "在程序运行过程中，如果递归调用的层数过多，可能会由于（ ）引发错误。",
+      "raw": {
+        "problem": {
+          "id": 902,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1654953756
+        },
+        "question": {
+          "choices": [
+            "系统分配的栈空间溢出",
+            "系统分配的队列空间溢出",
+            "系统分配的链表空间溢出",
+            "系统分配的堆空间溢出"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 903,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 4,
+      "parentProblemNo": 4,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "以下排序方法中，（ ）是不稳定的。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "插入排序"
+        },
+        {
+          "prefix": "B",
+          "content": "冒泡排序"
+        },
+        {
+          "prefix": "C",
+          "content": "堆排序"
+        },
+        {
+          "prefix": "D",
+          "content": "归并排序"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "以下排序方法中，（ ）是不稳定的。",
+      "raw": {
+        "problem": {
+          "id": 903,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1654953818
+        },
+        "question": {
+          "choices": [
+            "插入排序",
+            "冒泡排序",
+            "堆排序",
+            "归并排序"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 904,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 5,
+      "parentProblemNo": 5,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "以比较为基本运算，对于 $2n$ 个数，同时找到最大值和最小值，最坏情况下需要的最小的比 较次数为（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$4n-2$"
+        },
+        {
+          "prefix": "B",
+          "content": "$3n+1$"
+        },
+        {
+          "prefix": "C",
+          "content": "$3n-2$"
+        },
+        {
+          "prefix": "D",
+          "content": "$2n+1$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "以比较为基本运算，对于 $2n$ 个数，同时找到最大值和最小值，最坏情况下需要的最小的比 较次数为（ ）。",
+      "raw": {
+        "problem": {
+          "id": 904,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658380991
+        },
+        "question": {
+          "choices": [
+            "$4n-2$",
+            "$3n+1$",
+            "$3n-2$",
+            "$2n+1$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 905,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 6,
+      "parentProblemNo": 6,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "现有一个地址区间为 $0\\sim 10$ 的哈希表，对于出现冲突情况，会往后找第一个空的地址存储 （到 $10$ 冲突了就从 $0$ 开始往后），现在要依次存储 $(0,1,2，3,4,5,6,7)$，哈希函数为 $h(x)=x^{2} \\bmod {11}$。请问 $7$ 存储在哈希表哪个地址中（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "5"
+        },
+        {
+          "prefix": "B",
+          "content": "6"
+        },
+        {
+          "prefix": "C",
+          "content": "7"
+        },
+        {
+          "prefix": "D",
+          "content": "8"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "现有一个地址区间为 $0\\sim 10$ 的哈希表，对于出现冲突情况，会往后找第一个空的地址存储 （到 $10$ 冲突了就从 $0$ 开始往后），现在要依次存储 $(0,1,2，3,4,5,6,7)$，哈希函数为 $h(x)=x^{2} \\bmod {11}$。请问 $7$ 存储在哈希表哪个地址中（ ）。",
+      "raw": {
+        "problem": {
+          "id": 905,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381032
+        },
+        "question": {
+          "choices": [
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 906,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 7,
+      "parentProblemNo": 7,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "$G$ 是一个非连通简单无向图（没有自环和重边），共有 $36$ 条边，则该图至少有（ ）个点。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "8"
+        },
+        {
+          "prefix": "B",
+          "content": "9"
+        },
+        {
+          "prefix": "C",
+          "content": "10"
+        },
+        {
+          "prefix": "D",
+          "content": "11"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "$G$ 是一个非连通简单无向图（没有自环和重边），共有 $36$ 条边，则该图至少有（ ）个点。",
+      "raw": {
+        "problem": {
+          "id": 906,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381042
+        },
+        "question": {
+          "choices": [
+            "8",
+            "9",
+            "10",
+            "11"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 907,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 8,
+      "parentProblemNo": 8,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "令根结点的高度为 $1$，则一棵含有 $2021$ 个结点的二叉树的高度至少为（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "10"
+        },
+        {
+          "prefix": "B",
+          "content": "11"
+        },
+        {
+          "prefix": "C",
+          "content": "12"
+        },
+        {
+          "prefix": "D",
+          "content": "2021"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "令根结点的高度为 $1$，则一棵含有 $2021$ 个结点的二叉树的高度至少为（ ）。",
+      "raw": {
+        "problem": {
+          "id": 907,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381050
+        },
+        "question": {
+          "choices": [
+            "10",
+            "11",
+            "12",
+            "2021"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 908,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 9,
+      "parentProblemNo": 9,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "前序遍历和中序遍历相同的二叉树为且仅为（  ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "只有 $1$ 个点的二叉树"
+        },
+        {
+          "prefix": "B",
+          "content": "根结点没有左子树的二叉树"
+        },
+        {
+          "prefix": "C",
+          "content": "非叶子结点只有左子树的二叉树"
+        },
+        {
+          "prefix": "D",
+          "content": "非叶子结点只有右子树的二叉树"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "前序遍历和中序遍历相同的二叉树为且仅为（  ）。",
+      "raw": {
+        "problem": {
+          "id": 908,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381058
+        },
+        "question": {
+          "choices": [
+            "只有 $1$ 个点的二叉树",
+            "根结点没有左子树的二叉树",
+            "非叶子结点只有左子树的二叉树",
+            "非叶子结点只有右子树的二叉树"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 909,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 10,
+      "parentProblemNo": 10,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "定义一种字符串操作为交换相邻两个字符。将 $\\texttt{DACFEB}$ 变为  $\\texttt{ABCDEF}$ 最少需要 ( ) 次上述操作。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "7"
+        },
+        {
+          "prefix": "B",
+          "content": "8"
+        },
+        {
+          "prefix": "C",
+          "content": "9"
+        },
+        {
+          "prefix": "D",
+          "content": "6"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "定义一种字符串操作为交换相邻两个字符。将 $\\texttt{DACFEB}$ 变为  $\\texttt{ABCDEF}$ 最少需要 ( ) 次上述操作。",
+      "raw": {
+        "problem": {
+          "id": 909,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381075
+        },
+        "question": {
+          "choices": [
+            "7",
+            "8",
+            "9",
+            "6"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 910,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 11,
+      "parentProblemNo": 11,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "有如下递归代码\n```\nsolve(t, n):\n  if t=1 return 1\n  else return 5*solve(t-1,n) mod n\n```\n则 `solve(23,23)` 的结果为（ ）。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "1"
+        },
+        {
+          "prefix": "B",
+          "content": "7"
+        },
+        {
+          "prefix": "C",
+          "content": "12"
+        },
+        {
+          "prefix": "D",
+          "content": "22"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "有如下递归代码\n```\nsolve(t, n):\n  if t=1 return 1\n  else return 5*solve(t-1,n) mod n\n```\n则 `solve(23,23)` 的结果为（ ）。",
+      "raw": {
+        "problem": {
+          "id": 910,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1654954366
+        },
+        "question": {
+          "choices": [
+            "1",
+            "7",
+            "12",
+            "22"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 911,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 12,
+      "parentProblemNo": 12,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "斐波那契数列的定义为： $F_{1}=1$，$F_{2}=1$，$F_{n}=F_{n-1}+F_{n-2}$$(n\\geq 3)$ 。现在用如下程序来计算斐波那契数列的第 $n$ 项，其时间复杂度为（ ）。\n```\nF(n):\n  if n<=2 return 1\n  else return F(n-1) + F(n-2)\n```",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n^{2})$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(2^{n})$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n\\ log\\ n)$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "斐波那契数列的定义为： $F_{1}=1$，$F_{2}=1$，$F_{n}=F_{n-1}+F_{n-2}$$(n\\geq 3)$ 。现在用如下程序来计算斐波那契数列的第 $n$ 项，其时间复杂度为（ ）。\n```\nF(n):\n  if n<=2 return 1\n  else return F(n-1) + F(n-2)\n```",
+      "raw": {
+        "problem": {
+          "id": 911,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381094
+        },
+        "question": {
+          "choices": [
+            "$O(n)$ ",
+            " $O(n^{2})$",
+            "$O(2^{n})$",
+            "$O(n\\ log\\ n)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 912,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 13,
+      "parentProblemNo": 13,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "有 $8$ 个苹果从左到右排成一排，你要从中挑选至少一个苹果，并且不能同时挑选相邻的两个苹果，一共有（ ）种方案。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "36"
+        },
+        {
+          "prefix": "B",
+          "content": "48"
+        },
+        {
+          "prefix": "C",
+          "content": "54"
+        },
+        {
+          "prefix": "D",
+          "content": "64"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "有 $8$ 个苹果从左到右排成一排，你要从中挑选至少一个苹果，并且不能同时挑选相邻的两个苹果，一共有（ ）种方案。",
+      "raw": {
+        "problem": {
+          "id": 912,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381107
+        },
+        "question": {
+          "choices": [
+            "36",
+            "48",
+            "54",
+            "64"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 913,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 14,
+      "parentProblemNo": 14,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "设一个三位数 $n= \\overline{abc}$， $a, b, c$ 均为 $1\\sim 9$ 之间的整数，若以 $a$、 $b$、 $c$ 作为三角形的三条边可以构成等腰三角形（包括等边），则这样的 $n$ 有（ ）个。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "81"
+        },
+        {
+          "prefix": "B",
+          "content": "120"
+        },
+        {
+          "prefix": "C",
+          "content": "165"
+        },
+        {
+          "prefix": "D",
+          "content": "216"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "设一个三位数 $n= \\overline{abc}$， $a, b, c$ 均为 $1\\sim 9$ 之间的整数，若以 $a$、 $b$、 $c$ 作为三角形的三条边可以构成等腰三角形（包括等边），则这样的 $n$ 有（ ）个。",
+      "raw": {
+        "problem": {
+          "id": 913,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381129
+        },
+        "question": {
+          "choices": [
+            "81",
+            "120",
+            "165",
+            "216"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 914,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 15,
+      "parentProblemNo": 15,
+      "subQuestionNo": null,
+      "type": "single",
+      "score": 2,
+      "stemMarkdown": "有如下的有向图，节点为 $A ,B , \\cdots , J$, 其中每条边的长度都标在图中。则节点 $A$ 到节点 $J$ 的最短路径长度为（ ）。\n![](https://ipic.luogu.com.cn/l7l0c.png)",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "16"
+        },
+        {
+          "prefix": "B",
+          "content": "19"
+        },
+        {
+          "prefix": "C",
+          "content": "20"
+        },
+        {
+          "prefix": "D",
+          "content": "22"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "有如下的有向图，节点为 $A ,B , \\cdots , J$, 其中每条边的长度都标在图中。则节点 $A$ 到节点 $J$ 的最短路径长度为（ ）。\n![](https://ipic.luogu.com.cn/l7l0c.png)",
+      "raw": {
+        "problem": {
+          "id": 914,
+          "type": "MultipleSelection",
+          "score": 2,
+          "page": 1,
+          "createTime": 1658381149
+        },
+        "question": {
+          "choices": [
+            "16",
+            "19",
+            "20",
+            "22"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 915,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 16,
+      "parentProblemNo": 16,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并\n\n子题 1：将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并",
+      "raw": {
+        "problem": {
+          "id": 915,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 2,
+          "createTime": 1658987694
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 915,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 17,
+      "parentProblemNo": 16,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并\n\n子题 2：将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并",
+      "raw": {
+        "problem": {
+          "id": 915,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 2,
+          "createTime": 1658987694
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 915,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 18,
+      "parentProblemNo": 16,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并\n\n子题 3：将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并",
+      "raw": {
+        "problem": {
+          "id": 915,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 2,
+          "createTime": 1658987694
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 915,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 19,
+      "parentProblemNo": 16,
+      "subQuestionNo": 4,
+      "type": "truefalse",
+      "score": 2,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并\n\n子题 4：（2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并",
+      "raw": {
+        "problem": {
+          "id": 915,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 2,
+          "createTime": 1658987694
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 2,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 915,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 20,
+      "parentProblemNo": 16,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并\n\n子题 5：当输入为 `1 1 1 1 1 1 1 2` 时，输出为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`3.1416`"
+        },
+        {
+          "prefix": "B",
+          "content": "`6.2832`"
+        },
+        {
+          "prefix": "C",
+          "content": "`4.7124`"
+        },
+        {
+          "prefix": "D",
+          "content": "`4.1888`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并",
+      "raw": {
+        "problem": {
+          "id": 915,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 2,
+          "createTime": 1658987694
+        },
+        "question": {
+          "choices": [
+            "`3.1416`",
+            "`6.2832`",
+            "`4.7124`",
+            "`4.1888`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 915,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 21,
+      "parentProblemNo": 16,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 2.5,
+      "stemMarkdown": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并\n\n子题 6：（2.5 分）这段代码的含义为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "求圆的面积并"
+        },
+        {
+          "prefix": "B",
+          "content": "求球的体积并"
+        },
+        {
+          "prefix": "C",
+          "content": "求球的体积交"
+        },
+        {
+          "prefix": "D",
+          "content": "求椭球的体积并"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( )\n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。\nA. `3.1416`\nB. `6.2832`\nC. `4.7124`\nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。\nA. 求圆的面积并\nB. 求球的体积并\nC. 求球的体积交\nD. 求椭球的体积并",
+      "raw": {
+        "problem": {
+          "id": 915,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 2,
+          "createTime": 1658987694
+        },
+        "question": {
+          "choices": [
+            "求圆的面积并",
+            "求球的体积并",
+            "求球的体积交",
+            "求椭球的体积并"
+          ],
+          "allowMultiChoices": false,
+          "score": 2.5,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 916,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 22,
+      "parentProblemNo": 17,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`\n\n子题 1：程序总是会正常执行并输出两行两个相等的数。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`",
+      "raw": {
+        "problem": {
+          "id": 916,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 2,
+          "createTime": 1658381568
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 916,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 23,
+      "parentProblemNo": 17,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`\n\n子题 2：第 28 行与第 38 行分别有可能执行两次及以上。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`",
+      "raw": {
+        "problem": {
+          "id": 916,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 2,
+          "createTime": 1658381568
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 916,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 24,
+      "parentProblemNo": 17,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`\n\n子题 3：当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`",
+      "raw": {
+        "problem": {
+          "id": 916,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 2,
+          "createTime": 1658381568
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 916,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 25,
+      "parentProblemNo": 17,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`\n\n子题 4：`solve1(1, n)` 的时间复杂度为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(\\log \\ n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n \\log \\ n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^{2})$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`",
+      "raw": {
+        "problem": {
+          "id": 916,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 2,
+          "createTime": 1658381568
+        },
+        "question": {
+          "choices": [
+            "$O(\\log \\ n)$",
+            "$O(n)$",
+            "$O(n \\log \\ n)$",
+            "$O(n^{2})$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 916,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 26,
+      "parentProblemNo": 17,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`\n\n子题 5：`solve2(1, n)` 的时间复杂度为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O(\\log \\ n)$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n \\log \\ n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^{2})$"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`",
+      "raw": {
+        "problem": {
+          "id": 916,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 2,
+          "createTime": 1658381568
+        },
+        "question": {
+          "choices": [
+            "$O(\\log \\ n)$",
+            "$O(n)$",
+            "$O(n \\log \\ n)$",
+            "$O(n^{2})$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 916,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 27,
+      "parentProblemNo": 17,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`\n\n子题 6：当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`13`"
+        },
+        {
+          "prefix": "B",
+          "content": "`17`"
+        },
+        {
+          "prefix": "C",
+          "content": "`24`"
+        },
+        {
+          "prefix": "D",
+          "content": "`12`"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log n)$\nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。\nA. $O(\\log n)$\nB. $O(n)$\nC. $O(n \\log  n)$\nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。\nA. `13`\nB. `17`\nC. `24`\nD. `12`",
+      "raw": {
+        "problem": {
+          "id": 916,
+          "type": "MultipleSelection",
+          "score": 13.5,
+          "page": 2,
+          "createTime": 1658381568
+        },
+        "question": {
+          "choices": [
+            "`13`",
+            "`17`",
+            "`24`",
+            "`12`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 917,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 28,
+      "parentProblemNo": 18,
+      "subQuestionNo": 1,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`\n\n子题 1：程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`",
+      "raw": {
+        "problem": {
+          "id": 917,
+          "type": "MultipleSelection",
+          "score": 14.5,
+          "page": 2,
+          "createTime": 1660785205
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 917,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 29,
+      "parentProblemNo": 18,
+      "subQuestionNo": 2,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`\n\n子题 2：对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`",
+      "raw": {
+        "problem": {
+          "id": 917,
+          "type": "MultipleSelection",
+          "score": 14.5,
+          "page": 2,
+          "createTime": 1660785205
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 917,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 30,
+      "parentProblemNo": 18,
+      "subQuestionNo": 3,
+      "type": "truefalse",
+      "score": 1.5,
+      "stemMarkdown": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`\n\n子题 3：当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "正确"
+        },
+        {
+          "prefix": "B",
+          "content": "错误"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`",
+      "raw": {
+        "problem": {
+          "id": 917,
+          "type": "MultipleSelection",
+          "score": 14.5,
+          "page": 2,
+          "createTime": 1660785205
+        },
+        "question": {
+          "choices": [
+            "正确",
+            "错误"
+          ],
+          "allowMultiChoices": false,
+          "score": 1.5,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 917,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 31,
+      "parentProblemNo": 18,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`\n\n子题 4：设输入字符串长度为 $n$，`encode` 函数的时间复杂度为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "$O( \\sqrt{n})$"
+        },
+        {
+          "prefix": "B",
+          "content": "$O(n)$"
+        },
+        {
+          "prefix": "C",
+          "content": "$O(n\\log n)$"
+        },
+        {
+          "prefix": "D",
+          "content": "$O(n^2)$"
+        }
+      ],
+      "answer": "B",
+      "explanation": "",
+      "rawText": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`",
+      "raw": {
+        "problem": {
+          "id": 917,
+          "type": "MultipleSelection",
+          "score": 14.5,
+          "page": 2,
+          "createTime": 1660785205
+        },
+        "question": {
+          "choices": [
+            "$O( \\sqrt{n})$",
+            "$O(n)$",
+            "$O(n\\log n)$",
+            "$O(n^2)$"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "B"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 917,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 32,
+      "parentProblemNo": 18,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`\n\n子题 5：输出的第一行为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`0xff`"
+        },
+        {
+          "prefix": "B",
+          "content": "`255`"
+        },
+        {
+          "prefix": "C",
+          "content": "`0xFF`"
+        },
+        {
+          "prefix": "D",
+          "content": "`-1`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`",
+      "raw": {
+        "problem": {
+          "id": 917,
+          "type": "MultipleSelection",
+          "score": 14.5,
+          "page": 2,
+          "createTime": 1660785205
+        },
+        "question": {
+          "choices": [
+            "`0xff`",
+            "`255`",
+            " `0xFF`",
+            " `-1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 917,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 33,
+      "parentProblemNo": 18,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 4,
+      "stemMarkdown": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`\n\n子题 6：（4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`Q1NQMjAyMWNzcAv=`"
+        },
+        {
+          "prefix": "B",
+          "content": "`Q1NQMjAyMGNzcA==`"
+        },
+        {
+          "prefix": "C",
+          "content": "`Q1NQMjAyMGNzcAv=`"
+        },
+        {
+          "prefix": "D",
+          "content": "`Q1NQMjAyMWNzcA==`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。\nA. $O( \\sqrt{n})$\nB. $O(n)$\nC. $O(n\\log  n)$\nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。\nA. `0xff`\nB. `255`\nC. `0xFF`\nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。\nA. `Q1NQMjAyMWNzcAv=`\nB. `Q1NQMjAyMGNzcA==`\nC. `Q1NQMjAyMGNzcAv=`\nD. `Q1NQMjAyMWNzcA==`",
+      "raw": {
+        "problem": {
+          "id": 917,
+          "type": "MultipleSelection",
+          "score": 14.5,
+          "page": 2,
+          "createTime": 1660785205
+        },
+        "question": {
+          "choices": [
+            "`Q1NQMjAyMWNzcAv=`",
+            "`Q1NQMjAyMGNzcA==`",
+            "`Q1NQMjAyMGNzcAv=`",
+            "`Q1NQMjAyMWNzcA==`"
+          ],
+          "allowMultiChoices": false,
+          "score": 4,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 918,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 34,
+      "parentProblemNo": 19,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`\n\n子题 1：①处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`F[4] = 0`"
+        },
+        {
+          "prefix": "B",
+          "content": "`F[1] = 4`"
+        },
+        {
+          "prefix": "C",
+          "content": "`F[1] = 2`"
+        },
+        {
+          "prefix": "D",
+          "content": "`F[4] = 1`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`",
+      "raw": {
+        "problem": {
+          "id": 918,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 3,
+          "createTime": 1658381838
+        },
+        "question": {
+          "choices": [
+            "`F[4] = 0`",
+            "`F[1] = 4`",
+            "`F[1] = 2` ",
+            "`F[4] = 1`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 918,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 35,
+      "parentProblemNo": 19,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`\n\n子题 2：②处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`!Vis[n]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`r < n`"
+        },
+        {
+          "prefix": "C",
+          "content": "`F[M] == INT_MAX`"
+        },
+        {
+          "prefix": "D",
+          "content": "`F[n] == INT_MAX`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`",
+      "raw": {
+        "problem": {
+          "id": 918,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 3,
+          "createTime": 1658381838
+        },
+        "question": {
+          "choices": [
+            "`!Vis[n]`",
+            "`r < n`",
+            "`F[M] == INT_MAX`",
+            "`F[n] == INT_MAX`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 918,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 36,
+      "parentProblemNo": 19,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`\n\n子题 3：③处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`F[i] == r`"
+        },
+        {
+          "prefix": "B",
+          "content": "`!Vis[i] && F[i] == r`"
+        },
+        {
+          "prefix": "C",
+          "content": "`F[i] < F[x]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`!Vis[i] && F[i] < F[x]`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`",
+      "raw": {
+        "problem": {
+          "id": 918,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 3,
+          "createTime": 1658381838
+        },
+        "question": {
+          "choices": [
+            "`F[i] == r`",
+            "`!Vis[i] && F[i] == r`",
+            "`F[i] < F[x]`",
+            "`!Vis[i] && F[i] < F[x]`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 918,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 37,
+      "parentProblemNo": 19,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`\n\n子题 4：④处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`F[i] < F[x]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`F[i]<=r`"
+        },
+        {
+          "prefix": "C",
+          "content": "`Vis[i]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`i <= x`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）\nA. `F[4] = 0`\nB. `F[1] = 4`\nC. `F[1] = 2`\nD. `F[4] = 1`\n\n35. ②处应填（ ）\nA. `!Vis[n]`\nB. `r < n`\nC. `F[M] == INT_MAX`\nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）\nA. `F[i] == r`\nB. `!Vis[i] && F[i] == r`\nC. `F[i] < F[x]`\nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）\nA. `F[i] < F[x]`\nB. `F[i]<=r`\nC. `Vis[i]`\nD. `i <= x`",
+      "raw": {
+        "problem": {
+          "id": 918,
+          "type": "MultipleSelection",
+          "score": 12,
+          "page": 3,
+          "createTime": 1658381838
+        },
+        "question": {
+          "choices": [
+            "`F[i] < F[x]`",
+            "`F[i]<=r`",
+            "`Vis[i]`",
+            " `i <= x`"
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 919,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 38,
+      "parentProblemNo": 20,
+      "subQuestionNo": 1,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`\n\n子题 1：①处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`p->son[0] = S[top--]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`p->son[1] = S[top--]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`S[top--]->son[0] = p`"
+        },
+        {
+          "prefix": "D",
+          "content": "`S[top--]->son[1] = p`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`",
+      "raw": {
+        "problem": {
+          "id": 919,
+          "type": "MultipleSelection",
+          "score": 18,
+          "page": 3,
+          "createTime": 1658381893
+        },
+        "question": {
+          "choices": [
+            "`p->son[0] = S[top--]`",
+            "`p->son[1] = S[top--]`",
+            "`S[top--]->son[0] = p`",
+            "`S[top--]->son[1] = p`  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 919,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 39,
+      "parentProblemNo": 20,
+      "subQuestionNo": 2,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`\n\n子题 2：②处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`p->son[0] = S[top]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`p->son[1] = S[top]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`S[top]->son[0] = p`"
+        },
+        {
+          "prefix": "D",
+          "content": "`S[top]->son[1] = p`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`",
+      "raw": {
+        "problem": {
+          "id": 919,
+          "type": "MultipleSelection",
+          "score": 18,
+          "page": 3,
+          "createTime": 1658381893
+        },
+        "question": {
+          "choices": [
+            "`p->son[0] = S[top]`",
+            "`p->son[1] = S[top]`",
+            "`S[top]->son[0] = p`",
+            "`S[top]->son[1] = p`  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 919,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 40,
+      "parentProblemNo": 20,
+      "subQuestionNo": 3,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`\n\n子题 3：③处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`x->dep < y->dep`"
+        },
+        {
+          "prefix": "B",
+          "content": "`x < y`"
+        },
+        {
+          "prefix": "C",
+          "content": "`x->dep > y->dep`"
+        },
+        {
+          "prefix": "D",
+          "content": "`x->val < y->val`"
+        }
+      ],
+      "answer": "A",
+      "explanation": "",
+      "rawText": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`",
+      "raw": {
+        "problem": {
+          "id": 919,
+          "type": "MultipleSelection",
+          "score": 18,
+          "page": 3,
+          "createTime": 1658381893
+        },
+        "question": {
+          "choices": [
+            "`x->dep < y->dep`",
+            "`x < y`",
+            "`x->dep > y->dep`",
+            "`x->val < y->val`  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "A"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 919,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 41,
+      "parentProblemNo": 20,
+      "subQuestionNo": 4,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`\n\n子题 4：④处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`A[i * b + j - 1] == A[i * b + j]->son[0]`"
+        },
+        {
+          "prefix": "B",
+          "content": "`A[i * b + j]->val < A[i * b + j - 1]->val`"
+        },
+        {
+          "prefix": "C",
+          "content": "`A[i * b + j] == A[i * b + j - 1]->son[1]`"
+        },
+        {
+          "prefix": "D",
+          "content": "`A[i * b + j]->dep < A[i * b + j - 1]->dep`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`",
+      "raw": {
+        "problem": {
+          "id": 919,
+          "type": "MultipleSelection",
+          "score": 18,
+          "page": 3,
+          "createTime": 1658381893
+        },
+        "question": {
+          "choices": [
+            "`A[i * b + j - 1] == A[i * b + j]->son[0]`",
+            "`A[i * b + j]->val < A[i * b + j - 1]->val`",
+            "`A[i * b + j] == A[i * b + j - 1]->son[1]`  ",
+            "`A[i * b + j]->dep < A[i * b + j - 1]->dep` "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 919,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 42,
+      "parentProblemNo": 20,
+      "subQuestionNo": 5,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`\n\n子题 5：⑤处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`v += (S >> i & 1) ? -1 : 1`"
+        },
+        {
+          "prefix": "B",
+          "content": "`v += (S >> i & 1) ? 1 : -1`"
+        },
+        {
+          "prefix": "C",
+          "content": "`v += (S >> (i - 1) & 1) ? 1 : -1`"
+        },
+        {
+          "prefix": "D",
+          "content": "`v += (S >> (i - 1) & 1) ? -1 : 1`"
+        }
+      ],
+      "answer": "D",
+      "explanation": "",
+      "rawText": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`",
+      "raw": {
+        "problem": {
+          "id": 919,
+          "type": "MultipleSelection",
+          "score": 18,
+          "page": 3,
+          "createTime": 1658381893
+        },
+        "question": {
+          "choices": [
+            "`v += (S >> i & 1) ? -1 : 1`",
+            "`v += (S >> i & 1) ? 1 : -1`",
+            " `v += (S >> (i - 1) & 1) ? 1 : -1`",
+            "`v += (S >> (i - 1) & 1) ? -1 : 1`  "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "D"
+          ]
+        }
+      }
+    },
+    {
+      "year": 2021,
+      "group": "S",
+      "source": "luogu-youti",
+      "luoguId": 919,
+      "url": "https://ti.luogu.com.cn/problemset/1037",
+      "questionNo": 43,
+      "parentProblemNo": 20,
+      "subQuestionNo": 6,
+      "type": "single",
+      "score": 3,
+      "stemMarkdown": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`\n\n子题 6：⑥处应填",
+      "options": [
+        {
+          "prefix": "A",
+          "content": "`(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`"
+        },
+        {
+          "prefix": "B",
+          "content": "`Dif[p]`"
+        },
+        {
+          "prefix": "C",
+          "content": "`(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`"
+        },
+        {
+          "prefix": "D",
+          "content": "`(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`"
+        }
+      ],
+      "answer": "C",
+      "explanation": "",
+      "rawText": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）\nA. `p->son[0] = S[top--]`\nB. `p->son[1] = S[top--]`\nC. `S[top--]->son[0] = p`\nD. `S[top--]->son[1] = p`\n\n\n39. ②处应填（ ）\nA. `p->son[0] = S[top]`\nB. `p->son[1] = S[top]`\nC. `S[top]->son[0] = p`\nD. `S[top]->son[1] = p`\n\n\n40. ③处应填（ ）\nA. `x->dep < y->dep`\nB. `x < y`\nC. `x->dep > y->dep`\nD. `x->val < y->val`\n\n41. ④处应填（ ）\nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`\nB. `A[i * b + j]->val < A[i * b + j - 1]->val`\nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`\nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`\n\n\n42. ⑤处应填（ ）\nA. `v += (S >> i & 1) ? -1 : 1`\nB. `v += (S >> i & 1) ? 1 : -1`\nC. `v += (S >> (i - 1) & 1) ? 1 : -1`\nD. `v += (S >> (i - 1) & 1) ? -1 : 1`\n\n\n43. ⑥处应填（ ）\nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`\nB. `Dif[p]`\nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`\nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`",
+      "raw": {
+        "problem": {
+          "id": 919,
+          "type": "MultipleSelection",
+          "score": 18,
+          "page": 3,
+          "createTime": 1658381893
+        },
+        "question": {
+          "choices": [
+            "`(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`",
+            " `Dif[p]`",
+            " `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`",
+            " `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)` "
+          ],
+          "allowMultiChoices": false,
+          "score": 3,
+          "correctAnswers": [
+            "C"
+          ]
+        }
+      }
+    }
+  ],
+  "raw": {
+    "id": 1037,
+    "name": "CSP 2021 提高级第一轮",
+    "description": "CSP 2021 提高级第一轮（C++）",
+    "duration": 7200,
+    "problems": [
+      {
+        "score": 2,
+        "page": 1,
+        "id": 900,
+        "type": "MultipleSelection",
+        "description": "在 Linux 系统终端中，用于列出当前目录下所含的文件和子目录的命令为（ ）。",
+        "createTime": 1654953467,
+        "questions": [
+          {
+            "choices": [
+              "ls",
+              "cd",
+              "cp",
+              "all"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 901,
+        "type": "MultipleSelection",
+        "description": "二进制数 $00101010_{2}$ 和 $00010110_{2}$ 的和为（）。",
+        "createTime": 1658381918,
+        "questions": [
+          {
+            "choices": [
+              "$00111100_{2}$",
+              "$01000000_{2}$",
+              "$00111100_{2}$",
+              "$01000010_{2}$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 902,
+        "type": "MultipleSelection",
+        "description": "在程序运行过程中，如果递归调用的层数过多，可能会由于（ ）引发错误。",
+        "createTime": 1654953756,
+        "questions": [
+          {
+            "choices": [
+              "系统分配的栈空间溢出",
+              "系统分配的队列空间溢出",
+              "系统分配的链表空间溢出",
+              "系统分配的堆空间溢出"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 903,
+        "type": "MultipleSelection",
+        "description": "以下排序方法中，（ ）是不稳定的。",
+        "createTime": 1654953818,
+        "questions": [
+          {
+            "choices": [
+              "插入排序",
+              "冒泡排序",
+              "堆排序",
+              "归并排序"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 904,
+        "type": "MultipleSelection",
+        "description": "以比较为基本运算，对于 $2n$ 个数，同时找到最大值和最小值，最坏情况下需要的最小的比 较次数为（ ）。",
+        "createTime": 1658380991,
+        "questions": [
+          {
+            "choices": [
+              "$4n-2$",
+              "$3n+1$",
+              "$3n-2$",
+              "$2n+1$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 905,
+        "type": "MultipleSelection",
+        "description": "现有一个地址区间为 $0\\sim 10$ 的哈希表，对于出现冲突情况，会往后找第一个空的地址存储 （到 $10$ 冲突了就从 $0$ 开始往后），现在要依次存储 $(0,1,2，3,4,5,6,7)$，哈希函数为 $h(x)=x^{2} \\bmod {11}$。请问 $7$ 存储在哈希表哪个地址中（ ）。",
+        "createTime": 1658381032,
+        "questions": [
+          {
+            "choices": [
+              "5",
+              "6",
+              "7",
+              "8"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 906,
+        "type": "MultipleSelection",
+        "description": "$G$ 是一个非连通简单无向图（没有自环和重边），共有 $36$ 条边，则该图至少有（ ）个点。",
+        "createTime": 1658381042,
+        "questions": [
+          {
+            "choices": [
+              "8",
+              "9",
+              "10",
+              "11"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 907,
+        "type": "MultipleSelection",
+        "description": "令根结点的高度为 $1$，则一棵含有 $2021$ 个结点的二叉树的高度至少为（ ）。\n",
+        "createTime": 1658381050,
+        "questions": [
+          {
+            "choices": [
+              "10",
+              "11",
+              "12",
+              "2021"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 908,
+        "type": "MultipleSelection",
+        "description": "前序遍历和中序遍历相同的二叉树为且仅为（  ）。",
+        "createTime": 1658381058,
+        "questions": [
+          {
+            "choices": [
+              "只有 $1$ 个点的二叉树",
+              "根结点没有左子树的二叉树",
+              "非叶子结点只有左子树的二叉树",
+              "非叶子结点只有右子树的二叉树"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 909,
+        "type": "MultipleSelection",
+        "description": "定义一种字符串操作为交换相邻两个字符。将 $\\texttt{DACFEB}$ 变为  $\\texttt{ABCDEF}$ 最少需要 ( ) 次上述操作。",
+        "createTime": 1658381075,
+        "questions": [
+          {
+            "choices": [
+              "7",
+              "8",
+              "9",
+              "6"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 910,
+        "type": "MultipleSelection",
+        "description": "有如下递归代码\n```\nsolve(t, n):\n  if t=1 return 1\n  else return 5*solve(t-1,n) mod n\n```\n则 `solve(23,23)` 的结果为（ ）。",
+        "createTime": 1654954366,
+        "questions": [
+          {
+            "choices": [
+              "1",
+              "7",
+              "12",
+              "22"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 911,
+        "type": "MultipleSelection",
+        "description": "斐波那契数列的定义为： $F_{1}=1$，$F_{2}=1$，$F_{n}=F_{n-1}+F_{n-2}$$(n\\geq 3)$ 。现在用如下程序来计算斐波那契数列的第 $n$ 项，其时间复杂度为（ ）。\n```\nF(n):\n  if n<=2 return 1\n  else return F(n-1) + F(n-2)\n```\n\n",
+        "createTime": 1658381094,
+        "questions": [
+          {
+            "choices": [
+              "$O(n)$ ",
+              " $O(n^{2})$",
+              "$O(2^{n})$",
+              "$O(n\\ log\\ n)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 912,
+        "type": "MultipleSelection",
+        "description": "有 $8$ 个苹果从左到右排成一排，你要从中挑选至少一个苹果，并且不能同时挑选相邻的两个苹果，一共有（ ）种方案。",
+        "createTime": 1658381107,
+        "questions": [
+          {
+            "choices": [
+              "36",
+              "48",
+              "54",
+              "64"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 913,
+        "type": "MultipleSelection",
+        "description": "设一个三位数 $n= \\overline{abc}$， $a, b, c$ 均为 $1\\sim 9$ 之间的整数，若以 $a$、 $b$、 $c$ 作为三角形的三条边可以构成等腰三角形（包括等边），则这样的 $n$ 有（ ）个。",
+        "createTime": 1658381129,
+        "questions": [
+          {
+            "choices": [
+              "81",
+              "120",
+              "165",
+              "216"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 2,
+        "page": 1,
+        "id": 914,
+        "type": "MultipleSelection",
+        "description": "有如下的有向图，节点为 $A ,B , \\cdots , J$, 其中每条边的长度都标在图中。则节点 $A$ 到节点 $J$ 的最短路径长度为（ ）。\n![](https://ipic.luogu.com.cn/l7l0c.png)",
+        "createTime": 1658381149,
+        "questions": [
+          {
+            "choices": [
+              "16",
+              "19",
+              "20",
+              "22"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 12,
+        "page": 2,
+        "id": 915,
+        "type": "MultipleSelection",
+        "description": "二、阅读程序（程序输入不超过数组或字符串定义的范围；判断题正确填 √ ，错误填 × ；除特 殊说明外，判断题 $1.5$ 分，选择题 $3$ 分，共计 $40$ 分）\n### (1)\n![](https://ipic.luogu.com.cn/1rorg.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题 \n16. 将第 21 行中 `t` 的类型声明从 `int` 改为 `double`， 不会 影响程序运行的结果。（）\n\n17. 将第 26、27 行中的 `/ sqrt(t) / 2`替换为`/ 2 / sqrt(t)`，不会影响程序运行的结果。（ ）\n\n18. 将第 28 行中的 `x * x` 改成 `sq(x)`、`y * y` 改成 `sq(y)`，不会影响程序运行的结果。（ ）\n\n19. （2 分） 当输入为 `0 0 0 1 1 0 0 1` 时，输出为 `1.3090`  ( ) \n\n#### 单选题\n20. 当输入为 `1 1 1 1 1 1 1 2` 时，输出为（ ）。  \nA. `3.1416`  \nB. `6.2832`  \nC. `4.7124`  \nD. `4.1888`\n\n21. （2.5 分）这段代码的含义为（ ）。  \nA. 求圆的面积并  \nB. 求球的体积并  \nC. 求球的体积交  \nD. 求椭球的体积并  \n\n",
+        "createTime": 1658987694,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 2,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`3.1416`",
+              "`6.2832`",
+              "`4.7124`",
+              "`4.1888`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "求圆的面积并",
+              "求球的体积并",
+              "求球的体积交",
+              "求椭球的体积并"
+            ],
+            "allowMultiChoices": false,
+            "score": 2.5,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 13.5,
+        "page": 2,
+        "id": 916,
+        "type": "MultipleSelection",
+        "description": "### (2)\n![](https://ipic.luogu.com.cn/u921e.png)\n![](https://ipic.luogu.com.cn/7f6vs.png)\n**假设输入的所有数的绝对值都不超过 $1000$ ，完成下面的判断题和单选题：**\n#### 判断题\n22. 程序总是会正常执行并输出两行两个相等的数。（ ）\n\n23. 第 28 行与第 38 行分别有可能执行两次及以上。（ ）\n\n24. 当输入为 `5 -10 11 -9 5 -7` 时，输出的第二行为 `7`。( )\n\n#### 单选题\n\n25. `solve1(1, n)` 的时间复杂度为（ ）。  \nA. $O(\\log n)$  \nB. $O(n)$  \nC. $O(n \\log n)$  \nD. $O(n^{2})$\n\n26. `solve2(1, n)` 的时间复杂度为（ ）。  \nA. $O(\\log n)$  \nB. $O(n)$  \nC. $O(n \\log  n)$  \nD. $O(n^{2})$\n\n27. 当输入为 `10 -3 2 10 0 -8 9 -4 -5 9 4` 时，输出的第一行为（  ）。  \nA. `13`  \nB. `17`  \nC. `24`  \nD. `12`",
+        "createTime": 1658381568,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "$O(\\log \\ n)$",
+              "$O(n)$",
+              "$O(n \\log \\ n)$",
+              "$O(n^{2})$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "$O(\\log \\ n)$",
+              "$O(n)$",
+              "$O(n \\log \\ n)$",
+              "$O(n^{2})$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          },
+          {
+            "choices": [
+              "`13`",
+              "`17`",
+              "`24`",
+              "`12`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 14.5,
+        "page": 2,
+        "id": 917,
+        "type": "MultipleSelection",
+        "description": "### (3)\n![](https://ipic.luogu.com.cn/k2oqx.png)\n![](https://ipic.luogu.com.cn/uhixa.png)\n**假设输入总是合法的（一个整数和一个不含空白字符的字符串，用空格隔开），完成下面的判断题和单选题：**\n\n#### 判断题\n28. 程序总是先输出 **一行** 一个整数，再输出 **一行** 一个字符串。（ ）\n\n29. 对于任意不含空白字符的字符串 `str1`，先执行程序输入`0 str1`，得到输出的第二行记为 `str2` 再执行程序输入`1 str2`，输出的第二行必为 `str1`。（ ）\n\n30. 当输入为`1 SGVsbG93b3JsZA==`时，输出的第二行为`HelloWorld`。( )\n\n#### 单选题\n\n31. 设输入字符串长度为 $n$，`encode` 函数的时间复杂度为（ ）。  \nA. $O( \\sqrt{n})$  \nB. $O(n)$  \nC. $O(n\\log  n)$  \nD. $O(n^2)$\n\n32. 输出的第一行为（ ）。  \nA. `0xff`  \nB. `255`  \nC. `0xFF`  \nD. `-1`\n\n33. （4 分） 当输入为 `0 CSP2021csp` 时，输出的第二行为（ ）。  \nA. `Q1NQMjAyMWNzcAv=`  \nB. `Q1NQMjAyMGNzcA==`  \nC. `Q1NQMjAyMGNzcAv=`  \nD. `Q1NQMjAyMWNzcA==`",
+        "createTime": 1660785205,
+        "questions": [
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "正确",
+              "错误"
+            ],
+            "allowMultiChoices": false,
+            "score": 1.5,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "$O( \\sqrt{n})$",
+              "$O(n)$",
+              "$O(n\\log n)$",
+              "$O(n^2)$"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "B"
+            ]
+          },
+          {
+            "choices": [
+              "`0xff`",
+              "`255`",
+              " `0xFF`",
+              " `-1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`Q1NQMjAyMWNzcAv=`",
+              "`Q1NQMjAyMGNzcA==`",
+              "`Q1NQMjAyMGNzcAv=`",
+              "`Q1NQMjAyMWNzcA==`"
+            ],
+            "allowMultiChoices": false,
+            "score": 4,
+            "correctAnswers": [
+              "D"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 12,
+        "page": 3,
+        "id": 918,
+        "type": "MultipleSelection",
+        "description": "## 三、完善程序（单选题，每小题 3 分，共计 30 分）\n**(1) （魔法数字）** 小 H 的魔法数字是 $4$。给定 $n$， 他希望用若干个 $4$ 进行若干次加法、减法和整除运算得到 $n$。但由于小 H 计算能力有限，计算过程中只能出现不超过 $M = 10000$ 的正整数。求至少可能用到多少个 $4$。\n\n例如，当 $n=2$ 时，有 $2=\\dfrac{4 + 4}{4}$，用到了 $3$ 个 $4$，是最优方案。\n\n试补全程序。\n![](https://ipic.luogu.com.cn/ink47.png)\n![](https://ipic.luogu.com.cn/xp28q.png)\n\n34. ①处应填（ ）  \nA. `F[4] = 0`  \nB. `F[1] = 4`  \nC. `F[1] = 2`  \nD. `F[4] = 1`  \n\n35. ②处应填（ ）  \nA. `!Vis[n]`  \nB. `r < n`  \nC. `F[M] == INT_MAX`  \nD. `F[n] == INT_MAX`\n\n36. ③处应填（ ）   \nA. `F[i] == r`  \nB. `!Vis[i] && F[i] == r`  \nC. `F[i] < F[x]`  \nD. `!Vis[i] && F[i] < F[x]`\n\n37. ④处应填（ ）  \nA. `F[i] < F[x]`  \nB. `F[i]<=r`  \nC. `Vis[i]`  \nD. `i <= x`",
+        "createTime": 1658381838,
+        "questions": [
+          {
+            "choices": [
+              "`F[4] = 0`",
+              "`F[1] = 4`",
+              "`F[1] = 2` ",
+              "`F[4] = 1`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`!Vis[n]`",
+              "`r < n`",
+              "`F[M] == INT_MAX`",
+              "`F[n] == INT_MAX`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`F[i] == r`",
+              "`!Vis[i] && F[i] == r`",
+              "`F[i] < F[x]`",
+              "`!Vis[i] && F[i] < F[x]`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`F[i] < F[x]`",
+              "`F[i]<=r`",
+              "`Vis[i]`",
+              " `i <= x`"
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      },
+      {
+        "score": 18,
+        "page": 3,
+        "id": 919,
+        "type": "MultipleSelection",
+        "description": "**(2) （ RMQ 区间最值问题）**  给定序列 $a_0,\\cdots,a_{n-1},$ $m$ 次询问，每次询问给定 $l,r$，求 $\\max \\{a_l,\\ ...,a_r\\}$。\n\n为了解决该问题，有一个算法叫 **the Method of Four Russians** ，其**时间复杂度为 $O(n+m)$** ，步骤如下：\n\n- 建立 Cartesian（笛卡尔）树，将问题转化为树上的 LCA（最近公共祖先）问题。\n\n- 对于 LCA 问题，可以考虑其 Euler 序（即按照 DFS 过程，经过所有点，环游回根的序列），即求 Euler 序列上两点间一个新的 RMQ 问题。\n\n- 注意新的问题为 $\\pm1$ RMQ，即相邻两点的深度差一定为 $1$。\n\n下面解决这个 $\\pm1$ RMQ 问题，“序列”指 Euler 序列：\n\n- 设 $t$ 为 Euler 序列长度。取 $b=\\lceil \\frac{\\log_2 t}{2} \\rceil$  将序列每 $b$ 个分为一大块， 使用 ST 表（倍增表）处理大块间的 RMQ 问题，复杂度 $O(\\frac{t}{b}\\log t)=O(n)$。\n\n- **（重点）** 对于一个块内的 RMQ 问题，也需要 $O(1)$ 的算法。由于差分数组 $2^{b-1}$ 种，可以预处理出所有情况下的最值位置，预处理复杂度  $O(b2^b)$，不超过 $O(n)$。\n\n- 最终，对于一个查询，可以转化为中间整的大块的 RMQ 问题，以及两端块内的 RMQ 问题。\n\n试补全程序。\n\n![](https://ipic.luogu.com.cn/xk90i.png)\n![](https://ipic.luogu.com.cn/28mlp.png)\n![](https://ipic.luogu.com.cn/yrnei.png)\n![](https://ipic.luogu.com.cn/efrqf.png)\n\n38. ①处应填（ ）  \nA. `p->son[0] = S[top--]`  \nB. `p->son[1] = S[top--]`  \nC. `S[top--]->son[0] = p`  \nD. `S[top--]->son[1] = p`  \n\n\n39. ②处应填（ ）  \nA. `p->son[0] = S[top]`  \nB. `p->son[1] = S[top]`  \nC. `S[top]->son[0] = p`  \nD. `S[top]->son[1] = p`  \n\n\n40. ③处应填（ ）   \nA. `x->dep < y->dep`  \nB. `x < y`  \nC. `x->dep > y->dep`  \nD. `x->val < y->val`  \n \n41. ④处应填（ ）   \nA. `A[i * b + j - 1] == A[i * b + j]->son[0]`  \nB. `A[i * b + j]->val < A[i * b + j - 1]->val`  \nC. `A[i * b + j] == A[i * b + j - 1]->son[1]`  \nD. `A[i * b + j]->dep < A[i * b + j - 1]->dep`  \n\n\n42. ⑤处应填（ ）  \nA. `v += (S >> i & 1) ? -1 : 1`  \nB. `v += (S >> i & 1) ? 1 : -1`  \nC. `v += (S >> (i - 1) & 1) ? 1 : -1`  \nD. `v += (S >> (i - 1) & 1) ? -1 : 1`  \n\n\n43. ⑥处应填（ ）  \nA. `(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`  \nB. `Dif[p]`  \nC. `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`  \nD. `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)`  ",
+        "createTime": 1658381893,
+        "questions": [
+          {
+            "choices": [
+              "`p->son[0] = S[top--]`",
+              "`p->son[1] = S[top--]`",
+              "`S[top--]->son[0] = p`",
+              "`S[top--]->son[1] = p`  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`p->son[0] = S[top]`",
+              "`p->son[1] = S[top]`",
+              "`S[top]->son[0] = p`",
+              "`S[top]->son[1] = p`  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`x->dep < y->dep`",
+              "`x < y`",
+              "`x->dep > y->dep`",
+              "`x->val < y->val`  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "A"
+            ]
+          },
+          {
+            "choices": [
+              "`A[i * b + j - 1] == A[i * b + j]->son[0]`",
+              "`A[i * b + j]->val < A[i * b + j - 1]->val`",
+              "`A[i * b + j] == A[i * b + j - 1]->son[1]`  ",
+              "`A[i * b + j]->dep < A[i * b + j - 1]->dep` "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`v += (S >> i & 1) ? -1 : 1`",
+              "`v += (S >> i & 1) ? 1 : -1`",
+              " `v += (S >> (i - 1) & 1) ? 1 : -1`",
+              "`v += (S >> (i - 1) & 1) ? -1 : 1`  "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "D"
+            ]
+          },
+          {
+            "choices": [
+              "`(Dif[p] >> (r - p * b)) & ((1 << (r - l)) - 1)`",
+              " `Dif[p]`",
+              " `(Dif[p] >> (l - p * b)) & ((1 << (r - l)) - 1)`",
+              " `(Dif[p] >> ((p + 1) * b - r)) & ((1 << (r - l + 1)) - 1)` "
+            ],
+            "allowMultiChoices": false,
+            "score": 3,
+            "correctAnswers": [
+              "C"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
