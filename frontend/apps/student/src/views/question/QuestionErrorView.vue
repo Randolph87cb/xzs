@@ -31,23 +31,27 @@
         </div>
 
         <div v-if="filteredQuestions.length > 0" class="question-error__queue-list">
-          <button
-            v-for="row in filteredQuestions"
-            :key="row.id"
-            type="button"
-            class="question-error__queue-item"
-            :class="{ 'is-active': selectedRow?.id === row.id }"
-            @click="selectQuestion(row)"
-          >
-            <span class="question-error__queue-title">{{ row.shortTitle || '无题干' }}</span>
-            <span class="question-error__queue-meta">
-              <span>{{ row.subjectName || '未知学科' }}</span>
-              <el-tag size="small" :type="correctionTagType(rowCorrectionLayer(row))">
-                {{ correctionLayerText(rowCorrectionLayer(row)) }}
-              </el-tag>
-              <span>{{ row.createTime || '-' }}</span>
-            </span>
-          </button>
+          <section v-for="group in groupedFilteredQuestions" :key="group.knowledgePoint" class="question-error__group">
+            <h3>{{ group.knowledgePoint }}</h3>
+            <button
+              v-for="row in group.items"
+              :key="row.id"
+              type="button"
+              class="question-error__queue-item"
+              :class="{ 'is-active': selectedRow?.id === row.id }"
+              @click="selectQuestion(row)"
+            >
+              <span class="question-error__queue-title">{{ row.shortTitle || '无题干' }}</span>
+              <span class="question-error__queue-meta">
+                <span>{{ row.subjectName || '未知学科' }}</span>
+                <el-tag size="small" type="danger">错 {{ row.wrongCount ?? 1 }} 次</el-tag>
+                <el-tag size="small" :type="correctionTagType(rowCorrectionLayer(row))">
+                  {{ correctionLayerText(rowCorrectionLayer(row)) }}
+                </el-tag>
+                <span>{{ row.latestWrongTime || row.createTime || '-' }}</span>
+              </span>
+            </button>
+          </section>
         </div>
         <el-empty v-else description="当前层次暂无错题" :image-size="72" />
 
@@ -85,7 +89,7 @@
               class="question-error__rejection"
             >
               <h2>老师驳回意见</h2>
-              <p>{{ correction.review_comment }}</p>
+              <QuestionMarkdown :content="correction.review_comment" />
             </section>
 
             <section class="question-error__card">
@@ -116,11 +120,11 @@
               <div v-else-if="correction" class="question-error__correction-content">
                 <div>
                   <h3>我的错误原因</h3>
-                  <p>{{ correction.student_wrong_reason || '暂无填写' }}</p>
+                  <QuestionMarkdown :content="correction.student_wrong_reason || '暂无填写'" />
                 </div>
                 <div>
                   <h3>我的正确思路</h3>
-                  <p>{{ correction.student_correct_thinking || '暂无填写' }}</p>
+                  <QuestionMarkdown :content="correction.student_correct_thinking || '暂无填写'" />
                 </div>
               </div>
               <el-empty v-else description="还没有提交改错" :image-size="72" />
@@ -140,12 +144,42 @@
                   :timestamp="selectedCorrectionStatusText"
                 >
                   <p>{{ correctionHistoryText }}</p>
-                  <p v-if="correction.review_comment" class="question-error__review-comment">
-                    审核意见：{{ correction.review_comment }}
-                  </p>
+                  <div v-if="correction.review_comment" class="question-error__review-comment">
+                    <span>审核意见：</span>
+                    <QuestionMarkdown :content="correction.review_comment" />
+                  </div>
                 </el-timeline-item>
               </el-timeline>
               <el-empty v-else description="暂无改错历史" :image-size="72" />
+            </details>
+
+            <details class="question-error__history" open>
+              <summary>
+                <span>同题错误记录</span>
+                <el-tag size="small" type="info">{{ wrongHistory.length }} 次</el-tag>
+              </summary>
+
+              <el-timeline v-if="wrongHistory.length > 0" class="question-error__timeline">
+                <el-timeline-item
+                  v-for="item in wrongHistory"
+                  :key="item.customerAnswerId"
+                  :timestamp="item.createTimeText || '-'"
+                  :type="correctionTimelineType(normalizeCorrectionLayer(item.correction_status))"
+                >
+                  <div class="question-error__wrong-history-item">
+                    <span>{{ item.paperName || '未知试卷' }}</span>
+                    <span>得分：{{ item.userScore || '-' }}</span>
+                    <el-tag size="small" :type="correctionTagType(normalizeCorrectionLayer(item.correction_status))">
+                      {{ correctionLayerText(normalizeCorrectionLayer(item.correction_status)) }}
+                    </el-tag>
+                  </div>
+                  <div v-if="item.review_comment" class="question-error__review-comment">
+                    <span>审核意见：</span>
+                    <QuestionMarkdown :content="item.review_comment" />
+                  </div>
+                </el-timeline-item>
+              </el-timeline>
+              <el-empty v-else description="暂无错误历史" :image-size="72" />
             </details>
           </aside>
         </template>
@@ -158,17 +192,19 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { QuestionCorrectionContext } from '@xzs/question-renderer'
+import { QuestionCorrectionContext, QuestionMarkdown } from '@xzs/question-renderer'
 import {
   getQuestionCorrection,
   getQuestionAnswerDetail,
-  getQuestionAnswerPage,
+  getWrongQuestionHistory,
+  getWrongQuestionPage,
   submitQuestionCorrection,
   type AnswerItem,
   type ExamQuestion,
   type QuestionCorrectionRecord,
   type QuestionCorrectionReviewStatus,
-  type QuestionAnswerListItem
+  type QuestionAnswerListItem,
+  type QuestionWrongHistoryItem
 } from '@xzs/api-client'
 
 type CorrectionLayerKey = 'UNSUBMITTED' | QuestionCorrectionReviewStatus
@@ -195,6 +231,7 @@ const selectedRow = ref<QuestionAnswerListItem | null>(null)
 const selectedQuestion = ref<ExamQuestion | null>(null)
 const selectedAnswer = ref<AnswerItem | null>(null)
 const correction = ref<QuestionCorrectionRecord | null>(null)
+const wrongHistory = ref<QuestionWrongHistoryItem[]>([])
 const query = reactive({
   pageIndex: 1,
   pageSize: 10
@@ -207,6 +244,19 @@ const correctionForm = reactive({
 const filteredQuestions = computed(() =>
   questions.value.filter((question) => rowCorrectionLayer(question) === activeCorrectionLayer.value)
 )
+const groupedFilteredQuestions = computed(() => {
+  const groups = new Map<string, QuestionAnswerListItem[]>()
+  filteredQuestions.value.forEach((question) => {
+    const key = question.knowledgePoint || '未分类'
+    const items = groups.get(key) ?? []
+    items.push(question)
+    groups.set(key, items)
+  })
+  return Array.from(groups.entries()).map(([knowledgePoint, items]) => ({
+    knowledgePoint,
+    items
+  }))
+})
 
 const selectedCorrectionLayer = computed<CorrectionLayerKey>(() => correctionLayerFromRecord(correction.value))
 const selectedCorrectionStatusText = computed(() => correctionLayerText(selectedCorrectionLayer.value))
@@ -232,7 +282,7 @@ onMounted(loadQuestions)
 async function loadQuestions() {
   loading.value = true
   try {
-    const result = await getQuestionAnswerPage(query)
+    const result = await getWrongQuestionPage(query)
     const page = result.response
     questions.value = page?.list ?? []
     total.value = page?.total ?? 0
@@ -248,13 +298,23 @@ async function selectQuestion(row: QuestionAnswerListItem) {
   selectedRow.value = row
   detailLoading.value = true
   try {
-    const result = await getQuestionAnswerDetail(row.id)
+    const customerAnswerId = row.latestCustomerAnswerId ?? row.id
+    const result = await getQuestionAnswerDetail(customerAnswerId)
     selectedQuestion.value = result.response?.questionVM ?? null
     selectedAnswer.value = result.response?.questionAnswerVM ?? null
     await loadCorrection()
+    await loadWrongHistory(row)
   } finally {
     detailLoading.value = false
   }
+}
+
+async function loadWrongHistory(row: QuestionAnswerListItem) {
+  wrongHistory.value = []
+  const questionId = row.questionId ?? row.latestCustomerAnswerId ?? row.id
+  if (!questionId) return
+  const result = await getWrongQuestionHistory(questionId)
+  wrongHistory.value = result.response ?? []
 }
 
 async function loadCorrection() {
@@ -324,6 +384,7 @@ function clearSelectedQuestion() {
   selectedQuestion.value = null
   selectedAnswer.value = null
   correction.value = null
+  wrongHistory.value = []
   resetCorrectionForm('UNSUBMITTED', null)
 }
 
@@ -497,6 +558,18 @@ function questionTypeText(type: number) {
   overflow: auto;
 }
 
+.question-error__group {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.question-error__group h3 {
+  margin: 4px 2px 0;
+  color: var(--xzs-text-muted);
+  font-size: 13px;
+}
+
 .question-error__status-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -655,6 +728,13 @@ function questionTypeText(type: number) {
   overflow-wrap: anywhere;
 }
 
+.question-error__rejection :deep(.question-markdown),
+.question-error__correction-content :deep(.question-markdown),
+.question-error__review-comment :deep(.question-markdown) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .question-error__inline-form {
   min-width: 0;
 }
@@ -687,6 +767,13 @@ function questionTypeText(type: number) {
 
 .question-error__timeline {
   padding-left: 4px;
+}
+
+.question-error__wrong-history-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--xzs-text-muted);
 }
 
 .question-error__history {

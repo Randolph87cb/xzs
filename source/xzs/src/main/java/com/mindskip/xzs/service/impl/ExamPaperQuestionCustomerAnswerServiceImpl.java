@@ -13,6 +13,8 @@ import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.utility.JsonUtil;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionWrongHistoryVM;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,18 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperQuestionCustomerAnswerMapper.studentPage(requestVM)
         );
+    }
+
+    @Override
+    public PageInfo<QuestionPageStudentResponseVM> studentWrongQuestionPage(QuestionPageStudentRequestVM requestVM) {
+        return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize()).doSelectPageInfo(() ->
+                examPaperQuestionCustomerAnswerMapper.studentWrongQuestionPage(requestVM)
+        );
+    }
+
+    @Override
+    public List<QuestionWrongHistoryVM> studentWrongQuestionHistory(Integer userId, Integer questionId) {
+        return examPaperQuestionCustomerAnswerMapper.studentWrongQuestionHistory(userId, questionId);
     }
 
     @Override

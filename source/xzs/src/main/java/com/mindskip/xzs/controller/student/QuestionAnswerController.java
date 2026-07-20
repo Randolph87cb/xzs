@@ -20,6 +20,7 @@ import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionAnswerVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionWrongHistoryVM;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -56,13 +57,25 @@ public class QuestionAnswerController extends BaseApiController {
             QuestionPageStudentResponseVM vm = modelMapper.map(q, QuestionPageStudentResponseVM.class);
             vm.setCreateTime(DateTimeUtil.dateFormat(q.getCreateTime()));
             Question question = questionService.selectById(q.getQuestionId());
-            TextContent textContent = textContentService.selectById(question.getInfoTextContentId());
-            QuestionObject questionObject = JsonUtil.toJsonObject(textContent.getContent(), QuestionObject.class);
-            String clearHtml = HtmlUtil.clear(questionObject.getTitleContent());
-            vm.setShortTitle(clearHtml);
+            vm.setShortTitle(shortTitle(question));
             vm.setSubjectName(subject.getName());
             fillCorrectionStatus(vm, q.getId());
             return vm;
+        });
+        return RestResponse.ok(page);
+    }
+
+    @RequestMapping(value = "/wrongQuestionPage", method = RequestMethod.POST)
+    public RestResponse<PageInfo<QuestionPageStudentResponseVM>> wrongQuestionPage(@RequestBody QuestionPageStudentRequestVM model) {
+        model.setCreateUser(getCurrentUser().getId());
+        PageInfo<QuestionPageStudentResponseVM> pageInfo = examPaperQuestionCustomerAnswerService.studentWrongQuestionPage(model);
+        PageInfo<QuestionPageStudentResponseVM> page = PageInfoHelper.copyMap(pageInfo, row -> {
+            Question question = questionService.selectById(row.getQuestionId());
+            row.setShortTitle(shortTitle(question));
+            if (row.getLatestCustomerAnswerId() != null) {
+                row.setId(row.getLatestCustomerAnswerId());
+            }
+            return row;
         });
         return RestResponse.ok(page);
     }
@@ -72,11 +85,38 @@ public class QuestionAnswerController extends BaseApiController {
     public RestResponse<QuestionAnswerVM> select(@PathVariable Integer id) {
         QuestionAnswerVM vm = new QuestionAnswerVM();
         ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer = examPaperQuestionCustomerAnswerService.selectById(id);
+        if (examPaperQuestionCustomerAnswer == null || !getCurrentUser().getId().equals(examPaperQuestionCustomerAnswer.getCreateUser())) {
+            return RestResponse.fail(2, "答题明细不存在或无权限访问");
+        }
         ExamPaperSubmitItemVM questionAnswerVM = examPaperQuestionCustomerAnswerService.examPaperQuestionCustomerAnswerToVM(examPaperQuestionCustomerAnswer);
         QuestionEditRequestVM questionVM = questionService.getQuestionEditRequestVM(examPaperQuestionCustomerAnswer.getQuestionId());
         vm.setQuestionVM(questionVM);
         vm.setQuestionAnswerVM(questionAnswerVM);
         return RestResponse.ok(vm);
+    }
+
+    @RequestMapping(value = "/wrongQuestionHistory/{questionId}", method = RequestMethod.POST)
+    public RestResponse<List<QuestionWrongHistoryVM>> wrongQuestionHistory(@PathVariable Integer questionId) {
+        List<QuestionWrongHistoryVM> rows = examPaperQuestionCustomerAnswerService.studentWrongQuestionHistory(getCurrentUser().getId(), questionId);
+        rows.forEach(row -> {
+            row.setCreateTimeText(DateTimeUtil.dateFormat(row.getCreateTime()));
+            if (row.getRawUserScore() != null) {
+                row.setUserScore(com.mindskip.xzs.utility.ExamUtil.scoreToVM(row.getRawUserScore()));
+            }
+        });
+        return RestResponse.ok(rows);
+    }
+
+    private String shortTitle(Question question) {
+        if (question == null || question.getInfoTextContentId() == null) {
+            return "";
+        }
+        TextContent textContent = textContentService.selectById(question.getInfoTextContentId());
+        if (textContent == null) {
+            return "";
+        }
+        QuestionObject questionObject = JsonUtil.toJsonObject(textContent.getContent(), QuestionObject.class);
+        return HtmlUtil.clear(questionObject.getTitleContent());
     }
 
     private void fillCorrectionStatus(QuestionPageStudentResponseVM vm, Integer customerAnswerId) {

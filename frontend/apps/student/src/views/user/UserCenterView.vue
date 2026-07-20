@@ -29,6 +29,36 @@
           <el-button type="primary" :loading="saving" @click="saveProfile">保存</el-button>
         </el-form-item>
       </el-form>
+
+      <section class="user-center__password">
+        <header class="user-center__panel-header">
+          <div>
+            <p>账号安全</p>
+            <h2>修改密码</h2>
+          </div>
+        </header>
+
+        <el-form
+          ref="passwordFormRef"
+          class="user-center__form"
+          :model="passwordForm"
+          :rules="passwordRules"
+          label-width="84px"
+        >
+          <el-form-item label="旧密码" prop="oldPassword">
+            <el-input v-model="passwordForm.oldPassword" type="password" show-password autocomplete="current-password" />
+          </el-form-item>
+          <el-form-item label="新密码" prop="newPassword">
+            <el-input v-model="passwordForm.newPassword" type="password" show-password autocomplete="new-password" />
+          </el-form-item>
+          <el-form-item label="确认密码" prop="confirmPassword">
+            <el-input v-model="passwordForm.confirmPassword" type="password" show-password autocomplete="new-password" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" :loading="passwordSaving" @click="savePassword">修改密码</el-button>
+          </el-form-item>
+        </el-form>
+      </section>
     </main>
   </section>
 </template>
@@ -36,19 +66,51 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-import { getCurrentStudentUser, updateCurrentStudentUser, type StudentUserInfo } from '@xzs/api-client'
+import {
+  changeStudentPassword,
+  getCurrentStudentUser,
+  updateCurrentStudentUser,
+  type StudentUserInfo
+} from '@xzs/api-client'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 const loading = ref(false)
 const saving = ref(false)
+const passwordSaving = ref(false)
 const user = ref<StudentUserInfo | null>(userStore.userInfo)
 const formRef = ref<FormInstance>()
+const passwordFormRef = ref<FormInstance>()
 const form = reactive({
   nickName: ''
 })
+const passwordForm = reactive({
+  oldPassword: '',
+  newPassword: '',
+  confirmPassword: ''
+})
 const rules: FormRules = {
   nickName: [{ max: 255, message: '昵称不能超过 255 个字符', trigger: 'blur' }]
+}
+const passwordRules: FormRules = {
+  oldPassword: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
+  newPassword: [
+    { required: true, message: '请输入新密码', trigger: 'blur' },
+    { min: 6, max: 64, message: '新密码长度需为 6-64 位', trigger: 'blur' }
+  ],
+  confirmPassword: [
+    { required: true, message: '请再次输入新密码', trigger: 'blur' },
+    {
+      validator: (_rule: unknown, value: string, callback: (error?: Error) => void) => {
+        if (value !== passwordForm.newPassword) {
+          callback(new Error('两次输入的新密码不一致'))
+          return
+        }
+        callback()
+      },
+      trigger: 'blur'
+    }
+  ]
 }
 
 const displayName = computed(() => user.value?.nickName || user.value?.realName || user.value?.userName || '-')
@@ -98,8 +160,39 @@ async function saveProfile() {
   }
 }
 
+async function savePassword() {
+  const valid = await passwordFormRef.value?.validate().catch(() => false)
+  if (!valid) {
+    return
+  }
+
+  passwordSaving.value = true
+  try {
+    const result = await changeStudentPassword({
+      oldPassword: passwordForm.oldPassword,
+      newPassword: passwordForm.newPassword,
+      confirmPassword: passwordForm.confirmPassword
+    })
+    if (result.code === 1) {
+      ElMessage.success(result.message || '密码已修改')
+      resetPasswordForm()
+    } else {
+      ElMessage.error(result.message)
+    }
+  } finally {
+    passwordSaving.value = false
+  }
+}
+
 function syncForm(nextUser: StudentUserInfo | null) {
   form.nickName = nextUser?.nickName ?? ''
+}
+
+function resetPasswordForm() {
+  passwordForm.oldPassword = ''
+  passwordForm.newPassword = ''
+  passwordForm.confirmPassword = ''
+  passwordFormRef.value?.clearValidate()
 }
 </script>
 
@@ -168,6 +261,13 @@ function syncForm(nextUser: StudentUserInfo | null) {
 
 .user-center__form {
   max-width: 520px;
+}
+
+.user-center__password {
+  display: grid;
+  gap: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--xzs-border);
 }
 
 @media (max-width: 840px) {

@@ -17,13 +17,18 @@ import com.mindskip.xzs.viewmodel.student.exam.ExamPaperReadVM;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageResponseVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
+import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerHistoryItemVM;
+import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerHistoryVM;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController("StudentExamPaperAnswerController")
 @RequestMapping(value = "/api/student/exampaper/answer")
@@ -85,12 +90,16 @@ public class ExamPaperAnswerController extends BaseApiController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public RestResponse edit(@RequestBody @Valid ExamPaperSubmitVM examPaperSubmitVM) {
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.selectById(examPaperSubmitVM.getId());
+        if (examPaperAnswer == null || !getCurrentUser().getId().equals(examPaperAnswer.getCreateUser())) {
+            return RestResponse.fail(2, "答卷不存在或无权限访问");
+        }
+
         boolean notJudge = examPaperSubmitVM.getAnswerItems().stream().anyMatch(i -> i.getDoRight() == null && i.getScore() == null);
         if (notJudge) {
             return RestResponse.fail(2, "有未批改题目");
         }
 
-        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.selectById(examPaperSubmitVM.getId());
         ExamPaperAnswerStatusEnum examPaperAnswerStatusEnum = ExamPaperAnswerStatusEnum.fromCode(examPaperAnswer.getStatus());
         if (examPaperAnswerStatusEnum == ExamPaperAnswerStatusEnum.Complete) {
             return RestResponse.fail(3, "试卷已完成");
@@ -107,6 +116,9 @@ public class ExamPaperAnswerController extends BaseApiController {
     @RequestMapping(value = "/read/{id}", method = RequestMethod.POST)
     public RestResponse<ExamPaperReadVM> read(@PathVariable Integer id) {
         ExamPaperAnswer examPaperAnswer = examPaperAnswerService.selectById(id);
+        if (examPaperAnswer == null || !getCurrentUser().getId().equals(examPaperAnswer.getCreateUser())) {
+            return RestResponse.fail(2, "答卷不存在或无权限访问");
+        }
         ExamPaperReadVM vm = new ExamPaperReadVM();
         ExamPaperEditRequestVM paper = examPaperService.examPaperToVM(examPaperAnswer.getExamPaperId());
         ExamPaperSubmitVM answer = examPaperAnswerService.examPaperAnswerToVM(examPaperAnswer.getId());
@@ -115,5 +127,45 @@ public class ExamPaperAnswerController extends BaseApiController {
         return RestResponse.ok(vm);
     }
 
+    @RequestMapping(value = "/paperHistory/{paperId}", method = RequestMethod.POST)
+    public RestResponse<ExamPaperAnswerHistoryVM> paperHistory(@PathVariable Integer paperId) {
+        List<ExamPaperAnswer> answers = examPaperAnswerService.selectPaperHistory(paperId, getCurrentUser().getId());
+        ExamPaperAnswerHistoryVM vm = new ExamPaperAnswerHistoryVM();
+        vm.setExamPaperId(paperId);
+        vm.setAttemptCount(answers.size());
+        vm.setItems(answers.stream().map(this::toHistoryItem).collect(Collectors.toList()));
+        if (answers.isEmpty()) {
+            vm.setBestScore("0");
+            vm.setLatestScore("0");
+            vm.setAverageScore("0");
+            return RestResponse.ok(vm);
+        }
+
+        ExamPaperAnswer latest = answers.get(0);
+        ExamPaperAnswer best = answers.stream().max(Comparator.comparing(this::safeScore)).orElse(latest);
+        int averageScore = Math.round((float) answers.stream().mapToInt(this::safeScore).sum() / answers.size());
+        vm.setBestScore(ExamUtil.scoreToVM(safeScore(best)));
+        vm.setLatestScore(ExamUtil.scoreToVM(safeScore(latest)));
+        vm.setAverageScore(ExamUtil.scoreToVM(averageScore));
+        return RestResponse.ok(vm);
+    }
+
+    private ExamPaperAnswerHistoryItemVM toHistoryItem(ExamPaperAnswer answer) {
+        ExamPaperAnswerHistoryItemVM vm = modelMapper.map(answer, ExamPaperAnswerHistoryItemVM.class);
+        vm.setCreateTime(DateTimeUtil.dateFormat(answer.getCreateTime()));
+        vm.setDoTime(ExamUtil.secondToVM(answer.getDoTime() == null ? 0 : answer.getDoTime()));
+        vm.setSystemScore(ExamUtil.scoreToVM(safeScore(answer.getSystemScore())));
+        vm.setUserScore(ExamUtil.scoreToVM(safeScore(answer.getUserScore())));
+        vm.setPaperScore(ExamUtil.scoreToVM(safeScore(answer.getPaperScore())));
+        return vm;
+    }
+
+    private Integer safeScore(ExamPaperAnswer answer) {
+        return safeScore(answer.getUserScore());
+    }
+
+    private Integer safeScore(Integer score) {
+        return score == null ? 0 : score;
+    }
 
 }

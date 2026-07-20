@@ -11,6 +11,7 @@ import com.mindskip.xzs.service.MessageService;
 import com.mindskip.xzs.service.SchoolClassService;
 import com.mindskip.xzs.service.UserEventLogService;
 import com.mindskip.xzs.service.UserService;
+import com.mindskip.xzs.viewmodel.student.user.StudentChangePasswordVM;
 import com.mindskip.xzs.viewmodel.student.user.UserResponseVM;
 import com.mindskip.xzs.viewmodel.student.user.UserUpdateVM;
 import org.junit.Before;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.when;
 public class UserControllerTest {
 
     private UserService userService;
+    private AuthenticationService authenticationService;
     private SchoolClassService schoolClassService;
     private WebContext webContext;
     private UserController controller;
@@ -40,12 +42,13 @@ public class UserControllerTest {
     @Before
     public void setUp() {
         userService = mock(UserService.class);
+        authenticationService = mock(AuthenticationService.class);
         schoolClassService = mock(SchoolClassService.class);
         controller = new UserController(
                 userService,
                 mock(UserEventLogService.class),
                 mock(MessageService.class),
-                mock(AuthenticationService.class),
+                authenticationService,
                 schoolClassService,
                 mock(ApplicationEventPublisher.class));
 
@@ -110,6 +113,44 @@ public class UserControllerTest {
         verify(schoolClassService, never()).selectById(any());
     }
 
+    @Test
+    public void changePasswordRejectsWrongOldPassword() {
+        User stored = user();
+        when(userService.selectById(7)).thenReturn(stored);
+        when(authenticationService.authUser(stored, "student", "old-pass")).thenReturn(false);
+
+        RestResponse response = controller.changePassword(changePassword("old-pass", "new-pass", "new-pass"));
+
+        assertEquals(2, response.getCode());
+        verify(userService, never()).updateByIdFilter(any());
+    }
+
+    @Test
+    public void changePasswordRejectsMismatchedConfirmation() {
+        RestResponse response = controller.changePassword(changePassword("old-pass", "new-pass", "other-pass"));
+
+        assertEquals(2, response.getCode());
+        verify(userService, never()).selectById(any());
+        verify(userService, never()).updateByIdFilter(any());
+    }
+
+    @Test
+    public void changePasswordUpdatesEncodedPassword() {
+        User stored = user();
+        when(userService.selectById(7)).thenReturn(stored);
+        when(authenticationService.authUser(stored, "student", "old-pass")).thenReturn(true);
+        when(authenticationService.pwdEncode("new-pass")).thenReturn("encoded-new-pass");
+
+        RestResponse response = controller.changePassword(changePassword("old-pass", "new-pass", "new-pass"));
+
+        assertEquals(1, response.getCode());
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userService).updateByIdFilter(captor.capture());
+        assertEquals(Integer.valueOf(7), captor.getValue().getId());
+        assertEquals("encoded-new-pass", captor.getValue().getPassword());
+        assertNotNull(captor.getValue().getModifyTime());
+    }
+
     private User user() {
         User user = new User();
         user.setId(7);
@@ -127,5 +168,13 @@ public class UserControllerTest {
 
     private void setCurrentUser(User user) {
         when(webContext.getCurrentUser()).thenReturn(user);
+    }
+
+    private StudentChangePasswordVM changePassword(String oldPassword, String newPassword, String confirmPassword) {
+        StudentChangePasswordVM vm = new StudentChangePasswordVM();
+        vm.setOldPassword(oldPassword);
+        vm.setNewPassword(newPassword);
+        vm.setConfirmPassword(confirmPassword);
+        return vm;
     }
 }

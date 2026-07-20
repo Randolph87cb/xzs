@@ -102,6 +102,38 @@ public class UserController extends BaseApiController {
         return RestResponse.ok();
     }
 
+    @RequestMapping(value = "/password/change", method = RequestMethod.POST)
+    public RestResponse changePassword(@RequestBody @Valid StudentChangePasswordVM model) {
+        String oldPassword = model.getOldPassword() == null ? "" : model.getOldPassword().trim();
+        String newPassword = model.getNewPassword() == null ? "" : model.getNewPassword().trim();
+        String confirmPassword = model.getConfirmPassword() == null ? "" : model.getConfirmPassword().trim();
+        if (oldPassword.length() == 0 || newPassword.length() == 0 || confirmPassword.length() == 0) {
+            return RestResponse.fail(2, "密码不能为空");
+        }
+        if (newPassword.length() < 6 || newPassword.length() > 64) {
+            return RestResponse.fail(2, "新密码长度需为 6-64 位");
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            return RestResponse.fail(2, "两次输入的新密码不一致");
+        }
+
+        User user = userService.selectById(getCurrentUser().getId());
+        if (!authenticationService.authUser(user, user.getUserName(), oldPassword)) {
+            return RestResponse.fail(2, "旧密码不正确");
+        }
+
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setPassword(authenticationService.pwdEncode(newPassword));
+        updateUser.setModifyTime(new Date());
+        userService.updateByIdFilter(updateUser);
+
+        UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUserName(), user.getRealName(), new Date());
+        userEventLog.setContent(user.getUserName() + " 修改了登录密码");
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
+        return RestResponse.ok();
+    }
+
     @RequestMapping(value = "/log", method = RequestMethod.POST)
     public RestResponse<List<UserEventLogVM>> log() {
         User user = getCurrentUser();

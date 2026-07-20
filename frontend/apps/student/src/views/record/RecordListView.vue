@@ -15,7 +15,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="做题时间" width="170" />
-      <el-table-column label="操作" align="right" width="110">
+      <el-table-column label="操作" align="right" width="190">
         <template #default="{ row }">
           <el-button v-if="row.status === 2" type="primary" link @click.stop="router.push({ path: '/read', query: { id: row.id } })">
             查看试卷
@@ -23,6 +23,7 @@
           <el-button v-else-if="row.status === 1" type="primary" link @click.stop="router.push({ path: '/edit', query: { id: row.id } })">
             批改
           </el-button>
+          <el-button type="primary" link @click.stop="viewHistory(row)">同卷历史</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,19 +46,60 @@
       <span>总题数：{{ selected.questionCount }}</span>
       <span>用时：{{ selected.doTime }}</span>
     </aside>
+
+    <section v-if="history" class="record-list__history" v-loading="historyLoading">
+      <header class="record-list__history-header">
+        <div>
+          <h2>同卷历史</h2>
+          <p>
+            {{ history.attemptCount }} 次作答 · 最高 {{ history.bestScore }} · 最近 {{ history.latestScore }} · 平均
+            {{ history.averageScore }}
+          </p>
+        </div>
+      </header>
+
+      <el-table :data="history.items" row-key="id" border>
+        <el-table-column prop="createTime" label="提交时间" width="170" />
+        <el-table-column prop="userScore" label="得分" width="90" />
+        <el-table-column prop="paperScore" label="总分" width="90" />
+        <el-table-column label="正确题数" width="110">
+          <template #default="{ row }">{{ row.questionCorrect }}/{{ row.questionCount }}</template>
+        </el-table-column>
+        <el-table-column prop="doTime" label="用时" min-width="110" />
+        <el-table-column label="来源" width="90">
+          <template #default="{ row }">
+            <el-tag size="small" :type="row.taskExamId ? 'warning' : 'info'">
+              {{ row.taskExamId ? '任务卷' : '普通卷' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" width="100">
+          <template #default="{ row }">
+            <el-tag :type="formatExamAnswerStatusTag(row.status)">{{ formatExamAnswerStatus(row.status) }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="right" width="90">
+          <template #default="{ row }">
+            <el-button type="primary" link @click="router.push({ path: '/read', query: { id: row.id } })">查看</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </section>
   </section>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getExamRecordPage, type ExamRecordItem } from '@xzs/api-client'
+import { getExamPaperHistory, getExamRecordPage, type ExamPaperHistory, type ExamRecordItem } from '@xzs/api-client'
 import { formatExamAnswerStatus, formatExamAnswerStatusTag } from '@/utils/format'
 
 const router = useRouter()
 const records = ref<ExamRecordItem[]>([])
 const total = ref(0)
 const loading = ref(false)
+const historyLoading = ref(false)
+const history = ref<ExamPaperHistory | null>(null)
 const selected = ref<Partial<ExamRecordItem>>({
   systemScore: '0',
   userScore: '0',
@@ -82,6 +124,9 @@ async function loadRecords() {
     total.value = page?.total ?? 0
     query.pageIndex = page?.pageNum ?? query.pageIndex
     selected.value = records.value[0] ?? selected.value
+    if (!history.value && records.value[0]?.examPaperId) {
+      await viewHistory(records.value[0])
+    }
   } finally {
     loading.value = false
   }
@@ -94,6 +139,17 @@ function handlePageChange(page: number) {
 
 function selectRecord(record: ExamRecordItem) {
   selected.value = record
+}
+
+async function viewHistory(record: ExamRecordItem) {
+  selected.value = record
+  historyLoading.value = true
+  try {
+    const result = await getExamPaperHistory(record.examPaperId)
+    history.value = result.response ?? null
+  } finally {
+    historyLoading.value = false
+  }
 }
 </script>
 
@@ -128,6 +184,35 @@ function selectRecord(record: ExamRecordItem) {
   display: grid;
   grid-template-columns: repeat(3, minmax(120px, 1fr));
   gap: 10px;
+  color: var(--xzs-text-muted);
+}
+
+.record-list__history {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--xzs-border);
+}
+
+.record-list__history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.record-list__history-header h2,
+.record-list__history-header p {
+  margin: 0;
+}
+
+.record-list__history-header h2 {
+  color: var(--xzs-text);
+  font-size: 18px;
+}
+
+.record-list__history-header p {
+  margin-top: 4px;
   color: var(--xzs-text-muted);
 }
 

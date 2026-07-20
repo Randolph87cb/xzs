@@ -4,6 +4,8 @@ import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerUpdate;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionWrongHistoryVM;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -11,6 +13,10 @@ import java.util.List;
 public interface ExamPaperQuestionCustomerAnswerService extends BaseService<ExamPaperQuestionCustomerAnswer> {
 
     PageInfo<ExamPaperQuestionCustomerAnswer> studentPage(QuestionPageStudentRequestVM requestVM);
+
+    PageInfo<QuestionPageStudentResponseVM> studentWrongQuestionPage(QuestionPageStudentRequestVM requestVM);
+
+    List<QuestionWrongHistoryVM> studentWrongQuestionHistory(Integer userId, Integer questionId);
 
     List<ExamPaperQuestionCustomerAnswer> selectListByPaperAnswerId(Integer id);
 

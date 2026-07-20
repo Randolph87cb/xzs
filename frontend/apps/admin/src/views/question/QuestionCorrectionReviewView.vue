@@ -132,11 +132,11 @@
                 <div class="correction-workbench__student-answer">
                   <div>
                     <h3>我错在哪里</h3>
-                    <p>{{ detail.student_wrong_reason || '暂无填写' }}</p>
+                    <QuestionMarkdown :content="detail.student_wrong_reason || '暂无填写'" />
                   </div>
                   <div>
                     <h3>正确思路是什么</h3>
-                    <p>{{ detail.student_correct_thinking || '暂无填写' }}</p>
+                    <QuestionMarkdown :content="detail.student_correct_thinking || '暂无填写'" />
                   </div>
                 </div>
               </section>
@@ -165,6 +165,10 @@
                     />
                   </el-form-item>
                 </el-form>
+                <section v-if="reviewForm.reviewComment" class="correction-workbench__markdown-preview">
+                  <h3>审核意见预览</h3>
+                  <QuestionMarkdown :content="reviewForm.reviewComment" />
+                </section>
 
                 <p v-if="aiDraftApplied" class="correction-workbench__draft-note">
                   已将 AI 的学生可见建议填入草稿，保存前仍需老师确认。
@@ -227,18 +231,24 @@
                   <dl class="correction-workbench__ai-summary">
                     <div class="correction-workbench__ai-summary-block">
                       <dt>给老师看的理由</dt>
-                      <dd>{{ currentAiReview.teacherReason || currentAiReview.reason || '暂无' }}</dd>
+                      <dd>
+                        <QuestionMarkdown :content="currentAiReview.teacherReason || currentAiReview.reason || '暂无'" />
+                      </dd>
                     </div>
                     <div class="correction-workbench__ai-summary-block">
                       <dt>返回给学生的建议</dt>
-                      <dd>{{ currentAiStudentFeedbackDraft || '暂无' }}</dd>
+                      <dd>
+                        <QuestionMarkdown :content="currentAiStudentFeedbackDraft || '暂无'" />
+                      </dd>
                     </div>
                     <div
                       v-if="!currentAiStudentFeedbackDraft && currentAiReview.reviewComment"
                       class="correction-workbench__ai-summary-block"
                     >
                       <dt>旧字段兼容</dt>
-                      <dd>{{ currentAiReview.reviewComment }}</dd>
+                      <dd>
+                        <QuestionMarkdown :content="currentAiReview.reviewComment" />
+                      </dd>
                     </div>
                     <div class="correction-workbench__ai-summary-block">
                       <dt>错误信息</dt>
@@ -263,7 +273,11 @@
                   <template #default="{ row }">{{ statusText(row.review_result) }}</template>
                 </el-table-column>
                 <el-table-column prop="reviewer_name" label="审核人" width="100" />
-                <el-table-column prop="review_comment" label="审核意见" min-width="180" show-overflow-tooltip />
+                <el-table-column label="审核意见" min-width="180">
+                  <template #default="{ row }">
+                    <QuestionMarkdown :content="row.review_comment || '暂无'" />
+                  </template>
+                </el-table-column>
                 <el-table-column prop="create_time" label="时间" width="150" />
               </el-table>
               <div v-else class="correction-workbench__empty">暂无审核历史</div>
@@ -279,7 +293,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { QuestionCorrectionContext } from '@xzs/question-renderer'
+import { QuestionCorrectionContext, QuestionMarkdown } from '@xzs/question-renderer'
 import {
   getAdminClassOptions,
   getAdminQuestionCorrection,
@@ -1083,6 +1097,15 @@ function parseAnswerArray(value?: string | null) {
   gap: 10px;
 }
 
+.correction-workbench__markdown-preview {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--xzs-border);
+  border-radius: 6px;
+  background: var(--xzs-surface-soft);
+}
+
 .correction-workbench__ai-overview {
   background: #f9fbff;
   margin: 0 -16px;
@@ -1135,6 +1158,14 @@ function parseAnswerArray(value?: string | null) {
   font-weight: 600;
   line-height: 1.6;
   white-space: pre-wrap;
+}
+
+.correction-workbench__ai-summary dd :deep(.question-markdown),
+.correction-workbench__student-answer :deep(.question-markdown),
+.correction-workbench__markdown-preview :deep(.question-markdown) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 400;
 }
 
 .correction-workbench__ai-list {

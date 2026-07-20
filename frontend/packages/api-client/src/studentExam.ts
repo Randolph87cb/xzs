@@ -86,6 +86,7 @@ export interface ExamPaperSubmit {
 
 export interface ExamRecordItem {
   id: number
+  examPaperId: number
   paperName: string
   subjectName: string
   status: number
@@ -96,6 +97,31 @@ export interface ExamRecordItem {
   paperScore: string
   questionCorrect: number
   questionCount: number
+  taskExamId?: number | null
+}
+
+export interface ExamPaperHistoryItem {
+  id: number
+  examPaperId: number
+  paperName: string
+  createTime: string
+  userScore: string
+  systemScore: string
+  paperScore: string
+  questionCorrect: number
+  questionCount: number
+  doTime: string
+  status: number
+  taskExamId?: number | null
+}
+
+export interface ExamPaperHistory {
+  examPaperId: number
+  attemptCount: number
+  bestScore: string
+  latestScore: string
+  averageScore: string
+  items: ExamPaperHistoryItem[]
 }
 
 export interface ExamPaperRead {
@@ -150,11 +176,17 @@ export interface ClassRankingItem {
 
 export interface QuestionAnswerListItem {
   id: number
+  questionId?: number
+  latestCustomerAnswerId?: number
   shortTitle: string
   questionType: number
   subjectName: string
   createTime: string
+  latestWrongTime?: string
+  knowledgePoint?: string
+  wrongCount?: number
   correction_status?: QuestionCorrectionReviewStatus | null
+  review_comment?: string | null
 }
 
 export interface QuestionAnswerDetail {
@@ -180,6 +212,17 @@ export interface QuestionCorrectionSubmitRequest {
   customerAnswerId: number
   wrongReason: string
   correctThinking: string
+}
+
+export interface QuestionWrongHistoryItem {
+  customerAnswerId: number
+  examPaperAnswerId: number
+  examPaperId: number
+  paperName: string
+  createTimeText: string
+  userScore?: string
+  correction_status?: QuestionCorrectionReviewStatus | null
+  review_comment?: string | null
 }
 
 export interface SmartTrainingCreateRequest {
@@ -216,6 +259,10 @@ export function getExamRecordPage(request: PageRequest): Promise<ApiResponse<Pag
   return post<PageResponse<ExamRecordItem>>('/api/student/exampaper/answer/pageList', request)
 }
 
+export function getExamPaperHistory(paperId: number): Promise<ApiResponse<ExamPaperHistory>> {
+  return post<ExamPaperHistory>(`/api/student/exampaper/answer/paperHistory/${paperId}`)
+}
+
 export function readExamPaperAnswer(id: number): Promise<ApiResponse<ExamPaperRead>> {
   return post<ExamPaperRead>(`/api/student/exampaper/answer/read/${id}`)
 }
@@ -242,8 +289,16 @@ export function getQuestionAnswerPage(request: PageRequest): Promise<ApiResponse
   return post<PageResponse<QuestionAnswerListItem>>('/api/student/question/answer/page', request)
 }
 
+export function getWrongQuestionPage(request: PageRequest): Promise<ApiResponse<PageResponse<QuestionAnswerListItem>>> {
+  return post<PageResponse<QuestionAnswerListItem>>('/api/student/question/answer/wrongQuestionPage', request)
+}
+
 export function getQuestionAnswerDetail(id: number): Promise<ApiResponse<QuestionAnswerDetail>> {
   return post<QuestionAnswerDetail>(`/api/student/question/answer/select/${id}`)
+}
+
+export function getWrongQuestionHistory(questionId: number): Promise<ApiResponse<QuestionWrongHistoryItem[]>> {
+  return post<QuestionWrongHistoryItem[]>(`/api/student/question/answer/wrongQuestionHistory/${questionId}`)
 }
 
 export function getQuestionCorrection(customerAnswerId: number): Promise<ApiResponse<QuestionCorrectionRecord | null>> {

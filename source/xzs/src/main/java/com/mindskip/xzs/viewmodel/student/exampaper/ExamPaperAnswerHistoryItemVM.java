@@ -1,36 +1,28 @@
 package com.mindskip.xzs.viewmodel.student.exampaper;
 
+public class ExamPaperAnswerHistoryItemVM {
 
-public class ExamPaperAnswerPageResponseVM {
     private Integer id;
 
     private Integer examPaperId;
+
+    private String paperName;
 
     private String createTime;
 
     private String userScore;
 
-    private String subjectName;
-
-    private Integer subjectId;
-
-    private Integer questionCount;
-
-    private Integer questionCorrect;
+    private String systemScore;
 
     private String paperScore;
 
+    private Integer questionCorrect;
+
+    private Integer questionCount;
+
     private String doTime;
 
-    private Integer paperType;
-
-    private String systemScore;
-
     private Integer status;
-
-    private String paperName;
-
-    private String userName;
 
     private Integer taskExamId;
 
@@ -50,6 +42,14 @@ public class ExamPaperAnswerPageResponseVM {
         this.examPaperId = examPaperId;
     }
 
+    public String getPaperName() {
+        return paperName;
+    }
+
+    public void setPaperName(String paperName) {
+        this.paperName = paperName;
+    }
+
     public String getCreateTime() {
         return createTime;
     }
@@ -66,36 +66,12 @@ public class ExamPaperAnswerPageResponseVM {
         this.userScore = userScore;
     }
 
-    public String getSubjectName() {
-        return subjectName;
+    public String getSystemScore() {
+        return systemScore;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public Integer getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(Integer subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public Integer getQuestionCount() {
-        return questionCount;
-    }
-
-    public void setQuestionCount(Integer questionCount) {
-        this.questionCount = questionCount;
-    }
-
-    public Integer getQuestionCorrect() {
-        return questionCorrect;
-    }
-
-    public void setQuestionCorrect(Integer questionCorrect) {
-        this.questionCorrect = questionCorrect;
+    public void setSystemScore(String systemScore) {
+        this.systemScore = systemScore;
     }
 
     public String getPaperScore() {
@@ -106,6 +82,22 @@ public class ExamPaperAnswerPageResponseVM {
         this.paperScore = paperScore;
     }
 
+    public Integer getQuestionCorrect() {
+        return questionCorrect;
+    }
+
+    public void setQuestionCorrect(Integer questionCorrect) {
+        this.questionCorrect = questionCorrect;
+    }
+
+    public Integer getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(Integer questionCount) {
+        this.questionCount = questionCount;
+    }
+
     public String getDoTime() {
         return doTime;
     }
@@ -114,44 +106,12 @@ public class ExamPaperAnswerPageResponseVM {
         this.doTime = doTime;
     }
 
-    public Integer getPaperType() {
-        return paperType;
-    }
-
-    public void setPaperType(Integer paperType) {
-        this.paperType = paperType;
-    }
-
-    public String getSystemScore() {
-        return systemScore;
-    }
-
-    public void setSystemScore(String systemScore) {
-        this.systemScore = systemScore;
-    }
-
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getPaperName() {
-        return paperName;
-    }
-
-    public void setPaperName(String paperName) {
-        this.paperName = paperName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public Integer getTaskExamId() {

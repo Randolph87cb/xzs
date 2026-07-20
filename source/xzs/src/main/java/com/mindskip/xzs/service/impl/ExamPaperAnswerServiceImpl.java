@@ -82,9 +82,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
             if (!taskContainsPaper(taskExam, examPaper.getId())) {
                 throw new BusinessException(SystemCode.ParameterValidError.getCode(), "任务未引用该试卷");
             }
-            if (taskPaperAnswered(taskId, user.getId(), examPaper.getId())) {
-                return null;
-            }
         }
         String frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId()).getContent();
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtil.toJsonListObject(frameTextContent, ExamPaperTitleItemObject.class);
@@ -183,6 +180,11 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
             KeyValue keyValue = mouthCount.stream().filter(kv -> kv.getName().equals(md)).findAny().orElse(null);
             return null == keyValue ? 0 : keyValue.getValue();
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ExamPaperAnswer> selectPaperHistory(Integer paperId, Integer userId) {
+        return examPaperAnswerMapper.selectPaperHistory(paperId, userId);
     }
 
 
@@ -292,19 +294,6 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
         List<TaskItemObject> taskItemObjects = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemObject.class);
         return taskItemObjects.stream().anyMatch(d -> d.getExamPaperId().equals(examPaperId));
-    }
-
-    private boolean taskPaperAnswered(Integer taskId, Integer userId, Integer examPaperId) {
-        TaskExamCustomerAnswer taskExamCustomerAnswer = taskExamCustomerAnswerMapper.getByTUid(taskId, userId);
-        if (null == taskExamCustomerAnswer) {
-            return false;
-        }
-        TextContent textContent = textContentService.selectById(taskExamCustomerAnswer.getTextContentId());
-        if (null == textContent) {
-            return false;
-        }
-        List<TaskItemAnswerObject> taskItemAnswerObjects = JsonUtil.toJsonListObject(textContent.getContent(), TaskItemAnswerObject.class);
-        return taskItemAnswerObjects.stream().anyMatch(d -> d.getExamPaperId().equals(examPaperId));
     }
 
     @Override

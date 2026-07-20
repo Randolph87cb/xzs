@@ -18,6 +18,29 @@
     <result column="item_order" jdbcType="INTEGER" property="itemOrder" />
     <result column="class_id" jdbcType="INTEGER" property="classId" />
   </resultMap>
+  <resultMap id="WrongQuestionPageResultMap" type="com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="question_id" jdbcType="INTEGER" property="questionId" />
+    <result column="latest_customer_answer_id" jdbcType="INTEGER" property="latestCustomerAnswerId" />
+    <result column="question_type" jdbcType="INTEGER" property="questionType" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="latest_wrong_time" jdbcType="VARCHAR" property="latestWrongTime" />
+    <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
+    <result column="knowledge_point" jdbcType="VARCHAR" property="knowledgePoint" />
+    <result column="wrong_count" jdbcType="INTEGER" property="wrongCount" />
+    <result column="correction_status" jdbcType="VARCHAR" property="correctionStatus" />
+    <result column="review_comment" jdbcType="VARCHAR" property="reviewComment" />
+  </resultMap>
+  <resultMap id="WrongQuestionHistoryResultMap" type="com.mindskip.xzs.viewmodel.student.question.answer.QuestionWrongHistoryVM">
+    <id column="customer_answer_id" jdbcType="INTEGER" property="customerAnswerId" />
+    <result column="exam_paper_answer_id" jdbcType="INTEGER" property="examPaperAnswerId" />
+    <result column="exam_paper_id" jdbcType="INTEGER" property="examPaperId" />
+    <result column="paper_name" jdbcType="VARCHAR" property="paperName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="user_score" jdbcType="INTEGER" property="rawUserScore" />
+    <result column="correction_status" jdbcType="VARCHAR" property="correctionStatus" />
+    <result column="review_comment" jdbcType="VARCHAR" property="reviewComment" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, question_id, exam_paper_id, exam_paper_answer_id, question_type, subject_id,
     customer_score, question_score, answer, text_content_id,
@@ -236,6 +259,81 @@
       and do_right=FALSE
       and create_user=#{createUser}
     </where>
+  </select>
+
+  <select id="studentWrongQuestionPage" resultMap="WrongQuestionPageResultMap" parameterType="com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM">
+    with wrong_answers as (
+      select *
+      from t_exam_paper_question_customer_answer
+      where do_right = FALSE
+        and create_user = #{createUser}
+    ),
+    grouped as (
+      select question_id, count(*) as wrong_count, max(create_time) as latest_wrong_time
+      from wrong_answers
+      group by question_id
+    ),
+    latest as (
+      select distinct on (question_id) *
+      from wrong_answers
+      order by question_id, create_time desc, id desc
+    )
+    select
+      latest.id,
+      latest.question_id,
+      latest.id as latest_customer_answer_id,
+      latest.question_type,
+      to_char(latest.create_time, 'YYYY-MM-DD HH24:MI:SS') as create_time,
+      to_char(grouped.latest_wrong_time, 'YYYY-MM-DD HH24:MI:SS') as latest_wrong_time,
+      subject.name as subject_name,
+      coalesce(nullif(question.knowledge_point, ''), '未分类') as knowledge_point,
+      grouped.wrong_count,
+      correction.review_status as correction_status,
+      correction.review_comment as review_comment
+    from grouped
+    inner join latest on latest.question_id = grouped.question_id
+    inner join t_question question on question.id = latest.question_id
+    left join t_subject subject on subject.id = latest.subject_id
+    left join lateral (
+      select review_status, review_comment
+      from t_question_correction_record
+      where deleted = false
+        and customer_answer_id = latest.id
+        and user_id = #{createUser}
+      order by id desc
+      limit 1
+    ) correction on true
+    order by coalesce(nullif(question.knowledge_point, ''), '未分类') asc,
+      grouped.wrong_count desc,
+      grouped.latest_wrong_time desc,
+      latest.id desc
+  </select>
+
+  <select id="studentWrongQuestionHistory" resultMap="WrongQuestionHistoryResultMap">
+    select
+      answer.id as customer_answer_id,
+      answer.exam_paper_answer_id,
+      answer.exam_paper_id,
+      paper_answer.paper_name,
+      answer.create_time,
+      paper_answer.user_score,
+      correction.review_status as correction_status,
+      correction.review_comment as review_comment
+    from t_exam_paper_question_customer_answer answer
+    left join t_exam_paper_answer paper_answer on paper_answer.id = answer.exam_paper_answer_id
+    left join lateral (
+      select review_status, review_comment
+      from t_question_correction_record
+      where deleted = false
+        and customer_answer_id = answer.id
+        and user_id = #{userId}
+      order by id desc
+      limit 1
+    ) correction on true
+    where answer.do_right = FALSE
+      and answer.create_user = #{userId}
+      and answer.question_id = #{questionId}
+    order by answer.create_time desc, answer.id desc
   </select>
 
 

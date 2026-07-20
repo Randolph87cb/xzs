@@ -263,6 +263,14 @@
     limit 1
   </select>
 
+  <select id="selectPaperHistory" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_exam_paper_answer
+    where exam_paper_id = #{pid} and create_user = #{uid}
+    order by create_time desc, id desc
+  </select>
+
   <select id="adminPage" resultMap="BaseResultMap" parameterType="com.mindskip.xzs.viewmodel.admin.paper.ExamPaperAnswerPageRequestVM">
     SELECT
     a.id, a.exam_paper_id, a.paper_name, a.paper_type, a.subject_id, a.system_score, a.user_score,
