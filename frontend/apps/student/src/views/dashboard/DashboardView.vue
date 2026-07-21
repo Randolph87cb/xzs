@@ -1,14 +1,5 @@
 <template>
   <section class="dashboard" v-loading="loading">
-    <header class="dashboard__header">
-      <div>
-        <p class="dashboard__eyebrow">今日学习</p>
-        <h1>老师任务与本级别考试</h1>
-        <span>先完成老师布置的任务，再选择当前级别推荐的考试练习。</span>
-      </div>
-      <el-button type="primary" @click="router.push('/paper/index')">试卷中心</el-button>
-    </header>
-
     <div class="dashboard__layout">
       <main class="dashboard__main">
         <section class="dashboard__section dashboard__section--primary">
@@ -294,31 +285,6 @@ function formatPercent(value: number) {
   gap: 24px;
 }
 
-.dashboard__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 22px 24px;
-  border: 1px solid var(--xzs-border);
-  border-radius: var(--xzs-radius);
-  background: var(--xzs-surface);
-}
-
-.dashboard__eyebrow {
-  margin: 0 0 6px;
-  color: var(--xzs-primary);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.dashboard h1 {
-  margin: 0;
-  color: var(--xzs-text);
-  font-size: 24px;
-}
-
-.dashboard__header span,
 .dashboard__section-title span,
 .dashboard__task-header span,
 .dashboard__paper-meta,
@@ -326,11 +292,6 @@ function formatPercent(value: number) {
 .dashboard__practice span,
 .dashboard__summary-item span {
   color: var(--xzs-text-muted);
-}
-
-.dashboard__header span {
-  display: block;
-  margin-top: 8px;
 }
 
 .dashboard__layout {
@@ -601,20 +562,11 @@ function formatPercent(value: number) {
     gap: 16px;
   }
 
-  .dashboard__header,
   .dashboard__section-title,
   .dashboard__more,
   .dashboard__practice {
     align-items: stretch;
     flex-direction: column;
-  }
-
-  .dashboard__header {
-    padding: 18px;
-  }
-
-  .dashboard h1 {
-    font-size: 22px;
   }
 
   .dashboard__section,
