@@ -97,6 +97,7 @@ public class DashboardController extends BaseApiController {
             TaskItemVm itemVm = new TaskItemVm();
             itemVm.setId(t.getId());
             itemVm.setTitle(t.getTitle());
+            itemVm.setCreateTime(DateTimeUtil.dateFormat(t.getCreateTime()));
             TaskExamCustomerAnswer taskExamCustomerAnswer = taskAnswerMap.get(t.getId());
             List<TaskItemPaperVm> paperItemVMS = getTaskItemPaperVm(context.getPaperItems(), taskExamCustomerAnswer, user.getTargetSubjectId(), examPaperMap);
             itemVm.setPaperItems(paperItemVMS);

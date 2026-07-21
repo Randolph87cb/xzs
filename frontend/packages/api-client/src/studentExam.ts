@@ -155,6 +155,7 @@ export interface DashboardTaskPaperItem {
 export interface DashboardTaskItem {
   id: number
   title: string
+  createTime?: string
   paperItems: DashboardTaskPaperItem[]
 }
 

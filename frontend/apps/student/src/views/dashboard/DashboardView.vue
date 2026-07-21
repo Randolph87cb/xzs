@@ -49,8 +49,8 @@
               </div>
             </article>
 
-            <div v-if="tasks.length > visibleTasks.length" class="dashboard__more">
-              <span>还有 {{ tasks.length - visibleTasks.length }} 项任务未在首页展开</span>
+            <div v-if="sortedTasks.length > visibleTasks.length" class="dashboard__more">
+              <span>还有 {{ sortedTasks.length - visibleTasks.length }} 项任务未在首页展开</span>
             </div>
           </div>
 
@@ -181,7 +181,13 @@ const dashboard = reactive<DashboardIndex>({
 const fixedPapers = computed(() => dashboard.fixedPaper ?? [])
 const timeLimitPapers = computed(() => dashboard.timeLimitPaper ?? [])
 const pushPapers = computed(() => dashboard.pushPaper ?? [])
-const visibleTasks = computed(() => tasks.value.slice(0, 4))
+const sortedTasks = computed(() =>
+  tasks.value
+    .map((task, index) => ({ task, index }))
+    .sort((left, right) => compareDashboardTasks(left.task, right.task) || left.index - right.index)
+    .map((item) => item.task)
+)
+const visibleTasks = computed(() => sortedTasks.value.slice(0, 4))
 const recommendedPapers = computed<RecommendedPaper[]>(() => [
   ...timeLimitPapers.value.map((paper) => toRecommendedPaper(paper, 'timeLimit')),
   ...pushPapers.value.map((paper) => toRecommendedPaper(paper, 'push')),
@@ -247,6 +253,53 @@ function taskPaperStatusMeta(paper: DashboardTaskPaperItem): { label: string; ty
   }
 
   return { label: '待批改', type: 'warning' }
+}
+
+function compareDashboardTasks(left: DashboardTaskItem, right: DashboardTaskItem) {
+  const pendingCompare = Number(hasPendingTaskPaper(right)) - Number(hasPendingTaskPaper(left))
+  if (pendingCompare !== 0) {
+    return pendingCompare
+  }
+
+  const leftCreateTime = parseTaskCreateTime(left.createTime)
+  const rightCreateTime = parseTaskCreateTime(right.createTime)
+  if (leftCreateTime !== null && rightCreateTime !== null && leftCreateTime !== rightCreateTime) {
+    return rightCreateTime - leftCreateTime
+  }
+
+  return right.id - left.id
+}
+
+function hasPendingTaskPaper(task: DashboardTaskItem) {
+  return task.paperItems.some((paper) => paper.status === null)
+}
+
+function parseTaskCreateTime(value?: string) {
+  if (!value) {
+    return null
+  }
+
+  const normalized = value.trim()
+  if (!normalized) {
+    return null
+  }
+
+  const match = normalized.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})$/)
+  if (match) {
+    const [, year, month, day, hour, minute, second] = match
+    const timestamp = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hour),
+      Number(minute),
+      Number(second)
+    ).getTime()
+    return Number.isNaN(timestamp) ? null : timestamp
+  }
+
+  const timestamp = Date.parse(normalized)
+  return Number.isNaN(timestamp) ? null : timestamp
 }
 
 function startTaskPaper(taskId: number, examPaperId: number) {

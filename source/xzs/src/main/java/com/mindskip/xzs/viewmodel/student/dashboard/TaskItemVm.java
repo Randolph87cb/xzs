@@ -6,6 +6,7 @@ import java.util.List;
 public class TaskItemVm {
     private Integer id;
     private String title;
+    private String createTime;
     private List<TaskItemPaperVm> paperItems;
 
     public Integer getId() {
@@ -22,6 +23,14 @@ public class TaskItemVm {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public List<TaskItemPaperVm> getPaperItems() {
