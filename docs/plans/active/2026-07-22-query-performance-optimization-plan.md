@@ -11,9 +11,24 @@
 - 后端使用 Spring Boot + MyBatis + PageHelper + PostgreSQL。分页入口主要在 `source/xzs/src/main/java/com/mindskip/xzs/service/impl/*ServiceImpl.java`，SQL 在 `source/xzs/src/main/resources/mapper/*.xml`。
 - 当前已有的主要业务索引集中在 `V1__baseline_schema.sql` 和 `V7__add_student_history_wrong_question_indexes.sql`：班级、用户班级角色、答卷班级时间、错题历史等已有基础索引，但题目筛选、试卷筛选、用户登录/搜索、任务答题记录、日志等高频查询仍缺少匹配索引。
 
+## Test 环境实测结论
+
+- 测试时间：2026-07-22。
+- 测试环境：从 `.env.neon-test` 连接 Neon test branch，只执行只读统计和 `EXPLAIN (ANALYZE, BUFFERS)`。
+- 测试库规模偏小：`t_user=10`、`t_question=5225`、`t_exam_paper=99`、`t_exam_paper_answer=5`、`t_exam_paper_question_customer_answer=142`、`t_question_correction_record=12`、`t_task_exam_customer_answer=1`、`t_user_event_log=82`。
+- 因为测试库数据量小，多数接口 SQL 实际执行时间在 1 ms 内，无法直接复现用户体感的高延迟；本次结论主要依据执行计划形态判断“数据放大后会先慢在哪里”。
+- 已确认的执行计划风险：
+  - 题目列表按 `subject_id` 查第一页时走主键倒序扫描再过滤，`subject_id=1` 过滤前跳过 825 行；对应 count 查询对 `t_question` 做 Seq Scan，扫描 5225 行。
+  - 试卷列表按 `subject_id + paper_type` 过滤时做 Seq Scan + Sort；当前只有 99 行所以很快，但没有可随数据增长扩展的组合索引。
+  - 答题明细 `exam_paper_answer_id = ? order by item_order` 做 Seq Scan + Sort；当前扫描 142 行，未来答题记录增加后会放大。
+  - 用户日志最近 10 条按 `user_id` 查做 Seq Scan + Sort；当前扫描 82 行，日志增长后会变成明显慢点。
+  - 任务答题记录 `task_exam_id + create_user` 做 Seq Scan；当前只有 1 行，数据增长后应补索引。
+  - 班级答卷列表和班级排行中的 `COALESCE(record.class_id, user.class_id)` 会触发 Join 后过滤；test branch 当前记录表 `class_id` 空值为 0，因此可以优先改成直接使用记录表 `class_id`。
+- 结合用户反馈“智能训练现在用得不多”，智能训练随机抽题不作为第一优先级；它仍是明确风险，但放到列表/日志/班级查询之后处理。
+
 ## 结论
 
-优先处理智能训练抽题、题目/试卷/答卷/用户列表索引、班级排行 `COALESCE` 查询形态和日志/任务记录索引；同时补一套只读 SQL 观测脚本，用测试库和生产库的 `EXPLAIN (ANALYZE, BUFFERS)` 验证真实瓶颈后再上线迁移。
+优先处理题目/试卷/答题明细/用户日志/任务答题记录索引，以及班级排行和答卷列表的 `COALESCE` 查询形态；智能训练抽题暂列第二阶段。test branch 当前数据量太小，建议上线前再对 production 做只读 `EXPLAIN` 或在 test branch 构造放大数据验证。
 
 ## 需求拆解
 
@@ -138,10 +153,10 @@
 
 ## 执行顺序
 
-1. 先补观测脚本/文档，在 Neon test branch 采集关键表行数、索引和慢 SQL 执行计划。
-2. 第一批上线低风险索引：题目、试卷、学生答卷、答题明细、登录/微信登录、任务答题记录、用户日志。
-3. 改智能训练抽题逻辑，替换 `ORDER BY random()` 主路径，并保留小数据量回退。
-4. 处理班级排行和答卷列表的 `COALESCE` 查询：先统计和回填历史 `class_id`，再改 SQL。
+1. 第一批上线低风险索引：题目列表、试卷列表、答题明细、任务答题记录、用户日志、登录/微信登录。
+2. 处理班级排行和答卷列表的 `COALESCE` 查询：test branch 已确认记录表 `class_id` 空值为 0，可优先改为直接按记录表 `class_id` 查询；生产执行前仍需先统计空值。
+3. 在生产库做只读观测：表规模、空 `class_id` 数量、关键 SQL 的 `EXPLAIN (ANALYZE, BUFFERS)`，确认第一批索引覆盖真实慢点。
+4. 第二阶段再改智能训练抽题逻辑，替换 `ORDER BY random()` 主路径，并保留小数据量回退。
 5. 视真实数据决定是否做用户模糊搜索的 `pg_trgm`，以及是否把大列表改成游标分页。
 
 ## 风险与待确认
