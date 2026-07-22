@@ -263,7 +263,7 @@
 
   <select id="studentWrongQuestionPage" resultMap="WrongQuestionPageResultMap" parameterType="com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM">
     with wrong_answers as (
-      select *
+      select id, question_id, question_type, subject_id, create_time
       from t_exam_paper_question_customer_answer
       where do_right = FALSE
         and create_user = #{createUser}

@@ -3,14 +3,21 @@ package com.mindskip.xzs.configuration.spring.mvc;
 import com.mindskip.xzs.configuration.property.SystemConfig;
 import com.mindskip.xzs.configuration.spring.wx.TokenHandlerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.CacheControl;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.config.annotation.*;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -32,6 +39,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     private static final String USE_LOCAL_STATIC_PROPERTY = "xzs.web.static.use-local";
     private static final String DEFAULT_ADMIN_ROOT = "../../frontend/apps/admin/";
     private static final String DEFAULT_STUDENT_ROOT = "../../frontend/apps/student/";
+    private static final String IMMUTABLE_STATIC_CACHE_CONTROL = "public, max-age=31536000, immutable";
 
     private final TokenHandlerInterceptor tokenHandlerInterceptor;
     private final SystemConfig systemConfig;
@@ -58,12 +66,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         }
 
         registry.addResourceHandler("/admin/static/**")
-                .addResourceLocations(CLASSPATH_ADMIN_STATIC)
-                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic());
+                .addResourceLocations(CLASSPATH_ADMIN_STATIC);
 
         registry.addResourceHandler("/student/static/**")
-                .addResourceLocations(CLASSPATH_STUDENT_STATIC)
-                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic());
+                .addResourceLocations(CLASSPATH_STUDENT_STATIC);
 
         registry.addResourceHandler("/admin/index.html", "/student/index.html")
                 .addResourceLocations(CLASSPATH_STATIC)
@@ -101,6 +107,23 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     private boolean isLocalStaticEnabled() {
         return Boolean.TRUE.equals(environment.getProperty(USE_LOCAL_STATIC_PROPERTY, Boolean.class, false));
+    }
+
+    @Bean
+    public FilterRegistrationBean<OncePerRequestFilter> staticResourceCacheControlFilter() {
+        FilterRegistrationBean<OncePerRequestFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new OncePerRequestFilter() {
+            @Override
+            protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+                if (!isDevProfile() && !isLocalStaticEnabled()) {
+                    response.setHeader("Cache-Control", IMMUTABLE_STATIC_CACHE_CONTROL);
+                }
+                filterChain.doFilter(request, response);
+            }
+        });
+        registration.addUrlPatterns("/admin/static/*", "/student/static/*");
+        registration.setName("staticResourceCacheControlFilter");
+        return registration;
     }
 
     private String normalizeRootLocation(String root) {

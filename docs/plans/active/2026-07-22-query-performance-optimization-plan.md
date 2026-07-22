@@ -3,7 +3,7 @@
 状态：active
 创建日期：2026-07-22
 完成日期：
-验证摘要：
+验证摘要：第一阶段已完成本地静态检查和后端编译；当前环境无 `psql`，数据库迁移仅做文件顺序和只含索引语句的静态检查，未连接 production。
 
 ## 背景与现状
 
@@ -231,6 +231,42 @@
 - 风险：新增索引会增加写入成本和存储占用；在生产大表上建索引应优先评估 `CREATE INDEX CONCURRENTLY`，但 Flyway 默认事务行为与并发建索引需要单独处理。
 - 风险：智能训练抽题逻辑调整后，要保证知识点权重、最小题数、题目不重复和题型展示都不回归。
 - 边界：只要会改变统计口径、历史空值 fallback、随机分布、搜索匹配方式、分页稳定性或用户可见加载顺序，就不纳入“零功能变化”第一阶段。
+
+## 第一阶段实施记录
+
+- 实施时间：2026-07-22。
+- 静态资源交付：生产模式下 `/admin/static/**` 和 `/student/static/**` 在已有 365 天公开缓存基础上补充 `immutable`；`/admin/index.html`、`/student/index.html` 和兜底 `/**` 仍保持 0 秒缓存，避免入口 HTML 长缓存。
+- 压缩配置：保留 `application.yml` 已启用的 gzip 压缩配置，未改变压缩 MIME 类型、API 内容或页面内容。
+- 低风险索引迁移：新增 `V8__add_first_phase_query_performance_indexes.sql`，只使用 `CREATE INDEX IF NOT EXISTS` 新增普通/部分普通索引，覆盖题目列表、试卷列表、学生考试记录、管理端答卷按科目/班级过滤、答题明细、登录/微信登录、任务答题记录和用户日志查询；未改表字段、数据、约束或查询结果。
+- 错题本等价 SQL 收窄：`studentWrongQuestionPage` 的 `wrong_answers` CTE 从 `select *` 收窄为后续分组、去重、展示和关联实际使用的 `id, question_id, question_type, subject_id, create_time`，保持 WHERE、去重、排序、分页和返回字段含义不变。
+- 观测脚本：新增 `scripts/measure-query-performance.ps1`，默认从 `.env.neon-test` 读取连接串并隐藏连接详情，通过 `psql` 执行只读事务内的表规模、索引清单和关键 SQL `EXPLAIN (ANALYZE, BUFFERS)`；可选 `-BaseUrl` 测量入口 HTML 与首个 hash 静态资源的状态码、耗时、缓存头和压缩头。
+- 本地验证：mapper XML 解析通过；V8 迁移静态检查确认只有 10 条 `CREATE INDEX IF NOT EXISTS`，无 `ALTER/UPDATE/INSERT/DELETE/DROP/TRUNCATE`；`scripts/measure-query-performance.ps1 -SkipSql -SkipHttp` 语法执行通过；使用项目内 Maven wrapper 执行 `mvnw.cmd -q -DskipTests compile` 通过。
+- 验证限制：当前环境未安装 `psql` 到 PATH，未执行 test branch 的 `EXPLAIN`；未启动完整本地服务做 HTTP 头实测；未连接 production。
+- 明确未做：未修改智能训练抽题算法；未修改班级排行或答卷列表的 `COALESCE` fallback；未禁用或延迟百度统计、Cloudflare RUM；未改变前端交互、接口字段、排序或分页语义。
+
+## 第一阶段独立验证记录
+
+- 验证时间：2026-07-22。
+- 验证方式：由独立验证 subagent 读取实际 diff 后启动本地 Neon test 服务，用真实 Chromium 登录本地和远端学生端、老师端，对关键只读 API 做 3 次探针取中位数，并启动临时生产静态模式实例验证缓存头。
+- 验证结论：修改基本满足“零功能变化”边界；V8 迁移只包含 10 条 `CREATE INDEX IF NOT EXISTS`；错题本 SQL 只收窄 CTE 投影字段；入口 `index.html` 为 `no-store`，抽样 hash JS/CSS 为 `public, max-age=31536000, immutable`。
+- 性能对比：
+
+| 页面/接口 | 改前基线 | 改后本地候选 | 远端现状 | 变化结论 |
+|---|---:|---:|---:|---|
+| 学生登录页冷加载 | 本地约 842 ms；远端约 8370 ms | 774 ms | 4625 ms | 本地小幅改善；远端较基线改善但仍慢于本地 |
+| 学生登录提交 `/api/student/auth/login` | 未单列 | 374 ms | 827 ms | 可用；远端约为本地 2.2 倍 |
+| 学生错题本 `/api/student/question/answer/wrongQuestionPage` | 本地约 3284 ms；远端约 2682 ms | 2292 ms | 2873 ms | 本地约快 30%；远端需部署候选后复测 |
+| 学生试卷中心 `/api/student/exam/paper/pageList` | 远端约 1893 ms | 376 ms | 1992 ms | 本地很快；远端与基线接近略慢 |
+| 学生考试记录 `/api/student/exampaper/answer/pageList` | 远端记录/历史约 1200-1314 ms | 645 ms | 1640 ms | 本地可接受；远端现状较基线慢 |
+| 学生班级排行 `/api/student/dashboard/class/ranking` | 远端约 870-1013 ms | 368 ms | 1409 ms | 本地快；远端现状较基线慢 |
+| 老师登录页冷加载 | 本地约 638 ms；远端约 4238 ms | 671 ms | 3212 ms | 本地基本持平；远端较基线改善 |
+| 老师登录提交 `/api/admin/auth/login` | 未单列 | 371 ms | 1889 ms | 本地正常；远端登录 API 偏慢 |
+| 老师 Dashboard `/api/admin/dashboard/index` | 远端约 1306 ms | 763 ms | 1945 ms | 本地快于远端；远端现状较基线慢 |
+| 老师题目列表 `/api/admin/question/page` | 远端常见列表约 1100-1432 ms；本地其它列表多为 400-900 ms | 1329 ms | 3291 ms | 本地仍偏高；远端明显偏慢 |
+| 老师试卷列表 `/api/admin/exam/paper/page` | 远端常见列表约 1100-1432 ms | 389 ms | 1435 ms | 本地明显快；远端接近基线上沿 |
+| 老师答卷列表 `/api/admin/examPaperAnswer/page` | 本地约 1633 ms；远端常见列表约 1100-1432 ms | 1420 ms | 3412 ms | 本地约快 13%；远端需部署候选后复测 |
+
+- 验证限制：本机没有 `psql`，未跑 SQL `EXPLAIN (ANALYZE, BUFFERS)`；远端仍是现状版本，不代表候选部署后的远端效果。
 
 ## 收尾记录
 
