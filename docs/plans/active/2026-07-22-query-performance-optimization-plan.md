@@ -268,6 +268,37 @@
 
 - 验证限制：本机没有 `psql`，未跑 SQL `EXPLAIN (ANALYZE, BUFFERS)`；远端仍是现状版本，不代表候选部署后的远端效果。
 
+## Fly 与树莓派部署后对比记录
+
+- 测试时间：2026-07-22。
+- 部署版本：`393b4a29` 镜像已推送到 ACR，并分别部署到 Fly 测试端和树莓派生产端。
+- 测试口径：页面首屏使用真实 Chromium 的 `load` 完成时间；接口使用登录后连续 3 次请求的中位数。
+- 环境差异：Fly 连接 Neon test branch，树莓派连接 Neon production branch，部分接口数据量不同，因此该表用于判断远端链路体感差异，不作为严格数据库同库压测。
+
+| 页面/接口 | Fly 测试端 | 树莓派生产端部署后 | 树莓派部署前 | 结论 |
+|---|---:|---:|---:|---|
+| 学生登录页首屏 | 1652 ms | 3091 ms | 未同口径采集 | 树莓派公网首屏约为 Fly 1.9 倍 |
+| 老师登录页首屏 | 2127 ms | 2073 ms | 未同口径采集 | 两端接近 |
+| 学生登录 `/api/student/auth/login` | 733 ms | 2431 ms | 996 ms | 树莓派本轮登录抖动偏大，较部署前慢 |
+| 学生错题本 `/api/student/question/answer/wrongQuestionPage` | 2587 ms | 2683 ms | 3111 ms | 树莓派较部署前约快 14%，与 Fly 接近 |
+| 学生试卷中心 `/api/student/exam/paper/pageList` | 739 ms | 771 ms | 1058 ms | 树莓派较部署前约快 27%，与 Fly 接近 |
+| 学生考试记录 `/api/student/exampaper/answer/pageList` | 946 ms | 1423 ms | 1168 ms | 树莓派较 Fly 慢，且本轮较部署前慢 |
+| 学生班级排行 `/api/student/dashboard/class/ranking` | 742 ms | 932 ms | 1213 ms | 树莓派较部署前约快 23% |
+| 老师登录 `/api/admin/auth/login` | 860 ms | 966 ms | 882 ms | 两端接近，树莓派略慢 |
+| 老师 Dashboard `/api/admin/dashboard/index` | 1094 ms | 1284 ms | 1421 ms | 树莓派较部署前约快 10% |
+| 老师题目列表 `/api/admin/question/page` | 2386 ms | 1782 ms | 2189 ms | 树莓派较部署前约快 19%，且快于 Fly |
+| 老师试卷列表 `/api/admin/exam/paper/page` | 848 ms | 1001 ms | 1616 ms | 树莓派较部署前约快 38% |
+| 老师答卷列表 `/api/admin/examPaperAnswer/page` | 1501 ms | 2052 ms | 2057 ms | 树莓派基本无变化，仍慢于 Fly |
+
+- 静态缓存头验证：
+  - Fly 公网：`/admin/static/**`、`/student/static/**` 返回 `public, max-age=31536000, immutable`。
+  - 树莓派本机 `127.0.0.1:8000`：应用同样返回 `public, max-age=31536000, immutable`。
+  - 树莓派公网域名：代理层返回 `public, max-age=31536000`，缺少 `immutable`；说明应用变更已生效，但公网代理层覆盖或重写了该头。
+- 部署后结论：
+  - 这次零功能变化优化对树莓派的题目列表、试卷列表、错题本、班级排行有可见收益。
+  - 登录、考试记录和答卷列表仍有网络抖动或后端链路慢点，不能只归因于数据库索引。
+  - 若继续保持零功能变化，下一步应优先处理树莓派公网代理缓存头传递、登录链路耗时拆分，以及答卷列表/考试记录的生产只读执行计划。
+
 ## 收尾记录
 
 - 完成状态：
