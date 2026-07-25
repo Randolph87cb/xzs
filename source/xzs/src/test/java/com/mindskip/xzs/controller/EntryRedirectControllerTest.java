@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EntryRedirectControllerTest {
@@ -20,17 +21,19 @@ public class EntryRedirectControllerTest {
     }
 
     @Test
-    public void rootRedirectsToStudentIndexWithRelativeLocation() throws Exception {
+    public void rootForwardsToStudentIndexWithoutRedirect() throws Exception {
         mockMvc.perform(get("/"))
-                .andExpect(status().isFound())
-                .andExpect(header().string("Location", "student/index.html"));
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/student/index.html"))
+                .andExpect(header().doesNotExist("Location"));
     }
 
     @Test
-    public void headRootRedirectsToStudentIndexWithRelativeLocation() throws Exception {
+    public void headRootForwardsToStudentIndexWithoutRedirect() throws Exception {
         mockMvc.perform(head("/"))
-                .andExpect(status().isFound())
-                .andExpect(header().string("Location", "student/index.html"));
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/student/index.html"))
+                .andExpect(header().doesNotExist("Location"));
     }
 
     @Test

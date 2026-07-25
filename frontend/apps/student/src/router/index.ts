@@ -5,13 +5,27 @@ import { useUserStore } from '@/stores/user'
 
 NProgress.configure({ showSpinner: false })
 
+const loadLoginView = () => import('@/views/login/LoginView.vue')
+const loadDashboardView = () => import('@/views/dashboard/DashboardView.vue')
+let hasStartedInitialViewPreload = false
+
+function preloadInitialViews() {
+  if (hasStartedInitialViewPreload) {
+    return
+  }
+
+  hasStartedInitialViewPreload = true
+  void loadLoginView().catch(() => undefined)
+  void loadDashboardView().catch(() => undefined)
+}
+
 export const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
       path: '/login',
       name: 'Login',
-      component: () => import('@/views/login/LoginView.vue'),
+      component: loadLoginView,
       meta: { title: '登录', bodyBackground: '#fbfbfb', public: true }
     },
     {
@@ -22,7 +36,7 @@ export const router = createRouter({
         {
           path: 'index',
           name: 'Dashboard',
-          component: () => import('@/views/dashboard/DashboardView.vue'),
+          component: loadDashboardView,
           meta: { title: '首页' }
         },
         {
@@ -92,6 +106,7 @@ export const router = createRouter({
 
 router.beforeEach(async (to) => {
   NProgress.start()
+  preloadInitialViews()
   document.title = typeof to.meta.title === 'string' ? to.meta.title : '\u200E'
 
   if (typeof to.meta.bodyBackground === 'string') {

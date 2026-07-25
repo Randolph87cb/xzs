@@ -13,8 +13,8 @@ import java.net.URI;
 public class EntryRedirectController {
 
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public ResponseEntity<Void> root() {
-        return relativeRedirect("student/index.html");
+    public String root() {
+        return "forward:/student/index.html";
     }
 
     @RequestMapping(value = "/student", method = {RequestMethod.GET, RequestMethod.HEAD})
