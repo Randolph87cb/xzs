@@ -2,6 +2,7 @@ package com.mindskip.xzs.repository;
 
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,8 @@ import java.util.List;
 public interface ExamPaperAnswerMapper extends BaseMapper<ExamPaperAnswer> {
 
     List<ExamPaperAnswer> studentPage(ExamPaperAnswerPageVM requestVM);
+
+    List<ExamPaperAnswerPageItem> studentPageWithSubject(ExamPaperAnswerPageVM requestVM);
 
     Integer selectAllCount();
 

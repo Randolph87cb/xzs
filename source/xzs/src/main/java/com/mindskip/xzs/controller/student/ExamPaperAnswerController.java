@@ -4,11 +4,11 @@ import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.domain.*;
 import com.mindskip.xzs.domain.enums.ExamPaperAnswerStatusEnum;
+import com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem;
 import com.mindskip.xzs.event.CalculateExamPaperAnswerCompleteEvent;
 import com.mindskip.xzs.event.UserEvent;
 import com.mindskip.xzs.service.ExamPaperAnswerService;
 import com.mindskip.xzs.service.ExamPaperService;
-import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.utility.PageInfoHelper;
@@ -36,14 +36,12 @@ public class ExamPaperAnswerController extends BaseApiController {
 
     private final ExamPaperAnswerService examPaperAnswerService;
     private final ExamPaperService examPaperService;
-    private final SubjectService subjectService;
     private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, ExamPaperService examPaperService, SubjectService subjectService, ApplicationEventPublisher eventPublisher) {
+    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, ExamPaperService examPaperService, ApplicationEventPublisher eventPublisher) {
         this.examPaperAnswerService = examPaperAnswerService;
         this.examPaperService = examPaperService;
-        this.subjectService = subjectService;
         this.eventPublisher = eventPublisher;
     }
 
@@ -51,15 +49,14 @@ public class ExamPaperAnswerController extends BaseApiController {
     @RequestMapping(value = "/pageList", method = RequestMethod.POST)
     public RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> pageList(@RequestBody @Valid ExamPaperAnswerPageVM model) {
         model.setCreateUser(getCurrentUser().getId());
-        PageInfo<ExamPaperAnswer> pageInfo = examPaperAnswerService.studentPage(model);
+        PageInfo<ExamPaperAnswerPageItem> pageInfo = examPaperAnswerService.studentPageWithSubject(model);
         PageInfo<ExamPaperAnswerPageResponseVM> page = PageInfoHelper.copyMap(pageInfo, e -> {
             ExamPaperAnswerPageResponseVM vm = modelMapper.map(e, ExamPaperAnswerPageResponseVM.class);
-            Subject subject = subjectService.selectById(vm.getSubjectId());
             vm.setDoTime(ExamUtil.secondToVM(e.getDoTime()));
             vm.setSystemScore(ExamUtil.scoreToVM(e.getSystemScore()));
             vm.setUserScore(ExamUtil.scoreToVM(e.getUserScore()));
             vm.setPaperScore(ExamUtil.scoreToVM(e.getPaperScore()));
-            vm.setSubjectName(subject.getName());
+            vm.setSubjectName(e.getSubjectName());
             vm.setCreateTime(DateTimeUtil.dateFormat(e.getCreateTime()));
             return vm;
         });

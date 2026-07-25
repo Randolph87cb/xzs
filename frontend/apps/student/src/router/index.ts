@@ -125,6 +125,14 @@ router.beforeEach(async (to) => {
 
   try {
     if (!userStore.hasCheckedSession) {
+      if (userStore.hasLocalUserSnapshot) {
+        void userStore.initUserInfo().catch(() => {
+          userStore.clear()
+          redirectToLogin(router.currentRoute.value.fullPath)
+        })
+        return
+      }
+
       await userStore.initUserInfo()
     }
 
@@ -140,6 +148,17 @@ router.beforeEach(async (to) => {
     query: { redirect: to.fullPath }
   }
 })
+
+function redirectToLogin(redirect: string) {
+  if (router.currentRoute.value.path === '/login') {
+    return
+  }
+
+  void router.replace({
+    path: '/login',
+    query: { redirect }
+  })
+}
 
 router.afterEach(() => {
   NProgress.done()

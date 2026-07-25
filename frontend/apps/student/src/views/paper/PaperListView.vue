@@ -43,7 +43,13 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { getExamPaperPage, getSubjectList, type ExamPaperListItem, type SubjectItem } from '@xzs/api-client'
+import {
+  getExamPaperBootstrap,
+  getExamPaperPage,
+  type ExamPaperListItem,
+  type PageResponse,
+  type SubjectItem
+} from '@xzs/api-client'
 
 const router = useRouter()
 const subjects = ref<SubjectItem[]>([])
@@ -58,20 +64,28 @@ const query = reactive({
   pageSize: 10
 })
 
-onMounted(loadSubjects)
+onMounted(loadBootstrap)
 
-async function loadSubjects() {
-  const result = await getSubjectList()
-  subjects.value = result.response ?? []
+async function loadBootstrap() {
+  loading.value = true
+  try {
+    const result = await getExamPaperBootstrap({
+      paperType: query.paperType,
+      pageIndex: query.pageIndex,
+      pageSize: query.pageSize
+    })
+    const bootstrap = result.response
+    subjects.value = bootstrap?.subjects ?? []
+    query.subjectId = bootstrap?.activeSubjectId ?? 0
+    activeSubjectId.value = query.subjectId ? String(query.subjectId) : ''
+    applyPage(bootstrap?.page)
+  } finally {
+    loading.value = false
+  }
 
   if (subjects.value.length === 0) {
     ElMessage.warning('暂无可用科目')
-    return
   }
-
-  query.subjectId = subjects.value[0].id
-  activeSubjectId.value = String(query.subjectId)
-  await loadPapers()
 }
 
 async function loadPapers() {
@@ -82,13 +96,16 @@ async function loadPapers() {
   loading.value = true
   try {
     const result = await getExamPaperPage(query)
-    const page = result.response
-    papers.value = page?.list ?? []
-    total.value = page?.total ?? 0
-    query.pageIndex = page?.pageNum ?? query.pageIndex
+    applyPage(result.response)
   } finally {
     loading.value = false
   }
+}
+
+function applyPage(page?: PageResponse<ExamPaperListItem>) {
+  papers.value = page?.list ?? []
+  total.value = page?.total ?? 0
+  query.pageIndex = page?.pageNum ?? query.pageIndex
 }
 
 function handleSubjectChange(name: string | number) {

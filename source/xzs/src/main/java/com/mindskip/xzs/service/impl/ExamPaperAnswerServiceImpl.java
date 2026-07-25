@@ -6,6 +6,7 @@ import com.mindskip.xzs.domain.enums.ExamPaperAnswerStatusEnum;
 import com.mindskip.xzs.domain.enums.QuestionTypeEnum;
 import com.mindskip.xzs.domain.exam.ExamPaperTitleItemObject;
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerUpdate;
 import com.mindskip.xzs.domain.task.TaskItemAnswerObject;
 import com.mindskip.xzs.domain.task.TaskItemObject;
@@ -62,6 +63,12 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
     public PageInfo<ExamPaperAnswer> studentPage(ExamPaperAnswerPageVM requestVM) {
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 examPaperAnswerMapper.studentPage(requestVM));
+    }
+
+    @Override
+    public PageInfo<ExamPaperAnswerPageItem> studentPageWithSubject(ExamPaperAnswerPageVM requestVM) {
+        return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize()).doSelectPageInfo(() ->
+                examPaperAnswerMapper.studentPageWithSubject(requestVM));
     }
 
 

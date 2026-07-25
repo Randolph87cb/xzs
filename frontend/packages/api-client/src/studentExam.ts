@@ -23,6 +23,10 @@ export interface ExamPaperListRequest extends PageRequest {
   paperType: number
 }
 
+export interface ExamPaperBootstrapRequest extends PageRequest {
+  paperType: number
+}
+
 export interface ExamPaperListItem {
   id: number
   name: string
@@ -31,6 +35,12 @@ export interface ExamPaperListItem {
   suggestTime?: number
   startTime?: string
   endTime?: string
+}
+
+export interface ExamPaperBootstrap {
+  subjects: SubjectItem[]
+  activeSubjectId: number | null
+  page: PageResponse<ExamPaperListItem>
 }
 
 export interface QuestionOption {
@@ -215,6 +225,12 @@ export interface QuestionCorrectionSubmitRequest {
   correctThinking: string
 }
 
+export interface QuestionCorrectionSubmitResponse {
+  customerAnswerId: number
+  correctionId: number
+  reviewStatus: QuestionCorrectionReviewStatus
+}
+
 export interface QuestionWrongHistoryItem {
   customerAnswerId: number
   examPaperAnswerId: number
@@ -224,6 +240,13 @@ export interface QuestionWrongHistoryItem {
   userScore?: string
   correction_status?: QuestionCorrectionReviewStatus | null
   review_comment?: string | null
+}
+
+export interface WrongQuestionWorkspace {
+  questionVM: ExamQuestion
+  questionAnswerVM: AnswerItem
+  correction: QuestionCorrectionRecord | null
+  wrongHistory: QuestionWrongHistoryItem[]
 }
 
 export interface SmartTrainingCreateRequest {
@@ -242,6 +265,10 @@ export function getSubjectList(): Promise<ApiResponse<SubjectItem[]>> {
 
 export function getExamPaperPage(request: ExamPaperListRequest): Promise<ApiResponse<PageResponse<ExamPaperListItem>>> {
   return post<PageResponse<ExamPaperListItem>>('/api/student/exam/paper/pageList', request)
+}
+
+export function getExamPaperBootstrap(request: ExamPaperBootstrapRequest): Promise<ApiResponse<ExamPaperBootstrap>> {
+  return post<ExamPaperBootstrap>('/api/student/exam/paper/bootstrap', request)
 }
 
 export function getExamPaperDetail(id: number): Promise<ApiResponse<ExamPaperDetail>> {
@@ -306,6 +333,12 @@ export function getQuestionCorrection(customerAnswerId: number): Promise<ApiResp
   return post<QuestionCorrectionRecord | null>(`/api/student/question/correction/select/${customerAnswerId}`)
 }
 
-export function submitQuestionCorrection(request: QuestionCorrectionSubmitRequest): Promise<ApiResponse<void>> {
-  return post<void>('/api/student/question/correction/submit', request)
+export function getWrongQuestionWorkspace(customerAnswerId: number): Promise<ApiResponse<WrongQuestionWorkspace>> {
+  return post<WrongQuestionWorkspace>(`/api/student/question/answer/workspace/${customerAnswerId}`)
+}
+
+export function submitQuestionCorrection(
+  request: QuestionCorrectionSubmitRequest
+): Promise<ApiResponse<QuestionCorrectionSubmitResponse>> {
+  return post<QuestionCorrectionSubmitResponse>('/api/student/question/correction/submit', request)
 }

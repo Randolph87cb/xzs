@@ -19,6 +19,9 @@
     <result column="task_exam_id" jdbcType="INTEGER" property="taskExamId" />
     <result column="class_id" jdbcType="INTEGER" property="classId" />
   </resultMap>
+  <resultMap id="StudentPageResultMap" type="com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem" extends="BaseResultMap">
+    <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, exam_paper_id, paper_name, paper_type, subject_id, system_score, user_score,
     paper_score, question_correct, question_count, do_time, status, create_user, create_time,
@@ -261,6 +264,24 @@
     from t_exam_paper_answer
     where exam_paper_id = #{pid} and create_user=#{uid}
     limit 1
+  </select>
+
+  <select id="studentPageWithSubject" resultMap="StudentPageResultMap" parameterType="com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM">
+    SELECT
+      answer.id, answer.exam_paper_id, answer.paper_name, answer.paper_type, answer.subject_id,
+      answer.system_score, answer.user_score, answer.paper_score, answer.question_correct,
+      answer.question_count, answer.do_time, answer.status, answer.create_user, answer.create_time,
+      answer.task_exam_id, answer.class_id,
+      subject.name as subject_name
+    FROM t_exam_paper_answer answer
+    left join t_subject subject on subject.id = answer.subject_id
+    <where>
+      and answer.create_user = #{createUser}
+      <if test="subjectId != null">
+        and answer.subject_id = #{subjectId}
+      </if>
+    </where>
+    order by answer.id desc
   </select>
 
   <select id="selectPaperHistory" resultMap="BaseResultMap">

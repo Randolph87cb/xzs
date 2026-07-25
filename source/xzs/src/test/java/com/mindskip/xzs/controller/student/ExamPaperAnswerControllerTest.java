@@ -4,11 +4,14 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.context.WebContext;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem;
 import com.mindskip.xzs.service.ExamPaperAnswerService;
 import com.mindskip.xzs.service.ExamPaperService;
-import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerHistoryVM;
+import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageResponseVM;
+import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
+import com.github.pagehelper.PageInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationEventPublisher;
@@ -37,7 +40,6 @@ public class ExamPaperAnswerControllerTest {
         controller = new ExamPaperAnswerController(
                 examPaperAnswerService,
                 examPaperService,
-                mock(SubjectService.class),
                 mock(ApplicationEventPublisher.class));
 
         WebContext webContext = mock(WebContext.class);
@@ -63,6 +65,27 @@ public class ExamPaperAnswerControllerTest {
         assertEquals("8", history.getAverageScore());
         assertEquals(Integer.valueOf(8), history.getItems().get(0).getTaskExamId());
         assertEquals("3 秒", history.getItems().get(0).getDoTime());
+    }
+
+    @Test
+    public void pageListLoadsSubjectsOnceAndMapsAllRows() {
+        ExamPaperAnswerPageItem first = pageAnswer(3, 101, 90, 30, 8, "GESP 1级");
+        first.setSubjectId(1);
+        ExamPaperAnswerPageItem second = pageAnswer(2, 102, 80, 30, null, "GESP 2级");
+        second.setSubjectId(2);
+        when(examPaperAnswerService.studentPageWithSubject(org.mockito.ArgumentMatchers.any()))
+                .thenReturn(new PageInfo<>(Arrays.asList(first, second)));
+
+        ExamPaperAnswerPageVM request = new ExamPaperAnswerPageVM();
+        request.setPageIndex(1);
+        request.setPageSize(10);
+        RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> response = controller.pageList(request);
+
+        assertEquals(1, response.getCode());
+        assertEquals("GESP 1级", response.getResponse().getList().get(0).getSubjectName());
+        assertEquals("GESP 2级", response.getResponse().getList().get(1).getSubjectName());
+        verify(examPaperAnswerService).studentPageWithSubject(request);
+        verify(examPaperAnswerService, never()).studentPage(org.mockito.ArgumentMatchers.any());
     }
 
     @Test
@@ -140,5 +163,26 @@ public class ExamPaperAnswerControllerTest {
         User user = new User();
         user.setId(7);
         return user;
+    }
+
+    private ExamPaperAnswerPageItem pageAnswer(Integer id, Integer paperId, Integer score, Integer paperScore,
+                                               Integer taskExamId, String subjectName) {
+        ExamPaperAnswer source = answer(id, paperId, score, paperScore, taskExamId);
+        ExamPaperAnswerPageItem item = new ExamPaperAnswerPageItem();
+        item.setId(source.getId());
+        item.setExamPaperId(source.getExamPaperId());
+        item.setPaperName(source.getPaperName());
+        item.setUserScore(source.getUserScore());
+        item.setSystemScore(source.getSystemScore());
+        item.setPaperScore(source.getPaperScore());
+        item.setQuestionCorrect(source.getQuestionCorrect());
+        item.setQuestionCount(source.getQuestionCount());
+        item.setDoTime(source.getDoTime());
+        item.setStatus(source.getStatus());
+        item.setTaskExamId(source.getTaskExamId());
+        item.setCreateUser(source.getCreateUser());
+        item.setCreateTime(source.getCreateTime());
+        item.setSubjectName(subjectName);
+        return item;
     }
 }

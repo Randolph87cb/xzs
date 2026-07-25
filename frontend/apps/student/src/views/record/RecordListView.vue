@@ -47,8 +47,8 @@
       <span>用时：{{ selected.doTime }}</span>
     </aside>
 
-    <section v-if="history" class="record-list__history" v-loading="historyLoading">
-      <header class="record-list__history-header">
+    <section v-if="history || historyLoading" class="record-list__history" v-loading="historyLoading">
+      <header v-if="history" class="record-list__history-header">
         <div>
           <h2>同卷历史</h2>
           <p>
@@ -58,7 +58,7 @@
         </div>
       </header>
 
-      <el-table :data="history.items" row-key="id" border>
+      <el-table v-if="history" :data="history.items" row-key="id" border>
         <el-table-column prop="createTime" label="提交时间" width="170" />
         <el-table-column prop="userScore" label="得分" width="90" />
         <el-table-column prop="paperScore" label="总分" width="90" />
@@ -100,6 +100,9 @@ const total = ref(0)
 const loading = ref(false)
 const historyLoading = ref(false)
 const history = ref<ExamPaperHistory | null>(null)
+const historyCache = new Map<number, ExamPaperHistory>()
+const historyRequests = new Map<number, Promise<ExamPaperHistory | null>>()
+let historyRequestSequence = 0
 const selected = ref<Partial<ExamRecordItem>>({
   systemScore: '0',
   userScore: '0',
@@ -117,6 +120,9 @@ onMounted(loadRecords)
 
 async function loadRecords() {
   loading.value = true
+  historyRequestSequence += 1
+  historyLoading.value = false
+  history.value = null
   try {
     const result = await getExamRecordPage(query)
     const page = result.response
@@ -124,9 +130,6 @@ async function loadRecords() {
     total.value = page?.total ?? 0
     query.pageIndex = page?.pageNum ?? query.pageIndex
     selected.value = records.value[0] ?? selected.value
-    if (!history.value && records.value[0]?.examPaperId) {
-      await viewHistory(records.value[0])
-    }
   } finally {
     loading.value = false
   }
@@ -143,12 +146,38 @@ function selectRecord(record: ExamRecordItem) {
 
 async function viewHistory(record: ExamRecordItem) {
   selected.value = record
-  historyLoading.value = true
-  try {
-    const result = await getExamPaperHistory(record.examPaperId)
-    history.value = result.response ?? null
-  } finally {
+  const cachedHistory = historyCache.get(record.examPaperId)
+  if (cachedHistory) {
+    historyRequestSequence += 1
+    history.value = cachedHistory
     historyLoading.value = false
+    return
+  }
+
+  const requestSequence = ++historyRequestSequence
+  history.value = null
+  historyLoading.value = true
+  let historyRequest = historyRequests.get(record.examPaperId)
+  if (!historyRequest) {
+    historyRequest = getExamPaperHistory(record.examPaperId).then((result) => result.response ?? null)
+    historyRequests.set(record.examPaperId, historyRequest)
+  }
+  try {
+    const loadedHistory = await historyRequest
+    if (loadedHistory) {
+      historyCache.set(record.examPaperId, loadedHistory)
+    }
+    if (requestSequence !== historyRequestSequence) {
+      return
+    }
+    history.value = loadedHistory
+  } finally {
+    if (historyRequests.get(record.examPaperId) === historyRequest) {
+      historyRequests.delete(record.examPaperId)
+    }
+    if (requestSequence === historyRequestSequence) {
+      historyLoading.value = false
+    }
   }
 }
 </script>
@@ -190,6 +219,7 @@ async function viewHistory(record: ExamRecordItem) {
 .record-list__history {
   display: grid;
   gap: 12px;
+  min-height: 96px;
   padding-top: 16px;
   border-top: 1px solid var(--xzs-border);
 }

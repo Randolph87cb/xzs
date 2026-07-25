@@ -3,6 +3,7 @@ package com.mindskip.xzs.service;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.ExamPaperAnswerInfo;
 import com.mindskip.xzs.domain.User;
+import com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +19,8 @@ public interface ExamPaperAnswerService extends BaseService<ExamPaperAnswer> {
      * @return PageInfo<ExamPaperAnswer>
      */
     PageInfo<ExamPaperAnswer> studentPage(ExamPaperAnswerPageVM requestVM);
+
+    PageInfo<ExamPaperAnswerPageItem> studentPageWithSubject(ExamPaperAnswerPageVM requestVM);
 
     /**
      * 计算试卷提交结果(不入库)

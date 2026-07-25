@@ -3,6 +3,7 @@ package com.mindskip.xzs.repository;
 import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerUpdate;
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.other.WrongQuestionWorkspaceData;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionWrongHistoryVM;
@@ -22,6 +23,9 @@ public interface ExamPaperQuestionCustomerAnswerMapper extends BaseMapper<ExamPa
     List<QuestionPageStudentResponseVM> studentWrongQuestionPage(QuestionPageStudentRequestVM requestVM);
 
     List<QuestionWrongHistoryVM> studentWrongQuestionHistory(@Param("userId") Integer userId, @Param("questionId") Integer questionId);
+
+    WrongQuestionWorkspaceData selectWrongQuestionWorkspace(@Param("customerAnswerId") Integer customerAnswerId,
+                                                            @Param("userId") Integer userId);
 
     int insertList(List<ExamPaperQuestionCustomerAnswer> list);
 

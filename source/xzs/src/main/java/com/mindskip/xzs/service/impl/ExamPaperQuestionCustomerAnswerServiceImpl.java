@@ -3,6 +3,7 @@ package com.mindskip.xzs.service.impl;
 import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerUpdate;
 import com.mindskip.xzs.domain.other.KeyValue;
+import com.mindskip.xzs.domain.other.WrongQuestionWorkspaceData;
 import com.mindskip.xzs.domain.TextContent;
 import com.mindskip.xzs.domain.enums.QuestionTypeEnum;
 import com.mindskip.xzs.repository.ExamPaperQuestionCustomerAnswerMapper;
@@ -58,6 +59,11 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
     }
 
     @Override
+    public WrongQuestionWorkspaceData selectWrongQuestionWorkspace(Integer customerAnswerId, Integer userId) {
+        return examPaperQuestionCustomerAnswerMapper.selectWrongQuestionWorkspace(customerAnswerId, userId);
+    }
+
+    @Override
     public List<ExamPaperQuestionCustomerAnswer> selectListByPaperAnswerId(Integer id) {
         return examPaperQuestionCustomerAnswerMapper.selectListByPaperAnswerId(id);
     }
@@ -70,6 +76,19 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
 
     @Override
     public ExamPaperSubmitItemVM examPaperQuestionCustomerAnswerToVM(ExamPaperQuestionCustomerAnswer qa) {
+        ExamPaperSubmitItemVM examPaperSubmitItemVM = baseAnswerVM(qa);
+        setSpecialToVM(examPaperSubmitItemVM, qa);
+        return examPaperSubmitItemVM;
+    }
+
+    @Override
+    public ExamPaperSubmitItemVM examPaperQuestionCustomerAnswerToVM(ExamPaperQuestionCustomerAnswer qa, String answerTextContent) {
+        ExamPaperSubmitItemVM examPaperSubmitItemVM = baseAnswerVM(qa);
+        setSpecialToVM(examPaperSubmitItemVM, qa, answerTextContent);
+        return examPaperSubmitItemVM;
+    }
+
+    private ExamPaperSubmitItemVM baseAnswerVM(ExamPaperQuestionCustomerAnswer qa) {
         ExamPaperSubmitItemVM examPaperSubmitItemVM = new ExamPaperSubmitItemVM();
         examPaperSubmitItemVM.setId(qa.getId());
         examPaperSubmitItemVM.setQuestionId(qa.getQuestionId());
@@ -77,7 +96,6 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
         examPaperSubmitItemVM.setItemOrder(qa.getItemOrder());
         examPaperSubmitItemVM.setQuestionScore(ExamUtil.scoreToVM(qa.getQuestionScore()));
         examPaperSubmitItemVM.setScore(ExamUtil.scoreToVM(qa.getCustomerScore()));
-        setSpecialToVM(examPaperSubmitItemVM, qa);
         return examPaperSubmitItemVM;
     }
 
@@ -119,6 +137,28 @@ public class ExamPaperQuestionCustomerAnswerServiceImpl extends BaseServiceImpl<
                 if (QuestionTypeEnum.needSaveTextContent(examPaperQuestionCustomerAnswer.getQuestionType())) {
                     TextContent content = textContentService.selectById(examPaperQuestionCustomerAnswer.getTextContentId());
                     examPaperSubmitItemVM.setContent(content.getContent());
+                } else {
+                    examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());
+                }
+                break;
+        }
+    }
+
+    private void setSpecialToVM(ExamPaperSubmitItemVM examPaperSubmitItemVM,
+                                ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer,
+                                String answerTextContent) {
+        QuestionTypeEnum questionTypeEnum = QuestionTypeEnum.fromCode(examPaperQuestionCustomerAnswer.getQuestionType());
+        switch (questionTypeEnum) {
+            case MultipleChoice:
+                examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());
+                examPaperSubmitItemVM.setContentArray(ExamUtil.contentToArray(examPaperQuestionCustomerAnswer.getAnswer()));
+                break;
+            case GapFilling:
+                examPaperSubmitItemVM.setContentArray(JsonUtil.toJsonListObject(answerTextContent, String.class));
+                break;
+            default:
+                if (QuestionTypeEnum.needSaveTextContent(examPaperQuestionCustomerAnswer.getQuestionType())) {
+                    examPaperSubmitItemVM.setContent(answerTextContent);
                 } else {
                     examPaperSubmitItemVM.setContent(examPaperQuestionCustomerAnswer.getAnswer());
                 }

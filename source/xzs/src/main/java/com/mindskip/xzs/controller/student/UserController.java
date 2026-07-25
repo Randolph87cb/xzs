@@ -53,15 +53,7 @@ public class UserController extends BaseApiController {
 
     @RequestMapping(value = "/current", method = RequestMethod.POST)
     public RestResponse<UserResponseVM> current() {
-        User user = getCurrentUser();
-        UserResponseVM userVm = UserResponseVM.from(user);
-        if (user.getClassId() != null) {
-            SchoolClass schoolClass = schoolClassService.selectById(user.getClassId());
-            if (schoolClass != null) {
-                userVm.setClassName(schoolClass.getName());
-            }
-        }
-        return RestResponse.ok(userVm);
+        return RestResponse.ok(toUserResponse(getCurrentUser()));
     }
 
 
@@ -89,17 +81,31 @@ public class UserController extends BaseApiController {
 
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public RestResponse update(@RequestBody @Valid UserUpdateVM model) {
-        User user = userService.selectById(getCurrentUser().getId());
+    public RestResponse<UserResponseVM> update(@RequestBody @Valid UserUpdateVM model) {
+        User user = getCurrentUser();
         User updateUser = new User();
         updateUser.setId(user.getId());
         updateUser.setNickName(model.getNickName());
-        updateUser.setModifyTime(new Date());
+        Date modifyTime = new Date();
+        updateUser.setModifyTime(modifyTime);
         userService.updateByIdFilter(updateUser);
+        user.setNickName(model.getNickName());
+        user.setModifyTime(modifyTime);
         UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUserName(), user.getRealName(), new Date());
         userEventLog.setContent(user.getUserName() + " 更新了个人资料");
         eventPublisher.publishEvent(new UserEvent(userEventLog));
-        return RestResponse.ok();
+        return RestResponse.ok(toUserResponse(user));
+    }
+
+    private UserResponseVM toUserResponse(User user) {
+        UserResponseVM userVm = UserResponseVM.from(user);
+        if (user.getClassId() != null) {
+            SchoolClass schoolClass = schoolClassService.selectById(user.getClassId());
+            if (schoolClass != null) {
+                userVm.setClassName(schoolClass.getName());
+            }
+        }
+        return userVm;
     }
 
     @RequestMapping(value = "/password/change", method = RequestMethod.POST)

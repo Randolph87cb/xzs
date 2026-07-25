@@ -18,6 +18,7 @@ import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionEditItemVM;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionPageRequestVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionTitleContentVM;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -128,7 +129,12 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
     public QuestionEditRequestVM getQuestionEditRequestVM(Question question) {
         //题目映射
         TextContent questionInfoTextContent = textContentService.selectById(question.getInfoTextContentId());
-        QuestionObject questionObject = JsonUtil.toJsonObject(questionInfoTextContent.getContent(), QuestionObject.class);
+        return getQuestionEditRequestVM(question, questionInfoTextContent.getContent());
+    }
+
+    @Override
+    public QuestionEditRequestVM getQuestionEditRequestVM(Question question, String questionInfoContent) {
+        QuestionObject questionObject = JsonUtil.toJsonObject(questionInfoContent, QuestionObject.class);
         QuestionEditRequestVM questionEditRequestVM = modelMapper.map(question, QuestionEditRequestVM.class);
         questionEditRequestVM.setTitle(questionObject.getTitleContent());
 
@@ -166,6 +172,11 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         }).collect(Collectors.toList());
         questionEditRequestVM.setItems(editItems);
         return questionEditRequestVM;
+    }
+
+    @Override
+    public List<QuestionTitleContentVM> selectTitleContentByQuestionIds(List<Integer> questionIds) {
+        return questionMapper.selectTitleContentByQuestionIds(questionIds);
     }
 
     @Override

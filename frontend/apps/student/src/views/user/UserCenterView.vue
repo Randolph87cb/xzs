@@ -68,7 +68,6 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import {
   changeStudentPassword,
-  getCurrentStudentUser,
   updateCurrentStudentUser,
   type StudentUserInfo
 } from '@xzs/api-client'
@@ -122,13 +121,10 @@ onMounted(loadUser)
 async function loadUser() {
   loading.value = true
   try {
-    const result = await getCurrentStudentUser()
-    user.value = result.response ?? userStore.userInfo
-    if (result.response) {
-      userStore.setUserInfo(result.response)
-      userStore.setUserName(result.response.userName)
-      userStore.setImagePath(result.response.imagePath ?? '')
+    if (!userStore.hasCheckedSession || !userStore.userInfo) {
+      await userStore.initUserInfo()
     }
+    user.value = userStore.userInfo
     syncForm(user.value)
   } finally {
     loading.value = false
@@ -147,10 +143,12 @@ async function saveProfile() {
       nickName: form.nickName.trim()
     })
 
-    if (result.code === 1) {
+    if (result.code === 1 && result.response) {
       ElMessage.success(result.message || '保存成功')
-      await userStore.initUserInfo()
-      user.value = userStore.userInfo
+      userStore.setUserInfo(result.response)
+      userStore.setUserName(result.response.userName)
+      userStore.setImagePath(result.response.imagePath ?? '')
+      user.value = result.response
       syncForm(user.value)
     } else {
       ElMessage.error(result.message)

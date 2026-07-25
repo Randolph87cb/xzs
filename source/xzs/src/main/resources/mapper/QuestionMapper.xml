@@ -20,6 +20,10 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
   </resultMap>
+  <resultMap id="QuestionTitleContentResultMap" type="com.mindskip.xzs.viewmodel.student.question.answer.QuestionTitleContentVM">
+    <id column="question_id" jdbcType="INTEGER" property="questionId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, question_type, subject_id, score, grade_level, difficult, knowledge_point, question_code,
     import_batch, import_source, import_question_order, correct, info_text_content_id,
@@ -269,6 +273,15 @@
     <foreach item="id" collection="ids" open="(" separator=","
              close=")">
       #{id}
+    </foreach>
+  </select>
+  <select id="selectTitleContentByQuestionIds" resultMap="QuestionTitleContentResultMap">
+    select q.id as question_id, tc.content
+    from t_question q
+    left join t_text_content tc on tc.id = q.info_text_content_id
+    where q.id in
+    <foreach collection="questionIds" item="questionId" open="(" separator="," close=")">
+      #{questionId}
     </foreach>
   </select>
 

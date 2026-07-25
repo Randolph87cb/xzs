@@ -3,6 +3,7 @@ package com.mindskip.xzs.repository;
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.domain.Question;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionPageRequestVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionTitleContentVM;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,6 +16,8 @@ public interface QuestionMapper extends BaseMapper<Question> {
     List<Question> page(QuestionPageRequestVM requestVM);
 
     List<Question> selectByIds(@Param("ids") List<Integer> ids);
+
+    List<QuestionTitleContentVM> selectTitleContentByQuestionIds(@Param("questionIds") List<Integer> questionIds);
 
     List<Question> selectRandomBySubjectId(@Param("subjectId") Integer subjectId, @Param("limit") Integer limit);
 

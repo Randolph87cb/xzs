@@ -5,6 +5,7 @@ import com.mindskip.xzs.context.WebContext;
 import com.mindskip.xzs.controller.support.RecordingJdbcTemplate;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.service.QuestionCorrectionAiReviewService;
+import com.mindskip.xzs.viewmodel.student.question.correction.QuestionCorrectionSubmitResponseVM;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -55,14 +56,35 @@ public class QuestionCorrectionControllerTest {
         jdbcTemplate.addQueryForListResult(Collections.singletonList(answer()));
         jdbcTemplate.addQueryForListResult(Collections.singletonList(existing("REJECTED")));
 
-        RestResponse response = controller.submit(submitRequest());
+        RestResponse<QuestionCorrectionSubmitResponseVM> response = controller.submit(submitRequest());
 
         assertEquals(1, response.getCode());
         RecordingJdbcTemplate.Call update = jdbcTemplate.getCalls("update").get(0);
         assertTrue(update.getSql().contains("review_status = 'SUBMITTED'"));
         assertTrue(update.getSql().contains("resubmit_count = coalesce(resubmit_count, 0) + 1"));
         assertArrayEquals(new Object[]{"new wrong", "new thinking", 7, 41}, update.getArgs());
+        assertEquals(Integer.valueOf(13), response.getResponse().getCustomerAnswerId());
+        assertEquals(Integer.valueOf(41), response.getResponse().getCorrectionId());
+        assertEquals("SUBMITTED", response.getResponse().getReviewStatus());
         verify(aiReviewService).triggerAfterCommit(41, "AUTO_RESUBMIT");
+    }
+
+    @Test
+    public void submitCreatesCorrectionAndReturnsSubmittedResponse() {
+        jdbcTemplate.addQueryForListResult(Collections.singletonList(answer()));
+        jdbcTemplate.addQueryForListResult(Collections.emptyList());
+        jdbcTemplate.addQueryForObjectResult(51);
+
+        RestResponse<QuestionCorrectionSubmitResponseVM> response = controller.submit(submitRequest());
+
+        assertEquals(1, response.getCode());
+        assertEquals(Integer.valueOf(13), response.getResponse().getCustomerAnswerId());
+        assertEquals(Integer.valueOf(51), response.getResponse().getCorrectionId());
+        assertEquals("SUBMITTED", response.getResponse().getReviewStatus());
+        RecordingJdbcTemplate.Call insert = jdbcTemplate.getCalls("queryForObject").get(0);
+        assertTrue(insert.getSql().contains("returning id"));
+        assertArrayEquals(new Object[]{23, 101, 202, 13, "new wrong", "new thinking", 7}, insert.getArgs());
+        verify(aiReviewService).triggerAfterCommit(51, "AUTO_SUBMIT");
     }
 
     @Test

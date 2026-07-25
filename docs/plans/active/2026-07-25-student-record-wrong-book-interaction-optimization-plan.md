@@ -79,7 +79,39 @@
 
 ## 结论
 
-推荐按“先解除前端阻塞，再消除后端 N+1，最后合并错题工作区请求并修正连续改错流程”的顺序实施。目标是在本地 Neon test 同口径下，将考试记录主页面可互动时间控制在 0.6–0.9 秒，将错题本完整首题可互动时间控制在 1.6–2.2 秒，并让提交改错后留在当前处理队列、自动进入下一道待处理错题。
+推荐按“先解除前端阻塞，再消除后端 N+1，合并页面启动请求，最后修正连续改错流程”的顺序实施。目标是在本地 Neon test 同口径下，将考试记录主页面可互动时间控制在 0.6–0.9 秒，将错题本完整首题可互动时间控制在 1.6–2.2 秒，并让提交改错后留在当前处理队列、自动进入下一道待处理错题。同时消除学生登录后的二次用户请求、试卷中心初次进入的两段请求和资料保存后的状态重查。
+
+## 本轮冻结接口契约
+
+为允许前后端实现并行，本轮新增或调整接口固定如下；实现中不得自行改名或扩大字段。
+
+1. `POST /api/student/question/answer/workspace/{customerAnswerId}`
+   - 响应 `response`：
+     - `questionVM`
+     - `questionAnswerVM`
+     - `correction`
+     - `wrongHistory`
+2. `POST /api/student/question/correction/submit`
+   - 请求保持不变。
+   - 响应 `response`：
+     - `customerAnswerId`
+     - `correctionId`
+     - `reviewStatus`
+3. `POST /api/student/exam/paper/bootstrap`
+   - 请求：
+     - `paperType`
+     - `pageIndex`
+     - `pageSize`
+   - 响应 `response`：
+     - `subjects`
+     - `activeSubjectId`
+     - `page`
+4. `POST /api/student/auth/login`
+   - 请求和 Cookie 行为保持不变。
+   - 学生登录响应改为与 `/api/student/user/current` 一致的学生用户资料字段；管理端登录不变。
+5. `POST /api/student/user/update`
+   - 请求保持不变。
+   - 响应改为与 `/api/student/user/current` 一致的学生用户资料字段。
 
 ## 需求拆解
 
@@ -257,7 +289,126 @@
   - 提交失败、重复提交、已通过和无权限场景保持当前题及表单。
   - 确认 `triggerAfterCommit` 对首次提交和重新提交仍分别触发。
 
-### 6. 后续：按改错状态做服务端分页
+### 6. 学生登录直接返回完整用户资料
+
+- 当前现状：
+  - `studentLogin()` 成功后只返回 `userName/imagePath`。
+  - 前端随后 `await initUserInfo()`，再次请求 `/api/student/user/current`。
+  - 第二个请求会重新执行 token、用户和班级查询。
+- 判断：
+  - 登录接口已经完成用户校验并持有完整 `User`，可以直接返回学生端所需资料。
+  - 这是可以无损消除的固定串行请求。
+- 修改方案：
+  1. 学生登录响应改为完整 `UserResponseVM`，包含现有学生端使用的 `id/userName/nickName/realName/classId/className/imagePath/userLevel` 等字段。
+  2. 管理端登录响应和类型保持不变，避免扩大管理端回归范围。
+  3. 学生端 `userStore.login()` 直接保存登录响应，并设置 `hasCheckedSession=true`，不再调用 `initUserInfo()`。
+- 预计收益：
+  - 登录后请求数：2 → 1。
+  - 预计节省一次 `/user/current` 的 0.35–0.7 秒。
+- 影响范围：
+  - `source/xzs/src/main/java/com/mindskip/xzs/controller/WebAuthController.java`
+  - 学生登录响应 VM 与 `WebAuthControllerTest`
+  - `frontend/packages/api-client/src/auth.ts`
+  - `frontend/apps/student/src/stores/user.ts`
+- 风险或边界：
+  - 不能把密码、token、角色内部字段等敏感数据直接序列化给前端。
+  - `className` 仍需保持与 `/user/current` 一致。
+- 验证方案：
+  - 登录响应字段与随后调用 `/user/current` 的核心字段一致。
+  - 学生登录后网络中不再出现紧接着的 `/api/student/user/current`。
+  - 管理端登录响应和登录流程不回归。
+
+### 7. 首次受保护页面的会话检查与页面加载并行
+
+- 当前现状：
+  - 路由守卫在首次进入受保护页面时 `await userStore.initUserInfo()`。
+  - 页面组件只有会话检查完成后才挂载，因此页面业务请求始终排在 `/user/current` 后面。
+  - 内部导航因 `hasCheckedSession=true` 不重复检查，问题主要发生在浏览器冷启动和刷新。
+- 判断：
+  - 后端业务 API 本身仍会通过 Spring Security 校验 token，因此允许已存在本地用户快照的返回用户先进入页面骨架，不会绕过数据权限。
+  - 不能单纯信任用户名 Cookie；后台会话校验失败时必须由统一 unauthorized 处理立即清理状态并跳转登录。
+- 修改方案：
+  1. 仅当本地已有可解析的 `studentUserInfo` 和用户名快照时，路由允许组件先挂载。
+  2. 同时启动一次去重的后台 `initUserInfo()`，继续向服务端确认 session 并刷新用户资料。
+  3. 无本地用户快照时仍等待服务端检查，避免匿名页面闪现。
+  4. 统一 unauthorized 回调负责清理 Store 和跳转登录；并验证过期 token 时不会停留在受保护页面。
+  5. `initUserInfo()` 增加 in-flight Promise 去重，避免页面和其它动作重复发起 current 请求。
+- 预计收益：
+  - 返回用户冷启动时，`/user/current` 与页面业务 API 从串行改为并行。
+  - 按当前环境预计首个业务页面提前约 0.35–0.7 秒开始加载。
+- 影响范围：
+  - `frontend/apps/student/src/router/index.ts`
+  - `frontend/apps/student/src/stores/user.ts`
+  - 学生端 API client unauthorized 配置入口
+- 风险或边界：
+  - 这是乐观渲染，不是跳过服务端鉴权。
+  - 必须测试 token 过期、用户被禁用、本地快照损坏和多个并发 current 请求。
+- 验证方案：
+  - 有有效本地快照时，浏览器网络中 current 与页面业务 API 时间重叠。
+  - 无快照时仍先确认会话。
+  - 伪造/过期 token 时跳回登录，不能保留受保护数据和 Store。
+  - 同一次启动最多只有一个 current 请求。
+
+### 8. 试卷中心使用单一 bootstrap 请求
+
+- 当前现状：
+  - 初次进入试卷中心先请求 `/education/subject/list`。
+  - 得到第一科 ID 后再请求 `/exam/paper/pageList`。
+  - 两个请求分别执行认证，并在浏览器中严格串行。
+- 判断：
+  - 初始科目和第一科试卷属于同一个页面启动数据。
+  - 切换科目、试卷类型和分页仍应继续使用现有 pageList。
+- 修改方案：
+  1. 新增 `POST /api/student/exam/paper/bootstrap`。
+  2. 请求沿用 `paperType/pageIndex/pageSize`；服务端获取科目列表并选择第一科，再返回：
+     - `subjects`
+     - `activeSubjectId`
+     - `page`
+  3. 前端首次挂载只调用 bootstrap；后续交互继续调用 pageList。
+  4. 没有科目时返回空科目和空 page，不发第二个查询。
+- 预计收益：
+  - 初次进入请求数：2 → 1。
+  - 预计减少一次 HTTP 和认证链，节省约 0.35–0.7 秒。
+- 影响范围：
+  - `ExamPaperController.java`、新增 bootstrap VM 和测试
+  - `frontend/packages/api-client/src/studentExam.ts`
+  - `frontend/apps/student/src/views/paper/PaperListView.vue`
+- 风险或边界：
+  - 默认科目顺序必须与现有 `allSubject()` 返回第一项一致。
+  - 后续切换行为、分页和 paperType 不变。
+- 验证方案：
+  - 初次进入只有一个 bootstrap 请求。
+  - 科目列表、默认科目和试卷列表与改前一致。
+  - 切换科目、固定/时段试卷和分页仍调用 pageList 并正确刷新。
+
+### 9. 个人资料更新直接返回最新用户
+
+- 当前现状：
+  - 保存资料先请求 `/user/update`。
+  - 成功后前端再调用 `initUserInfo()` 获取最新用户。
+  - 后端 update 还会额外 `selectById()`，而认证上下文已经持有当前用户。
+- 判断：
+  - 更新接口可以用认证上下文用户完成更新，并直接返回更新后的 `UserResponseVM`。
+- 修改方案：
+  1. `/api/student/user/update` 返回更新后的完整学生用户 VM。
+  2. 后端复用 `getCurrentUser()`，只更新允许修改的字段，不再为同一用户额外 select。
+  3. 前端直接写入 Store 和页面表单，不再调用 current。
+- 预计收益：
+  - 保存资料后的请求数：2 → 1。
+  - 预计节省 0.35–0.7 秒，并减少一次用户查询。
+- 影响范围：
+  - `UserController.java`、`UserControllerTest.java`
+  - `frontend/packages/api-client/src/studentUser.ts`
+  - `frontend/apps/student/src/views/user/UserCenterView.vue`
+- 风险或边界：
+  - 返回资料必须保持字段白名单，不能返回密码等实体内部字段。
+  - 事件日志发布行为保持不变。
+- 验证方案：
+  - 保存后页面和 Store 立即显示新昵称。
+  - 网络中没有后续 current 请求。
+  - 刷新后昵称仍正确，说明数据已经持久化。
+
+### 10. 后续：按改错状态做服务端分页
 
 - 当前现状：
   - 后端先对全部错题分页，前端再按改错状态过滤。
@@ -275,12 +426,14 @@
 
 ## 推荐执行顺序
 
-1. 前端先解除考试记录和错题队列的阻塞 loading，并补快速切题竞态保护。
-2. 后端消除考试记录学科 N+1 和错题标题 N+1；保持现有接口字段与排序。
-3. 增加错题 workspace 组合接口，前端从 3 个选择请求切换为 1 个。
-4. 修改提交响应和连续改错交互，取消提交后的强制状态层切换。
-5. 使用同一学生账号、同一 test 数据、同一浏览器脚本做改前改后 3 轮中位数对比。
-6. 第一批验收后，再决定是否实施全局按状态分页。
+1. 冻结本方案中的新增接口契约，前后端实现按契约并行。
+2. 前端解除考试记录和错题队列的阻塞 loading，并补快速切题竞态保护。
+3. 后端消除考试记录学科 N+1 和错题标题 N+1；保持现有接口字段与排序。
+4. 增加错题 workspace、试卷 bootstrap、学生完整登录响应和资料更新响应。
+5. 前端切换到组合接口，修改连续改错交互，取消提交后的强制状态层切换和状态重查。
+6. 优化首次受保护页面的会话检查并发，并验证所有过期/无效会话边界。
+7. 使用同一学生账号、同一 test 数据、同一浏览器脚本做改前改后 3 轮中位数对比。
+8. 第一批验收后，再决定是否实施全局按状态分页。
 
 ## 验收门槛
 
@@ -294,6 +447,10 @@
 | 错题本首题完整可互动 | 4182 ms | 1600–2200 ms |
 | 已加载后切换错题 | 2169 ms | 700–1000 ms |
 | 提交后额外状态查询 | 385–696 ms | 0 ms |
+| 学生登录后额外 current | 1 次 | 0 次 |
+| 试卷中心初始业务请求 | 2 次串行 | 1 次 bootstrap |
+| 资料保存后额外 current | 1 次 | 0 次 |
+| 返回用户首次会话与页面业务请求 | 串行 | 并行 |
 
 ### 功能
 
@@ -318,16 +475,98 @@
    - 后端相关测试与 package。
    - `scripts/verify-web-static-consistency.ps1`。
 
+## 实施与验收记录
+
+### 已完成改动
+
+- 考试记录：
+  - 首屏只加载主表，同卷历史改为点击后加载并按 `examPaperId` 缓存。
+  - 学科名称从逐行查询改为分页 SQL 直接联表投影；物理 SQL 从 `count + data + allSubject` 3 次降为 `count + joined data` 2 次。
+- 错题本：
+  - 标题由逐题查询改为一次批量查询。
+  - 列表与详情 loading 分离，快速切题用请求序号防止旧响应覆盖。
+  - 详情的 3 个 HTTP 请求合并为 1 个 workspace。
+  - workspace 内部由客观题 5 次、文本答案题 6 次 SQL 降为固定 2 次：单行主投影 + wrong history。
+  - 主投影 SQL 同时限制 `answer.id`、当前用户、`doRight=false`，最新 correction 也按当前用户隔离。
+  - 改错提交直接使用响应更新本地状态，不再重查；保持当前筛选层并进入同层下一题或完成态。
+- 其它学生端串行请求：
+  - 登录直接返回完整学生资料，登录后额外 current 从 1 次降为 0 次。
+  - 有本地快照时，会话 current 与页面业务请求并行；同一启动最多 1 个 current。
+  - 加入 session generation，避免 logout/clear 后旧 current 请求晚到并恢复已清理会话。
+  - 试卷中心初次进入改为 1 次 bootstrap；后续切科目、类型和分页仍使用 pageList。
+  - 个人资料 update 直接返回最新资料，保存后额外 current 从 1 次降为 0 次。
+
+### 自动化与浏览器结果
+
+- 后端第一轮相关回归实际执行 48 tests，0 failure、0 error、0 skipped；第二轮 SQL 聚合相关 17 tests 同样全部通过。
+- 后端 package、学生端 typecheck/build、管理端 typecheck、静态资源同步和运行中 HTTP 静态一致性均通过。
+- 真实 Chromium 验证：
+  - 登录后 current 为 0 次。
+  - 返回用户刷新时 current 与页面 pageList 并行，各 1 次。
+  - 无效会话清理本地资料并跳回登录。
+  - 试卷中心初次只有 bootstrap；切类型或科目各 1 次 pageList。
+  - 记录首屏只有 pageList；历史首次点击 1 次请求，重复点击 0 次。
+  - 错题首次严格为 `wrongQuestionPage → workspace`；切题只有 1 次 workspace。
+  - 人为延迟前一个 workspace 1.7 秒后快速切题，最终详情仍对应最后点击题。
+  - 提交后只有 `submit → 下一题 workspace`，没有 correction/select、answer/select 或 history 重查。
+  - 资料临时更新和恢复各只有 1 次 update，均无 current。
+  - Console error、pageerror、后端 5xx、SQL/MyBatis/resultMap 异常均为 0。
+
+### 两轮性能实测
+
+第二轮使用 Neon test、同一学生、暖登录态、同一 Chromium 和相同计时起止口径；数值为 3 轮中位数。
+
+| 场景 | 原基线 | 第一轮 | 第二轮 | 最终节省 | 目标判断 |
+|---|---:|---:|---:|---:|---|
+| 记录页首屏 | 1573 ms | 1053 ms | 1011 ms | 562 ms，35.7% | 未达到 600 ms 节省下限，差 38 ms |
+| 错题首次进入 | 4182 ms | 2073 ms | 2290 ms | 1892 ms，45.2% | 仍在 1600–2200 ms 节省区间，但存在 Neon 抖动 |
+| 已加载后切题 | 2169 ms | 1268 ms | 1141 ms | 1028 ms，47.4% | 未进入 700–1000 ms 总耗时目标 |
+
+第二轮原始值和单 API 中位数：
+
+- 记录页：`1011 / 1000 / 1025 ms`；pageList API 约 `595 ms`。
+- 错题首次进入：`2290 / 3244 / 1923 ms`；wrongQuestionPage API 约 `946 ms`，其中一轮为 `2180 ms`；workspace API 约 `579 ms`。
+- 已加载后切题：`1132 / 1141 / 1254 ms`；workspace API 约 `696 ms`。
+
+两项总耗时未完全达到理想目标，但当前请求与查询已经收敛到安全的最小业务边界。剩余主要是固定认证链路、Neon 网络与分页/历史 SQL 往返，以及页面渲染稳定等待，不能继续靠合并业务字段无损消除。
+
+### 服务迁移与下一阶段
+
+若要继续把记录页压进 900 ms、切题压进 1000 ms，下一阶段应作为独立的“服务与数据库距离优化”实施，不与本轮页面改动混合：
+
+1. 在与 Neon branch 相同或相邻区域部署测试后端，先保持现有前端、接口、Hikari 上限和数据库结构不变。
+2. 用相同浏览器脚本分别测量“本地后端 → Neon test”和“同区域后端 → Neon test”，拆出网络距离的实际收益。
+3. 迁移时分别配置：
+   - Fly 测试环境继续使用 Neon `test` branch。
+   - 树莓派生产环境继续使用 Neon `production` branch。
+   - 所有连接串通过 secret 注入，不写入仓库或日志。
+4. 先灰度验证登录、记录、错题 workspace、提交 after-commit、静态资源和回滚，再切换入口。
+5. 若同区域部署后单 API 仍超标，再单独评估：
+   - 短 TTL token/user 认证缓存及明确失效策略。
+   - 错题列表 count、列表和批量标题查询的专用投影或索引。
+   - 详情渲染的骨架完成口径、Markdown 渲染和稳定等待优化。
+6. 任何认证缓存或新索引都需单独方案、权限测试和 `EXPLAIN (ANALYZE, BUFFERS)`，不在本轮顺手加入。
+
+### 验收数据说明
+
+- 资料验证使用的临时昵称已恢复为“学生”。
+- 第一轮浏览器自动化因定位歧义，在 Neon test 写入了两条 `SUBMITTED` 改错记录：
+  - customerAnswerId `186` / correctionId `16`
+  - customerAnswerId `181` / correctionId `17`
+- 项目没有安全的 UI 撤销入口，本轮未擅自直接修改数据库；是否保留或通过受控数据库操作清理，由项目负责人决定。
+- 第二轮复验没有新增任何改错或资料写入。
+
 ## 风险与待确认
 
 - 待确认：考试记录进入页面后，是否接受“同卷历史改为点击后加载”。本方案主推荐接受，因为它是次级信息且当前直接阻塞主表。
 - 待确认：连续改错时，当前页没有下一道同状态题后，是显示“本页已完成”，还是自动翻到下一页。建议第一批显示完成状态，待服务端状态分页完成后再自动跨页。
+- 已确认执行边界：用户要求将本次发现的学生端串行请求一并纳入实施；Dashboard 已使用 `Promise.all`，考试答题/查看/排行等单请求页面不做无关改动。
 - 风险：组合 workspace 接口扩大单次响应；需要对包含长题干、解析和多次错误历史的题目检查响应体大小。
 - 风险：前端解除串行等待后必须处理请求竞态，否则快速切题可能显示旧请求结果。
 - 风险：认证查询仍是所有 API 的固定成本。若页面专项优化后单 API 仍稳定高于目标，再单独设计短 TTL token/user 缓存，不能在本轮顺手加入。
 
 ## 收尾记录
 
-- 完成状态：
+- 完成状态：页面、接口和数据库串行优化已实施并通过功能验收；性能门槛部分达标，剩余服务距离、认证缓存和渲染优化保留在本活动方案中。
 - 归档日期：
-- 归档原因：
+- 归档原因：当前仍需决定 Neon test 验收残留数据是否清理，以及是否启动服务迁移下一阶段，因此暂不归档。

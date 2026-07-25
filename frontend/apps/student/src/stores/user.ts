@@ -14,6 +14,9 @@ interface UserState {
   hasCheckedSession: boolean
 }
 
+let initUserInfoPromise: Promise<void> | null = null
+let sessionGeneration = 0
+
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
     userName: Cookies.get('studentUserName') ?? '',
@@ -22,7 +25,10 @@ export const useUserStore = defineStore('user', {
     hasCheckedSession: false
   }),
   getters: {
-    isAuthenticated: (state) => state.userName.length > 0,
+    hasLocalUserSnapshot: (state) =>
+      Boolean(state.userName && state.userInfo?.userName && state.userInfo.userName === state.userName),
+    isAuthenticated: (state) =>
+      Boolean(state.userName && state.userInfo?.userName && state.userInfo.userName === state.userName),
     displayName: (state) => state.userInfo?.nickName || state.userInfo?.realName || state.userName
   },
   actions: {
@@ -33,24 +39,51 @@ export const useUserStore = defineStore('user', {
         throw new Error(result.message)
       }
 
+      invalidateInitUserInfoRequest()
+      this.setUserInfo(result.response)
       this.setUserName(result.response.userName || payload.userName)
       this.setImagePath(result.response.imagePath ?? '')
-      await this.initUserInfo()
+      this.hasCheckedSession = true
     },
     async initUserInfo() {
-      try {
-        const result = await getCurrentStudentUser()
+      if (initUserInfoPromise) {
+        return initUserInfoPromise
+      }
 
-        if (result.response) {
+      const requestGeneration = sessionGeneration
+      const request = (async () => {
+        try {
+          const result = await getCurrentStudentUser()
+
+          if (result.code !== 1 || !result.response) {
+            throw new Error(result.message || '登录状态校验失败')
+          }
+
+          if (requestGeneration !== sessionGeneration) {
+            return
+          }
+
           this.setUserInfo(result.response)
           this.setUserName(result.response.userName)
           this.setImagePath(result.response.imagePath ?? '')
+        } finally {
+          if (requestGeneration === sessionGeneration) {
+            this.hasCheckedSession = true
+          }
         }
+      })()
+      initUserInfoPromise = request
+
+      try {
+        await request
       } finally {
-        this.hasCheckedSession = true
+        if (initUserInfoPromise === request) {
+          initUserInfoPromise = null
+        }
       }
     },
     async logout() {
+      invalidateInitUserInfoRequest()
       try {
         await studentLogout()
       } finally {
@@ -74,6 +107,7 @@ export const useUserStore = defineStore('user', {
       }
     },
     clear() {
+      invalidateInitUserInfoRequest()
       this.userName = ''
       this.userInfo = null
       this.imagePath = ''
@@ -85,6 +119,11 @@ export const useUserStore = defineStore('user', {
   }
 })
 
+function invalidateInitUserInfoRequest() {
+  sessionGeneration += 1
+  initUserInfoPromise = null
+}
+
 function readUserInfoCookie(): StudentUserInfo | null {
   const rawValue = Cookies.get('studentUserInfo')
 
@@ -93,7 +132,17 @@ function readUserInfoCookie(): StudentUserInfo | null {
   }
 
   try {
-    return JSON.parse(rawValue) as StudentUserInfo
+    const parsedValue = JSON.parse(rawValue) as unknown
+    if (
+      typeof parsedValue !== 'object' ||
+      parsedValue === null ||
+      !('userName' in parsedValue) ||
+      typeof parsedValue.userName !== 'string' ||
+      parsedValue.userName.length === 0
+    ) {
+      return null
+    }
+    return parsedValue as StudentUserInfo
   } catch {
     return null
   }

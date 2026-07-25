@@ -6,6 +6,7 @@ import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
 import com.mindskip.xzs.domain.Question;
 import com.mindskip.xzs.domain.Subject;
 import com.mindskip.xzs.domain.TextContent;
+import com.mindskip.xzs.domain.other.WrongQuestionWorkspaceData;
 import com.mindskip.xzs.domain.question.QuestionObject;
 import com.mindskip.xzs.service.ExamPaperQuestionCustomerAnswerService;
 import com.mindskip.xzs.service.QuestionService;
@@ -20,14 +21,21 @@ import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionAnswerVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionTitleContentVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionWrongHistoryVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.WrongQuestionWorkspaceVM;
+import com.mindskip.xzs.viewmodel.student.question.correction.QuestionCorrectionRecordVM;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController("StudentQuestionAnswerController")
 @RequestMapping(value = "/api/student/question/answer")
@@ -69,9 +77,18 @@ public class QuestionAnswerController extends BaseApiController {
     public RestResponse<PageInfo<QuestionPageStudentResponseVM>> wrongQuestionPage(@RequestBody QuestionPageStudentRequestVM model) {
         model.setCreateUser(getCurrentUser().getId());
         PageInfo<QuestionPageStudentResponseVM> pageInfo = examPaperQuestionCustomerAnswerService.studentWrongQuestionPage(model);
+        List<Integer> questionIds = pageInfo.getList().stream()
+                .map(QuestionPageStudentResponseVM::getQuestionId)
+                .filter(id -> id != null)
+                .collect(Collectors.collectingAndThen(Collectors.toCollection(LinkedHashSet::new), java.util.ArrayList::new));
+        Map<Integer, QuestionTitleContentVM> titleContentMap = questionIds.isEmpty()
+                ? Collections.emptyMap()
+                : questionService.selectTitleContentByQuestionIds(questionIds).stream()
+                .filter(row -> row.getQuestionId() != null)
+                .collect(Collectors.toMap(QuestionTitleContentVM::getQuestionId, Function.identity(), (first, duplicate) -> first));
         PageInfo<QuestionPageStudentResponseVM> page = PageInfoHelper.copyMap(pageInfo, row -> {
-            Question question = questionService.selectById(row.getQuestionId());
-            row.setShortTitle(shortTitle(question));
+            QuestionTitleContentVM titleContent = titleContentMap.get(row.getQuestionId());
+            row.setShortTitle(titleContent == null ? "" : shortTitle(titleContent.getContent()));
             if (row.getLatestCustomerAnswerId() != null) {
                 row.setId(row.getLatestCustomerAnswerId());
             }
@@ -95,16 +112,42 @@ public class QuestionAnswerController extends BaseApiController {
         return RestResponse.ok(vm);
     }
 
+    @RequestMapping(value = "/workspace/{customerAnswerId}", method = RequestMethod.POST)
+    public RestResponse<WrongQuestionWorkspaceVM> workspace(@PathVariable Integer customerAnswerId) {
+        Integer currentUserId = getCurrentUser().getId();
+        WrongQuestionWorkspaceData data = examPaperQuestionCustomerAnswerService
+                .selectWrongQuestionWorkspace(customerAnswerId, currentUserId);
+        ExamPaperQuestionCustomerAnswer answer = data == null ? null : data.getCustomerAnswer();
+        if (answer == null
+                || !currentUserId.equals(answer.getCreateUser())
+                || !Boolean.FALSE.equals(answer.getDoRight())) {
+            return RestResponse.fail(2, "错题不存在或无权限访问");
+        }
+
+        WrongQuestionWorkspaceVM vm = new WrongQuestionWorkspaceVM();
+        vm.setQuestionAnswerVM(examPaperQuestionCustomerAnswerService
+                .examPaperQuestionCustomerAnswerToVM(answer, data.getAnswerContent()));
+        vm.setQuestionVM(questionService.getQuestionEditRequestVM(data.getQuestion(), data.getQuestionContent()));
+        vm.setCorrection(data.getCorrection());
+        vm.setWrongHistory(formatWrongHistory(
+                examPaperQuestionCustomerAnswerService.studentWrongQuestionHistory(currentUserId, answer.getQuestionId())));
+        return RestResponse.ok(vm);
+    }
+
     @RequestMapping(value = "/wrongQuestionHistory/{questionId}", method = RequestMethod.POST)
     public RestResponse<List<QuestionWrongHistoryVM>> wrongQuestionHistory(@PathVariable Integer questionId) {
         List<QuestionWrongHistoryVM> rows = examPaperQuestionCustomerAnswerService.studentWrongQuestionHistory(getCurrentUser().getId(), questionId);
+        return RestResponse.ok(formatWrongHistory(rows));
+    }
+
+    private List<QuestionWrongHistoryVM> formatWrongHistory(List<QuestionWrongHistoryVM> rows) {
         rows.forEach(row -> {
             row.setCreateTimeText(DateTimeUtil.dateFormat(row.getCreateTime()));
             if (row.getRawUserScore() != null) {
                 row.setUserScore(com.mindskip.xzs.utility.ExamUtil.scoreToVM(row.getRawUserScore()));
             }
         });
-        return RestResponse.ok(rows);
+        return rows;
     }
 
     private String shortTitle(Question question) {
@@ -115,7 +158,14 @@ public class QuestionAnswerController extends BaseApiController {
         if (textContent == null) {
             return "";
         }
-        QuestionObject questionObject = JsonUtil.toJsonObject(textContent.getContent(), QuestionObject.class);
+        return shortTitle(textContent.getContent());
+    }
+
+    private String shortTitle(String content) {
+        if (content == null) {
+            return "";
+        }
+        QuestionObject questionObject = JsonUtil.toJsonObject(content, QuestionObject.class);
         return HtmlUtil.clear(questionObject.getTitleContent());
     }
 

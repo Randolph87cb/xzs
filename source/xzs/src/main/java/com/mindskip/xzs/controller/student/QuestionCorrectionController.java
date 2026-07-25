@@ -3,6 +3,7 @@ package com.mindskip.xzs.controller.student;
 import com.mindskip.xzs.base.BaseApiController;
 import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.service.QuestionCorrectionAiReviewService;
+import com.mindskip.xzs.viewmodel.student.question.correction.QuestionCorrectionSubmitResponseVM;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,7 +37,7 @@ public class QuestionCorrectionController extends BaseApiController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @Transactional
-    public RestResponse submit(@RequestBody QuestionCorrectionSubmitRequest request) {
+    public RestResponse<QuestionCorrectionSubmitResponseVM> submit(@RequestBody QuestionCorrectionSubmitRequest request) {
         if (request.getCustomerAnswerId() == null) {
             return RestResponse.fail(2, "错题不能为空");
         }
@@ -74,7 +75,8 @@ public class QuestionCorrectionController extends BaseApiController {
                     request.getCorrectThinking().trim(),
                     getCurrentUser().getClassId());
             questionCorrectionAiReviewService.triggerAfterCommit(correctionId, "AUTO_SUBMIT");
-            return RestResponse.ok();
+            return RestResponse.ok(new QuestionCorrectionSubmitResponseVM(
+                    request.getCustomerAnswerId(), correctionId, "SUBMITTED"));
         }
 
         Map<String, Object> existing = existingRows.get(0);
@@ -99,7 +101,8 @@ public class QuestionCorrectionController extends BaseApiController {
                 existing.get("id"));
         correctionId = (Integer) existing.get("id");
         questionCorrectionAiReviewService.triggerAfterCommit(correctionId, "AUTO_RESUBMIT");
-        return RestResponse.ok();
+        return RestResponse.ok(new QuestionCorrectionSubmitResponseVM(
+                request.getCustomerAnswerId(), correctionId, "SUBMITTED"));
     }
 
     public static class QuestionCorrectionSubmitRequest {

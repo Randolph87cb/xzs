@@ -41,6 +41,46 @@
     <result column="correction_status" jdbcType="VARCHAR" property="correctionStatus" />
     <result column="review_comment" jdbcType="VARCHAR" property="reviewComment" />
   </resultMap>
+  <resultMap id="WorkspaceQuestionResultMap" type="com.mindskip.xzs.domain.Question">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="question_type" jdbcType="INTEGER" property="questionType" />
+    <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
+    <result column="difficult" jdbcType="INTEGER" property="difficult" />
+    <result column="knowledge_point" jdbcType="VARCHAR" property="knowledgePoint" />
+    <result column="question_code" jdbcType="VARCHAR" property="questionCode" />
+    <result column="import_batch" jdbcType="VARCHAR" property="importBatch" />
+    <result column="import_source" jdbcType="VARCHAR" property="importSource" />
+    <result column="import_question_order" jdbcType="INTEGER" property="importQuestionOrder" />
+    <result column="correct" jdbcType="VARCHAR" property="correct" />
+    <result column="info_text_content_id" jdbcType="INTEGER" property="infoTextContentId" />
+    <result column="create_user" jdbcType="INTEGER" property="createUser" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="deleted" jdbcType="BIT" property="deleted" />
+  </resultMap>
+  <resultMap id="WrongQuestionWorkspaceResultMap" type="com.mindskip.xzs.domain.other.WrongQuestionWorkspaceData">
+    <result column="workspace_question_content" jdbcType="VARCHAR" property="questionContent" />
+    <result column="workspace_answer_content" jdbcType="VARCHAR" property="answerContent" />
+    <association property="customerAnswer" resultMap="BaseResultMap" columnPrefix="workspace_answer_" />
+    <association property="question" resultMap="WorkspaceQuestionResultMap" columnPrefix="workspace_question_" />
+    <association property="correction"
+                 javaType="com.mindskip.xzs.viewmodel.student.question.correction.QuestionCorrectionRecordVM"
+                 notNullColumn="correction_id">
+      <id column="correction_id" jdbcType="INTEGER" property="id" />
+      <result column="correction_question_id" jdbcType="INTEGER" property="questionId" />
+      <result column="correction_customer_answer_id" jdbcType="INTEGER" property="customerAnswerId" />
+      <result column="correction_student_wrong_reason" jdbcType="VARCHAR" property="studentWrongReason" />
+      <result column="correction_student_correct_thinking" jdbcType="VARCHAR" property="studentCorrectThinking" />
+      <result column="correction_review_status" jdbcType="VARCHAR" property="reviewStatus" />
+      <result column="correction_reviewer_name" jdbcType="VARCHAR" property="reviewerName" />
+      <result column="correction_review_comment" jdbcType="VARCHAR" property="reviewComment" />
+      <result column="correction_resubmit_count" jdbcType="INTEGER" property="resubmitCount" />
+      <result column="correction_submit_time" jdbcType="TIMESTAMP" property="submitTime" />
+      <result column="correction_review_time" jdbcType="TIMESTAMP" property="reviewTime" />
+    </association>
+  </resultMap>
   <sql id="Base_Column_List">
     id, question_id, exam_paper_id, exam_paper_answer_id, question_type, subject_id,
     customer_score, question_score, answer, text_content_id,
@@ -259,6 +299,71 @@
       and do_right=FALSE
       and create_user=#{createUser}
     </where>
+  </select>
+  <select id="selectWrongQuestionWorkspace" resultMap="WrongQuestionWorkspaceResultMap">
+    select
+      answer.id as workspace_answer_id,
+      answer.question_id as workspace_answer_question_id,
+      answer.exam_paper_id as workspace_answer_exam_paper_id,
+      answer.exam_paper_answer_id as workspace_answer_exam_paper_answer_id,
+      answer.question_type as workspace_answer_question_type,
+      answer.subject_id as workspace_answer_subject_id,
+      answer.customer_score as workspace_answer_customer_score,
+      answer.question_score as workspace_answer_question_score,
+      answer.answer as workspace_answer_answer,
+      answer.text_content_id as workspace_answer_text_content_id,
+      answer.do_right as workspace_answer_do_right,
+      answer.create_user as workspace_answer_create_user,
+      answer.create_time as workspace_answer_create_time,
+      answer.item_order as workspace_answer_item_order,
+      answer.class_id as workspace_answer_class_id,
+      question.id as workspace_question_id,
+      question.question_type as workspace_question_question_type,
+      question.subject_id as workspace_question_subject_id,
+      question.score as workspace_question_score,
+      question.grade_level as workspace_question_grade_level,
+      question.difficult as workspace_question_difficult,
+      question.knowledge_point as workspace_question_knowledge_point,
+      question.question_code as workspace_question_question_code,
+      question.import_batch as workspace_question_import_batch,
+      question.import_source as workspace_question_import_source,
+      question.import_question_order as workspace_question_import_question_order,
+      question.correct as workspace_question_correct,
+      question.info_text_content_id as workspace_question_info_text_content_id,
+      question.create_user as workspace_question_create_user,
+      question.status as workspace_question_status,
+      question.create_time as workspace_question_create_time,
+      question.deleted as workspace_question_deleted,
+      question_text.content as workspace_question_content,
+      answer_text.content as workspace_answer_content,
+      correction.id as correction_id,
+      correction.question_id as correction_question_id,
+      correction.customer_answer_id as correction_customer_answer_id,
+      correction.student_wrong_reason as correction_student_wrong_reason,
+      correction.student_correct_thinking as correction_student_correct_thinking,
+      correction.review_status as correction_review_status,
+      correction.reviewer_name as correction_reviewer_name,
+      correction.review_comment as correction_review_comment,
+      correction.resubmit_count as correction_resubmit_count,
+      correction.submit_time as correction_submit_time,
+      correction.review_time as correction_review_time
+    from t_exam_paper_question_customer_answer answer
+    inner join t_question question on question.id = answer.question_id
+    inner join t_text_content question_text on question_text.id = question.info_text_content_id
+    left join t_text_content answer_text on answer_text.id = answer.text_content_id
+    left join lateral (
+      select id, question_id, customer_answer_id, student_wrong_reason, student_correct_thinking,
+        review_status, reviewer_name, review_comment, resubmit_count, submit_time, review_time
+      from t_question_correction_record
+      where deleted = false
+        and customer_answer_id = answer.id
+        and user_id = #{userId}
+      order by id desc
+      limit 1
+    ) correction on true
+    where answer.id = #{customerAnswerId}
+      and answer.create_user = #{userId}
+      and answer.do_right = FALSE
   </select>
 
   <select id="studentWrongQuestionPage" resultMap="WrongQuestionPageResultMap" parameterType="com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM">

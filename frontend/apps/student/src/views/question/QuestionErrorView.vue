@@ -69,7 +69,17 @@
       </aside>
 
       <main v-loading="detailLoading" class="question-error__detail">
-        <template v-if="selectedQuestion && selectedAnswer">
+        <el-result
+          v-if="detailError"
+          icon="warning"
+          title="错题详情加载失败"
+          :sub-title="detailError"
+        >
+          <template #extra>
+            <el-button v-if="selectedRow" type="primary" @click="selectQuestion(selectedRow)">重试</el-button>
+          </template>
+        </el-result>
+        <template v-else-if="selectedQuestion && selectedAnswer">
           <section class="question-error__question-panel">
             <div class="question-error__section-header">
               <div>
@@ -183,7 +193,7 @@
             </details>
           </aside>
         </template>
-        <el-empty v-else description="请选择错题" />
+        <el-empty v-else :description="detailEmptyDescription" />
       </main>
     </div>
   </section>
@@ -194,10 +204,8 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { QuestionCorrectionContext, QuestionMarkdown } from '@xzs/question-renderer'
 import {
-  getQuestionCorrection,
-  getQuestionAnswerDetail,
-  getWrongQuestionHistory,
   getWrongQuestionPage,
+  getWrongQuestionWorkspace,
   submitQuestionCorrection,
   type AnswerItem,
   type ExamQuestion,
@@ -223,6 +231,7 @@ const correctionLayers: CorrectionLayer[] = [
 
 const loading = ref(false)
 const detailLoading = ref(false)
+const detailError = ref('')
 const submitting = ref(false)
 const questions = ref<QuestionAnswerListItem[]>([])
 const total = ref(0)
@@ -232,6 +241,7 @@ const selectedQuestion = ref<ExamQuestion | null>(null)
 const selectedAnswer = ref<AnswerItem | null>(null)
 const correction = ref<QuestionCorrectionRecord | null>(null)
 const wrongHistory = ref<QuestionWrongHistoryItem[]>([])
+const completedCorrectionLayer = ref<CorrectionLayerKey | null>(null)
 const query = reactive({
   pageIndex: 1,
   pageSize: 10
@@ -240,6 +250,8 @@ const correctionForm = reactive({
   wrongReason: '',
   correctThinking: ''
 })
+let questionListRequestSequence = 0
+let selectionRequestSequence = 0
 
 const filteredQuestions = computed(() =>
   questions.value.filter((question) => rowCorrectionLayer(question) === activeCorrectionLayer.value)
@@ -276,63 +288,78 @@ const correctionHistoryText = computed(() => {
   }
   return map[selectedCorrectionLayer.value]
 })
+const detailEmptyDescription = computed(() =>
+  completedCorrectionLayer.value === activeCorrectionLayer.value ? '当前层次已处理完成' : '请选择错题'
+)
 
 onMounted(loadQuestions)
 
 async function loadQuestions() {
+  const listRequestSequence = ++questionListRequestSequence
+  completedCorrectionLayer.value = null
+  invalidateSelectedQuestion()
   loading.value = true
   try {
     const result = await getWrongQuestionPage(query)
+    if (listRequestSequence !== questionListRequestSequence) {
+      return
+    }
+
     const page = result.response
     questions.value = page?.list ?? []
     total.value = page?.total ?? 0
     query.pageIndex = page?.pageNum ?? query.pageIndex
-
-    await selectFirstQuestionInCurrentLayer()
   } finally {
-    loading.value = false
+    if (listRequestSequence === questionListRequestSequence) {
+      loading.value = false
+    }
+  }
+
+  if (listRequestSequence === questionListRequestSequence) {
+    await selectFirstQuestionInCurrentLayer()
   }
 }
 
 async function selectQuestion(row: QuestionAnswerListItem) {
+  const requestSequence = ++selectionRequestSequence
+  completedCorrectionLayer.value = null
   selectedRow.value = row
+  selectedQuestion.value = null
+  selectedAnswer.value = null
+  correction.value = null
+  wrongHistory.value = []
+  detailError.value = ''
+  resetCorrectionForm('UNSUBMITTED', null)
   detailLoading.value = true
   try {
     const customerAnswerId = row.latestCustomerAnswerId ?? row.id
-    const result = await getQuestionAnswerDetail(customerAnswerId)
-    selectedQuestion.value = result.response?.questionVM ?? null
-    selectedAnswer.value = result.response?.questionAnswerVM ?? null
-    await loadCorrection()
-    await loadWrongHistory(row)
+    const result = await getWrongQuestionWorkspace(customerAnswerId)
+    if (requestSequence !== selectionRequestSequence) {
+      return
+    }
+    if (result.code !== 1 || !result.response) {
+      throw new Error(result.message || '错题详情加载失败')
+    }
+
+    selectedQuestion.value = result.response.questionVM
+    selectedAnswer.value = result.response.questionAnswerVM
+    correction.value = result.response.correction ?? null
+    wrongHistory.value = result.response.wrongHistory ?? []
+    const status = updateSelectedRowStatus(correction.value)
+    resetCorrectionForm(status, correction.value)
+  } catch (error) {
+    if (requestSequence === selectionRequestSequence) {
+      detailError.value = error instanceof Error ? error.message : '请稍后重试'
+    }
   } finally {
-    detailLoading.value = false
+    if (requestSequence === selectionRequestSequence) {
+      detailLoading.value = false
+    }
   }
-}
-
-async function loadWrongHistory(row: QuestionAnswerListItem) {
-  wrongHistory.value = []
-  const questionId = row.questionId ?? row.latestCustomerAnswerId ?? row.id
-  if (!questionId) return
-  const result = await getWrongQuestionHistory(questionId)
-  wrongHistory.value = result.response ?? []
-}
-
-async function loadCorrection() {
-  correction.value = null
-  if (!selectedAnswer.value?.id) {
-    updateSelectedRowStatus(null)
-    resetCorrectionForm('UNSUBMITTED', null)
-    return
-  }
-  const result = await getQuestionCorrection(selectedAnswer.value.id)
-  correction.value = result.response ?? null
-  const status = updateSelectedRowStatus(correction.value)
-  resetCorrectionForm(status, correction.value)
-  activeCorrectionLayer.value = status
 }
 
 async function submitCorrectionForm() {
-  if (!selectedAnswer.value?.id) {
+  if (!selectedAnswer.value?.id || !selectedRow.value) {
     ElMessage.error('请选择错题')
     return
   }
@@ -345,16 +372,49 @@ async function submitCorrectionForm() {
     return
   }
 
+  const activeLayer = activeCorrectionLayer.value
+  const currentRow = selectedRow.value
+  const nextQuestion = findNextQuestion(currentRow)
+  const selectedRequestSequence = selectionRequestSequence
+  const wrongReason = correctionForm.wrongReason.trim()
+  const correctThinking = correctionForm.correctThinking.trim()
+
   submitting.value = true
   try {
     const result = await submitQuestionCorrection({
       customerAnswerId: selectedAnswer.value.id,
-      wrongReason: correctionForm.wrongReason,
-      correctThinking: correctionForm.correctThinking
+      wrongReason,
+      correctThinking
     })
-    ElMessage.success(result.message || '改错已提交')
-    await loadCorrection()
-    activeCorrectionLayer.value = selectedCorrectionLayer.value
+    if (result.code !== 1 || !result.response) {
+      ElMessage.error(result.message || '改错提交失败')
+      return
+    }
+
+    const submitted = result.response
+    currentRow.correction_status = submitted.reviewStatus
+    ElMessage.success(result.message || '已提交，已移至待审核')
+
+    if (selectedRequestSequence === selectionRequestSequence && selectedRow.value?.id === currentRow.id) {
+      activeCorrectionLayer.value = activeLayer
+      correction.value = {
+        ...correction.value,
+        id: submitted.correctionId,
+        customer_answer_id: submitted.customerAnswerId,
+        student_wrong_reason: wrongReason,
+        student_correct_thinking: correctThinking,
+        review_status: submitted.reviewStatus,
+        reviewer_name: undefined,
+        review_comment: undefined
+      }
+
+      if (nextQuestion && rowCorrectionLayer(nextQuestion) === activeLayer) {
+        await selectQuestion(nextQuestion)
+      } else {
+        clearSelectedQuestion()
+        completedCorrectionLayer.value = activeLayer
+      }
+    }
   } finally {
     submitting.value = false
   }
@@ -366,6 +426,7 @@ function handlePageChange(page: number) {
 }
 
 function handleLayerChange(layer: CorrectionLayerKey) {
+  completedCorrectionLayer.value = null
   activeCorrectionLayer.value = layer
   selectFirstQuestionInCurrentLayer()
 }
@@ -380,12 +441,35 @@ async function selectFirstQuestionInCurrentLayer() {
 }
 
 function clearSelectedQuestion() {
+  selectionRequestSequence += 1
+  detailLoading.value = false
   selectedRow.value = null
   selectedQuestion.value = null
   selectedAnswer.value = null
   correction.value = null
   wrongHistory.value = []
+  detailError.value = ''
   resetCorrectionForm('UNSUBMITTED', null)
+}
+
+function invalidateSelectedQuestion() {
+  clearSelectedQuestion()
+}
+
+function findNextQuestion(currentRow: QuestionAnswerListItem) {
+  const currentLayerQuestions = filteredQuestions.value
+  const currentIndex = currentLayerQuestions.findIndex((question) => question.id === currentRow.id)
+  const currentKnowledgePoint = currentRow.knowledgePoint || '未分类'
+  const afterCurrent = currentIndex >= 0 ? currentLayerQuestions.slice(currentIndex + 1) : currentLayerQuestions
+  const beforeCurrent = currentIndex > 0 ? currentLayerQuestions.slice(0, currentIndex) : []
+
+  return (
+    afterCurrent.find((question) => (question.knowledgePoint || '未分类') === currentKnowledgePoint) ??
+    beforeCurrent.find((question) => (question.knowledgePoint || '未分类') === currentKnowledgePoint) ??
+    afterCurrent[0] ??
+    beforeCurrent[0] ??
+    null
+  )
 }
 
 function updateSelectedRowStatus(record: QuestionCorrectionRecord | null) {
@@ -678,7 +762,8 @@ function questionTypeText(type: number) {
   overflow: hidden;
 }
 
-.question-error__detail > .el-empty {
+.question-error__detail > .el-empty,
+.question-error__detail > .el-result {
   grid-column: 1 / -1;
 }
 

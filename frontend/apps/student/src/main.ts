@@ -7,15 +7,21 @@ import { createPinia } from 'pinia'
 import { configureApiClient } from '@xzs/api-client'
 import App from './App.vue'
 import { router } from './router'
+import { useUserStore } from './stores/user'
 import 'nprogress/nprogress.css'
 import './styles/index.scss'
 
 const app = createApp(App)
 const pinia = createPinia()
+const userStore = useUserStore(pinia)
 
 configureApiClient({
   onUnauthorized: () => {
-    router.push({ path: '/login' })
+    const redirect = router.currentRoute.value.fullPath
+    userStore.clear()
+    if (router.currentRoute.value.path !== '/login') {
+      void router.push({ path: '/login', query: { redirect } })
+    }
   },
   onError: (message) => {
     ElMessage.error(message)

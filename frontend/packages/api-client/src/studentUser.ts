@@ -36,8 +36,8 @@ export function getCurrentStudentUser(): Promise<ApiResponse<StudentUserInfo>> {
   return post<StudentUserInfo>('/api/student/user/current')
 }
 
-export function updateCurrentStudentUser(request: StudentUserUpdateRequest): Promise<ApiResponse<void>> {
-  return post<void>('/api/student/user/update', request)
+export function updateCurrentStudentUser(request: StudentUserUpdateRequest): Promise<ApiResponse<StudentUserInfo>> {
+  return post<StudentUserInfo>('/api/student/user/update', request)
 }
 
 export function changeStudentPassword(request: StudentChangePasswordRequest): Promise<ApiResponse<void>> {

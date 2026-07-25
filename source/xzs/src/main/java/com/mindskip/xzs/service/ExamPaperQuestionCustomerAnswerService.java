@@ -2,6 +2,7 @@ package com.mindskip.xzs.service;
 
 import com.mindskip.xzs.domain.ExamPaperQuestionCustomerAnswer;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerUpdate;
+import com.mindskip.xzs.domain.other.WrongQuestionWorkspaceData;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM;
 import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentResponseVM;
@@ -17,6 +18,8 @@ public interface ExamPaperQuestionCustomerAnswerService extends BaseService<Exam
     PageInfo<QuestionPageStudentResponseVM> studentWrongQuestionPage(QuestionPageStudentRequestVM requestVM);
 
     List<QuestionWrongHistoryVM> studentWrongQuestionHistory(Integer userId, Integer questionId);
+
+    WrongQuestionWorkspaceData selectWrongQuestionWorkspace(Integer customerAnswerId, Integer userId);
 
     List<ExamPaperQuestionCustomerAnswer> selectListByPaperAnswerId(Integer id);
 
@@ -34,6 +37,8 @@ public interface ExamPaperQuestionCustomerAnswerService extends BaseService<Exam
      * @return ExamPaperSubmitItemVM
      */
     ExamPaperSubmitItemVM examPaperQuestionCustomerAnswerToVM(ExamPaperQuestionCustomerAnswer qa);
+
+    ExamPaperSubmitItemVM examPaperQuestionCustomerAnswerToVM(ExamPaperQuestionCustomerAnswer qa, String answerTextContent);
 
 
     Integer selectAllCount();

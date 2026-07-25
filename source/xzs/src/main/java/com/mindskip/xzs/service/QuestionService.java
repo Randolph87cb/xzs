@@ -3,6 +3,7 @@ package com.mindskip.xzs.service;
 import com.mindskip.xzs.domain.Question;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionPageRequestVM;
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionTitleContentVM;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public interface QuestionService extends BaseService<Question> {
     QuestionEditRequestVM getQuestionEditRequestVM(Integer questionId);
 
     QuestionEditRequestVM getQuestionEditRequestVM(Question question);
+
+    QuestionEditRequestVM getQuestionEditRequestVM(Question question, String questionInfoContent);
+
+    List<QuestionTitleContentVM> selectTitleContentByQuestionIds(List<Integer> questionIds);
 
     Map<String, Object> normalizeGespKnowledgePointsBySubject();
 

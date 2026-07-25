@@ -59,14 +59,16 @@ public class UserControllerTest {
 
     @Test
     public void updateOnlyPersistsNickNameEvenWhenRequestContainsProfileFields() throws Exception {
-        User stored = user();
-        when(userService.selectById(7)).thenReturn(stored);
+        SchoolClass schoolClass = new SchoolClass();
+        schoolClass.setId(2);
+        schoolClass.setName("未分配");
+        when(schoolClassService.selectById(2)).thenReturn(schoolClass);
 
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         UserUpdateVM request = objectMapper.readValue("{\"nickName\":\"new nick\",\"realName\":\"hacked\",\"phone\":\"000\",\"age\":\"99\",\"sex\":1,\"birthDay\":\"2000-01-01\",\"userLevel\":9}", UserUpdateVM.class);
 
-        RestResponse response = controller.update(request);
+        RestResponse<UserResponseVM> response = controller.update(request);
 
         assertEquals(1, response.getCode());
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
@@ -81,6 +83,12 @@ public class UserControllerTest {
         assertNull(update.getBirthDay());
         assertNull(update.getUserLevel());
         assertNotNull(update.getModifyTime());
+        assertEquals(Integer.valueOf(7), response.getResponse().getId());
+        assertEquals("new nick", response.getResponse().getNickName());
+        assertEquals("Real Student", response.getResponse().getRealName());
+        assertEquals(Integer.valueOf(2), response.getResponse().getClassId());
+        assertEquals("未分配", response.getResponse().getClassName());
+        verify(userService, never()).selectById(any());
     }
 
     @Test

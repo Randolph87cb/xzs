@@ -4,6 +4,7 @@ import com.mindskip.xzs.base.RestResponse;
 import com.mindskip.xzs.base.SystemCode;
 import com.mindskip.xzs.configuration.spring.security.AuthenticationBean;
 import com.mindskip.xzs.configuration.spring.security.WebAuthCookie;
+import com.mindskip.xzs.domain.SchoolClass;
 import com.mindskip.xzs.domain.User;
 import com.mindskip.xzs.domain.UserEventLog;
 import com.mindskip.xzs.domain.UserToken;
@@ -11,8 +12,10 @@ import com.mindskip.xzs.domain.enums.RoleEnum;
 import com.mindskip.xzs.domain.enums.UserStatusEnum;
 import com.mindskip.xzs.event.UserEvent;
 import com.mindskip.xzs.service.AuthenticationService;
+import com.mindskip.xzs.service.SchoolClassService;
 import com.mindskip.xzs.service.UserService;
 import com.mindskip.xzs.service.UserTokenService;
+import com.mindskip.xzs.viewmodel.student.user.UserResponseVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.UUID;
+import java.util.function.Function;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -32,24 +36,28 @@ public class WebAuthController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
     private final UserTokenService userTokenService;
+    private final SchoolClassService schoolClassService;
     private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public WebAuthController(AuthenticationService authenticationService, UserService userService, UserTokenService userTokenService, ApplicationEventPublisher eventPublisher) {
+    public WebAuthController(AuthenticationService authenticationService, UserService userService, UserTokenService userTokenService, SchoolClassService schoolClassService, ApplicationEventPublisher eventPublisher) {
         this.authenticationService = authenticationService;
         this.userService = userService;
         this.userTokenService = userTokenService;
+        this.schoolClassService = schoolClassService;
         this.eventPublisher = eventPublisher;
     }
 
     @RequestMapping(value = "/admin/auth/login", method = RequestMethod.POST)
     public RestResponse<User> adminLogin(@RequestBody AuthenticationBean model, HttpServletRequest request, HttpServletResponse response) {
-        return login(model, WebAuthCookie.ADMIN_COOKIE_NAME, WebAuthCookie.ADMIN_COOKIE_PATH, request, response, RoleEnum.ADMIN, RoleEnum.TEACHER);
+        return login(model, WebAuthCookie.ADMIN_COOKIE_NAME, WebAuthCookie.ADMIN_COOKIE_PATH, request, response,
+                this::toAdminLoginResponse, RoleEnum.ADMIN, RoleEnum.TEACHER);
     }
 
     @RequestMapping(value = "/student/auth/login", method = RequestMethod.POST)
-    public RestResponse<User> studentLogin(@RequestBody AuthenticationBean model, HttpServletRequest request, HttpServletResponse response) {
-        return login(model, WebAuthCookie.STUDENT_COOKIE_NAME, WebAuthCookie.STUDENT_COOKIE_PATH, request, response, RoleEnum.STUDENT);
+    public RestResponse<UserResponseVM> studentLogin(@RequestBody AuthenticationBean model, HttpServletRequest request, HttpServletResponse response) {
+        return login(model, WebAuthCookie.STUDENT_COOKIE_NAME, WebAuthCookie.STUDENT_COOKIE_PATH, request, response,
+                this::toStudentLoginResponse, RoleEnum.STUDENT);
     }
 
     @RequestMapping(value = "/admin/auth/logout", method = RequestMethod.POST)
@@ -62,7 +70,9 @@ public class WebAuthController {
         return logout(WebAuthCookie.STUDENT_COOKIE_NAME, WebAuthCookie.STUDENT_COOKIE_PATH, request, response);
     }
 
-    private RestResponse<User> login(AuthenticationBean model, String cookieName, String cookiePath, HttpServletRequest request, HttpServletResponse response, RoleEnum... allowedRoles) {
+    private <T> RestResponse<T> login(AuthenticationBean model, String cookieName, String cookiePath,
+                                      HttpServletRequest request, HttpServletResponse response,
+                                      Function<User, T> responseMapper, RoleEnum... allowedRoles) {
         if (null == model) {
             return RestResponse.fail(SystemCode.AuthError.getCode(), SystemCode.AuthError.getMessage());
         }
@@ -81,10 +91,25 @@ public class WebAuthController {
         WebAuthCookie.add(request, response, cookieName, userToken.getToken(), cookiePath, model.isRemember());
         publishEvent(user, " 登录了信息学客观题一本通");
 
+        return RestResponse.ok(responseMapper.apply(user));
+    }
+
+    private User toAdminLoginResponse(User user) {
         User responseUser = new User();
         responseUser.setUserName(user.getUserName());
         responseUser.setImagePath(user.getImagePath());
-        return RestResponse.ok(responseUser);
+        return responseUser;
+    }
+
+    private UserResponseVM toStudentLoginResponse(User user) {
+        UserResponseVM vm = UserResponseVM.from(user);
+        if (user.getClassId() != null) {
+            SchoolClass schoolClass = schoolClassService.selectById(user.getClassId());
+            if (schoolClass != null) {
+                vm.setClassName(schoolClass.getName());
+            }
+        }
+        return vm;
     }
 
     private boolean isAllowedRole(RoleEnum role, RoleEnum... allowedRoles) {
