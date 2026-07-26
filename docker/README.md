@@ -123,6 +123,47 @@ docker image prune -f
 docker logs --tail=100 xzs-app
 ```
 
+## 树莓派 SSH 登录约定
+
+树莓派的固定 SSH 入口如下：
+
+```text
+SSH 别名：my-rp
+主机：rp.randolph87.top
+用户：caobin
+生产应用目录：/opt/apps/gesp-csp-quiz
+```
+
+本机 `~/.ssh/config` 使用 Cloudflare Access：
+
+```sshconfig
+Host my-rp
+    HostName rp.randolph87.top
+    User caobin
+    ProxyCommand cloudflared access ssh --hostname %h
+```
+
+人工登录可以执行：
+
+```powershell
+ssh my-rp
+```
+
+当前远端仍需要密码认证，因此自动化任务不要使用 `ssh -o BatchMode=yes my-rp`，该方式会直接报 `Permission denied`。项目的标准自动部署入口是：
+
+```powershell
+.\scripts\sync-raspi-production-env.ps1 -Restart -Verify
+```
+
+该脚本会：
+
+1. 从被 Git 忽略的根目录 `.env` 读取 `MY_SSH_KEY`。
+2. 使用 `cloudflared access tcp --hostname rp.randolph87.top --url localhost:<临时端口>` 建立本地隧道。
+3. 使用 Paramiko 以 `caobin` 用户连接本地隧道。
+4. 备份远端 `.env` 和 `docker-compose.yml`，校验 compose，按参数拉取、更新并验证容器。
+
+密码不得写入命令行参数、临时脚本、提交文件或聊天日志。只读自动排查也应复用相同的 Cloudflare TCP 隧道与 Paramiko 连接方式。
+
 如果要固定部署某个版本，把 `.env` 里的 `XZS_IMAGE` 改成具体 tag，例如：
 
 ```text

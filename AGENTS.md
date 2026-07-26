@@ -22,6 +22,9 @@
 - 树莓派迁移、性能、备份、恢复或故障排查任务开始前，先确认当前实际部署方式是 Docker Compose、systemd/Jar 还是其他方式。
 - 用户已说明树莓派使用 Docker 时，优先读取 `docs/container-image-deployment.md`、`docker/README.md` 和 `docker/docker-compose.yml`；历史迁移问题再结合 `docs/fly-to-raspberry-pi-data-migration-plan.md`。
 - 未确认部署方式时，不要直接套用 `deploy/raspberry-pi` 的 systemd/Jar 流程；`docs/raspberry-pi-deployment.md` 只代表 systemd/Jar 直部署路线。
+- 树莓派 SSH 别名固定为 `my-rp`，目标是 `caobin@rp.randolph87.top`，通过 `~/.ssh/config` 中的 `ProxyCommand cloudflared access ssh --hostname %h` 接入。
+- 当前自动化不能依赖无交互的普通 `ssh -o BatchMode=yes my-rp`，因为远端仍需要密码认证。项目标准自动入口是 `scripts/sync-raspi-production-env.ps1`：脚本读取被 Git 忽略的根目录 `.env` 中 `MY_SSH_KEY`，建立 `cloudflared access tcp` 本地隧道，再由 Paramiko 连接；不得输出或提交该密码。
+- 只读排查如需复用同一认证方式，应沿用上述 Cloudflare TCP 隧道和 Paramiko 流程；生产应用目录固定为 `/opt/apps/gesp-csp-quiz`，不要把 SSH 密码写进临时脚本、命令行参数、日志或文档。
 
 ## Neon 数据库配置约定
 
