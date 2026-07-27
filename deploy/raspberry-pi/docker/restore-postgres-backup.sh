@@ -34,6 +34,7 @@ done
 
 require_command docker
 require_command sha256sum
+require_command mktemp
 BACKUP_FILE="$(realpath "$BACKUP_FILE")"
 verify_dump_archive "$BACKUP_FILE"
 verify_checksum_sidecar "$BACKUP_FILE"
@@ -56,13 +57,25 @@ if [[ "$TARGET_DB" == "$POSTGRES_DB" ]]; then
     die "The rescue backup must be newer than the restore source."
 fi
 
+restore_list="$(mktemp "${TMPDIR:-/tmp}/xzs-restore-list.XXXXXX")"
+container_restore_list="/tmp/xzs-restore-list-$$"
+cleanup_restore_list() {
+  rm -f -- "$restore_list"
+  postgres_exec rm -f -- "$container_restore_list" >/dev/null 2>&1 || true
+}
+trap cleanup_restore_list EXIT
+create_standard_postgres_restore_list "$BACKUP_FILE" "$restore_list"
+compose cp "$restore_list" "postgres:${container_restore_list}"
+
 postgres_exec pg_restore \
   --username "$POSTGRES_USER" \
   --dbname "$TARGET_DB" \
+  --use-list="$container_restore_list" \
   --clean \
   --if-exists \
   --no-owner \
   --no-privileges \
   --exit-on-error <"$BACKUP_FILE"
 
+postgres_exec rm -f -- "$container_restore_list"
 printf 'Destructive restore completed for explicitly confirmed target database: %s\n' "$TARGET_DB"

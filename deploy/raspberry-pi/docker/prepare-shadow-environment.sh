@@ -15,6 +15,7 @@ require_command docker
 require_command curl
 require_command sha256sum
 require_command realpath
+require_command mktemp
 assert_shadow_configuration
 
 DUMP_FILE="$(realpath "$2")"
@@ -25,6 +26,15 @@ require_file "$MANIFEST_FILE"
 checksum="$(sha256sum "$DUMP_FILE" | awk '{print $1}')"
 grep -Fq "\"sha256\": \"${checksum}\"" "$MANIFEST_FILE" ||
   die "Backup manifest checksum does not match the selected archive."
+
+restore_list="$(mktemp "${TMPDIR:-/tmp}/xzs-shadow-restore-list.XXXXXX")"
+container_restore_list="/tmp/xzs-shadow-restore-list-$$"
+cleanup_restore_list() {
+  rm -f -- "$restore_list"
+  shadow_postgres_exec rm -f -- "$container_restore_list" >/dev/null 2>&1 || true
+}
+trap cleanup_restore_list EXIT
+create_standard_postgres_restore_list "$DUMP_FILE" "$restore_list"
 
 # Never restore while a previous shadow app can write to the shadow database.
 shadow_compose stop app >/dev/null 2>&1 || true
@@ -51,12 +61,15 @@ shadow_postgres_exec createdb \
   --username "$SHADOW_POSTGRES_USER" \
   --owner "$SHADOW_POSTGRES_USER" \
   "$SHADOW_POSTGRES_DB"
+shadow_compose cp "$restore_list" "postgres:${container_restore_list}"
 shadow_postgres_exec pg_restore \
   --username "$SHADOW_POSTGRES_USER" \
   --dbname "$SHADOW_POSTGRES_DB" \
+  --use-list="$container_restore_list" \
   --no-owner \
   --no-privileges \
   --exit-on-error <"$DUMP_FILE"
+shadow_postgres_exec rm -f -- "$container_restore_list"
 
 shadow_postgres_exec psql \
   --username "$SHADOW_POSTGRES_USER" \

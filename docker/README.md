@@ -26,6 +26,10 @@ crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-q
 - `latest`：树莓派默认更新目标。
 - Git 短提交号，例如 `aa08063f`：用于精确回滚。
 
+2026-07-27 正式切换使用并固定的 ARM64 应用镜像 tag 是 `986c8aa4`。正式切换、
+恢复和回滚必须使用该类明确 tag 或不可变 digest，不能使用 `latest`。同一
+`Dockerfile` 构建的 Fly release v15 已在 Neon `test` 环境通过测试。
+
 本地构建并推送 `linux/arm64` 镜像：
 
 ```powershell
@@ -76,6 +80,15 @@ nano .env
 - `XZS_AI_CONFIG_SECRET`：生产环境固定密钥，32 字符或更长。该值用于加密/解密老师保存的大模型 API Key，换值后旧密文需要重新保存。
 
 不要把 `.env` 提交到 Git，也不要发到聊天记录或日志里。
+
+首次创建 PostgreSQL bind 目录后，必须让容器内 PostgreSQL 用户拥有该目录：
+
+```sh
+sudo chown -R 999:999 "<XZS_POSTGRES_DATA_DIR>"
+```
+
+只对已经确认的 PostgreSQL 专用 bind 目录执行该命令，不要对 USB SSD 挂载根目录、
+应用目录或 NAS 目录递归改属主。
 
 也可以固定使用“本地填写、脚本复制”的方式：在开发机把模板复制为 `docker/.env.production`，填好生产配置后执行：
 
@@ -173,6 +186,76 @@ XZS_SHADOW_DELETE_CONFIRM=DELETE_XZS_SHADOW_DATA \
 
 脚本会再次确认目录是绝对路径、包含 shadow 专用组件、不同于生产数据目录，且不位于
 应用目录或 NAS 备份树内。
+
+2026-07-27 的真实环境演练已验证：
+
+- Neon production custom dump 可恢复到树莓派影子 PostgreSQL 18；Neon 特有的
+  `pg_session_jwt` 扩展和注释通过严格白名单 TOC 过滤跳过，其余 TOC 项不放宽。
+- 影子应用的功能检查和 5 轮 API 测量通过。
+- 真实极空间上的影子备份发布及隔离恢复通过。
+- 5 轮 API 记录值如下，单位为毫秒：
+
+| 场景 | 树莓派 + Neon 基线 | 影子本地 PostgreSQL |
+| --- | ---: | ---: |
+| `current` | 2950.6 | 1595.6 |
+| `wrong` | 3886.8 | 2337.8 |
+| `workspace` | 2834.7 | 1651.6 |
+| `records` | 2819.5 | 2105.8 |
+
+以上是影子环境数据；最终公网生产结果见正式切换记录。
+
+## Neon 到本地 PostgreSQL 正式切换
+
+正式入口是 `ops/cutover-neon-to-local-postgres.sh`。切换前先确认 NAS 挂载可写、
+目标数据目录为空、固定应用镜像和 PostgreSQL 镜像已拉取，并且生产应用仍健康。
+先执行只读预检：
+
+```sh
+cd /opt/apps/gesp-csp-quiz
+sudo ./ops/cutover-neon-to-local-postgres.sh \
+  --image crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-quiz:986c8aa4 \
+  --data-dir "<USB-SSD>/xzs" \
+  --confirm CUTOVER_NEON_TO_LOCAL \
+  --dry-run
+```
+
+预检通过后，去掉 `--dry-run` 执行正式切换。只有已经确认根文件系统本身位于
+`/dev/sd*` 或 `/dev/nvme*` USB SSD、且不是 SD/MMC 时，才追加
+`--allow-root-usb-ssd`；普通独立挂载不需要该参数。
+
+脚本要求固定 tag/digest 和 `--confirm CUTOVER_NEON_TO_LOCAL`，并在内部调用正式恢复
+入口的生产库双确认门。它会停止旧应用、生成并校验最终 Neon dump、恢复本地
+PostgreSQL、验证应用、生成首份小时备份、执行隔离恢复测试，再启用备份与恢复演练
+timer。任何切换阶段失败都会恢复旧 Neon 环境并重启回滚容器。
+
+2026-07-27 已完成正式切换：
+
+- 生产应用已改为 Compose 内 PostgreSQL 18，固定应用镜像为 `986c8aa4`。
+- 首份小时备份为 `xzs-20260727T090616Z.dump`，对应隔离恢复报告为
+  `restore-test-20260727T090623Z-26482.json`，均已通过。
+- `xzs-postgres-backup.timer` 和 `xzs-postgres-restore-test.timer` 已启用；
+  `xzs-neon-dr-refresh.timer` 在 7 天稳定观察完成前保持未启用。
+- 旧 Neon 环境备份及独立的停止态 `xzs-app-neon-rollback` 容器继续保留，观察期内
+  不删除。
+- 最终健康检查为 `UP`，`xzs-app` 与 `xzs-postgres` 的 restart count 均为 `0`；
+  两个本地备份/恢复 timer 为 active，Neon DR timer 为 inactive。
+- 树莓派温度为 39.9°C，未发生降频。
+
+最终公网生产每项 5 次测量如下：
+
+| 场景 | 中位数（ms） | P95（ms） | 相对树莓派 + Neon 基线 |
+| --- | ---: | ---: | ---: |
+| `current` | 742.9 | 1968.0 | 快 2207.7 ms / 74.8% |
+| `wrong` | 1090.1 | 1860.4 | 快 2796.7 ms / 72.0% |
+| `workspace` | 729.0 | 1642.4 | 快 2105.7 ms / 74.3% |
+| `records` | 748.7 | 1410.8 | 快 2070.8 ms / 73.4% |
+
+Playwright 已通过首页、错题本翻页和考试记录只读流程，未产生写入；控制台为
+`0 errors`、`1` 条未分类 warning。核心上线验收结论为 **PASS**，但该 warning
+仍需分类，计划继续保持 active 至 7 天稳定观察结束。
+
+排查期间 Neon 凭据曾出现在诊断输出中。生产稳定后必须轮换 Neon production 密码，
+并把新凭据只同步到未来专用 DR 配置；不要在命令、日志、文档或聊天中记录连接串或密码。
 
 验证：
 

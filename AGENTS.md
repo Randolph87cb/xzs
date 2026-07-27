@@ -28,8 +28,9 @@
 
 ## Neon 数据库配置约定
 
-- 当前在线数据库默认使用 Neon PostgreSQL；部署环境固定为：树莓派是生产环境，Fly.io 是测试环境，本地是开发环境。
-- 树莓派生产环境必须连接 Neon `production` branch；Fly 测试环境和本地开发环境必须连接 Neon `test` branch。除非用户明确要求只读排查，不要让测试或本地服务连接 `production` branch。
+- 当前部署环境固定为：树莓派是生产环境，默认使用同一 Docker Compose 项目中的本地 PostgreSQL 18；Fly.io 是测试环境，本地是开发环境，二者继续连接 Neon `test` branch。
+- Neon `production` 保留为切换前回滚来源和后续远端灾备目标，不在树莓派生产应用的日常请求链路中。除非执行经过确认的只读排查、回滚或灾备流程，不要让任何应用连接 Neon `production`；测试或本地服务始终使用 Neon `test` branch。
+- 树莓派 Neon 灾备刷新只能使用独立的 `NEON_DR_DIRECT_URL`，并在连接、目标隔离和首次人工刷新恢复均验证通过后启用；当前 `xzs-neon-dr-refresh.timer` 未启用，不能在 7 天稳定观察完成前提前开启。
 - Fly Web App 部署必须使用 `scripts/deploy-fly-neon-test.ps1` 从 `.env.neon-test` 导入 secret 并部署；不要手工把 `.env.neon-test` 内容打印到日志、聊天或可提交文件。
 - Neon 连接优先使用原始 URL 形式写入 `SPRING_DATASOURCE_URL`，例如 `postgresql://<user>:<password>@<branch-host>/<database>?sslmode=require&channel_binding=require`。后端启动入口会自动转换为 Spring JDBC URL，并移除当前 JDBC 驱动不支持的 `channel_binding` 参数。
 - 本地真实配置写入 `.env.neon-test`，该文件被 Git 忽略；可提交模板为 `.env.neon-test.example`。不要把 Neon 密码、完整连接串或 Fly/Neon secrets 写入可提交文档、脚本或日志。

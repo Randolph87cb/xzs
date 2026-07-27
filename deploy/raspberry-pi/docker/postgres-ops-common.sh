@@ -58,6 +58,52 @@ verify_dump_archive() {
     pg_restore --list /backup.dump >/dev/null
 }
 
+create_standard_postgres_restore_list() {
+  local dump_file="$1"
+  local restore_list="$2"
+  local raw_list="${restore_list}.raw.$$"
+  local filtered_list="${restore_list}.partial.$$"
+
+  require_file "$dump_file"
+  if ! docker run --rm --volume "${dump_file}:/backup.dump:ro" "$POSTGRES_IMAGE" \
+    pg_restore --list /backup.dump >"$raw_list"; then
+    rm -f -- "$raw_list" "$filtered_list"
+    die "Could not read the PostgreSQL archive TOC: $dump_file"
+  fi
+
+  if ! awk '
+    BEGIN {
+      extension_pattern = "^[0-9]+;[[:space:]]+[0-9]+[[:space:]]+[0-9]+[[:space:]]+EXTENSION[[:space:]]+-[[:space:]]+pg_session_jwt([[:space:]]|$)"
+      comment_pattern = "^[0-9]+;[[:space:]]+[0-9]+[[:space:]]+[0-9]+[[:space:]]+COMMENT[[:space:]]+-[[:space:]]+EXTENSION[[:space:]]+pg_session_jwt([[:space:]]|$)"
+    }
+    $0 ~ extension_pattern {
+      extension_count++
+      print ";" $0
+      next
+    }
+    $0 ~ comment_pattern {
+      comment_count++
+      print ";" $0
+      next
+    }
+    {
+      print
+    }
+    END {
+      if (!((extension_count == 0 && comment_count == 0) ||
+            (extension_count == 1 && comment_count == 1))) {
+        exit 42
+      }
+    }
+  ' "$raw_list" >"$filtered_list"; then
+    rm -f -- "$raw_list" "$filtered_list"
+    die "Archive TOC must contain either no pg_session_jwt entries or exactly its EXTENSION and COMMENT entries."
+  fi
+
+  mv -- "$filtered_list" "$restore_list"
+  rm -f -- "$raw_list"
+}
+
 verify_checksum_sidecar() {
   local dump_file="$1"
   local checksum_file="${dump_file}.sha256"

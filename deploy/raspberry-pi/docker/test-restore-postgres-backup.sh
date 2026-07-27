@@ -12,6 +12,7 @@ fi
 require_command docker
 require_command sha256sum
 require_command realpath
+require_command mktemp
 
 DUMP_FILE="$(realpath "$1")"
 verify_dump_archive "$DUMP_FILE"
@@ -31,8 +32,10 @@ volume_name="${container_name}-data"
 database_name="xzs_restore_test"
 test_password="$(head -c 48 /dev/urandom | base64 | tr -d '\n')"
 started_epoch="$(date +%s)"
+restore_list=""
 
 cleanup() {
+  [[ -z "$restore_list" ]] || rm -f -- "$restore_list"
   docker rm -f "$container_name" >/dev/null 2>&1 || true
   docker volume rm "$volume_name" >/dev/null 2>&1 || true
 }
@@ -56,10 +59,14 @@ for _ in {1..60}; do
 done
 (( ready == 1 )) || die "Isolated PostgreSQL restore container did not become ready."
 
+restore_list="$(mktemp "${TMPDIR:-/tmp}/xzs-restore-test-list.XXXXXX")"
+create_standard_postgres_restore_list "$DUMP_FILE" "$restore_list"
 docker cp "$DUMP_FILE" "${container_name}:/tmp/restore.dump"
+docker cp "$restore_list" "${container_name}:/tmp/restore.list"
 docker exec "$container_name" pg_restore \
   --username postgres \
   --dbname "$database_name" \
+  --use-list=/tmp/restore.list \
   --no-owner \
   --no-privileges \
   --exit-on-error \

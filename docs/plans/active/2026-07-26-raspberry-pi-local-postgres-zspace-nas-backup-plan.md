@@ -3,22 +3,34 @@
 状态：active
 创建日期：2026-07-26
 完成日期：
-验证摘要：
+验证摘要：2026-07-27 已完成影子恢复、真实 NAS 备份/隔离恢复、生产切换、最终
+公网生产 5 轮 API 和真实浏览器只读验收，核心上线结论为 PASS。计划保持 active，
+继续 7 天稳定观察并分类 1 条未分类 warning。
 
 ## 背景与现状
 
 - 当前生产应用部署在树莓派，使用 Docker Compose 运行 `xzs-app`，生产目录是 `/opt/apps/gesp-csp-quiz`。
-- 当前生产应用连接 Neon `production` branch；Fly.io 和本地开发连接 Neon `test` branch。
-- 已确认树莓派是 `aarch64`，有约 8 GB 内存，温度、负载和降频状态正常；系统存在约 439 GB 的 `/dev/sda2` 外接存储，但正式实施前仍需确认其实际挂载点、文件系统和是否为 USB 3 SSD。
-- 已测得树莓派访问 Neon 的简单数据库往返中位数约为 232 ms，而树莓派本机静态请求约为 6 ms。错题本等页面包含多次鉴权和业务 SQL，跨区域数据库往返会连续叠加。
+- 2026-07-27 已把生产应用从 Neon `production` branch 正式切换到同一 Compose
+  项目中的本地 PostgreSQL 18；Fly.io 和本地开发仍连接 Neon `test` branch。
+- 已确认树莓派是 `aarch64`，有约 8 GB 内存，温度、负载和降频状态正常；
+  PostgreSQL 数据目录使用 USB SSD 的显式 bind 路径，并由容器内 PostgreSQL 用户
+  `999:999` 持有。
+- 切换前测得树莓派访问 Neon 的简单数据库往返中位数约为 232 ms，而树莓派本机
+  静态请求约为 6 ms。正式影子对比数据见“性能收益预期”。
 - 本方案把 `/mnt/zspace-xzs-backup` 视为已经稳定挂载、容量充足且可由备份服务写入的外部存储；NAS 协议、挂载、权限、容量、快照和设备运维不纳入本文范围。
 - 项目内已有旧的本机 PostgreSQL `pg_dump`/`pg_restore` 脚本，但它们对应历史 systemd/Jar 路线，不能直接套用到当前 Docker Compose 生产部署。
-- 当前 `docker/docker-compose.yml` 只有应用容器，没有本地 PostgreSQL 和备份任务。
-- 当前 Neon production 使用 PostgreSQL 18.4。树莓派本地 PostgreSQL 应优先保持相同主版本，并在实施时固定具体镜像版本或 digest，避免使用不受控的浮动大版本。
+- 当前 `docker/docker-compose.yml` 已包含应用和本地 PostgreSQL 18，数据库不映射
+  宿主机 `5432`；备份、恢复演练和正式切换由 Docker 路线运维脚本负责。
+- Neon production 在迁移时使用 PostgreSQL 18.4，本地保持 PostgreSQL 18。
+  正式切换固定使用 ARM64 应用镜像 tag `986c8aa4`；同一 `Dockerfile` 构建的 Fly
+  release v15 已在 Neon `test` 环境通过测试。
 
 ## 结论
 
-推荐把树莓派 USB SSD 上的 PostgreSQL 作为唯一生产主库，极空间作为本地异机备份文件库，Neon production 作为异地冷灾备；当前已确认可以接受不超过 1 小时的数据损失窗口，因此采用“每小时逻辑备份到极空间 + 每日刷新 Neon”的简单可靠路线，不把连续 WAL/PITR 纳入本轮实施。
+树莓派 USB SSD 上的 PostgreSQL 已作为唯一生产主库，极空间作为本地异机备份文件库；
+Neon 旧生产环境暂保留为切换观察期回滚来源，未来使用独立配置作为异地冷灾备。
+当前已确认可以接受不超过 1 小时的数据损失窗口，因此采用“每小时逻辑备份到极空间 +
+稳定后每日刷新 Neon”的路线，不把连续 WAL/PITR 纳入本轮实施。
 
 不建议：
 
@@ -87,13 +99,38 @@ Fly.io 应用 + Neon test
 
 公网 Cloudflare 入口、前端渲染和仍存在的串行接口不会被本地数据库自动消除，因此迁移后必须按相同账号、相同页面和相同数据重新测量，不能把全部 8 秒都算作数据库收益。
 
+2026-07-27 影子环境已完成相同数据下的功能检查和每项 5 轮 API 对比，记录值如下，
+单位为毫秒：
+
+| 场景 | 树莓派 + Neon 基线 | 影子本地 PostgreSQL |
+| --- | ---: | ---: |
+| `current` | 2950.6 | 1595.6 |
+| `wrong` | 3886.8 | 2337.8 |
+| `workspace` | 2834.7 | 1651.6 |
+| `records` | 2819.5 | 2105.8 |
+
+该结果证明本地数据库方向有效。正式切换后又完成公网生产每项 5 次测量：
+
+| 场景 | 生产中位数（ms） | 生产 P95（ms） | 相对树莓派 + Neon 基线 |
+| --- | ---: | ---: | ---: |
+| `current` | 742.9 | 1968.0 | 快 2207.7 ms / 74.8% |
+| `wrong` | 1090.1 | 1860.4 | 快 2796.7 ms / 72.0% |
+| `workspace` | 729.0 | 1642.4 | 快 2105.7 ms / 74.3% |
+| `records` | 748.7 | 1410.8 | 快 2070.8 ms / 73.4% |
+
+Playwright 首页、错题本翻页和考试记录只读流程通过，未产生写入；控制台记录
+`0 errors`、`1` 条未分类 warning。该 warning 不阻塞核心上线 PASS，但需在观察期
+内分类。
+
 ## 需求拆解
 
 ### 1. 树莓派本地 PostgreSQL Docker 服务
 
 - 当前现状：
-  - 当前 compose 只有 `xzs-app`，应用通过 `SPRING_DATASOURCE_URL` 访问 Neon production。
-  - PostgreSQL 实时数据还不在树莓派。
+  - 已完成：Compose 包含 `xzs-app` 与 PostgreSQL 18，应用通过内部
+    `postgres:5432` 访问本地主库。
+  - 已完成：实时数据位于 USB SSD 显式 bind 目录，不在 SD 卡或 NAS；目录属主是
+    容器内 PostgreSQL 用户 `999:999`。
 - 判断：
   - 应在同一个 compose 项目中新增 PostgreSQL 服务，通过 Docker 内部网络连接。
   - 数据目录必须明确绑定到 USB SSD 的实际挂载路径，不能使用无法确认物理位置的匿名卷，也不能落到 SD 卡。
@@ -141,7 +178,10 @@ Fly.io 应用 + Neon test
 
 - 当前现状：
   - 旧 `deploy/raspberry-pi/backup-db.sh` 面向 systemd/Jar 部署，并假设宿主机安装 PostgreSQL 客户端。
-  - 当前 Docker Compose 路线没有可直接使用的备份任务。
+  - Docker Compose 路线的 custom dump、校验、manifest、NAS 原子发布和分层保留
+    已实现并通过真实极空间验证。
+  - 生产切换后的首份小时备份 `xzs-20260727T090616Z.dump` 已生成并通过校验；
+    `xzs-postgres-backup.timer` 已启用。
 - 判断：
   - 当前数据库规模较小，第一阶段每小时完整逻辑备份的复杂度最低，足以把主要 RPO 控制在 1 小时内。
   - 不能把 `pg_dump` 输出直接写到 NAS 最终文件；网络中断会留下看似存在但不完整的文件。
@@ -186,7 +226,10 @@ Fly.io 应用 + Neon test
 ### 3. 备份恢复验证
 
 - 当前现状：
-  - 现有恢复脚本只执行 `pg_restore`，没有围绕当前 Docker 生产环境的自动验证和恢复演练。
+  - 当前 Docker 路线已具备隔离恢复演练和破坏性正式恢复双确认门。
+  - 真实 NAS 影子备份的隔离恢复已通过；生产首份小时备份对应的恢复报告
+    `restore-test-20260727T090623Z-26482.json` 已通过。
+  - `xzs-postgres-restore-test.timer` 已启用。
 - 判断：
   - `pg_restore --list` 只能证明归档目录可读，不能证明整库可恢复。
   - 必须定期恢复到隔离数据库或临时 PostgreSQL 容器，不能直接覆盖生产库做演练。
@@ -215,8 +258,12 @@ Fly.io 应用 + Neon test
 ### 4. Neon 异地灾备
 
 - 当前现状：
-  - Neon production 目前是生产主库。
-  - 切换后 Neon production 不再处于日常请求链路。
+  - 生产应用已不再连接 Neon production；Neon 旧环境备份和独立停止态
+    `xzs-app-neon-rollback` 容器在 7 天观察期内保留。
+  - `xzs-neon-dr-refresh.timer` 尚未启用，必须等待本地主库稳定观察至少 7 天、
+    DR 专用目标和凭据准备完成，并通过首次人工刷新验证。
+  - 排查期间 Neon 凭据曾出现在诊断输出中；生产稳定后必须轮换 Neon production
+    密码，并只同步到未来 DR 专用配置，不在本文记录任何凭据。
 - 判断：
   - 第一阶段不使用实时逻辑复制，避免家庭网络入站、复制槽、DDL、sequence 和双主切换复杂度。
   - Neon 作为数据库灾备，需要周期性恢复经过验证的本地 dump，而不是只上传备份文件。
@@ -233,6 +280,8 @@ Fly.io 应用 + Neon test
     - 使用 Neon 直接、非 pooled 连接串执行 `pg_restore`；Neon 官方明确建议 `pg_dump`/迁移不要使用 pooled 连接。
     - 刷新前保留上一恢复点；刷新完成后校验 schema、关键表行数和只读 API。
     - 应用默认不连接 Neon，只有故障切换流程才能改回 Neon。
+    - Neon production 密码轮换后，旧连接信息必须失效；未来 DR 刷新只读取专用、
+      未提交的配置。
   - Neon 官方资料：
     - 迁移时使用 direct connection：<https://neon.com/docs/connect/connection-pooling>
     - `pg_dump`/`pg_restore` 迁移方式：<https://neon.com/docs/import/migrate-from-neon>
@@ -251,8 +300,14 @@ Fly.io 应用 + Neon test
 ### 5. Neon 到本地 PostgreSQL 的最终迁移
 
 - 当前现状：
-  - Neon production 是当前权威数据源。
-  - 应用仍可能持续产生登录、答题、纠错和后台更新数据。
+  - 2026-07-27 正式切换已完成，本地 PostgreSQL 18 是当前权威数据源。
+  - 正式入口是 `deploy/raspberry-pi/docker/cutover-neon-to-local-postgres.sh`，
+    固定 ARM64 应用镜像 tag 为 `986c8aa4`。
+  - 首份生产小时备份和隔离恢复已通过；正式生产 5 轮 API 与真实浏览器只读验收
+    已通过，核心上线结论为 PASS。
+  - 最终 health 为 `UP`，`xzs-app` 和 `xzs-postgres` restart count 均为 `0`；
+    独立回滚容器已创建，两个本地 timer active、Neon DR timer inactive；树莓派
+    温度 39.9°C 且无降频。
 - 判断：
   - 最终切换必须有短暂停写窗口，不能在 dump 后继续向 Neon 写入。
   - 应先做影子恢复和页面性能验证，再执行生产切换。
@@ -275,6 +330,22 @@ Fly.io 应用 + Neon test
     8. 启动应用并执行 API、页面和写入验收。
     9. 开放用户入口。
     10. 立即生成第一份本地备份并复制到极空间。
+  - 已实施的正式入口用法：
+
+    ```sh
+    sudo ./ops/cutover-neon-to-local-postgres.sh \
+      --image crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-quiz:986c8aa4 \
+      --data-dir "<USB-SSD>/xzs" \
+      --confirm CUTOVER_NEON_TO_LOCAL \
+      --dry-run
+    ```
+
+    只读预检通过后去掉 `--dry-run` 执行。只有根文件系统已确认位于 `/dev/sd*`
+    或 `/dev/nvme*` USB SSD、且不是 SD/MMC 时才追加 `--allow-root-usb-ssd`。
+    脚本拒绝 `latest`，要求明确 tag/digest 和切换确认，并在内部进入正式恢复的
+    生产库双确认门。切换阶段失败会恢复旧 Neon 环境并重启回滚容器。
+  - Neon dump 的恢复清单只对白名单中的 `pg_session_jwt` `EXTENSION` 和
+    `COMMENT` TOC 项做兼容过滤，其他项目不得忽略；普通 PostgreSQL dump 不受影响。
   - 回滚条件：
     - 核心页面无法使用。
     - Flyway 迁移失败。
@@ -341,15 +412,20 @@ Fly.io 应用 + Neon test
 
 ## 推荐执行顺序
 
-1. 确认树莓派 `/dev/sda2` 的挂载点、文件系统、USB 3 连接和 SMART 状态。
-2. 修改 compose，启动本地 PostgreSQL 影子库，不切生产。
-3. 从 Neon production 导出并恢复到影子库，进行数据、功能和性能对比。
-4. 实现每小时 dump、校验、原子复制、分层保留和恢复演练。
-5. 确认第一份 `/mnt/zspace-xzs-backup` 备份可以完整恢复。
-6. 在维护窗口执行 Neon 到本地 PostgreSQL 的最终切换。
-7. 切换后立即生成小时备份，并观察 7 天。
-8. 稳定后启用每日 Neon 灾备刷新，完成一次切换演练。
-9. 连续 WAL/PITR 不进入本轮；只有用户将 RPO 要求提高到 10 分钟以内时才另写方案。
+1. 已完成：确认生产数据使用 USB SSD bind 路径并设置 PostgreSQL 目录属主
+   `999:999`。
+2. 已完成：启动本地 PostgreSQL 18 影子库，不切生产。
+3. 已完成：从 Neon production 导出并恢复到影子库，完成数据、功能和 5 轮 API
+   性能对比；`pg_session_jwt` 使用严格白名单 TOC 过滤。
+4. 已完成：实现每小时 dump、校验、原子复制、分层保留和恢复演练。
+5. 已完成：真实极空间影子备份和隔离恢复通过。
+6. 已完成：2026-07-27 在维护窗口把生产切换到本地 PostgreSQL 18。
+7. 进行中：小时备份与隔离恢复 timer 已启用；正式生产 5 轮 API 和真实浏览器只读
+   验收已通过，继续观察 7 天并分类 1 条未分类 warning。
+8. 待执行：稳定后轮换曾暴露的 Neon production 密码，配置独立 DR 凭据，再启用
+   每日 Neon 灾备刷新并完成一次切换演练。
+9. 不实施：连续 WAL/PITR 不进入本轮；只有用户将 RPO 要求提高到 10 分钟以内时
+   才另写方案。
 
 ## 预计实施批次
 
@@ -357,30 +433,36 @@ Fly.io 应用 + Neon test
 
 - 不改变生产数据库。
 - 预计用户中断：0。
+- 状态：已完成。
 - 产出：SSD 路径、影子 PostgreSQL 和基础性能数据。
 
 ### 批次 B：影子 PostgreSQL 与备份链路
 
 - 新增本地数据库但不接生产流量。
 - 预计用户中断：0。
+- 状态：已完成。
 - 产出：影子库、NAS 自动备份、恢复报告和性能基准。
 
 ### 批次 C：生产切换
 
 - 停写、最终 dump、恢复和 datasource 切换。
 - 当前数据规模下预计维护窗口：30–90 分钟，影子演练后再收窄。
+- 状态：2026-07-27 已完成；首份小时备份、隔离恢复报告、正式生产性能与浏览器
+  只读验收均通过，核心上线结论为 PASS。
 - 产出：本地生产数据库和首份 NAS 备份。
 
 ### 批次 D：Neon 灾备
 
 - 切换稳定后执行。
 - 预计用户中断：0；灾备演练时需要单独安排维护窗口。
+- 状态：待 7 天观察完成；Neon DR timer 当前未启用。
 - 产出：每日异地恢复点和故障切换记录。
 
 ## 风险与待确认
 
 - 前提：`/mnt/zspace-xzs-backup` 稳定可用、容量充足且可由备份服务写入；NAS 自身配置和运维不在本文范围。
-- 待确认：树莓派 `/dev/sda2` 的实际挂载点、文件系统和 SMART 健康状态。
+- 已确认：PostgreSQL 生产数据目录使用 USB SSD 显式 bind，且属主为 `999:999`；
+  NAS 只保存备份，不保存实时数据目录。
 - 已确认：日常数据库备份可以接受不超过 1 小时的数据损失窗口，因此当前使用小时级逻辑备份。
 - 待确认：树莓派与极空间同时不可用时，是否可以接受 Neon 最多 24 小时的数据落后；如果也要求不超过 1 小时，需要提高 Neon 刷新频率或增加另一份小时级异地文件备份。
 - 待确认：Neon 当前套餐允许的分支、存储和恢复窗口，实施前不假设免费额度足以长期保留多个灾备分支。
@@ -388,23 +470,32 @@ Fly.io 应用 + Neon test
 - 风险：本地 PostgreSQL 让树莓派承担生产数据持久化责任，USB SSD、供电和恢复演练成为上线前置条件。
 - 风险：项目当前 PostgreSQL JDBC 驱动和 Flyway 版本较旧；本地 PostgreSQL 18 影子验证必须覆盖启动迁移和所有关键查询，不通过则先处理兼容性再切换。
 - 风险：正式切换后直接把 datasource 指回旧 Neon 会丢失本地新写入，任何回滚都必须先冻结写入并同步最新数据。
+- 风险：排查输出曾暴露 Neon production 凭据。稳定后必须轮换密码，并同步更新未来
+  DR 专用配置；旧凭据、完整连接串和新密码均不得写入提交文件、日志或聊天。
+- 风险：Neon 恢复所需的 `pg_session_jwt` 兼容处理只能过滤其 `EXTENSION` 和
+  `COMMENT` 白名单 TOC 项，不能扩大为忽略其他恢复错误。
 
 ## 成功标准
 
-- 生产应用只写树莓派本地 PostgreSQL。
-- PostgreSQL 数据位于 USB SSD，不位于 SD 卡或 NAS。
-- 公网和局域网普通客户端无法访问 PostgreSQL `5432`。
-- 正常状态下每小时都形成一个备份，极空间最新已验证恢复点不早于当前时间 75 分钟；连续两个周期失败必须触发严重告警。
-- 任意抽取一份 NAS 备份可以恢复到隔离数据库，并通过关键数据检查。
-- Neon 每日拥有经过验证的灾备数据，且默认没有生产应用写入。
-- 故障切换流程不会产生双主。
-- 错题本、考试记录等关键页面达到影子环境测得的目标区间，并有改前改后中位数/P95记录。
+- 已完成：生产应用只写树莓派本地 PostgreSQL。
+- 已完成：PostgreSQL 数据位于 USB SSD，不位于 SD 卡或 NAS。
+- 已完成：Compose 不映射 PostgreSQL `5432`。
+- 观察中：每小时形成备份，极空间最新已验证恢复点不早于当前时间 75 分钟；
+  连续两个周期失败必须触发严重告警。
+- 已完成首轮：真实 NAS 备份已恢复到隔离数据库并通过关键数据检查；继续由每周
+  timer 验证。
+- 待执行：Neon 每日拥有经过验证的灾备数据，且默认没有生产应用写入。
+- 已完成切换保护：旧 Neon 环境和停止态回滚容器保留，故障切换流程不得产生双主。
+- 已完成：正式生产关键页面每项 5 轮 API 有中位数/P95与基线改善记录；Playwright
+  首页、错题本翻页和考试记录只读流程通过，控制台 `0 errors`。保留 1 条未分类
+  warning 在观察期内继续处理。
 
 ## 收尾记录
 
-- 完成状态：
+- 完成状态：核心上线验收 PASS；7 天观察、warning 分类与 Neon DR 批次未完成，
+  计划保持 active。
 - 归档日期：
-- 归档原因：
+- 归档原因：观察期、正式生产验收、凭据轮换和 Neon DR 验证完成后再填写。
 
 ### 涉及文件
 
@@ -432,5 +523,23 @@ Fly.io 应用 + Neon test
 - 2026-07-27：同步脚本新增 `-ShadowAssetsOnly`。该模式不接触生产 `.env`，
   只同步 Compose、影子 env 模板和 ops，并以无 secret 占位配置检查生产与影子
   Compose；与任何生产重启或验证参数组合时前置拒绝。
-- 当前仅完成本地候选实现和静态验证；尚未连接树莓派、极空间或 Neon，也未执行
-  数据迁移、timer 安装、生产切换或真实恢复演练。
+- 2026-07-27：同一 `Dockerfile` 构建的 Fly release v15 在 Neon `test` 环境通过
+  测试；树莓派候选固定为 ARM64 镜像 tag `986c8aa4`。
+- 2026-07-27：Neon production dump 已成功恢复到影子 PostgreSQL 18。Neon 专属
+  `pg_session_jwt` 只过滤白名单内的 `EXTENSION` 和 `COMMENT` TOC 项；影子功能、
+  每项 5 轮 API、真实极空间影子备份和隔离恢复均通过。
+- 2026-07-27：正式运行 `cutover-neon-to-local-postgres.sh`，生产切换到本地
+  PostgreSQL 18 成功。入口要求 `--dry-run` 预检、固定 tag/digest、明确确认；
+  根文件系统作为 USB SSD 时另需 `--allow-root-usb-ssd`，并保留失败自动回滚。
+- 2026-07-27：首份小时备份 `xzs-20260727T090616Z.dump` 和隔离恢复报告
+  `restore-test-20260727T090623Z-26482.json` 通过；小时备份和每周恢复演练 timer
+  已启用，Neon DR timer 未启用。
+- 2026-07-27：旧 Neon 环境备份和独立停止态 `xzs-app-neon-rollback` 容器继续
+  保留。最终 health 为 `UP`，应用与 PostgreSQL restart count 均为 `0`；两个本地
+  timer active、Neon DR timer inactive；树莓派温度 39.9°C 且无降频。
+- 2026-07-27：正式公网生产每项 5 次测量完成，四个场景中位数分别为 742.9、
+  1090.1、729.0、748.7 ms，相对 Neon 基线改善 72.0%–74.8%。Playwright 首页、
+  错题本翻页和考试记录只读流程通过，未产生写入，控制台 `0 errors`、`1` 条
+  未分类 warning。核心上线验收 PASS，计划保持 active 至至少 7 天稳定观察完成。
+- 观察期收尾待办：轮换排查中曾暴露的 Neon production 密码，并只同步到未来 DR
+  专用配置；不得在实施记录中写入真实凭据。

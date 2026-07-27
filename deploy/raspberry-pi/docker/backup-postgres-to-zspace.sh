@@ -120,7 +120,7 @@ nas_partial_dump="${incoming}/$(basename "$dump_file").partial"
 [[ "$(sha256sum "$nas_partial_dump" | awk '{print $1}')" == "$checksum" ]] ||
   die "NAS copy checksum verification failed."
 
-for source_file in "$dump_file" "$checksum_file" "$manifest_file"; do
+for source_file in "$manifest_file" "$checksum_file" "$dump_file"; do
   mv -- "${incoming}/$(basename "$source_file").partial" "${target_dir}/$(basename "$source_file")"
 done
 
@@ -130,6 +130,9 @@ promote_family() {
   for source_file in "$dump_file" "$checksum_file" "$manifest_file"; do
     promoted_partial="${incoming}/$(basename "$source_file").${destination}.partial"
     cp -- "${target_dir}/$(basename "$source_file")" "$promoted_partial"
+  done
+  for source_file in "$manifest_file" "$checksum_file" "$dump_file"; do
+    promoted_partial="${incoming}/$(basename "$source_file").${destination}.partial"
     mv -- "$promoted_partial" "${NAS_PROJECT_ROOT}/${destination}/$(basename "$source_file")"
   done
 }

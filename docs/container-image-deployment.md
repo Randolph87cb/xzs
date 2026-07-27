@@ -25,6 +25,10 @@ docker buildx build --platform linux/arm64 `
   --push .
 ```
 
+2026-07-27 正式树莓派切换固定使用 ARM64 tag `986c8aa4`。生产切换入口拒绝
+`latest`，后续切换和回滚也应使用明确 tag 或不可变 digest。由同一
+`Dockerfile` 构建的 Fly release v15 已在 Neon `test` 环境通过测试。
+
 Fly 测试环境也使用同一个 `Dockerfile`，但由 `flyctl deploy` 构建并推送到 Fly 自己的 registry：
 
 ```powershell
@@ -71,6 +75,38 @@ Fly 测试环境也使用同一个 `Dockerfile`，但由 `flyctl deploy` 构建�
 数据目录均与生产隔离。`deploy/raspberry-pi/docker/prepare-shadow-environment.sh`
 只接受通过 archive、SHA-256 和 manifest 校验的 dump，并在恢复后启动当前应用镜像，
 用于验证 PostgreSQL 18、JDBC 和 Flyway；清理入口默认保留影子数据。
+
+Neon dump 可能包含本地 PostgreSQL 不提供的 `pg_session_jwt`。恢复辅助逻辑只允许
+过滤该扩展自身的 `EXTENSION` 和 `COMMENT` 两类 TOC 项，并会拒绝不符合严格白名单的
+组合；这不是通用的“忽略恢复错误”开关。
+
+2026-07-27 已完成真实树莓派影子 PostgreSQL 18 恢复、影子功能及 5 轮 API、
+真实 NAS 影子备份和隔离恢复。随后已通过
+`deploy/raspberry-pi/docker/cutover-neon-to-local-postgres.sh` 正式切换生产到
+Compose 内 PostgreSQL 18。首份小时备份 `xzs-20260727T090616Z.dump` 及隔离恢复报告
+`restore-test-20260727T090623Z-26482.json` 均通过。小时备份和每周隔离恢复 timer
+已启用，Neon DR timer 在 7 天观察期结束前未启用；旧 Neon 环境备份和独立停止态
+回滚容器仍保留。
+
+切换脚本必须传入固定镜像、USB SSD 数据根目录和
+`--confirm CUTOVER_NEON_TO_LOCAL`；应先加 `--dry-run` 做只读预检。仅当根文件系统
+已经确认位于 `/dev/sd*` 或 `/dev/nvme*` USB SSD 时才允许追加
+`--allow-root-usb-ssd`。PostgreSQL bind 目录必须归容器用户 `999:999` 所有。脚本在
+切换阶段失败时会恢复旧 Neon 环境并启动回滚容器。
+
+最终公网生产 5 次测量已完成：`current` 中位数/P95 为 742.9/1968.0 ms，
+较 Neon 基线快 2207.7 ms（74.8%）；`wrong` 为 1090.1/1860.4 ms，快
+2796.7 ms（72.0%）；`workspace` 为 729.0/1642.4 ms，快 2105.7 ms
+（74.3%）；`records` 为 748.7/1410.8 ms，快 2070.8 ms（73.4%）。
+
+Playwright 首页、错题本翻页和考试记录只读流程通过，没有产生写入，控制台为
+`0 errors`、`1` 条未分类 warning。最终 health 为 `UP`，应用和 PostgreSQL
+restart count 均为 `0`；独立回滚容器已创建，两个本地 timer active，Neon DR
+timer inactive；树莓派温度 39.9°C 且无降频。核心上线验收为 **PASS**，计划仍
+保持 active 进行 7 天观察，并继续分类该 warning。
+
+排查中暴露过的 Neon production 密码应在生产稳定后轮换，并只同步到未来 DR 专用
+配置，任何文档和日志都不得写入真实凭据。
 
 ## 验证入口
 
