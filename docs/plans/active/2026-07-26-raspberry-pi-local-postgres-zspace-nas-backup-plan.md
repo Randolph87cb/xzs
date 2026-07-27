@@ -3,7 +3,7 @@
 状态：active
 创建日期：2026-07-26
 完成日期：
-验证摘要：
+验证摘要：2026-07-27 已完成树莓派 NAS 挂载只读检查：CIFS/SMB 3.0 挂载和局域网连通正常，fstab 无解析错误，凭据文件权限合格；发现 systemd 尚未重新加载最新 fstab、缺少 automount/短超时、挂载文件权限过宽、普通用户不可写，以及 NAS 使用率已达 86%。相关整改和验收项已纳入本文。
 
 ## 背景与现状
 
@@ -11,7 +11,12 @@
 - 当前生产应用连接 Neon `production` branch；Fly.io 和本地开发连接 Neon `test` branch。
 - 已确认树莓派是 `aarch64`，有约 8 GB 内存，温度、负载和降频状态正常；系统存在约 439 GB 的 `/dev/sda2` 外接存储，但正式实施前仍需确认其实际挂载点、文件系统和是否为 USB 3 SSD。
 - 已测得树莓派访问 Neon 的简单数据库往返中位数约为 232 ms，而树莓派本机静态请求约为 6 ms。错题本等页面包含多次鉴权和业务 SQL，跨区域数据库往返会连续叠加。
-- 极空间 NAS 已安装硬盘，但具体型号、存储池模式、局域网地址以及是否已开启 NFS/SMB、快照和 UPS 尚未确认。
+- 极空间 NAS 已通过 CIFS/SMB 3.0 挂载到树莓派 `/mnt/zspace-xzs-backup`，NAS 使用局域网地址并通过有线网络访问；2026-07-27 实测平均往返约 1.23 ms、0% 丢包，挂载可读且目录访问正常。
+- 当前 NAS 挂载使用 `/etc/zspace_credentials`，文件权限为 `0600 root:root`，凭据未写入 fstab，配置正确。
+- 当前 fstab 已配置 `nofail`，但缺少 `_netdev`、`x-systemd.automount` 和短挂载超时；systemd 提示 fstab 已修改但尚未 `daemon-reload`，当前 mount unit 超时仍为 90 秒。
+- 当前 CIFS 挂载隐式使用 `uid=0,gid=0,file_mode=0755,dir_mode=0755`：`caobin` 不能写入，且备份文件会对本机其他用户可读并显示为可执行。后续备份任务应固定由 root systemd service 执行，并把文件/目录权限收紧。
+- 极空间当前总容量约 7.3 TB、已使用约 6.3 TB、剩余约 1.1 TB，使用率 86%；容量足够当前数据库，但已经超过方案的 80% 预警线。
+- 极空间具体型号、存储池模式、快照和 UPS 能力尚未确认。
 - 项目内已有旧的本机 PostgreSQL `pg_dump`/`pg_restore` 脚本，但它们对应历史 systemd/Jar 路线，不能直接套用到当前 Docker Compose 生产部署。
 - 当前 `docker/docker-compose.yml` 只有应用容器，没有本地 PostgreSQL、备份任务、备份目录和 NAS 挂载。
 - 当前 Neon production 使用 PostgreSQL 18.4。树莓派本地 PostgreSQL 应优先保持相同主版本，并在实施时固定具体镜像版本或 digest，避免使用不受控的浮动大版本。
@@ -92,12 +97,23 @@ Fly.io 应用 + Neon test
 ### 1. 极空间备份空间准备
 
 - 当前现状：
-  - 已确认有极空间 NAS 和硬盘。
-  - 未确认型号、存储池模式、剩余容量、NFS/SMB 支持情况、快照能力和 UPS。
+  - 已确认极空间共享目录通过 CIFS/SMB 3.0 挂载到 `/mnt/zspace-xzs-backup`。
+  - 已确认 NAS 位于树莓派同一局域网，实测平均约 1.23 ms、0% 丢包。
+  - 已确认挂载目录可读、目录访问无超时；当前 `caobin` 用户不可写。
+  - 已确认 fstab 无解析错误，凭据文件 `/etc/zspace_credentials` 为 `0600 root:root`。
+  - 已确认 fstab 修改后尚未执行 `systemctl daemon-reload`。
+  - 已确认当前没有 systemd automount 单元，mount unit 默认超时为 90 秒；NAS 离线时虽有 `nofail`，仍可能拖慢开机或路径访问。
+  - 已确认挂载文件和目录模式均为 `0755`，不适合保存包含生产数据的数据库备份。
+  - 已确认 NAS 使用率为 86%，约剩余 1.1 TB。
+  - 未确认型号、存储池模式、快照能力和 UPS。
 - 判断：
   - 极空间适合保存数据库备份文件和历史快照。
   - PostgreSQL 的 `PGDATA` 必须留在树莓派本地 USB SSD；NAS 仅接收已经生成完成且校验过的备份文件。
-  - 极空间不同型号提供的协议和快照能力可能不同，实施前需要做一次能力探测，不能在方案中假定全部功能都可用。极空间公开产品资料显示部分型号支持按存储池快照和单文件/文件夹恢复，但具体可用能力以当前设备管理界面为准。
+  - 当前 SMB 3.0 链路性能足够用于小时级备份，不需要为了本轮迁移切换 NFS。
+  - `nofail` 可以避免挂载失败直接导致系统启动失败，但不能消除默认 90 秒等待；应增加 systemd automount 和短超时。
+  - 普通用户不可写不是阻塞项：数据库备份应由 root systemd service 执行。真正需要修正的是 `0755` 导致本机其他用户可读和文件可执行。
+  - 86% 使用率已经进入容量预警区，实施自动保留策略和容量告警前不能把 NAS 备份视为无人值守完成。
+  - 极空间不同型号提供的快照能力可能不同，实施前仍需在管理界面确认，不能假定当前设备一定支持全部快照功能。
 - 修改方案：
   - 在极空间创建独立共享目录，推荐使用纯英文路径：
 
@@ -117,13 +133,25 @@ Fly.io 应用 + Neon test
     - 只允许访问上述共享目录。
     - 不授予管理员权限。
     - 不允许访问照片、影音和其他私人目录。
-  - 连接协议优先级：
-    1. 设备支持且局域网稳定时优先 NFS。
-    2. 不支持 NFS 时使用 SMB 3.x。
-    3. 不使用极空间公网映射作为日常备份通道。
-  - 树莓派推荐挂载点为 `/mnt/zspace-xzs-backup`。
-  - NAS 挂载必须使用 `_netdev`、`nofail` 和 systemd automount 等选项，NAS 关机时不能阻止树莓派启动，也不能阻止 PostgreSQL 和应用运行。
-  - SMB 凭据放在树莓派 root-only 文件中，例如 `/etc/xzs/zspace-credentials`，权限 `0600`；不写入 Git、compose 文件或聊天记录。
+  - 当前继续使用已验证的 SMB 3.0，不在本轮额外切换 NFS；不使用极空间公网映射作为日常备份通道。
+  - 保留当前挂载点 `/mnt/zspace-xzs-backup` 和凭据文件 `/etc/zspace_credentials`。
+  - 将 fstab 挂载选项调整为：
+
+    ```text
+    credentials=/etc/zspace_credentials,iocharset=utf8,vers=3.0,_netdev,nofail,x-systemd.automount,x-systemd.mount-timeout=10s,uid=0,gid=0,file_mode=0600,dir_mode=0700,nosuid,nodev,noexec
+    ```
+
+  - 修改 fstab 后执行 `sudo systemctl daemon-reload`，确认生成并启动 `mnt-zspace\x2dxzs\x2dbackup.automount`；不要只依赖重启后自动读取。
+  - 备份任务固定使用 root systemd service，普通 `caobin` 用户不需要直接写 NAS；如未来改为非 root 服务，再单独建立最小权限备份组，不把目录放宽为 `0777`。
+  - NAS 关机或断网时：
+    - 树莓派启动不能等待超过设定的 10 秒挂载超时。
+    - PostgreSQL 和 `xzs-app` 必须照常启动。
+    - 备份文件留在 USB SSD staging，NAS 恢复后补传。
+  - 容量管理：
+    - 当前 86% 使用率立即记为预警状态。
+    - 在极空间为备份目录设置配额或容量预算，避免与照片、影音等数据无限争用空间。
+    - NAS 使用率超过 90% 时触发严重告警并暂停非必要历史副本扩张，但不能删除受保护的手工备份。
+    - 实施每小时备份前先用真实 production dump 测量单份大小，据此复核 7 天小时备份、30 天每日备份、12 周周备份和 12 个月月备份的总空间。
   - 如果当前极空间型号支持文件快照：
     - 每日快照保留 30 份。
     - 每周快照保留 12 份。
@@ -134,9 +162,16 @@ Fly.io 应用 + Neon test
   - 极空间存储池、共享目录、专用账号和局域网协议。
   - 树莓派 `/etc/fstab` 或 systemd mount/automount 单元。
 - 验证方案：
-  - 树莓派重启时 NAS 在线，挂载能自动建立。
-  - NAS 关机后树莓派重启，PostgreSQL 和应用仍能正常启动。
+  - `findmnt --verify --tab-file /etc/fstab` 为 0 个解析错误，且不再提示 systemd 仍使用旧 fstab。
+  - `systemctl show mnt-zspace\x2dxzs\x2dbackup.automount` 显示 `LoadState=loaded`、`ActiveState=active`。
+  - 首次访问 `/mnt/zspace-xzs-backup` 能在 10 秒内触发挂载。
+  - 树莓派重启时 NAS 在线，首次访问能自动建立挂载。
+  - NAS 关机后树莓派重启，PostgreSQL 和应用仍能正常启动，启动过程不因 NAS 等待 90 秒。
   - NAS 恢复后挂载自动恢复，积压备份能够补传。
+  - root 备份服务能创建临时文件、校验后原子改名并清理测试文件；`caobin` 和无关本地用户不能写入。
+  - 新生成的备份文件模式为 `0600`，目录模式为 `0700`，挂载具有 `nosuid,nodev,noexec`。
+  - 凭据文件继续保持 `0600 root:root`，fstab、日志和仓库不包含 NAS 密码。
+  - 记录真实 dump 大小，证明当前剩余空间能覆盖保留策略；配置 80% 预警和 90% 严重告警。
   - 使用备份账号只能读写指定目录，不能访问其他目录或管理快照。
   - 在极空间上删除一个测试文件，再通过快照恢复该文件。
 
@@ -398,10 +433,10 @@ Fly.io 应用 + Neon test
 
 ## 推荐执行顺序
 
-1. 确认极空间型号、局域网固定 IP、存储池模式、可用协议、快照和 UPS。
-2. 确认树莓派 `/dev/sda2` 的挂载点、文件系统、USB 3 连接和 SMART 状态。
-3. 在极空间创建专用共享目录、账号、配额和快照策略。
-4. 在树莓派配置 NAS automount，完成在线、离线和重启测试。
+1. 保留已验证的 SMB 3.0 和 `/mnt/zspace-xzs-backup`，修正 fstab 的 automount、10 秒超时和 root-only 权限，并执行 `systemctl daemon-reload`。
+2. 完成 NAS 在线首次访问、NAS 离线开机、NAS 恢复补挂载和 root 写入测试，确认应用不依赖 NAS 启动。
+3. 确认极空间型号、存储池模式、快照和 UPS，并针对当前 86% 使用率设置配额、80% 预警和 90% 严重告警。
+4. 确认树莓派 `/dev/sda2` 的挂载点、文件系统、USB 3 连接和 SMART 状态。
 5. 修改 compose，启动本地 PostgreSQL 影子库，不切生产。
 6. 从 Neon production 导出并恢复到影子库，进行数据、功能和性能对比。
 7. 实现每小时 dump、校验、NAS 原子复制、分层保留和恢复演练。
@@ -441,9 +476,12 @@ Fly.io 应用 + Neon test
 
 - 待确认：极空间具体型号和系统版本。
 - 待确认：极空间存储池采用单盘、ZDR、RAID1、RAID5 或其他模式。
-- 待确认：极空间是否支持 NFS；如果只能使用 SMB，方案将采用 SMB 3.x 挂载。
+- 已确认：当前使用 CIFS/SMB 3.0，局域网实测约 1.23 ms、0% 丢包，本轮无需切换 NFS。
 - 待确认：极空间是否支持文件快照、快照保留策略和 UPS 联动。
-- 待确认：极空间固定局域网 IP、共享目录和可分配容量。
+- 已确认：极空间已通过固定局域网地址挂载到 `/mnt/zspace-xzs-backup`，当前约剩余 1.1 TB，但总使用率已达 86%。
+- 已确认：fstab 当前只有 `nofail`，尚缺 `_netdev`、automount 和短超时；systemd 仍使用旧版本生成配置，整改前 NAS 离线可能带来最长约 90 秒等待。
+- 已确认：凭据文件为 `0600 root:root`，但挂载文件和目录模式为 `0755`，需要收紧为 root-only 并增加 `nosuid,nodev,noexec`。
+- 已确认：`caobin` 当前不能写 NAS；本方案决定由 root systemd service 执行备份，不通过放宽目录权限解决。
 - 待确认：树莓派 `/dev/sda2` 的实际挂载点、文件系统和 SMART 健康状态。
 - 已确认：日常数据库备份可以接受不超过 1 小时的数据损失窗口，因此当前使用小时级逻辑备份。
 - 待确认：树莓派与极空间同时不可用时，是否可以接受 Neon 最多 24 小时的数据落后；如果也要求不超过 1 小时，需要提高 Neon 刷新频率或增加另一份小时级异地文件备份。
@@ -451,6 +489,9 @@ Fly.io 应用 + Neon test
 - 风险：NAS 与树莓派位于同一地点，不能防范火灾、雷击、盗窃和整屋断电，因此仍需 Neon 异地灾备。
 - 风险：RAID/ZDR 解决硬盘故障，不解决误删、数据库逻辑损坏和勒索软件，必须保留多时间点备份或快照。
 - 风险：NAS 离线时，如果脚本直接依赖 NAS，可能影响备份甚至系统启动；方案要求本地暂存、`nofail` 和自动重试。
+- 风险：当前 NAS 使用率已经达到 86%；如果不先配置容量预警和保留策略，自动小时备份可能在长期运行后失败。
+- 风险：fstab 修改后未执行 `systemctl daemon-reload`，当前 systemd 单元可能不反映磁盘上的最新配置。
+- 风险：当前 CIFS `file_mode=0755,dir_mode=0755` 会让生产备份对无关本地用户可读，且文件显示为可执行。
 - 风险：本地 PostgreSQL 让树莓派承担生产数据持久化责任，USB SSD、供电和恢复演练成为上线前置条件。
 - 风险：项目当前 PostgreSQL JDBC 驱动和 Flyway 版本较旧；本地 PostgreSQL 18 影子验证必须覆盖启动迁移和所有关键查询，不通过则先处理兼容性再切换。
 - 风险：正式切换后直接把 datasource 指回旧 Neon 会丢失本地新写入，任何回滚都必须先冻结写入并同步最新数据。
@@ -460,6 +501,9 @@ Fly.io 应用 + Neon test
 - 生产应用只写树莓派本地 PostgreSQL。
 - PostgreSQL 数据位于 USB SSD，不位于 SD 卡或 NAS。
 - 公网和局域网普通客户端无法访问 PostgreSQL `5432`。
+- NAS 使用 systemd automount 和不超过 10 秒的挂载超时；NAS 离线时树莓派、PostgreSQL 和应用能正常启动。
+- NAS 凭据保持 `0600 root:root`，备份文件和目录分别为 `0600`、`0700`，并启用 `nosuid,nodev,noexec`。
+- NAS 80% 容量预警和 90% 严重告警生效；当前 86% 状态能够触发预警。
 - 正常状态下每小时都形成一个备份，极空间最新已验证恢复点不早于当前时间 75 分钟；连续两个周期失败必须触发严重告警。
 - 任意抽取一份 NAS 备份可以恢复到隔离数据库，并通过关键数据检查。
 - Neon 每日拥有经过验证的灾备数据，且默认没有生产应用写入。
