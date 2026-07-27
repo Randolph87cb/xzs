@@ -1,0 +1,16 @@
+[Unit]
+Description=Test the latest XZS PostgreSQL backup in isolation
+RequiresMountsFor=/mnt/zspace-xzs-backup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/apps/gesp-csp-quiz
+EnvironmentFile=/opt/apps/gesp-csp-quiz/.env
+ExecStart=/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n7 /opt/apps/gesp-csp-quiz/ops/test-latest-postgres-backup.sh
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+TimeoutStartSec=90min

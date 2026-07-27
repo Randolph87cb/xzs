@@ -1,0 +1,11 @@
+[Unit]
+Description=Run weekly isolated XZS PostgreSQL restore test
+
+[Timer]
+OnCalendar=Sun *-*-* 03:30:00
+RandomizedDelaySec=15min
+Persistent=true
+Unit=xzs-postgres-restore-test.service
+
+[Install]
+WantedBy=timers.target

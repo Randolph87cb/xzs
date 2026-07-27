@@ -1,8 +1,36 @@
 services:
+  postgres:
+    image: ${XZS_POSTGRES_IMAGE:-postgres:18.4-bookworm}
+    container_name: ${XZS_POSTGRES_CONTAINER_NAME:-xzs-postgres}
+    restart: ${XZS_RESTART_POLICY:-always}
+    environment:
+      POSTGRES_DB: ${XZS_POSTGRES_DB:?set XZS_POSTGRES_DB in /opt/apps/gesp-csp-quiz/.env}
+      POSTGRES_USER: ${XZS_POSTGRES_USER:?set XZS_POSTGRES_USER in /opt/apps/gesp-csp-quiz/.env}
+      POSTGRES_PASSWORD: ${XZS_POSTGRES_PASSWORD:?set XZS_POSTGRES_PASSWORD in /opt/apps/gesp-csp-quiz/.env}
+      PGDATA: /var/lib/postgresql/18/docker
+      TZ: Asia/Shanghai
+    command:
+      - postgres
+      - -c
+      - max_connections=${XZS_POSTGRES_MAX_CONNECTIONS:-30}
+    volumes:
+      - ${XZS_POSTGRES_DATA_DIR:?set XZS_POSTGRES_DATA_DIR to the USB SSD PostgreSQL data directory}:/var/lib/postgresql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
   app:
     image: ${XZS_IMAGE:-crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/gesp-csp-quiz:latest}
-    container_name: xzs-app
-    restart: always
+    container_name: ${XZS_APP_CONTAINER_NAME:-xzs-app}
+    restart: ${XZS_RESTART_POLICY:-always}
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SERVER_PORT: 8000
@@ -13,12 +41,14 @@ services:
       SERVER_UNDERTOW_WORKER_THREADS: ${SERVER_UNDERTOW_WORKER_THREADS:-16}
       SERVER_UNDERTOW_BUFFER_SIZE: ${SERVER_UNDERTOW_BUFFER_SIZE:-512}
       SERVER_UNDERTOW_DIRECT_BUFFERS: ${SERVER_UNDERTOW_DIRECT_BUFFERS:-false}
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:?set Neon production SPRING_DATASOURCE_URL in /opt/apps/gesp-csp-quiz/.env}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${XZS_POSTGRES_DB:?set XZS_POSTGRES_DB in /opt/apps/gesp-csp-quiz/.env}
+      SPRING_DATASOURCE_USERNAME: ${XZS_POSTGRES_USER:?set XZS_POSTGRES_USER in /opt/apps/gesp-csp-quiz/.env}
+      SPRING_DATASOURCE_PASSWORD: ${XZS_POSTGRES_PASSWORD:?set XZS_POSTGRES_PASSWORD in /opt/apps/gesp-csp-quiz/.env}
       SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:-4}
       SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:-1}
       SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:-30000}
       XZS_AI_CONFIG_SECRET: ${XZS_AI_CONFIG_SECRET:?set production XZS_AI_CONFIG_SECRET in /opt/apps/gesp-csp-quiz/.env}
     ports:
-      - "${XZS_HOST_PORT:-8000}:8000"
+      - "${XZS_HOST_BIND:-0.0.0.0}:${XZS_HOST_PORT:-8000}:8000"
     volumes:
-      - ./log:/usr/log/xzs/
+      - ${XZS_LOG_DIR:-./log}:/usr/log/xzs/

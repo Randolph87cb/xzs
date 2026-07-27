@@ -24,18 +24,24 @@
 `docker` 目录保存 Docker 部署材料：
 
 - `docker/docker-compose.yml`：compose 配置。
-- `docker/.env.production.example`：树莓派生产环境 env 模板，真实 `.env` 必须在树莓派本机维护并连接 Neon `production` branch。
+- `docker/.env.production.example`：树莓派生产环境 env 模板，真实 `.env` 必须在树莓派本机维护，提供本地 PostgreSQL、USB SSD、备份和独立 Neon DR 配置。
+- `docker/.env.shadow.example`：树莓派影子 PostgreSQL 与影子应用模板，固定回环端口、
+  独立容器名和独立 USB SSD 数据目录。
 - `docker/README.md`：Docker Compose 启动、日志、JVM/Undertow/Hikari 参数、Cloudflare 缓存检查、ACR 镜像更新和回滚说明。
 - `docs/container-image-deployment.md`：树莓派和 Fly 共用 `Dockerfile` 的容器镜像、运行参数、模板入口和验证入口说明。
 
-当前树莓派 Docker Compose 只运行应用容器，镜像来自阿里云 ACR，镜像内已包含后端 Jar、管理端和学生端静态资源。生产数据库在 Neon `production` branch，Compose 不再默认启动本地 PostgreSQL，也不再挂载 `release/java/xzs-3.9.0.jar`。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，仓库不再附带 docker-compose 二进制。
+当前树莓派 Docker Compose 运行应用和 PostgreSQL 18 容器；数据库数据绑定到 USB
+SSD，应用只通过内部网络访问且宿主机不开放 `5432`。镜像内已包含后端 Jar、管理端
+和学生端静态资源。运行 Docker 部署前需要在目标环境外部安装 Docker Compose v2，
+仓库不再附带 docker-compose 二进制。
 
 ## Neon 数据库
 
-当前线上数据库默认使用 Neon PostgreSQL：
+Neon 的环境职责如下：
 
 - 部署环境固定为：树莓派是生产环境，Fly.io 是测试环境，本地是开发环境。
-- 树莓派生产环境使用 Neon `production` branch。
+- 树莓派生产应用使用本地 PostgreSQL；Neon production 在切换后作为独立冷灾备目标，
+  只能由显式确认的 DR 刷新任务写入。
 - Fly 测试环境和本地开发环境使用 Neon `test` branch，避免测试写入污染生产数据。
 - 后端支持将 Neon 原始连接串直接写入 `SPRING_DATASOURCE_URL`，格式为 `postgresql://<user>:<password>@<branch-host>/<database>?sslmode=require&channel_binding=require`。启动时会自动转换为 JDBC URL，并移除当前 PostgreSQL JDBC 驱动不支持的 `channel_binding` 参数。
 - 如果连接串已经包含用户名和密码，不需要额外配置 `SPRING_DATASOURCE_USERNAME` 和 `SPRING_DATASOURCE_PASSWORD`；显式环境变量仍可覆盖连接串中的用户信息。
@@ -62,10 +68,19 @@
 - `deploy/raspberry-pi/init-db.sh`：在树莓派 PostgreSQL 上创建或更新应用数据库用户、数据库并导入初始化脚本。
 - `deploy/raspberry-pi/backup-db.sh`：使用 `pg_dump --format custom` 生成带时间戳的数据库备份，并按保留数量清理旧备份。
 - `deploy/raspberry-pi/restore-db.sh`：从指定备份恢复数据库，要求显式确认后执行。
+- `deploy/raspberry-pi/docker/`：当前 Docker Compose 路线的小时备份、校验、隔离恢复、
+  破坏性恢复确认门、Neon DR 刷新脚本，以及 systemd service/timer 模板。旧的顶层
+  `backup-db.sh` 等脚本仍只对应历史 systemd/Jar 路线。
+- `deploy/raspberry-pi/docker/prepare-shadow-environment.sh` 和
+  `cleanup-shadow-environment.sh`：以固定 `xzs-shadow` project 恢复已验证 dump、
+  启动影子应用验证 JDBC/Flyway，并安全清理影子容器和网络；删除影子数据需要显式确认。
 - `docs/raspberry-pi-deployment.md`：树莓派运行目录、部署资产安装、数据库初始化、systemd 启停、备份、恢复和健康检查说明。
-- `docs/fly-to-raspberry-pi-data-migration-plan.md`：历史迁移方案，仅作为 Fly Postgres 到树莓派 Docker PostgreSQL 的历史切换参考；当前生产环境使用树莓派 + Neon `production` branch。
+- `docs/fly-to-raspberry-pi-data-migration-plan.md`：历史迁移方案，仅作为 Fly Postgres
+  到树莓派 Docker PostgreSQL 的历史切换参考；当前候选架构以树莓派本地 PostgreSQL
+  为生产主库、Neon production 为冷灾备。
 
-树莓派是生产环境。树莓派普通运行时不承担 Maven 或前端构建任务；应在开发机或 CI 构建完成后，只复制后端 jar、SQL 脚本和运行所需部署资产，并确保生产服务连接 Neon `production` branch。
+树莓派是生产环境。树莓派普通运行时不承担 Maven 或前端构建任务；应在开发机或 CI
+构建完成后同步容器编排和运行所需部署资产，并确保生产应用只连接 Compose 内本地库。
 
 ## 集成部署提示
 

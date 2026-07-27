@@ -1,0 +1,11 @@
+[Unit]
+Description=Run XZS PostgreSQL backup hourly
+
+[Timer]
+OnCalendar=*-*-* *:15:00
+RandomizedDelaySec=5min
+Persistent=true
+Unit=xzs-postgres-backup.service
+
+[Install]
+WantedBy=timers.target

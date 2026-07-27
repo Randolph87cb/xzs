@@ -1,0 +1,17 @@
+[Unit]
+Description=Refresh the dedicated Neon DR database from latest verified XZS backup
+RequiresMountsFor=/mnt/zspace-xzs-backup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/apps/gesp-csp-quiz
+EnvironmentFile=/opt/apps/gesp-csp-quiz/.env
+Environment=XZS_NEON_DR_REFRESH_CONFIRM=REFRESH_NEON_DR
+ExecStart=/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n7 /opt/apps/gesp-csp-quiz/ops/refresh-neon-dr-from-latest.sh
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+TimeoutStartSec=90min

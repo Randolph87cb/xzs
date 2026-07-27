@@ -405,3 +405,32 @@ Fly.io 应用 + Neon test
 - 完成状态：
 - 归档日期：
 - 归档原因：
+
+### 涉及文件
+
+- `docker/docker-compose.yml`
+- `docker/.env.production.example`
+- `docker/.env.shadow.example`
+- `deploy/raspberry-pi/docker/`
+- `scripts/sync-raspi-production-env.ps1`
+- `docs/container-image-deployment.md`
+- `docker/README.md`
+- `docs/project-structure/database-deploy.md`
+
+### 实施记录
+
+- 2026-07-27：完成可部署候选资产。Compose 新增 PostgreSQL 18.4、USB SSD 显式
+  bind、内部健康依赖且不映射 `5432`；应用 datasource 改为 Compose 内部数据库。
+- 2026-07-27：新增小时 custom dump、归档可读校验、SHA-256、manifest、NAS
+  `.partial` 原子发布、项目目录限定保留、手动备份和最后成功状态资产。
+- 2026-07-27：新增隔离恢复演练、正式恢复双重确认门、专用 Neon DR 刷新脚本，
+  以及小时备份、每周恢复演练和每日 Neon DR 刷新的 systemd 模板。
+- 2026-07-27：补充固定 `xzs-shadow` project 的影子 PostgreSQL 与影子应用入口。
+  影子环境使用独立容器、网络、日志和 USB SSD 数据目录，只绑定
+  `127.0.0.1:18000`；准备脚本仅恢复 archive、SHA-256 和 manifest 均通过的 dump，
+  再启动当前应用镜像验证 JDBC、Flyway 和健康接口。默认清理保留影子数据，删除需显式确认。
+- 2026-07-27：同步脚本新增 `-ShadowAssetsOnly`。该模式不接触生产 `.env`，
+  只同步 Compose、影子 env 模板和 ops，并以无 secret 占位配置检查生产与影子
+  Compose；与任何生产重启或验证参数组合时前置拒绝。
+- 当前仅完成本地候选实现和静态验证；尚未连接树莓派、极空间或 Neon，也未执行
+  数据迁移、timer 安装、生产切换或真实恢复演练。
