@@ -18,6 +18,7 @@ export type AdminMenuIconMap = Record<AdminMenuIcon, Component>
 
 export const adminMenus: AdminMenuItem[] = [
   { path: '/dashboard', title: '主页', icon: 'DataLine' },
+  { path: '/practice/observation', title: '练习观察', icon: 'DataLine' },
   {
     path: '/user',
     title: '用户管理',
@@ -103,6 +104,12 @@ const routes: RouteRecordRaw[] = [
         name: 'Dashboard',
         component: () => import('@/views/dashboard/DashboardView.vue'),
         meta: { title: '主页' }
+      },
+      {
+        path: 'practice/observation',
+        name: 'PracticeObservation',
+        component: () => import('@/views/practice/PracticeObservationView.vue'),
+        meta: { title: '练习观察' }
       },
       {
         path: 'education/subject/list',
@@ -290,7 +297,7 @@ router.beforeEach(async (to) => {
 
     if (userStore.isAuthenticated) {
       if (userStore.userInfo?.role === 2 && !isTeacherRouteAllowed(to.path)) {
-        return '/class/list'
+        return '/practice/observation'
       }
       return
     }
@@ -318,6 +325,7 @@ function isTeacherRouteAllowed(path: string) {
     '/task/edit',
     '/answer/list',
     '/exam/question/correction',
-    '/profile/index'
+    '/profile/index',
+    '/practice/observation'
   ].some((allowedPath) => path === allowedPath || path.startsWith(`${allowedPath}?`))
 }

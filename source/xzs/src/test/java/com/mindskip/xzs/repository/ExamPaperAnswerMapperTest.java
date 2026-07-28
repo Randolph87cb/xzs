@@ -8,8 +8,11 @@ import org.apache.ibatis.session.Configuration;
 import org.junit.Test;
 
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
+import com.mindskip.xzs.viewmodel.admin.practice.PracticeObservationRequestVM;
 
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
@@ -36,6 +39,48 @@ public class ExamPaperAnswerMapperTest {
                 .map(ResultMapping::getProperty)
                 .collect(Collectors.toList())
                 .contains("subjectName"));
+    }
+
+    @Test
+    public void practiceObservationUsesExclusivePeriodEndAndTeacherClassScope() throws Exception {
+        Configuration configuration = parse("mapper/ExamPaperAnswerMapper.xml");
+        MappedStatement statement = configuration.getMappedStatement(
+                "com.mindskip.xzs.repository.ExamPaperAnswerMapper.practiceObservation");
+        PracticeObservationRequestVM request = new PracticeObservationRequestVM();
+        request.setPreviousStartTime(new Date(1));
+        request.setEndTime(new Date(2));
+        request.setStudentName("小明");
+        request.setClassIds(Arrays.asList(2, 3));
+
+        String sql = normalize(statement.getBoundSql(request).getSql());
+
+        assertTrue(sql.contains("answer.create_time >= ?"));
+        assertTrue(sql.contains("answer.create_time < ?"));
+        assertTrue(sql.contains("left join t_class c on c.id = u.class_id"));
+        assertTrue(sql.contains("u.image_path"));
+        assertTrue(sql.contains("u.class_id in ( ? , ? )"));
+        assertTrue(sql.contains("u.role = 1"));
+        assertTrue(sql.contains("u.deleted = false"));
+        assertTrue(sql.contains("lower(u.user_name) like"));
+        assertTrue(statement.getResultMaps().get(0).getResultMappings().stream()
+                .map(ResultMapping::getProperty)
+                .collect(Collectors.toList())
+                .contains("imagePath"));
+    }
+
+    @Test
+    public void practiceObservationEmptyTeacherScopeReturnsNoStudents() throws Exception {
+        Configuration configuration = parse("mapper/ExamPaperAnswerMapper.xml");
+        MappedStatement statement = configuration.getMappedStatement(
+                "com.mindskip.xzs.repository.ExamPaperAnswerMapper.practiceObservation");
+        PracticeObservationRequestVM request = new PracticeObservationRequestVM();
+        request.setPreviousStartTime(new Date(1));
+        request.setEndTime(new Date(2));
+        request.setClassIds(Arrays.asList());
+
+        String sql = normalize(statement.getBoundSql(request).getSql());
+
+        assertTrue(sql.contains("and 1 = 0"));
     }
 
     private Configuration parse(String resource) throws Exception {

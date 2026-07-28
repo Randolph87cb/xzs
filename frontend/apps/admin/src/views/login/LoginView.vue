@@ -64,7 +64,9 @@ async function handleLogin() {
       userName: form.userName.trim()
     })
     if (result.code === 1) {
-      const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/dashboard'
+      const redirect = typeof route.query.redirect === 'string'
+        ? route.query.redirect
+        : userStore.userInfo?.role === 2 ? '/practice/observation' : '/dashboard'
       router.push(redirect)
     } else {
       ElMessage.error(result.message)

@@ -115,6 +115,7 @@ const adminHeaderTabs = [
   { title: '用户中心', path: '/user/student/list', isActive: (path: string) => path.startsWith('/user') }
 ]
 const teacherHeaderTabs = [
+  { title: '练习观察', path: '/practice/observation', isActive: (path: string) => path.startsWith('/practice') },
   { title: '班级管理', path: '/class/list', isActive: (path: string) => path.startsWith('/class') },
   { title: '学生管理', path: '/user/student/list', isActive: (path: string) => path.startsWith('/user/student') },
   { title: '任务管理', path: '/task/list', isActive: (path: string) => path.startsWith('/task') },
@@ -122,7 +123,7 @@ const teacherHeaderTabs = [
   { title: '改错审核', path: '/exam/question/correction', isActive: (path: string) => path === '/exam/question/correction' }
 ]
 const visibleHeaderTabs = computed(() => (userStore.userInfo?.role === 2 ? teacherHeaderTabs : adminHeaderTabs))
-const teacherMenuPaths = new Set(['/class/list', '/user/student/list', '/task/list', '/answer/list', '/exam/question/correction', '/profile/index'])
+const teacherMenuPaths = new Set(['/practice/observation', '/class/list', '/user/student/list', '/task/list', '/answer/list', '/exam/question/correction', '/profile/index'])
 const visibleAdminMenus = computed(() => {
   if (userStore.userInfo?.role !== 2) {
     return adminMenus

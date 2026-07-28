@@ -22,6 +22,21 @@
   <resultMap id="StudentPageResultMap" type="com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem" extends="BaseResultMap">
     <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
   </resultMap>
+  <resultMap id="PracticeObservationResultMap" type="com.mindskip.xzs.domain.other.PracticeObservationRecord">
+    <id column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="image_path" jdbcType="VARCHAR" property="imagePath" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+    <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
+    <result column="target_subject_name" jdbcType="VARCHAR" property="targetSubjectName" />
+    <result column="answer_id" jdbcType="INTEGER" property="answerId" />
+    <result column="paper_name" jdbcType="VARCHAR" property="paperName" />
+    <result column="question_correct" jdbcType="INTEGER" property="questionCorrect" />
+    <result column="question_count" jdbcType="INTEGER" property="questionCount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
   <sql id="Base_Column_List">
     id, exam_paper_id, paper_name, paper_type, subject_id, system_score, user_score,
     paper_score, question_correct, question_count, do_time, status, create_user, create_time,
@@ -320,6 +335,58 @@
         </choose>
       </if>
     </where>
+  </select>
+
+  <select id="practiceObservation" resultMap="PracticeObservationResultMap"
+          parameterType="com.mindskip.xzs.viewmodel.admin.practice.PracticeObservationRequestVM">
+    SELECT
+      u.id AS student_id,
+      u.user_name,
+      u.real_name,
+      u.image_path,
+      u.class_id,
+      c.name AS class_name,
+      c.grade_level,
+      subject.name AS target_subject_name,
+      answer.id AS answer_id,
+      answer.paper_name,
+      answer.question_correct,
+      answer.question_count,
+      answer.create_time
+    FROM t_user u
+    LEFT JOIN t_class c ON c.id = u.class_id AND c.deleted = false
+    LEFT JOIN t_subject subject ON subject.id = u.target_subject_id AND subject.deleted = false
+    LEFT JOIN t_exam_paper_answer answer
+      ON answer.create_user = u.id
+      AND answer.create_time &gt;= #{previousStartTime}
+      AND answer.create_time &lt; #{endTime}
+    <where>
+      AND u.role = 1
+      AND u.deleted = false
+      <if test="studentName != null and studentName != ''">
+        AND (
+          lower(u.user_name) LIKE concat('%', lower(#{studentName}), '%')
+          OR lower(coalesce(u.real_name, '')) LIKE concat('%', lower(#{studentName}), '%')
+        )
+      </if>
+      <if test="classId != null">
+        AND u.class_id = #{classId}
+      </if>
+      <if test="classIds != null">
+        <choose>
+          <when test="classIds.size > 0">
+            AND u.class_id IN
+            <foreach collection="classIds" item="id" open="(" separator="," close=")">
+              #{id}
+            </foreach>
+          </when>
+          <otherwise>
+            AND 1 = 0
+          </otherwise>
+        </choose>
+      </if>
+    </where>
+    ORDER BY coalesce(u.real_name, u.user_name), u.id, answer.create_time DESC, answer.id DESC
   </select>
 
 </mapper>

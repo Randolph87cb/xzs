@@ -33,6 +33,7 @@ frontend/apps/admin/
 - `views/task`：任务列表、创建和编辑。
 - `views/smartTraining`：智能训练配置。
 - `views/answer`：答卷列表。
+- `views/practice`：老师端练习观察，跨负责班级展示学生的周期答题量、加权正确率、每日练习节奏与近期练习详情。
 - `views/message`：消息列表和发送。
 - `views/log`：用户日志。
 - `views/profile`：个人资料。

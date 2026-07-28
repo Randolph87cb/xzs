@@ -3,6 +3,8 @@ package com.mindskip.xzs.repository;
 import com.mindskip.xzs.domain.ExamPaperAnswer;
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.domain.other.ExamPaperAnswerPageItem;
+import com.mindskip.xzs.domain.other.PracticeObservationRecord;
+import com.mindskip.xzs.viewmodel.admin.practice.PracticeObservationRequestVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -26,4 +28,6 @@ public interface ExamPaperAnswerMapper extends BaseMapper<ExamPaperAnswer> {
     List<ExamPaperAnswer> selectPaperHistory(@Param("pid") Integer paperId, @Param("uid") Integer uid);
 
     List<ExamPaperAnswer> adminPage(com.mindskip.xzs.viewmodel.admin.paper.ExamPaperAnswerPageRequestVM requestVM);
+
+    List<PracticeObservationRecord> practiceObservation(PracticeObservationRequestVM requestVM);
 }
