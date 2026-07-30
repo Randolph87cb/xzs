@@ -110,16 +110,46 @@ timer inactive；树莓派温度 39.9°C 且无降频。核心上线验收为 **
 
 ## 验证入口
 
-部署后统一验证：
+统一验收入口会组合现有 HTTP 健康检查与 Playwright 公共页面冒烟检查。浏览器检查
+只匿名打开学生端和管理端公共页面，验证主文档可加载、页面可见且没有 JavaScript
+页面错误，并保存截图和 JSON 结果；默认不登录、不提交表单、不写业务数据。
+
+按环境选择目标：
 
 ```powershell
-.\scripts\test-remote-deployment.ps1 -BaseUrl "<base-url>"
+.\scripts\test-deployment-acceptance.ps1 -Target Local
+.\scripts\test-deployment-acceptance.ps1 -Target Fly
+.\scripts\test-deployment-acceptance.ps1 -Target Raspi
 ```
 
-树莓派本机也可以直接检查：
+也可以显式覆盖 URL；`-BaseUrl` 优先于所选目标的默认 URL：
 
-```sh
-curl -fsS http://127.0.0.1:8000/api/health
-curl -I http://127.0.0.1:8000/student/index.html
-curl -I http://127.0.0.1:8000/admin/index.html
+```powershell
+.\scripts\test-deployment-acceptance.ps1 `
+  -BaseUrl "http://127.0.0.1:8000"
 ```
+
+默认把 `http-check.txt`、公共页面截图、浏览器结果和总结果写入
+`output/deployment-acceptance/<timestamp>-<target>/`。任一步失败都返回非零退出码，
+并在错误信息中给出证据目录。只查看解析后的目标和检查步骤、不发网络请求时使用：
+
+```powershell
+.\scripts\test-deployment-acceptance.ps1 -Target Fly -Plan
+```
+
+原 `scripts/test-remote-deployment.ps1` 继续作为 HTTP 子检查入口保留，统一验收和
+Fly 部署脚本会调用它。
+
+## 本地到生产的晋级门
+
+三个环境必须串行晋级，不能由一个脚本自动连续发布。树莓派生产发布始终需要单独、
+明确的人工确认。
+
+| 阶段 | 输入与动作 | 晋级条件 | 停止条件 | 回滚点 |
+| --- | --- | --- | --- | --- |
+| 本地开发 | 先通过既有构建与静态一致性命令，再使用 Neon `test` 启动当前候选版本并执行 `-Target Local` | 前置构建/静态一致性检查已单独通过，统一验收为 PASS，证据目录完整 | 任一前置检查失败，或统一验收的 HTTP、公共页面、页面错误检查失败 | 停止本地服务，修复代码或配置；不进入 Fly |
+| Fly 测试 | 仅在本地通过后运行 `scripts/deploy-fly-neon-test.ps1`，仍连接 Neon `test` | Fly 部署完成，统一验收为 PASS，确认使用预期候选提交 | 部署失败、健康/页面失败、使用了错误数据库分支或证据不完整 | 回退 Fly 到上一个已通过的 release；不得申请树莓派发布 |
+| 树莓派生产 | 仅在 Fly 通过后，固定不可变镜像 tag，人工确认后运行 `scripts/sync-raspi-production-env.ps1 -Restart -Verify` | 应用检查通过，且脚本证明 PostgreSQL 容器 ID 与重启计数前后完全一致；随后 `-Target Raspi` 统一验收为 PASS | PostgreSQL 容器缺失、被替换、重启计数变化，应用更新/健康/页面任一失败，或缺少明确生产确认 | 立即停止晋级；保留数据库不动，把 `XZS_IMAGE` 恢复为上一已知正常 tag，再通过同一 app-only 入口更新并复验 |
+
+任一阶段失败后都只处理当前阶段，不继续下一环境。涉及数据库恢复、切换或灾备的
+操作不属于日常应用发布，必须进入对应的独立高风险流程。

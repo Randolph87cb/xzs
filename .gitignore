@@ -47,3 +47,4 @@ Thumbs.db
 
 *.class
 
+/output/deployment-acceptance/

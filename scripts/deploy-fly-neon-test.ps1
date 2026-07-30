@@ -92,18 +92,27 @@ $payload = ($secretNames | ForEach-Object { "$_=$($secretValues[$_])" }) -join "
 Write-Output "Importing Fly test secrets from $EnvFile for app $AppName."
 Write-Output "Secret names: $($secretNames -join ', ')"
 $payload | flyctl secrets import --stage -a $AppName | Out-Host
+if ($LASTEXITCODE -ne 0) {
+    throw "flyctl secrets import failed with exit code $LASTEXITCODE."
+}
 
-try {
-    Write-Output "Staging removal of legacy datasource username/password secrets if present."
-    flyctl secrets unset SPRING_DATASOURCE_USERNAME SPRING_DATASOURCE_PASSWORD --stage -a $AppName | Out-Host
-} catch {
-    Write-Output "Legacy datasource username/password secrets were not removed or were already absent."
+Write-Output "Staging removal of legacy datasource username/password secrets if present."
+flyctl secrets unset SPRING_DATASOURCE_USERNAME SPRING_DATASOURCE_PASSWORD --stage -a $AppName | Out-Host
+if ($LASTEXITCODE -ne 0) {
+    throw "flyctl secrets unset failed with exit code $LASTEXITCODE."
 }
 
 Write-Output "Deploying Fly test app $AppName."
 flyctl deploy -a $AppName
+if ($LASTEXITCODE -ne 0) {
+    throw "flyctl deploy failed with exit code $LASTEXITCODE."
+}
 
 if (-not $SkipRemoteCheck) {
-    Write-Output "Running remote deployment check for $BaseUrl."
-    & (Join-Path $workspaceRoot "scripts\test-remote-deployment.ps1") -BaseUrl $BaseUrl -RetryCount 45 -RetryDelaySeconds 10
+    Write-Output "Running deployment acceptance for $BaseUrl."
+    & (Join-Path $workspaceRoot "scripts\test-deployment-acceptance.ps1") `
+        -Target Fly `
+        -BaseUrl $BaseUrl `
+        -RetryCount 45 `
+        -RetryDelaySeconds 10
 }

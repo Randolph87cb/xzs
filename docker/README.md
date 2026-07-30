@@ -268,20 +268,30 @@ curl -I http://127.0.0.1:8000/admin/index.html
 公网域名接在反向代理或 Cloudflare 后时，再从开发机验证：
 
 ```powershell
-.\scripts\test-remote-deployment.ps1 -BaseUrl "https://gesp-csp-quiz.randolph87.top"
+.\scripts\test-deployment-acceptance.ps1 -Target Raspi
 ```
 
 ## 日常更新
 
-在开发机推送新镜像后，树莓派执行：
+在开发机推送新镜像并完成本地、Fly 两级验收后，先离线查看将执行的非敏感发布
+命令；该模式不读取 `.env`、SSH 密码，也不连接树莓派：
 
-```sh
-cd /opt/apps/gesp-csp-quiz
-docker compose pull
-docker compose up -d
-docker image prune -f
-docker logs --tail=100 xzs-app
+```powershell
+.\scripts\sync-raspi-production-env.ps1 -RenderRestartPlan -Verify
 ```
+
+生产发布需要单独明确确认。确认后从开发机执行标准入口：
+
+```powershell
+.\scripts\sync-raspi-production-env.ps1 -Restart -Verify
+```
+
+日常发布只执行 `docker compose pull app` 和
+`docker compose up -d --no-deps app`。脚本在更新前后分别读取 Compose `postgres`
+服务的容器 ID 与 Docker `RestartCount`；容器缺失、身份改变或重启计数变化时硬性
+失败。它不会为日常应用发布执行全栈 `up`，也不会联动重建或重启 PostgreSQL。
+`-SkipPull` 只跳过 `app` 镜像拉取，`-Verify` 只追加健康与公共页面检查；
+不带 `-Restart` 时仍只同步、备份并校验配置，不更新容器。
 
 ## 树莓派 SSH 登录约定
 
@@ -332,20 +342,17 @@ XZS_IMAGE=crpi-s5bag0a5r8vcgncq.cn-hangzhou.personal.cr.aliyuncs.com/randolph87/
 
 再执行：
 
-```sh
-docker compose pull
-docker compose up -d
+```powershell
+.\scripts\sync-raspi-production-env.ps1 -Restart -Verify
 ```
 
 ## 回滚
 
-把 `.env` 中的 `XZS_IMAGE` 改回上一版 Git 短提交 tag，然后重新拉取启动：
+把本地生产配置中的 `XZS_IMAGE` 改回上一版已知正常的 Git 短提交 tag，然后仍通过
+带 PostgreSQL 前后保护的 app-only 标准入口重新拉取、启动和验证：
 
-```sh
-cd /opt/apps/gesp-csp-quiz
-docker compose pull
-docker compose up -d
-docker logs --tail=100 xzs-app
+```powershell
+.\scripts\sync-raspi-production-env.ps1 -Restart -Verify
 ```
 
 如果应用启动失败，先查看：

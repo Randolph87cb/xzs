@@ -11,13 +11,105 @@ param(
   [switch]$SkipPull,
   [switch]$Verify,
   [switch]$AllowPlaceholders,
-  [switch]$ShadowAssetsOnly
+  [switch]$ShadowAssetsOnly,
+  [switch]$RenderRestartPlan
 )
 
 $ErrorActionPreference = "Stop"
 
-if ($ShadowAssetsOnly -and ($Restart -or $SkipPull -or $Verify -or $AllowPlaceholders)) {
-  throw "-ShadowAssetsOnly cannot be combined with -Restart, -SkipPull, -Verify, or -AllowPlaceholders."
+if ($ShadowAssetsOnly -and ($Restart -or $SkipPull -or $Verify -or $AllowPlaceholders -or $RenderRestartPlan)) {
+  throw "-ShadowAssetsOnly cannot be combined with -Restart, -SkipPull, -Verify, -AllowPlaceholders, or -RenderRestartPlan."
+}
+
+if ($RenderRestartPlan -and $AllowPlaceholders) {
+  throw "-RenderRestartPlan cannot be combined with -AllowPlaceholders."
+}
+
+function New-AppRestartBlock {
+  param(
+    [switch]$WithoutPull,
+    [switch]$WithVerify
+  )
+
+  $pullBlock = if ($WithoutPull) {
+    ""
+  } else {
+    "docker compose --env-file .env pull app || release_rc=`$?`n"
+  }
+
+  $verifyBlock = if ($WithVerify) {
+    @'
+printf '\n--- health ---\n'
+for i in $(seq 1 30); do
+  if curl -fsS http://127.0.0.1:8000/api/health; then
+    printf '\nHEALTH_OK\n'
+    break
+  fi
+  sleep 2
+  if [ "$i" = "30" ]; then
+    printf '\nHEALTH_FAIL\n'
+    docker logs --tail=120 xzs-app | sed -n '/password/Id; /SPRING_DATASOURCE/Id; p'
+    exit 1
+  fi
+done
+printf '\n--- pages ---\n'
+curl -fsSI --max-time 10 http://127.0.0.1:8000/student/index.html
+curl -fsSI --max-time 10 http://127.0.0.1:8000/admin/index.html
+'@
+  } else {
+    ""
+  }
+
+  return @'
+postgres_container_before=$(docker compose --env-file .env ps -q postgres)
+if [ -z "$postgres_container_before" ]; then
+  printf 'POSTGRES_GUARD_FAIL=postgres container missing before app update\n' >&2
+  exit 1
+fi
+postgres_id_before=$(docker inspect --format '{{.Id}}' "$postgres_container_before")
+postgres_restarts_before=$(docker inspect --format '{{.RestartCount}}' "$postgres_container_before")
+printf 'POSTGRES_GUARD_BEFORE id=%s restart_count=%s\n' "$postgres_id_before" "$postgres_restarts_before"
+
+release_rc=0
+'@ + "`n" + $pullBlock + @'
+if [ "$release_rc" -eq 0 ]; then
+  docker compose --env-file .env up -d --no-deps app || release_rc=$?
+fi
+
+postgres_container_after=$(docker compose --env-file .env ps -q postgres)
+if [ -z "$postgres_container_after" ]; then
+  printf 'POSTGRES_GUARD_FAIL=postgres container missing after app update\n' >&2
+  exit 1
+fi
+postgres_id_after=$(docker inspect --format '{{.Id}}' "$postgres_container_after")
+postgres_restarts_after=$(docker inspect --format '{{.RestartCount}}' "$postgres_container_after")
+printf 'POSTGRES_GUARD_AFTER id=%s restart_count=%s\n' "$postgres_id_after" "$postgres_restarts_after"
+
+if [ "$postgres_id_before" != "$postgres_id_after" ]; then
+  printf 'POSTGRES_GUARD_FAIL=postgres container identity changed\n' >&2
+  exit 1
+fi
+if [ "$postgres_restarts_before" != "$postgres_restarts_after" ]; then
+  printf 'POSTGRES_GUARD_FAIL=postgres restart count changed\n' >&2
+  exit 1
+fi
+printf 'POSTGRES_GUARD=ok\n'
+
+if [ "$release_rc" -ne 0 ]; then
+  printf 'APP_UPDATE_FAIL=exit_code_%s\n' "$release_rc" >&2
+  exit "$release_rc"
+fi
+docker compose --env-file .env ps app postgres
+'@ + "`n" + $verifyBlock
+}
+
+$appRestartBlock = New-AppRestartBlock -WithoutPull:$SkipPull -WithVerify:$Verify
+
+if ($RenderRestartPlan) {
+  Write-Output "MODE=render-restart-plan"
+  Write-Output "REMOTE_APP_DIR=$RemoteAppDir"
+  Write-Output $appRestartBlock
+  return
 }
 
 if (-not $ShadowAssetsOnly -and -not (Test-Path -LiteralPath $LocalEnvPath)) {
@@ -147,8 +239,7 @@ remote_app_dir = os.environ["SYNC_REMOTE_APP_DIR"]
 hostname = os.environ["SYNC_HOSTNAME"]
 user = os.environ["SYNC_USER"]
 restart = os.environ.get("SYNC_RESTART") == "1"
-skip_pull = os.environ.get("SYNC_SKIP_PULL") == "1"
-verify = os.environ.get("SYNC_VERIFY") == "1"
+restart_block = os.environ.get("SYNC_RESTART_BLOCK", "") if restart else ""
 
 password = read_env_value(root_env, "MY_SSH_KEY")
 if not password:
@@ -209,34 +300,6 @@ try:
         if source.is_file():
             sftp.put(str(source), f"{remote_ops_tmp}/{source.name}")
     sftp.close()
-
-    restart_block = ""
-    if restart:
-        pull_block = "" if skip_pull else "docker compose --env-file .env pull app\n"
-        verify_block = ""
-        if verify:
-            verify_block = r'''
-printf '\n--- health ---\n'
-for i in $(seq 1 30); do
-  if curl -fsS http://127.0.0.1:8000/api/health; then
-    printf '\nHEALTH_OK\n'
-    break
-  fi
-  sleep 2
-  if [ "$i" = "30" ]; then
-    printf '\nHEALTH_FAIL\n'
-    docker logs --tail=120 xzs-app | sed -n '/password/Id; /SPRING_DATASOURCE/Id; p'
-    exit 1
-  fi
-done
-printf '\n--- pages ---\n'
-curl -I --max-time 10 http://127.0.0.1:8000/student/index.html | head -n 1
-curl -I --max-time 10 http://127.0.0.1:8000/admin/index.html | head -n 1
-'''
-        restart_block = pull_block + r'''
-docker compose --env-file .env up -d --remove-orphans
-docker compose --env-file .env ps
-''' + verify_block
 
     production_env_backup_block = ""
     production_env_install_block = ""
@@ -357,9 +420,8 @@ try {
   $env:SYNC_HOSTNAME = $Hostname
   $env:SYNC_USER = $User
   $env:SYNC_RESTART = if ($Restart) { "1" } else { "0" }
-  $env:SYNC_SKIP_PULL = if ($SkipPull) { "1" } else { "0" }
-  $env:SYNC_VERIFY = if ($Verify) { "1" } else { "0" }
   $env:SYNC_SHADOW_ASSETS_ONLY = if ($ShadowAssetsOnly) { "1" } else { "0" }
+  $env:SYNC_RESTART_BLOCK = $appRestartBlock
   & $python.Source $tempScript
   if ($LASTEXITCODE -ne 0) {
     throw "sync failed with exit code $LASTEXITCODE"
@@ -378,7 +440,6 @@ try {
   Remove-Item Env:\SYNC_HOSTNAME -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_USER -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_RESTART -ErrorAction SilentlyContinue
-  Remove-Item Env:\SYNC_SKIP_PULL -ErrorAction SilentlyContinue
-  Remove-Item Env:\SYNC_VERIFY -ErrorAction SilentlyContinue
   Remove-Item Env:\SYNC_SHADOW_ASSETS_ONLY -ErrorAction SilentlyContinue
+  Remove-Item Env:\SYNC_RESTART_BLOCK -ErrorAction SilentlyContinue
 }
