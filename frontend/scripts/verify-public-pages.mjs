@@ -13,7 +13,8 @@ Options:
   --skip-admin         Skip the public admin page
   --help               Show this help without launching a browser
 
-This smoke check is anonymous and read-only. It does not log in, submit forms, or call write APIs.`
+This smoke check is anonymous and read-only. It does not log in, submit forms, or call write APIs.
+Only explicitly allowlisted same-origin POST endpoints that are known to be read-only may run.`
 
 const args = parseArgs(process.argv.slice(2))
 if (args.help) {
@@ -22,6 +23,7 @@ if (args.help) {
 }
 
 const baseUrl = parseBaseUrl(args.baseUrl)
+const baseOrigin = new URL(baseUrl).origin
 const timeoutMs = parsePositiveInteger(args.timeoutMs ?? '20000', '--timeout-ms')
 if (args.skipStudent && args.skipAdmin) {
   fail('At least one public page must be enabled.')
@@ -35,6 +37,10 @@ const pages = [
   { name: 'student', path: '/student/index.html', skip: args.skipStudent },
   { name: 'admin', path: '/admin/index.html', skip: args.skipAdmin }
 ].filter((item) => !item.skip)
+const readOnlyPostPathsByPage = {
+  student: new Set(['/api/student/user/current']),
+  admin: new Set(['/api/admin/user/current'])
+}
 
 await mkdir(outputDir, { recursive: true })
 
@@ -43,6 +49,7 @@ const result = {
   baseUrl,
   startedAt: new Date().toISOString(),
   outputDir,
+  allowedReadOnlyRequests: [],
   blockedUnsafeRequests: [],
   pages: []
 }
@@ -76,6 +83,7 @@ async function verifyPage(activeBrowser, target) {
   const page = await activeBrowser.newPage({ viewport: { width: 1366, height: 768 } })
   const pageErrors = []
   const consoleErrors = []
+  const allowedReadOnlyRequests = []
   const blockedUnsafeRequests = []
   const targetUrl = new URL(target.path, `${baseUrl}/`).toString()
   const screenshotPath = path.join(outputDir, `${target.name}.png`)
@@ -90,13 +98,22 @@ async function verifyPage(activeBrowser, target) {
   })
   await page.route('**/*', async (route) => {
     const request = route.request()
-    if (['GET', 'HEAD', 'OPTIONS'].includes(request.method())) {
+    const requestMethod = request.method()
+    if (['GET', 'HEAD', 'OPTIONS'].includes(requestMethod)) {
       await route.continue()
       return
     }
 
     const requestUrl = new URL(request.url())
-    const blockedRequest = `${request.method()} ${requestUrl.origin}${requestUrl.pathname}`
+    const requestSummary = `${requestMethod} ${requestUrl.origin}${requestUrl.pathname}`
+    if (isAllowlistedReadOnlyPost(target.name, requestMethod, requestUrl)) {
+      allowedReadOnlyRequests.push(requestSummary)
+      result.allowedReadOnlyRequests.push({ page: target.name, request: requestSummary })
+      await route.continue()
+      return
+    }
+
+    const blockedRequest = requestSummary
     blockedUnsafeRequests.push(blockedRequest)
     result.blockedUnsafeRequests.push({ page: target.name, request: blockedRequest })
     await route.abort('blockedbyclient')
@@ -111,8 +128,14 @@ async function verifyPage(activeBrowser, target) {
       throw new Error(`${target.name} returned HTTP ${response.status()}`)
     }
 
-    await page.locator('body').waitFor({ state: 'visible', timeout: timeoutMs })
-    const bodyText = (await page.locator('body').innerText()).trim()
+    const body = page.locator('body')
+    await body.waitFor({ state: 'visible', timeout: timeoutMs })
+    await page.waitForFunction(
+      () => document.body?.innerText.trim().length > 0,
+      undefined,
+      { timeout: timeoutMs }
+    )
+    const bodyText = (await body.innerText()).trim()
     if (!bodyText) {
       throw new Error(`${target.name} rendered an empty body`)
     }
@@ -137,12 +160,21 @@ async function verifyPage(activeBrowser, target) {
       finalUrl: page.url(),
       pageErrors,
       consoleErrors,
+      allowedReadOnlyRequests,
       blockedUnsafeRequests,
       screenshot: screenshotPath
     }
   } finally {
     await page.close()
   }
+}
+
+function isAllowlistedReadOnlyPost(pageName, method, requestUrl) {
+  return (
+    method === 'POST' &&
+    requestUrl.origin === baseOrigin &&
+    readOnlyPostPathsByPage[pageName]?.has(requestUrl.pathname) === true
+  )
 }
 
 function parseArgs(values) {
