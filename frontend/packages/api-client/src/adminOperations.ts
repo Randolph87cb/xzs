@@ -134,6 +134,19 @@ export interface AdminExamPaperListItem {
 export interface AdminExamPaperTitleItem {
   name: string
   questionItems: AdminQuestionEditModel[]
+  paperItems?: AdminExamPaperItem[]
+}
+
+export type AdminExamPaperItemType = 'QUESTION' | 'QUESTION_GROUP'
+
+export interface AdminExamPaperItem {
+  type: AdminExamPaperItemType
+  id: number
+  itemOrder?: number | null
+  questionGroupType?: number | null
+  questionGroupCode?: string | null
+  title?: string | null
+  questionItems: AdminQuestionEditModel[]
 }
 
 export interface AdminExamPaperEditModel {
@@ -146,6 +159,7 @@ export interface AdminExamPaperEditModel {
   suggestTime: number | null
   titleItems: AdminExamPaperTitleItem[]
   score?: string
+  paperItemCount?: number
 }
 
 export interface AdminTaskPageRequest {

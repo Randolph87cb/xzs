@@ -71,6 +71,32 @@ public class ExamPaperAnswerServiceImplTest {
         verify(taskExamCustomerAnswerMapper, never()).getByTUid(8, 7);
     }
 
+    @Test
+    public void calculateExamPaperAnswerReadsCompositePaperItemsAsFlatAnswers() {
+        when(examPaperMapper.selectByPrimaryKey(101)).thenReturn(examPaper());
+        String frame = "[{\"name\":\"程序阅读\",\"paperItems\":[{" +
+                "\"type\":\"QUESTION_GROUP\",\"id\":88,\"itemOrder\":1,\"questionItems\":[" +
+                "{\"id\":1001,\"groupItemOrder\":1,\"itemOrder\":1}," +
+                "{\"id\":1002,\"groupItemOrder\":2,\"itemOrder\":2}]}]}]";
+        when(textContentService.selectById(301)).thenReturn(new TextContent(frame, null));
+        Question second = question();
+        second.setId(1002);
+        when(questionMapper.selectByIds(Arrays.asList(1001, 1002))).thenReturn(Arrays.asList(question(), second));
+
+        ExamPaperSubmitVM submit = submit();
+        ExamPaperSubmitItemVM secondAnswer = new ExamPaperSubmitItemVM();
+        secondAnswer.setQuestionId(1002);
+        secondAnswer.setContent("A");
+        submit.setTaskId(null);
+        submit.setAnswerItems(Arrays.asList(submit.getAnswerItems().get(0), secondAnswer));
+
+        ExamPaperAnswerInfo result = service.calculateExamPaperAnswer(submit, user());
+
+        assertEquals(2, result.getExamPaperQuestionCustomerAnswers().size());
+        assertEquals(Integer.valueOf(1), result.getExamPaperQuestionCustomerAnswers().get(0).getItemOrder());
+        assertEquals(Integer.valueOf(2), result.getExamPaperQuestionCustomerAnswers().get(1).getItemOrder());
+    }
+
     private ExamPaper examPaper() {
         ExamPaper paper = new ExamPaper();
         paper.setId(101);

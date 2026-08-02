@@ -20,13 +20,7 @@ public class QuestionMapperTest {
 
     @Test
     public void titleContentQueryUsesOneJoinedSelectAndMapsQuestionId() throws Exception {
-        Configuration configuration = new Configuration();
-        String resource = "mapper/QuestionMapper.xml";
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(resource)) {
-            XMLMapperBuilder builder = new XMLMapperBuilder(
-                    input, configuration, resource, configuration.getSqlFragments());
-            builder.parse();
-        }
+        Configuration configuration = questionConfiguration();
 
         MappedStatement statement = configuration.getMappedStatement(
                 "com.mindskip.xzs.repository.QuestionMapper.selectTitleContentByQuestionIds");
@@ -49,5 +43,31 @@ public class QuestionMapperTest {
                 statement.getResultMaps().get(0).getIdResultMappings().stream()
                         .map(ResultMapping::getColumn)
                         .collect(java.util.stream.Collectors.toList()));
+    }
+
+    @Test
+    public void ordinaryRandomQueriesExcludeCompositeChildren() throws Exception {
+        Configuration configuration = questionConfiguration();
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("subjectId", 9);
+        parameters.put("limit", 20);
+        String sql = configuration.getMappedStatement("com.mindskip.xzs.repository.QuestionMapper.selectRandomBySubjectId")
+                .getBoundSql(parameters).getSql().replaceAll("\\s+", " ").toLowerCase();
+        assertTrue(sql.contains("question_group_id is null"));
+
+        parameters.put("knowledgePoint", "CSP-J/程序阅读");
+        String knowledgeSql = configuration.getMappedStatement("com.mindskip.xzs.repository.QuestionMapper.selectRandomBySubjectIdAndKnowledgePoint")
+                .getBoundSql(parameters).getSql().replaceAll("\\s+", " ").toLowerCase();
+        assertTrue(knowledgeSql.contains("question_group_id is null"));
+    }
+
+    private Configuration questionConfiguration() throws Exception {
+        Configuration configuration = new Configuration();
+        String resource = "mapper/QuestionMapper.xml";
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(resource)) {
+            XMLMapperBuilder builder = new XMLMapperBuilder(input, configuration, resource, configuration.getSqlFragments());
+            builder.parse();
+        }
+        return configuration;
     }
 }

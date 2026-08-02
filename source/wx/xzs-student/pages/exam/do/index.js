@@ -1,6 +1,9 @@
 import {
   formatSeconds
 } from '../../../utils/util.js'
+import {
+  normalizeExamPaper
+} from '../../../utils/exam-paper.js'
 
 let app = getApp()
 Page({
@@ -29,7 +32,7 @@ Page({
         });
         if (res.code === 1) {
           _this.setData({
-            form: res.response,
+            form: normalizeExamPaper(res.response),
             paperId: paperId,
             remainTime: res.response.suggestTime * 60
           });

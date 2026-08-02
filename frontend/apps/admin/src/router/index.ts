@@ -48,6 +48,7 @@ export const adminMenus: AdminMenuItem[] = [
     children: [
       { path: '/exam/paper/list', title: '试卷列表', icon: 'Tickets' },
       { path: '/exam/question/list', title: '题目列表', icon: 'EditPen' },
+      { path: '/exam/question/group/list', title: '题组管理', icon: 'EditPen' },
       { path: '/exam/question/review', title: '题目质量审核', icon: 'EditPen' },
       { path: '/exam/question/correction', title: '改错审核', icon: 'EditPen' },
       { path: '/exam/smartTraining/config', title: '智能训练配置', icon: 'DataLine' }
@@ -204,6 +205,18 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'exam/question/edit/:legacyType',
         redirect: (to) => ({ path: '/exam/question/edit', query: to.query })
+      },
+      {
+        path: 'exam/question/group/list',
+        name: 'ExamQuestionGroupList',
+        component: () => import('@/views/question/QuestionGroupListView.vue'),
+        meta: { title: '题组管理' }
+      },
+      {
+        path: 'exam/question/group/edit',
+        name: 'ExamQuestionGroupEdit',
+        component: () => import('@/views/question/QuestionGroupEditView.vue'),
+        meta: { title: '题组编辑' }
       },
       {
         path: 'exam/question/review',

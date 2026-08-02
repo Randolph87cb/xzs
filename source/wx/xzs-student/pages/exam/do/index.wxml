@@ -12,7 +12,15 @@
     <form bindsubmit='formSubmit'>
       <i-panel title="{{titleItem.name}}" wx:for="{{form.titleItems}}" wx:for-item="titleItem" wx:key="{{titleItem.name}}" i-class="exam-panel-title">
         <i-cell-group i-class="exam-cell">
-          <i-cell wx:for="{{titleItem.questionItems}}" wx:key="{{titleItem.id}}" wx:for-item="questionItem">
+          <block wx:for="{{titleItem.paperItems}}" wx:for-item="paperItem" wx:key="id">
+            <view wx:if="{{paperItem.type === 'QUESTION_GROUP'}}" class="exam-question-group-title">
+              <view class="exam-question-group-meta">
+                <text>{{paperItem.groupTypeText}}</text>
+                <text wx:if="{{paperItem.questionGroupCode}}">{{paperItem.questionGroupCode}}</text>
+              </view>
+              <rich-text nodes="{{paperItem.title || '题组共享题面缺失'}}" />
+            </view>
+          <i-cell wx:for="{{paperItem.questionItems}}" wx:key="id" wx:for-item="questionItem">
 
             <view wx:if="{{questionItem.questionType === 1}}">
               <rich-text nodes="{{questionItem.itemOrder}}. {{questionItem.title}}" />
@@ -55,6 +63,7 @@
               </view>
             </view>
           </i-cell>
+          </block>
         </i-cell-group>
       </i-panel>
 

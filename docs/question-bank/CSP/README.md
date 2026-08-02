@@ -10,7 +10,7 @@
 - `raw/all.json`：合并后的题目结构。
 - `status.json`：最近一次抽取状态、失败项和警告。
 
-Markdown 尽量兼容 GESP 客观题导入风格：使用 `## 第 N 题`、`A.` / `B.` 选项和 `答案：X`。阅读程序、完善程序等复合大题会被展开为可入库的小题，并保留原始大题上下文。
+Markdown 尽量兼容 GESP 客观题导入风格：使用 `## 第 N 题`、`A.` / `B.` 选项和 `答案：X`。阅读程序、完善程序等复合大题仍展开为可判分子题，但数据库只保存一次共享题面。
 
 ## 数据库导入格式
 
@@ -44,6 +44,16 @@ B. 选项 B
 - `import_source = CSP-J/YYYY-CSP-J1.md` 或 `CSP-S/YYYY-CSP-S1.md`
 - `import_question_order = 展开后题号`
 - `question_code = CSP-YYYY-J1-001` 或 `CSP-YYYY-S1-001`
+
+复合题只使用 raw 中的稳定父子字段：
+
+- `(import_source, parentProblemNo)` 唯一定位母题；`subQuestionNo` 是组内顺序。
+- 每套试卷恰有 5 组，按出现顺序前三组为程序阅读、后两组为程序填空。
+- 题组稳定编号为 `CSP-YYYY-J1-G016` / `CSP-YYYY-S1-G016` 形式。
+- 导入先 upsert `t_question_group`，再原位 upsert 子题并写入 `question_group_id/group_item_order`；独立题明确清空这两个字段。
+- 任何共享题面/子题题干拆分失败、组内顺序断裂或 5 组结构不成立都会终止生成，不会静默写入。
+
+当前固定统计是 600 个可作答子题、70 个题组、390 个组内子题和 210 个独立题；题组类型为程序阅读 42 组、程序填空 28 组，14 套试卷每套 5 组。
 
 当前状态：`raw/all.json` 中 600 题均已有答案、解析和导入元数据，解析已写回 Markdown 与 raw JSON；`import-csp-objective-questions.ps1` 当前可导入 600 题。默认导入脚本仍会阻止解析为空或 `暂无解析` 的题写入可导入 SQL。
 
@@ -102,7 +112,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1
 powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1 -VerifyRemote -ExpectSynced
 ```
 
-`sync-csp-objective-papers.ps1` 默认从 `docker\.env.production` 读取 `SPRING_DATASOURCE_URL`，脚本输出不打印连接串、用户名、密码或 token。组卷使用现有系统 frame JSON：`t_text_content.content` 保存标题数组，标题项包含 `name` 和 `questionItems`，每个题目项包含 `id` 与 `itemOrder`；试卷按稳定名称和 `paper_type = 1` 匹配更新，避免重复创建。
+`sync-csp-objective-papers.ps1` 默认从 `docker\.env.production` 读取 `SPRING_DATASOURCE_URL`，脚本输出不打印连接串、用户名、密码或 token。新 frame 的标题项使用 `paperItems`：独立题是 `QUESTION`，题组是 `QUESTION_GROUP` 并快照全部子题 ID、组内顺序和全卷 `itemOrder`。试卷 `question_count` 仍是可作答子题数；试卷按稳定名称和 `paper_type = 1` 匹配更新，避免重复创建。后端继续兼容读取旧 `questionItems` frame。
 
 ## 主流程：控制当前已登录浏览器
 
@@ -170,6 +180,6 @@ Select-String -Path .\docs\question-bank\CSP\**\*.md,.\docs\question-bank\CSP\**
 
 ## 已知限制
 
-- 洛谷有题的阅读程序和完善程序常以一个大题包含多个作答小题。脚本会展开为小题，但为了保留上下文，Markdown 中可能重复出现大题材料。
+- 洛谷有题的阅读程序和完善程序常以一个大题包含多个作答小题。Markdown 原始材料仍可能重复，但导入时会拆为单份共享题面和有序子题；拆分异常会在质量检查中显式失败。
 - `--source-mode dom` 依赖页面当前文案和可见文本，公式质量不如 `window._feInjection`。
 - 脚本不会保存任何 cookie、token、账号密码或完整登录态文件到仓库。

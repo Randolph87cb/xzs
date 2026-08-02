@@ -226,6 +226,7 @@ public class QuestionCorrectionAiReviewService {
     private String contextSql() {
         return "select c.*, coalesce(c.class_id, u.class_id) as correction_class_id, cls.teacher_id as teacher_user_id, " +
                 "q.question_type, q.correct, a.answer as student_answer, " +
+                "gtc.content::jsonb ->> 'titleContent' as question_group_title, " +
                 "tc.content::jsonb ->> 'titleContent' as title, " +
                 "tc.content::jsonb ->> 'questionItemObjects' as items, " +
                 "tc.content::jsonb ->> 'analyze' as analyze " +
@@ -234,6 +235,8 @@ public class QuestionCorrectionAiReviewService {
                 "left join t_class cls on cls.id = coalesce(c.class_id, u.class_id) and cls.deleted = false " +
                 "join t_question q on q.id = c.question_id " +
                 "join t_text_content tc on tc.id = q.info_text_content_id " +
+                "left join t_question_group qg on qg.id = q.question_group_id " +
+                "left join t_text_content gtc on gtc.id = qg.info_text_content_id " +
                 "join t_exam_paper_question_customer_answer a on a.id = c.customer_answer_id " +
                 "where c.deleted = false and c.id = ?";
     }
@@ -279,6 +282,7 @@ public class QuestionCorrectionAiReviewService {
                         "{\"reviewResult\":\"APPROVED|REJECTED|UNCERTAIN\",\"teacherReason\":\"给老师看的判断依据\",\"studentFeedback\":\"可直接返回给学生的反馈\",\"missingPoints\":[\"还缺少的关键点\"],\"confidence\":0.0}\n" +
                         "字段要求：teacherReason 面向老师，可说明内部判断依据；studentFeedback 面向学生，语气应适合直接作为审核意见；missingPoints 必须是字符串数组；confidence 取 0 到 1。\n\n" +
                         "题型：" + valueText(context.get("question_type")) + "\n" +
+                        "共享题面：" + valueText(context.get("question_group_title")) + "\n" +
                         "题干：" + valueText(context.get("title")) + "\n" +
                         "选项：" + valueText(context.get("items")) + "\n" +
                         "解析：" + valueText(context.get("analyze")) + "\n" +

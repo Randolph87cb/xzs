@@ -60,10 +60,28 @@ export interface ExamQuestion {
   correct?: string
   correctArray?: string[]
   items: QuestionOption[]
+  questionGroupId?: number | null
+  groupItemOrder?: number | null
+  questionGroupType?: number | null
+  questionGroupCode?: string | null
+  questionGroupTitle?: string | null
 }
 
 export interface ExamPaperTitleItem {
   name: string
+  questionItems: ExamQuestion[]
+  paperItems?: ExamPaperItem[]
+}
+
+export type ExamPaperItemType = 'QUESTION' | 'QUESTION_GROUP'
+
+export interface ExamPaperItem {
+  type: ExamPaperItemType
+  id: number
+  itemOrder?: number | null
+  questionGroupType?: number | null
+  questionGroupCode?: string | null
+  title?: string | null
   questionItems: ExamQuestion[]
 }
 
@@ -73,6 +91,7 @@ export interface ExamPaperDetail {
   score: string | number
   suggestTime: number
   titleItems: ExamPaperTitleItem[]
+  paperItemCount?: number
 }
 
 export interface AnswerItem {

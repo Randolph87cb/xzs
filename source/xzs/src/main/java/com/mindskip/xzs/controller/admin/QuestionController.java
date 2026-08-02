@@ -69,10 +69,14 @@ public class QuestionController extends BaseApiController {
             return validQuestionEditRequestResult;
         }
 
-        if (null == model.getId()) {
-            questionService.insertFullQuestion(model, getCurrentUser().getId());
-        } else {
-            questionService.updateFullQuestion(model);
+        try {
+            if (null == model.getId()) {
+                questionService.insertFullQuestion(model, getCurrentUser().getId());
+            } else {
+                questionService.updateFullQuestion(model);
+            }
+        } catch (IllegalArgumentException e) {
+            return RestResponse.fail(2, e.getMessage());
         }
 
         return RestResponse.ok();
@@ -88,6 +92,12 @@ public class QuestionController extends BaseApiController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public RestResponse delete(@PathVariable Integer id) {
         Question question = questionService.selectById(id);
+        if (question == null) {
+            return RestResponse.fail(2, "题目不存在");
+        }
+        if (question.getQuestionGroupId() != null) {
+            return RestResponse.fail(2, "题组子题请在题组中删除或调整");
+        }
         question.setDeleted(true);
         questionService.updateByIdFilter(question);
         return RestResponse.ok();

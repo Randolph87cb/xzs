@@ -21,23 +21,37 @@
         <p v-if="answer">试卷得分：{{ answer.score }} · 试卷耗时：{{ formatSeconds(answer.doTime) }}</p>
       </header>
 
-      <template v-for="titleItem in paper?.titleItems ?? []" :key="titleItem.name">
+      <template v-for="titleItem in paperTitleItems" :key="titleItem.name">
         <section class="exam-edit__section">
           <h2>{{ titleItem.name }}</h2>
           <article
-            v-for="question in titleItem.questionItems"
-            :id="`question-${question.itemOrder}`"
-            :key="question.id"
-            class="exam-edit__question"
+            v-for="paperItem in titleItem.paperItems"
+            :key="`${paperItem.type}-${paperItem.id}-${paperItem.itemOrder ?? 0}`"
+            class="exam-edit__paper-item"
+            :class="{ 'is-question-group': paperItem.type === 'QUESTION_GROUP' }"
           >
-            <div class="exam-edit__question-order">{{ question.itemOrder }}.</div>
-            <div class="exam-edit__question-body">
-              <QuestionReview :question="question" :answer="answerItemsByOrder[question.itemOrder]" />
-              <div v-if="answerItemsByOrder[question.itemOrder]?.doRight === null" class="exam-edit__score">
-                <span>批改：</span>
-                <el-radio-group v-model="answerItemsByOrder[question.itemOrder].score">
-                  <el-radio v-for="item in scoreOptions(question.score)" :key="item" :value="item">{{ item }}</el-radio>
-                </el-radio-group>
+            <header v-if="paperItem.type === 'QUESTION_GROUP'" class="exam-edit__group-context">
+              <div class="exam-edit__group-meta">
+                <strong>{{ questionGroupTypeText(paperItem.questionGroupType) }}</strong>
+                <span v-if="paperItem.questionGroupCode">{{ paperItem.questionGroupCode }}</span>
+              </div>
+              <QuestionMarkdown :content="paperItem.title || '题组共享题面缺失'" />
+            </header>
+            <div
+              v-for="question in paperItem.questionItems"
+              :id="`question-${question.itemOrder}`"
+              :key="question.id"
+              class="exam-edit__question"
+            >
+              <div class="exam-edit__question-order">{{ question.itemOrder }}.</div>
+              <div class="exam-edit__question-body">
+                <QuestionReview :question="question" :answer="answerItemsByOrder[question.itemOrder]" />
+                <div v-if="answerItemsByOrder[question.itemOrder]?.doRight === null" class="exam-edit__score">
+                  <span>批改：</span>
+                  <el-radio-group v-model="answerItemsByOrder[question.itemOrder].score">
+                    <el-radio v-for="item in scoreOptions(question.score)" :key="item" :value="item">{{ item }}</el-radio>
+                  </el-radio-group>
+                </div>
               </div>
             </div>
           </article>
@@ -56,6 +70,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import { QuestionMarkdown } from '@xzs/question-renderer'
 import {
   editExamPaperAnswer,
   readExamPaperAnswer,
@@ -65,6 +80,7 @@ import {
 } from '@xzs/api-client'
 import QuestionReview from '@/components/QuestionReview.vue'
 import { formatSeconds } from '@/utils/format'
+import { normalizeExamPaperTitleItems } from '@/utils/paperItems'
 
 const route = useRoute()
 const router = useRouter()
@@ -72,6 +88,7 @@ const loading = ref(false)
 const submitting = ref(false)
 const paper = ref<ExamPaperDetail | null>(null)
 const answer = ref<ExamPaperRead['answer'] | null>(null)
+const paperTitleItems = computed(() => normalizeExamPaperTitleItems(paper.value))
 const answerItemsByOrder = computed<Record<number, AnswerItem>>(() => {
   const result: Record<number, AnswerItem> = {}
 
@@ -163,6 +180,10 @@ function questionDoRightTag(status: boolean | null | undefined) {
 function scrollToQuestion(itemOrder: number) {
   document.getElementById(`question-${itemOrder}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
+
+function questionGroupTypeText(type?: number | null) {
+  return type === 2 ? '程序填空题' : '程序阅读题'
+}
 </script>
 
 <style scoped lang="scss">
@@ -223,6 +244,38 @@ function scrollToQuestion(itemOrder: number) {
   margin: 0;
   color: var(--xzs-text);
   font-size: 18px;
+}
+
+.exam-edit__paper-item {
+  display: grid;
+  gap: 12px;
+}
+
+.exam-edit__paper-item.is-question-group {
+  padding: 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #f8fbff;
+}
+
+.exam-edit__group-context {
+  display: grid;
+  gap: 10px;
+  padding: 4px 2px 14px;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.exam-edit__group-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--xzs-text-muted);
+  font-size: 13px;
+}
+
+.exam-edit__group-meta strong {
+  color: var(--xzs-primary);
+  font-size: 15px;
 }
 
 .exam-edit__question {

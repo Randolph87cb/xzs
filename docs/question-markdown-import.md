@@ -9,6 +9,8 @@ Content-Type: multipart/form-data
 
 该接口用于管理端手动导入普通单选题。GESP 历年客观题使用 `scripts/import-gesp-objective-questions.ps1` 批量导入，题型、试卷标题、顺序和按级别隔离的知识点规则见 `docs/question-bank/GESP/README.md`。
 
+CSP 程序阅读/程序填空不走这个普通 Markdown 接口。它们由 `scripts/import-csp-objective-questions.ps1` 按 `raw/all.json` 中稳定的 `import_source + parentProblemNo + subQuestionNo` 建立题组，禁止通过题面相似度推断父子关系。
+
 ## 请求字段
 
 - `file`：必填，UTF-8 编码的 Markdown 文件。
@@ -48,3 +50,12 @@ D. 选项 D
 ## 示例
 
 仓库中的 `.tmp/选择题.md` 符合该格式，可通过该接口导入。
+
+## CSP 复合题契约
+
+- `t_question_group.group_type` 表示内容结构：`1=程序阅读`、`2=程序填空`。
+- `t_question.question_type` 仍只表示子题作答/判分类型；题组本身不生成答案记录。
+- 子题通过 `question_group_id + group_item_order` 归组，原有子题 ID、答案、分值和历史答卷关系保持不变。
+- 管理 API 为 `/api/admin/question/group/page|select/{id}|edit|delete/{id}`。编辑请求的 `questionItems` 是有序完整子题，子题用 `groupItemOrder` 表示组内顺序。
+- 普通题分页默认 `questionGroupMode=INDEPENDENT`；可显式传 `GROUP_CHILD` 或 `ALL`。普通随机抽题始终排除组内子题。
+- 新试卷 frame 的标题项使用 `paperItems`。`QUESTION` 条目保存题目 `id + itemOrder`；`QUESTION_GROUP` 保存题组 `id`，并在 `questionItems` 中快照子题 `id + groupItemOrder + itemOrder`。后端仍双读旧 `questionItems` frame，答案提交仍是扁平 `questionId + itemOrder`。

@@ -9,6 +9,8 @@ public class ExamPaperTitleItemObject {
 
     private List<ExamPaperQuestionItemObject> questionItems;
 
+    private List<ExamPaperItemObject> paperItems;
+
     public String getName() {
         return name;
     }
@@ -24,4 +26,7 @@ public class ExamPaperTitleItemObject {
     public void setQuestionItems(List<ExamPaperQuestionItemObject> questionItems) {
         this.questionItems = questionItems;
     }
+
+    public List<ExamPaperItemObject> getPaperItems() { return paperItems; }
+    public void setPaperItems(List<ExamPaperItemObject> paperItems) { this.paperItems = paperItems; }
 }

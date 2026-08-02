@@ -63,6 +63,10 @@ public class Question implements Serializable {
      */
     private Integer importQuestionOrder;
 
+    private Integer questionGroupId;
+
+    private Integer groupItemOrder;
+
     /**
      * 正确答案
      */
@@ -180,6 +184,22 @@ public class Question implements Serializable {
 
     public void setImportQuestionOrder(Integer importQuestionOrder) {
         this.importQuestionOrder = importQuestionOrder;
+    }
+
+    public Integer getQuestionGroupId() {
+        return questionGroupId;
+    }
+
+    public void setQuestionGroupId(Integer questionGroupId) {
+        this.questionGroupId = questionGroupId;
+    }
+
+    public Integer getGroupItemOrder() {
+        return groupItemOrder;
+    }
+
+    public void setGroupItemOrder(Integer groupItemOrder) {
+        this.groupItemOrder = groupItemOrder;
     }
 
     public void setCorrect(String correct) {

@@ -23,6 +23,13 @@
       <el-form-item label="知识点">
         <el-input v-model="query.knowledgePoint" data-testid="question-filter-knowledge-point" clearable />
       </el-form-item>
+      <el-form-item label="题组归属">
+        <el-select v-model="query.questionGroupMode" style="width: 170px">
+          <el-option label="全部题目" value="ALL" />
+          <el-option label="仅独立题" value="INDEPENDENT" />
+          <el-option label="仅题组子题" value="GROUP_CHILD" />
+        </el-select>
+      </el-form-item>
     </el-form>
 
     <el-table :data="questions" border>
@@ -32,6 +39,18 @@
       </el-table-column>
       <el-table-column prop="knowledgePoint" label="知识点" width="140" />
       <el-table-column prop="shortTitle" label="题干" min-width="240" show-overflow-tooltip />
+      <el-table-column label="题组归属" width="150">
+        <template #default="{ row }">
+          <el-link
+            v-if="row.questionGroupId"
+            type="primary"
+            @click="router.push({ path: '/exam/question/group/edit', query: { id: row.questionGroupId } })"
+          >
+            题组 #{{ row.questionGroupId }} / {{ row.groupItemOrder }}
+          </el-link>
+          <el-tag v-else size="small" type="info">独立题</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="score" label="分数" width="80" />
       <el-table-column prop="difficult" label="难度" width="80" />
       <el-table-column prop="createTime" label="创建时间" width="170" />
@@ -42,11 +61,11 @@
             :data-testid="`question-edit-${row.id}`"
             size="small"
             type="primary"
-            @click="router.push({ path: '/exam/question/edit', query: { id: row.id } })"
+            @click="openQuestionEditor(row.id, row.questionGroupId)"
           >
-            编辑
+            {{ row.questionGroupId ? '编辑题组' : '编辑' }}
           </el-button>
-          <el-button size="small" type="danger" @click="removeQuestion(row.id)">删除</el-button>
+          <el-button size="small" type="danger" :disabled="Boolean(row.questionGroupId)" @click="removeQuestion(row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,6 +85,16 @@
 
     <el-dialog v-model="previewVisible" title="题目预览" width="760px">
       <div v-if="preview" class="question-preview">
+        <el-alert
+          v-if="preview.questionGroupTitle"
+          :title="`所属题组 #${preview.questionGroupId}，组内第 ${preview.groupItemOrder} 题`"
+          type="info"
+          :closable="false"
+          show-icon
+        />
+        <div v-if="preview.questionGroupTitle" class="question-preview__group-title">
+          <QuestionMarkdown :content="preview.questionGroupTitle" />
+        </div>
         <QuestionMarkdown :content="preview.title" />
         <ol v-if="preview.items?.length" class="question-preview__items">
           <li v-for="item in preview.items" :key="item.prefix">
@@ -105,6 +134,7 @@ const query = reactive<AdminQuestionPageRequest>({
   questionType: null,
   subjectId: null,
   knowledgePoint: null,
+  questionGroupMode: 'ALL',
   pageIndex: 1,
   pageSize: 10
 })
@@ -144,7 +174,30 @@ async function removeQuestion(id: number) {
   loadData()
 }
 
+function openQuestionEditor(id: number, questionGroupId?: number | null) {
+  if (questionGroupId) {
+    router.push({ path: '/exam/question/group/edit', query: { id: questionGroupId } })
+    return
+  }
+  router.push({ path: '/exam/question/edit', query: { id } })
+}
+
 function questionTypeText(type: number) {
   return questionTypes.find((item) => item.value === type)?.label ?? '-'
 }
 </script>
+
+<style scoped>
+.question-preview,
+.question-preview__group-title {
+  display: grid;
+  gap: 14px;
+}
+
+.question-preview__group-title {
+  padding: 14px;
+  border: 1px solid var(--el-color-primary-light-7);
+  border-radius: 6px;
+  background: var(--el-color-primary-light-9);
+}
+</style>

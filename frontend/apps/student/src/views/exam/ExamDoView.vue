@@ -35,13 +35,28 @@
           <section class="exam-do__section">
             <h2>{{ titleItem.name }}</h2>
             <article
-              v-for="question in titleItem.questionItems"
-              :id="`question-${question.itemOrder}`"
-              :key="question.id"
-              class="exam-do__question"
+              v-for="paperItem in titleItem.paperItems"
+              :key="`${paperItem.type}-${paperItem.id}-${paperItem.itemOrder ?? 0}`"
+              class="exam-do__paper-item"
+              :class="{ 'is-question-group': paperItem.type === 'QUESTION_GROUP' }"
             >
-              <div class="exam-do__question-order">{{ question.itemOrder }}.</div>
-              <QuestionEditor :question="question" :answer="answer.answerItems[question.itemOrder - 1]" />
+              <header v-if="paperItem.type === 'QUESTION_GROUP'" class="exam-do__group-context">
+                <div class="exam-do__group-meta">
+                  <strong>{{ questionGroupTypeText(paperItem.questionGroupType) }}</strong>
+                  <span v-if="paperItem.questionGroupCode">{{ paperItem.questionGroupCode }}</span>
+                </div>
+                <QuestionMarkdown :content="paperItem.title || '题组共享题面缺失'" />
+              </header>
+              <div
+                v-for="question in paperItem.questionItems"
+                :id="`question-${question.itemOrder}`"
+                :key="question.id"
+                class="exam-do__question"
+                :class="{ 'is-group-child': paperItem.type === 'QUESTION_GROUP' }"
+              >
+                <div class="exam-do__question-order">{{ question.itemOrder }}.</div>
+                <QuestionEditor :question="question" :answer="answer.answerItems[question.itemOrder - 1]" />
+              </div>
             </article>
           </section>
         </template>
@@ -58,6 +73,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, reactive, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { QuestionMarkdown } from '@xzs/question-renderer'
 import { useRoute, useRouter } from 'vue-router'
 import {
   getExamPaperDetail,
@@ -68,6 +84,12 @@ import {
 } from '@xzs/api-client'
 import QuestionEditor from '@/components/QuestionEditor.vue'
 import { formatSeconds } from '@/utils/format'
+import {
+  findPaperItemNumberByQuestionOrder,
+  flattenExamQuestions,
+  limitExamPaperItems,
+  normalizeExamPaperTitleItems
+} from '@/utils/paperItems'
 
 const route = useRoute()
 const router = useRouter()
@@ -75,7 +97,7 @@ const paper = ref<ExamPaperDetail | null>(null)
 const loading = ref(false)
 const submitting = ref(false)
 const remainTime = ref(0)
-const visibleQuestionLimit = ref(0)
+const visiblePaperItemLimit = ref(0)
 const answer = reactive<ExamPaperSubmit>({
   id: 0,
   doTime: 0,
@@ -86,15 +108,11 @@ let renderBatchTimer: number | undefined
 let renderIdleHandle: number | undefined
 const paperId = computed(() => Number(route.query.id))
 const taskId = computed(() => (route.query.taskId ? Number(route.query.taskId) : null))
-const totalQuestionCount = computed(() => answer.answerItems.length)
-const visibleTitleItems = computed(() =>
-  (paper.value?.titleItems ?? [])
-    .map((titleItem) => ({
-      ...titleItem,
-      questionItems: titleItem.questionItems.filter((question) => question.itemOrder <= visibleQuestionLimit.value)
-    }))
-    .filter((titleItem) => titleItem.questionItems.length > 0)
+const paperTitleItems = computed(() => normalizeExamPaperTitleItems(paper.value))
+const totalPaperItemCount = computed(() =>
+  paperTitleItems.value.reduce((count, titleItem) => count + titleItem.paperItems.length, 0)
 )
+const visibleTitleItems = computed(() => limitExamPaperItems(paperTitleItems.value, visiblePaperItemLimit.value))
 
 watch([paperId, taskId], loadPaper, { immediate: true })
 onUnmounted(() => {
@@ -112,7 +130,7 @@ async function loadPaper() {
     answer.doTime = 0
     answer.answerItems.splice(0, answer.answerItems.length)
     remainTime.value = 0
-    visibleQuestionLimit.value = 0
+    visiblePaperItemLimit.value = 0
     cancelQuestionBatch()
     ElMessage.error('缺少试卷 ID')
     router.replace('/paper/index')
@@ -134,7 +152,7 @@ async function loadPaper() {
     answer.doTime = 0
     answer.answerItems.splice(0, answer.answerItems.length, ...createAnswerItems(result.response))
     remainTime.value = result.response.suggestTime * 60
-    resetQuestionBatch(totalQuestionCount.value)
+    resetQuestionBatch(totalPaperItemCount.value)
     startTimer()
   } finally {
     loading.value = false
@@ -142,15 +160,15 @@ async function loadPaper() {
 }
 
 function createAnswerItems(detail: ExamPaperDetail): AnswerItem[] {
-  return detail.titleItems.flatMap((titleItem) =>
-    titleItem.questionItems.map((question) => ({
+  return flattenExamQuestions(normalizeExamPaperTitleItems(detail))
+    .sort((left, right) => left.itemOrder - right.itemOrder)
+    .map((question) => ({
       questionId: question.id,
       content: null,
       contentArray: [],
       completed: false,
       itemOrder: question.itemOrder
     }))
-  )
 }
 
 function startTimer() {
@@ -171,12 +189,12 @@ function startTimer() {
 
 function resetQuestionBatch(total: number) {
   cancelQuestionBatch()
-  visibleQuestionLimit.value = Math.min(8, total)
+  visiblePaperItemLimit.value = Math.min(8, total)
   scheduleQuestionBatch(total)
 }
 
 function scheduleQuestionBatch(total: number) {
-  if (visibleQuestionLimit.value >= total) {
+  if (visiblePaperItemLimit.value >= total) {
     return
   }
 
@@ -203,7 +221,7 @@ function scheduleQuestionBatch(total: number) {
 }
 
 function renderNextQuestionBatch(total: number) {
-  visibleQuestionLimit.value = Math.min(total, visibleQuestionLimit.value + 8)
+  visiblePaperItemLimit.value = Math.min(total, visiblePaperItemLimit.value + 8)
   scheduleQuestionBatch(total)
 }
 
@@ -247,9 +265,14 @@ async function submitPaper() {
 }
 
 async function scrollToQuestion(itemOrder: number) {
-  visibleQuestionLimit.value = Math.max(visibleQuestionLimit.value, itemOrder)
+  const paperItemNumber = findPaperItemNumberByQuestionOrder(paperTitleItems.value, itemOrder)
+  visiblePaperItemLimit.value = Math.max(visiblePaperItemLimit.value, paperItemNumber)
   await nextTick()
   document.getElementById(`question-${itemOrder}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
+function questionGroupTypeText(type?: number | null) {
+  return type === 2 ? '程序填空题' : '程序阅读题'
 }
 </script>
 
@@ -331,6 +354,38 @@ async function scrollToQuestion(itemOrder: number) {
   margin: 0;
   color: var(--xzs-text);
   font-size: 18px;
+}
+
+.exam-do__paper-item {
+  display: grid;
+  gap: 12px;
+}
+
+.exam-do__paper-item.is-question-group {
+  padding: 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--xzs-radius);
+  background: #f8fbff;
+}
+
+.exam-do__group-context {
+  display: grid;
+  gap: 10px;
+  padding: 4px 2px 14px;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.exam-do__group-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--xzs-text-muted);
+  font-size: 13px;
+}
+
+.exam-do__group-meta strong {
+  color: var(--xzs-primary);
+  font-size: 15px;
 }
 
 .exam-do__question {

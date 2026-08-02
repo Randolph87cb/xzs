@@ -2,14 +2,32 @@
   <section class="admin-page" v-loading="loading">
     <header class="admin-page__header">
       <div>
-        <h1>题目编辑</h1>
+        <h1>{{ isGroupChild ? '题组子题查看' : '题目编辑' }}</h1>
         <p>默认使用 Markdown 编辑题目内容，历史 HTML 会作为 Markdown 兼容语法预览。</p>
       </div>
       <div class="admin-page__actions">
         <el-button data-testid="question-edit-back" @click="router.push('/exam/question/list')">返回列表</el-button>
-        <el-button data-testid="question-edit-save" type="primary" :loading="saving" @click="saveQuestion">保存题目</el-button>
+        <el-button
+          data-testid="question-edit-save"
+          type="primary"
+          :loading="saving"
+          :disabled="isGroupChild"
+          @click="saveQuestion"
+        >保存题目</el-button>
       </div>
     </header>
+
+    <el-alert
+      v-if="isGroupChild"
+      type="warning"
+      :closable="false"
+      show-icon
+      :title="`该题属于题组 #${form.questionGroupId}，组内顺序 ${form.groupItemOrder}，请从题组编辑页统一修改。`"
+    >
+      <template #default>
+        <el-button type="primary" link @click="openQuestionGroup">前往题组编辑</el-button>
+      </template>
+    </el-alert>
 
     <el-form ref="formRef" class="question-edit" :model="form" :rules="rules" label-width="92px">
       <section class="question-edit__meta">
@@ -160,6 +178,7 @@ const rules: FormRules = {
   knowledgePoint: [{ required: true, message: '请输入知识点', trigger: 'blur' }]
 }
 const questionId = computed(() => Number(route.query.id))
+const isGroupChild = computed(() => Boolean(form.questionGroupId))
 
 watch(
   () => form.questionType,
@@ -206,6 +225,10 @@ async function loadQuestion() {
 }
 
 async function saveQuestion() {
+  if (isGroupChild.value) {
+    ElMessage.warning('题组子题请从题组编辑页统一保存')
+    return
+  }
   const valid = await formRef.value?.validate().catch(() => false)
   if (!valid) {
     return
@@ -223,6 +246,12 @@ async function saveQuestion() {
     }
   } finally {
     saving.value = false
+  }
+}
+
+function openQuestionGroup() {
+  if (form.questionGroupId) {
+    router.push({ path: '/exam/question/group/edit', query: { id: form.questionGroupId } })
   }
 }
 

@@ -124,6 +124,26 @@ function Load-CspPaperManifest {
     if ($rawQuestions.Count -ne 600) {
         throw "Expected 600 CSP questions in raw/all.json, got $($rawQuestions.Count)."
     }
+    $compositeMap = @{}
+    foreach ($paperGroup in ($rawQuestions | Group-Object import_source)) {
+        $parentGroups = @($paperGroup.Group | Group-Object parentProblemNo | Where-Object { $_.Count -gt 1 } |
+            Sort-Object { ($_.Group | Measure-Object questionNo -Minimum).Minimum })
+        if ($parentGroups.Count -ne 5) { throw "$($paperGroup.Name) expected 5 composite groups, got $($parentGroups.Count)." }
+        for ($groupIndex = 0; $groupIndex -lt $parentGroups.Count; $groupIndex++) {
+            $children = @($parentGroups[$groupIndex].Group | Sort-Object subQuestionNo)
+            if ((@($children | ForEach-Object { [int]$_.subQuestionNo }) -join ',') -ne ((1..$children.Count) -join ',')) {
+                throw "$($paperGroup.Name)/parent=$($parentGroups[$groupIndex].Name) has non-contiguous subQuestionNo."
+            }
+            foreach ($child in $children) {
+                $compositeMap["$($child.import_source)|$($child.questionNo)"] = [pscustomobject]@{
+                    ParentProblemNo = [int]$child.parentProblemNo
+                    SubQuestionNo = [int]$child.subQuestionNo
+                    GroupType = $(if ($groupIndex -lt 3) { 1 } else { 2 })
+                    GroupCode = "CSP-{0}-{1}1-G{2:000}" -f $child.year, $child.group, [int]$child.parentProblemNo
+                }
+            }
+        }
+    }
 
     $manifestQuestions = New-Object System.Collections.Generic.List[object]
     foreach ($rawQuestion in $rawQuestions) {
@@ -144,6 +164,7 @@ function Load-CspPaperManifest {
         $subjectId = if ($group -eq "J") { 9 } elseif ($group -eq "S") { 10 } else { throw "Unknown CSP group: $group" }
         $score = if ($null -ne $rawQuestion.score) { [int][Math]::Round(([double]$rawQuestion.score) * 10) } else { 10 }
 
+        $composite = $compositeMap["$importSource|$questionOrder"]
         $manifestQuestions.Add([pscustomobject]@{
             PaperName = Get-CspPaperName -Year $year -Group $group
             ImportSource = $importSource
@@ -156,6 +177,10 @@ function Load-CspPaperManifest {
             GradeLevel = $subjectId
             QuestionType = $questionType
             Score = $score
+            ParentProblemNo = $(if ($null -eq $composite) { $null } else { $composite.ParentProblemNo })
+            SubQuestionNo = $(if ($null -eq $composite) { $null } else { $composite.SubQuestionNo })
+            GroupType = $(if ($null -eq $composite) { $null } else { $composite.GroupType })
+            GroupCode = $(if ($null -eq $composite) { $null } else { $composite.GroupCode })
         })
     }
 
@@ -189,6 +214,11 @@ function Load-CspPaperManifest {
     if ($papers.Count -ne 14) {
         throw "Expected 14 CSP paper sets, got $($papers.Count)."
     }
+    $compositeQuestions = @($manifestQuestions | Where-Object { $null -ne $_.ParentProblemNo })
+    $compositeGroups = @($compositeQuestions | Group-Object ImportSource, ParentProblemNo)
+    if ($compositeGroups.Count -ne 70 -or $compositeQuestions.Count -ne 390) {
+        throw "Expected 70 composite groups / 390 child questions, got $($compositeGroups.Count) / $($compositeQuestions.Count)."
+    }
 
     return [pscustomobject]@{
         Papers = $papers.ToArray()
@@ -207,6 +237,8 @@ function Write-CspManifestSummary {
         ForEach-Object { "$(Get-CspQuestionTypeName -QuestionType ([int]$_.Name)): $($_.Count)" }
     Write-Output "CSP questions in manifest: $questionCount"
     Write-Output "CSP papers in manifest: $paperCount"
+    Write-Output "CSP composite groups: $(@($Manifest.Questions | Where-Object { $null -ne $_.ParentProblemNo } | Group-Object ImportSource, ParentProblemNo).Count)"
+    Write-Output "CSP grouped/independent questions: $(@($Manifest.Questions | Where-Object { $null -ne $_.ParentProblemNo }).Count)/$(@($Manifest.Questions | Where-Object { $null -eq $_.ParentProblemNo }).Count)"
     Write-Output "CSP question types: $($typeSummary -join '; ')"
     Write-Output "CSP paper names:"
     foreach ($paper in $Manifest.Papers) {
@@ -234,14 +266,18 @@ function New-CspPaperManifestSql {
 
     $questionRows = New-Object System.Collections.Generic.List[string]
     foreach ($question in ($Manifest.Questions | Sort-Object Year, Group, ItemOrder)) {
-        $questionRows.Add(("    ({0}, {1}, {2}, {3}, {4}, {5}, {6})" -f `
+        $questionRows.Add(("    ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})" -f `
             (New-DollarQuotedSqlLiteral $question.PaperName),
             (New-DollarQuotedSqlLiteral $ImportBatch),
             (New-DollarQuotedSqlLiteral $question.ImportSource),
             [int]$question.ImportQuestionOrder,
             [int]$question.ItemOrder,
             [int]$question.QuestionType,
-            [int]$question.Score))
+            [int]$question.Score,
+            $(if ($null -eq $question.ParentProblemNo) { 'NULL' } else { [string][int]$question.ParentProblemNo }),
+            $(if ($null -eq $question.SubQuestionNo) { 'NULL' } else { [string][int]$question.SubQuestionNo }),
+            $(if ($null -eq $question.GroupType) { 'NULL' } else { [string][int]$question.GroupType }),
+            (New-DollarQuotedSqlLiteral $question.GroupCode)))
     }
 
     return @"
@@ -272,11 +308,15 @@ CREATE TEMP TABLE xzs_import_csp_paper_question_manifest (
     item_order int NOT NULL,
     question_type int NOT NULL,
     score int NOT NULL
+    , parent_problem_no int
+    , sub_question_no int
+    , group_type int
+    , group_code text
 ) ON COMMIT DROP;
 
 INSERT INTO xzs_import_csp_paper_question_manifest (
     paper_name, import_batch, import_source, import_question_order, item_order,
-    question_type, score
+    question_type, score, parent_problem_no, sub_question_no, group_type, group_code
 ) VALUES
 $($questionRows -join ",`n");
 "@
@@ -304,9 +344,22 @@ DECLARE
     missing_count int;
     paper_count int;
     paper_question_count int;
+    composite_group_count int;
+    grouped_question_count int;
+    malformed_paper_count int;
 BEGIN
     SELECT count(*) INTO paper_count FROM xzs_import_csp_paper_manifest;
     SELECT count(*) INTO paper_question_count FROM xzs_import_csp_paper_question_manifest;
+    SELECT count(*) INTO composite_group_count FROM (
+      SELECT import_source, parent_problem_no FROM xzs_import_csp_paper_question_manifest
+      WHERE parent_problem_no IS NOT NULL GROUP BY import_source, parent_problem_no
+    ) groups;
+    SELECT count(*) INTO grouped_question_count FROM xzs_import_csp_paper_question_manifest WHERE parent_problem_no IS NOT NULL;
+    SELECT count(*) INTO malformed_paper_count FROM (
+      SELECT paper_name FROM xzs_import_csp_paper_question_manifest
+      WHERE parent_problem_no IS NOT NULL GROUP BY paper_name
+      HAVING count(DISTINCT parent_problem_no) <> 5
+    ) malformed;
     SELECT count(*) INTO missing_count
     FROM xzs_import_csp_paper_question_manifest m
     LEFT JOIN t_question q
@@ -321,6 +374,9 @@ BEGIN
     END IF;
     IF paper_question_count <> 600 THEN
         RAISE EXCEPTION 'Expected 600 CSP paper question rows, got %', paper_question_count;
+    END IF;
+    IF composite_group_count <> 70 OR grouped_question_count <> 390 OR malformed_paper_count <> 0 THEN
+        RAISE EXCEPTION 'Composite manifest mismatch: groups %, children %, malformed papers %', composite_group_count, grouped_question_count, malformed_paper_count;
     END IF;
     IF missing_count <> 0 THEN
         RAISE EXCEPTION 'Missing imported CSP questions for paper build: %', missing_count;
@@ -349,16 +405,8 @@ WITH incoming AS (
         $($Paper.SuggestTime)::int AS suggest_time,
         COALESCE((SELECT id FROM t_user WHERE user_name = 'admin' ORDER BY id LIMIT 1), 1)::int AS create_user
 ),
-frame AS (
-    SELECT jsonb_build_array(
-        jsonb_build_object(
-            'name', $titleLiteral::text,
-            'questionItems', jsonb_agg(
-                jsonb_build_object('id', q.id, 'itemOrder', m.item_order)
-                ORDER BY m.item_order
-            )
-        )
-    )::text AS frame_content
+question_rows AS (
+    SELECT m.*, q.id AS question_id, q.question_group_id
     FROM xzs_import_csp_paper_question_manifest m
     JOIN t_question q
       ON q.import_batch = m.import_batch
@@ -366,6 +414,29 @@ frame AS (
      AND q.import_question_order = m.import_question_order
      AND q.deleted = false
     WHERE m.paper_name = (SELECT name FROM incoming)
+), paper_units AS (
+    SELECT item_order AS unit_order,
+      jsonb_build_object('type','QUESTION','id',question_id,'itemOrder',item_order) AS paper_item
+    FROM question_rows WHERE parent_problem_no IS NULL
+    UNION ALL
+    SELECT min(item_order) AS unit_order,
+      jsonb_build_object(
+        'type','QUESTION_GROUP',
+        'id',min(question_group_id),
+        'itemOrder',min(item_order),
+        'questionItems',jsonb_agg(
+          jsonb_build_object('id',question_id,'groupItemOrder',sub_question_no,'itemOrder',item_order)
+          ORDER BY sub_question_no
+        )
+      ) AS paper_item
+    FROM question_rows WHERE parent_problem_no IS NOT NULL
+    GROUP BY import_source, parent_problem_no
+), frame AS (
+    SELECT jsonb_build_array(jsonb_build_object(
+      'name', $titleLiteral::text,
+      'paperItems', jsonb_agg(paper_item ORDER BY unit_order)
+    ))::text AS frame_content
+    FROM paper_units
 ),
 existing_paper AS (
     SELECT ep.id, ep.frame_text_content_id
@@ -485,7 +556,13 @@ BEGIN
         FROM remote_papers rp
         JOIN t_text_content tc ON tc.id = rp.frame_text_content_id
         CROSS JOIN LATERAL jsonb_array_elements(tc.content::jsonb) AS title_item(value)
-        CROSS JOIN LATERAL jsonb_array_elements(title_item.value -> 'questionItems') AS question_item(value)
+        CROSS JOIN LATERAL jsonb_array_elements(title_item.value -> 'paperItems') AS paper_item(value)
+        CROSS JOIN LATERAL (
+          SELECT jsonb_build_object('id',paper_item.value -> 'id','itemOrder',paper_item.value -> 'itemOrder') AS value
+          WHERE paper_item.value ->> 'type' = 'QUESTION'
+          UNION ALL
+          SELECT child.value FROM jsonb_array_elements(coalesce(paper_item.value -> 'questionItems','[]'::jsonb)) child(value)
+        ) AS question_item
     ),
     frame_check AS (
         SELECT
@@ -630,7 +707,13 @@ frame_questions AS (
     FROM remote_papers rp
     JOIN t_text_content tc ON tc.id = rp.frame_text_content_id
     CROSS JOIN LATERAL jsonb_array_elements(tc.content::jsonb) AS title_item(value)
-    CROSS JOIN LATERAL jsonb_array_elements(title_item.value -> 'questionItems') AS question_item(value)
+    CROSS JOIN LATERAL jsonb_array_elements(title_item.value -> 'paperItems') AS paper_item(value)
+    CROSS JOIN LATERAL (
+      SELECT jsonb_build_object('id',paper_item.value -> 'id','itemOrder',paper_item.value -> 'itemOrder') AS value
+      WHERE paper_item.value ->> 'type' = 'QUESTION'
+      UNION ALL
+      SELECT child.value FROM jsonb_array_elements(coalesce(paper_item.value -> 'questionItems','[]'::jsonb)) child(value)
+    ) AS question_item
 )
 SELECT
     p.name,

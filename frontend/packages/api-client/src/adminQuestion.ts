@@ -7,6 +7,7 @@ export interface AdminQuestionPageRequest {
   subjectId?: number | null
   questionType?: number | null
   knowledgePoint?: string | null
+  questionGroupMode?: 'INDEPENDENT' | 'GROUP_CHILD' | 'ALL' | null
   pageIndex: number
   pageSize: number
 }
@@ -20,6 +21,8 @@ export interface AdminQuestionListItem {
   knowledgePoint?: string
   shortTitle?: string
   createTime?: string
+  questionGroupId?: number | null
+  groupItemOrder?: number | null
 }
 
 export interface AdminQuestionEditItem {
@@ -46,6 +49,11 @@ export interface AdminQuestionEditModel {
   importBatch?: string | null
   importSource?: string | null
   importQuestionOrder?: number | null
+  questionGroupId?: number | null
+  groupItemOrder?: number | null
+  questionGroupType?: number | null
+  questionGroupCode?: string | null
+  questionGroupTitle?: string | null
   itemOrder?: number | null
 }
 

@@ -90,6 +90,14 @@
                 {{ selectedCorrectionStatusText }}
               </el-tag>
             </div>
+            <section v-if="selectedQuestion.questionGroupTitle" class="question-error__group-context">
+              <div class="question-error__group-meta">
+                <strong>{{ questionGroupTypeText(selectedQuestion.questionGroupType) }}</strong>
+                <span v-if="selectedQuestion.questionGroupCode">{{ selectedQuestion.questionGroupCode }}</span>
+                <span v-if="selectedQuestion.groupItemOrder">第 {{ selectedQuestion.groupItemOrder }} 小题</span>
+              </div>
+              <QuestionMarkdown :content="selectedQuestion.questionGroupTitle" />
+            </section>
             <QuestionCorrectionContext :question="selectedQuestion" :answer="selectedAnswer" />
           </section>
 
@@ -547,6 +555,10 @@ function questionTypeText(type: number) {
 
   return map[type] ?? '未知'
 }
+
+function questionGroupTypeText(type?: number | null) {
+  return type === 2 ? '程序填空题共享题面' : '程序阅读题共享题面'
+}
 </script>
 
 <style scoped lang="scss">
@@ -777,6 +789,30 @@ function questionTypeText(type: number) {
 
 .question-error__section-header {
   margin-bottom: 16px;
+}
+
+.question-error__group-context {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #f8fbff;
+}
+
+.question-error__group-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--xzs-text-muted);
+  font-size: 13px;
+}
+
+.question-error__group-meta strong {
+  color: var(--xzs-primary);
+  font-size: 14px;
 }
 
 .question-error__correction-panel {

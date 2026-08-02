@@ -21,6 +21,7 @@ import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.utility.JsonUtil;
+import com.mindskip.xzs.utility.ExamPaperFrameUtil;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.mindskip.xzs.viewmodel.student.exam.ExamPaperSubmitVM;
 import com.mindskip.xzs.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
@@ -92,11 +93,12 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
         String frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId()).getContent();
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtil.toJsonListObject(frameTextContent, ExamPaperTitleItemObject.class);
-        List<Integer> questionIds = examPaperTitleItemObjects.stream().flatMap(t -> t.getQuestionItems().stream().map(q -> q.getId())).collect(Collectors.toList());
+        List<Integer> questionIds = ExamPaperFrameUtil.expandQuestionItems(examPaperTitleItemObjects).stream()
+                .map(q -> q.getId()).collect(Collectors.toList());
         List<Question> questions = questionMapper.selectByIds(questionIds);
         //将题目结构的转化为题目答案
         List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers = examPaperTitleItemObjects.stream()
-                .flatMap(t -> t.getQuestionItems().stream()
+                .flatMap(t -> ExamPaperFrameUtil.expandQuestionItems(t).stream()
                         .map(q -> {
                             Question question = questions.stream().filter(tq -> tq.getId().equals(q.getId())).findFirst().get();
                             ExamPaperSubmitItemVM customerQuestionAnswer = examPaperSubmitVM.getAnswerItems().stream()

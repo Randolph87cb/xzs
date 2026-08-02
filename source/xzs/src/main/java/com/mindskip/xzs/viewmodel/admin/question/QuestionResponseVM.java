@@ -32,6 +32,10 @@ public class QuestionResponseVM extends BaseVM {
 
     private String shortTitle;
 
+    private Integer questionGroupId;
+
+    private Integer groupItemOrder;
+
     public Integer getId() {
         return id;
     }
@@ -135,4 +139,9 @@ public class QuestionResponseVM extends BaseVM {
     public void setShortTitle(String shortTitle) {
         this.shortTitle = shortTitle;
     }
+
+    public Integer getQuestionGroupId() { return questionGroupId; }
+    public void setQuestionGroupId(Integer questionGroupId) { this.questionGroupId = questionGroupId; }
+    public Integer getGroupItemOrder() { return groupItemOrder; }
+    public void setGroupItemOrder(Integer groupItemOrder) { this.groupItemOrder = groupItemOrder; }
 }

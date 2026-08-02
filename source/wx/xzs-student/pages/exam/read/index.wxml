@@ -13,13 +13,21 @@
 
     <i-panel title="{{titleItem.name}}" wx:for="{{paper.titleItems}}" wx:for-item="titleItem" wx:key="{{titleItem.name}}" i-class="exam-panel-title">
       <i-cell-group i-class="exam-cell">
-        <i-cell wx:for="{{titleItem.questionItems}}" wx:key="{{titleItem.id}}" wx:for-item="questionItem">
+        <block wx:for="{{titleItem.paperItems}}" wx:for-item="paperItem" wx:key="id">
+          <view wx:if="{{paperItem.type === 'QUESTION_GROUP'}}" class="exam-question-group-title">
+            <view class="exam-question-group-meta">
+              <text>{{paperItem.groupTypeText}}</text>
+              <text wx:if="{{paperItem.questionGroupCode}}">{{paperItem.questionGroupCode}}</text>
+            </view>
+            <rich-text nodes="{{paperItem.title || '题组共享题面缺失'}}" />
+          </view>
+        <i-cell wx:for="{{paperItem.questionItems}}" wx:key="id" wx:for-item="questionItem">
           <view wx:if="{{questionItem.questionType === 1}}">
             <rich-text nodes="{{questionItem.itemOrder}}. {{questionItem.title}}" />
             <radio-group class="radio-group">
               <label class="radio" wx:for="{{questionItem.items}}" wx:key="{{questionItem.prefix}}" wx:for-item="radioItem" class="exam-radio-item-label">
-                <radio color="#2d8cf0" value="{{radioItem.prefix}}" checked="{{radioItem.prefix == answer.answerItems[questionItem.itemOrder-1].content}}" class="exam-item-left" />
-                <rich-text nodes="{{radioItem.prefix}}. {{radioItem.content}}" class="exam-item-left {{radioItem.prefix == answer.answerItems[questionItem.itemOrder-1].content ? 'item-content-selected' : ''}}" />
+                <radio color="#2d8cf0" value="{{radioItem.prefix}}" checked="{{radioItem.prefix == answerByOrder[questionItem.itemOrder].content}}" class="exam-item-left" />
+                <rich-text nodes="{{radioItem.prefix}}. {{radioItem.content}}" class="exam-item-left {{radioItem.prefix == answerByOrder[questionItem.itemOrder].content ? 'item-content-selected' : ''}}" />
               </label>
             </radio-group>
           </view>
@@ -27,8 +35,8 @@
             <rich-text nodes="{{questionItem.itemOrder}}. {{questionItem.title}}" class="exam-item-left" style="line-height:35px" />
             <checkbox-group class="exam-item-left" style="margin-left:10px">
               <label wx:for="{{questionItem.items}}" wx:key="{{questionItem.prefix}}" wx:for-item="radioItem" class="exam-radio-item-label">
-                <checkbox color="#2d8cf0" value="{{radioItem.prefix}}" checked="{{filter.indexOf(answer.answerItems[questionItem.itemOrder-1].content,radioItem.prefix)}}" class="exam-item-left" />
-                <rich-text nodes="{{radioItem.prefix}}. {{radioItem.content}}" class="exam-item-left {{filter.indexOf(answer.answerItems[questionItem.itemOrder-1].content,radioItem.prefix) ? 'item-content-selected' : ''}}" />
+                <checkbox color="#2d8cf0" value="{{radioItem.prefix}}" checked="{{filter.indexOf(answerByOrder[questionItem.itemOrder].content,radioItem.prefix)}}" class="exam-item-left" />
+                <rich-text nodes="{{radioItem.prefix}}. {{radioItem.content}}" class="exam-item-left {{filter.indexOf(answerByOrder[questionItem.itemOrder].content,radioItem.prefix) ? 'item-content-selected' : ''}}" />
               </label>
             </checkbox-group>
           </view>
@@ -36,7 +44,7 @@
             <rich-text nodes="{{questionItem.itemOrder}}. {{questionItem.title}}" class="exam-item-left" style="line-height:35px" />
             <radio-group class="radio-group" class="exam-item-left" style="margin-left:10px">
               <label class="radio" wx:for="{{questionItem.items}}" wx:key="{{questionItem.prefix}}" wx:for-item="radioItem" class="exam-radio-item-label">
-                <radio color="#2d8cf0" value="{{radioItem.prefix}}" checked="{{radioItem.prefix == answer.answerItems[questionItem.itemOrder-1].content}}" class="exam-item-left" />
+                <radio color="#2d8cf0" value="{{radioItem.prefix}}" checked="{{radioItem.prefix == answerByOrder[questionItem.itemOrder].content}}" class="exam-item-left" />
                 <rich-text nodes="{{radioItem.content}}" class="exam-item-left" />
               </label>
             </radio-group>
@@ -45,23 +53,23 @@
             <rich-text nodes="{{questionItem.itemOrder}}. {{questionItem.title}}" />
             <view class="exam-input-contain" wx:for="{{questionItem.items}}" wx:key="{{questionItem.prefix}}" wx:for-item="inputItem" wx:for-index="idx">
               <view class="exam-input-contain-label">{{inputItem.prefix}}</view>
-              <input class="exam-input-contain-content" maxlength="-1" value="{{answer.contentArray[inputItem.prefix-1]}}" />
+              <input class="exam-input-contain-content" maxlength="-1" value="{{answerByOrder[questionItem.itemOrder].contentArray[idx]}}" />
             </view>
           </view>
           <view wx:else>
             <rich-text nodes="{{questionItem.itemOrder}}. {{questionItem.title}}" />
             <view class="exam-textarea-contain">
-              <textarea placeholder="" maxlength="-1">{{answer.answerItems[questionItem.itemOrder-1].content}}</textarea>
+              <textarea placeholder="" maxlength="-1">{{answerByOrder[questionItem.itemOrder].content}}</textarea>
             </view>
           </view>
           <view class="exam-clear">
             <view class="exam-extend-item" style="padding-left:0px">
               结果:
-              <text class="question-answer-right question-answer-result" wx:if="{{answer.answerItems[questionItem.itemOrder-1].doRight==true}}">正确</text>
-              <text class="question-answer-error question-answer-result" wx:elif="{{answer.answerItems[questionItem.itemOrder-1].doRight==false}}">错误</text>
-              <text class="question-answer-judge question-answer-result" wx:elif="{{answer.answerItems[questionItem.itemOrder-1].doRight===null}}">待批改</text>
+              <text class="question-answer-right question-answer-result" wx:if="{{answerByOrder[questionItem.itemOrder].doRight==true}}">正确</text>
+              <text class="question-answer-error question-answer-result" wx:elif="{{answerByOrder[questionItem.itemOrder].doRight==false}}">错误</text>
+              <text class="question-answer-judge question-answer-result" wx:elif="{{answerByOrder[questionItem.itemOrder].doRight===null}}">待批改</text>
             </view>
-            <view class="exam-extend-item">得分: {{answer.answerItems[questionItem.itemOrder-1].score}}</view>
+            <view class="exam-extend-item">得分: {{answerByOrder[questionItem.itemOrder].score}}</view>
             <view class="exam-extend-item">分数: {{questionItem.score}}</view>
             <view class="exam-extend-item" style="padding-left:0px">
               难度:
@@ -77,6 +85,7 @@
             </view>
           </view>
         </i-cell>
+        </block>
       </i-cell-group>
     </i-panel>
 

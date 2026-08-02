@@ -30,6 +30,8 @@ public class ExamPaperEditRequestVM {
 
     private String score;
 
+    private Integer paperItemCount;
+
     public Integer getId() {
         return id;
     }
@@ -101,4 +103,7 @@ public class ExamPaperEditRequestVM {
     public void setScore(String score) {
         this.score = score;
     }
+
+    public Integer getPaperItemCount() { return paperItemCount; }
+    public void setPaperItemCount(Integer paperItemCount) { this.paperItemCount = paperItemCount; }
 }

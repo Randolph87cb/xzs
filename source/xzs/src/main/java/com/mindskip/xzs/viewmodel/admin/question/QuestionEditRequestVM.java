@@ -45,6 +45,16 @@ public class QuestionEditRequestVM {
 
     private Integer importQuestionOrder;
 
+    private Integer questionGroupId;
+
+    private Integer groupItemOrder;
+
+    private Integer questionGroupType;
+
+    private String questionGroupCode;
+
+    private String questionGroupTitle;
+
     private Integer itemOrder;
 
     public Integer getId() {
@@ -174,6 +184,21 @@ public class QuestionEditRequestVM {
     public void setImportQuestionOrder(Integer importQuestionOrder) {
         this.importQuestionOrder = importQuestionOrder;
     }
+
+    public Integer getQuestionGroupId() { return questionGroupId; }
+
+    public void setQuestionGroupId(Integer questionGroupId) { this.questionGroupId = questionGroupId; }
+
+    public Integer getGroupItemOrder() { return groupItemOrder; }
+
+    public void setGroupItemOrder(Integer groupItemOrder) { this.groupItemOrder = groupItemOrder; }
+
+    public Integer getQuestionGroupType() { return questionGroupType; }
+    public void setQuestionGroupType(Integer questionGroupType) { this.questionGroupType = questionGroupType; }
+    public String getQuestionGroupCode() { return questionGroupCode; }
+    public void setQuestionGroupCode(String questionGroupCode) { this.questionGroupCode = questionGroupCode; }
+    public String getQuestionGroupTitle() { return questionGroupTitle; }
+    public void setQuestionGroupTitle(String questionGroupTitle) { this.questionGroupTitle = questionGroupTitle; }
 
     public Integer getItemOrder() {
         return itemOrder;

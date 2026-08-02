@@ -11,6 +11,8 @@ public class QuestionPageRequestVM extends BasePage {
     private Integer subjectId;
     private Integer questionType;
     private String knowledgePoint;
+    /** INDEPENDENT(default), GROUP_CHILD, ALL */
+    private String questionGroupMode;
 
     public Integer getId() {
         return id;
@@ -50,5 +52,13 @@ public class QuestionPageRequestVM extends BasePage {
 
     public void setKnowledgePoint(String knowledgePoint) {
         this.knowledgePoint = knowledgePoint;
+    }
+
+    public String getQuestionGroupMode() {
+        return questionGroupMode == null ? "INDEPENDENT" : questionGroupMode;
+    }
+
+    public void setQuestionGroupMode(String questionGroupMode) {
+        this.questionGroupMode = questionGroupMode;
     }
 }

@@ -7,10 +7,13 @@ import com.mindskip.xzs.domain.TextContent;
 import com.mindskip.xzs.domain.enums.ExamPaperTypeEnum;
 import com.mindskip.xzs.domain.enums.QuestionTypeEnum;
 import com.mindskip.xzs.domain.exam.ExamPaperQuestionItemObject;
+import com.mindskip.xzs.domain.exam.ExamPaperItemObject;
 import com.mindskip.xzs.domain.exam.ExamPaperTitleItemObject;
+import com.mindskip.xzs.domain.exam.QuestionSelectionUnit;
 import com.mindskip.xzs.domain.other.KeyValue;
 import com.mindskip.xzs.repository.ExamPaperMapper;
 import com.mindskip.xzs.repository.QuestionMapper;
+import com.mindskip.xzs.repository.QuestionGroupMapper;
 import com.mindskip.xzs.service.ExamPaperService;
 import com.mindskip.xzs.service.QuestionService;
 import com.mindskip.xzs.service.SmartTrainingConfigService;
@@ -19,11 +22,14 @@ import com.mindskip.xzs.service.TextContentService;
 import com.mindskip.xzs.service.enums.ActionEnum;
 import com.mindskip.xzs.utility.DateTimeUtil;
 import com.mindskip.xzs.utility.JsonUtil;
+import com.mindskip.xzs.utility.ExamPaperFrameUtil;
+import com.mindskip.xzs.utility.QuestionSelectionUnitSelector;
 import com.mindskip.xzs.utility.ModelMapperSingle;
 import com.mindskip.xzs.utility.ExamUtil;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperTitleItemVM;
+import com.mindskip.xzs.viewmodel.admin.exam.ExamPaperItemVM;
 import com.mindskip.xzs.viewmodel.admin.question.QuestionEditRequestVM;
 import com.mindskip.xzs.viewmodel.admin.smarttraining.SmartTrainingRuleVM;
 import com.mindskip.xzs.viewmodel.student.dashboard.PaperFilter;
@@ -47,6 +53,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,9 +76,10 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
     private final SubjectService subjectService;
     private final SmartTrainingConfigService smartTrainingConfigService;
     private final JdbcTemplate jdbcTemplate;
+    private final QuestionGroupMapper questionGroupMapper;
 
     @Autowired
-    public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService, SmartTrainingConfigService smartTrainingConfigService, JdbcTemplate jdbcTemplate) {
+    public ExamPaperServiceImpl(ExamPaperMapper examPaperMapper, QuestionMapper questionMapper, TextContentService textContentService, QuestionService questionService, SubjectService subjectService, SmartTrainingConfigService smartTrainingConfigService, JdbcTemplate jdbcTemplate, QuestionGroupMapper questionGroupMapper) {
         super(examPaperMapper);
         this.examPaperMapper = examPaperMapper;
         this.questionMapper = questionMapper;
@@ -78,6 +88,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         this.subjectService = subjectService;
         this.smartTrainingConfigService = smartTrainingConfigService;
         this.jdbcTemplate = jdbcTemplate;
+        this.questionGroupMapper = questionGroupMapper;
     }
 
 
@@ -106,7 +117,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         ActionEnum actionEnum = (examPaperEditRequestVM.getId() == null) ? ActionEnum.ADD : ActionEnum.UPDATE;
         Date now = new Date();
         List<ExamPaperTitleItemVM> titleItemsVM = examPaperEditRequestVM.getTitleItems();
-        List<ExamPaperTitleItemObject> frameTextContentList = frameTextContentFromVM(titleItemsVM);
+        List<ExamPaperTitleItemObject> frameTextContentList = frameTextContentFromVM(titleItemsVM, examPaperEditRequestVM.getSubjectId());
         String frameTextContentStr = JsonUtil.toJsonStr(frameTextContentList);
 
         ExamPaper examPaper;
@@ -118,7 +129,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             examPaper.setCreateTime(now);
             examPaper.setCreateUser(user.getId());
             examPaper.setDeleted(false);
-            examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
+            examPaperFromVM(examPaperEditRequestVM, examPaper, frameTextContentList);
             examPaperMapper.insertSelective(examPaper);
         } else {
             examPaper = examPaperMapper.selectByPrimaryKey(examPaperEditRequestVM.getId());
@@ -126,7 +137,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             frameTextContent.setContent(frameTextContentStr);
             textContentService.updateByIdFilter(frameTextContent);
             modelMapper.map(examPaperEditRequestVM, examPaper);
-            examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
+            examPaperFromVM(examPaperEditRequestVM, examPaper, frameTextContentList);
             examPaperMapper.updateByPrimaryKeySelective(examPaper);
         }
         return examPaper;
@@ -140,13 +151,14 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             throw new IllegalArgumentException("科目不存在");
         }
 
-        List<Question> questions = selectSmartTrainingQuestions(subjectId);
-        if (questions == null || questions.isEmpty()) {
+        List<QuestionSelectionUnit> selectedUnits = selectSmartTrainingUnits(subjectId, new Random());
+        if (selectedUnits == null || selectedUnits.isEmpty()) {
             throw new IllegalArgumentException("当前科目暂无可用题目");
         }
+        List<Question> questions = selectedUnits.stream().flatMap(unit -> unit.getQuestions().stream()).collect(Collectors.toList());
 
         Date now = new Date();
-        List<ExamPaperTitleItemObject> titleItems = frameTextContentFromQuestions(questions);
+        List<ExamPaperTitleItemObject> titleItems = frameTextContentFromUnits(selectedUnits);
         TextContent frameTextContent = new TextContent(JsonUtil.toJsonStr(titleItems), now);
         textContentService.insertByFilter(frameTextContent);
 
@@ -284,87 +296,172 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         return ids.isEmpty() ? null : ids.get(0);
     }
 
-    private List<Question> selectSmartTrainingQuestions(Integer subjectId) {
+    List<QuestionSelectionUnit> selectSmartTrainingUnits(Integer subjectId, Random random) {
+        List<QuestionSelectionUnit> units = loadSelectionUnits(subjectId);
         SmartTrainingConfig config = smartTrainingConfigService.selectBySubjectId(subjectId);
+        int targetQuestionCount = config == null || config.getQuestionCount() == null
+                ? SMART_TRAINING_QUESTION_LIMIT : config.getQuestionCount();
         if (config == null || config.getRuleJson() == null || config.getRuleJson().length() == 0) {
-            return questionMapper.selectRandomBySubjectId(subjectId, SMART_TRAINING_QUESTION_LIMIT);
+            return selectExactUnits(units, targetQuestionCount, random);
         }
 
         List<SmartTrainingRuleVM> rules = JsonUtil.toJsonListObject(config.getRuleJson(), SmartTrainingRuleVM.class);
         if (rules == null || rules.isEmpty()) {
-            return questionMapper.selectRandomBySubjectId(subjectId, config.getQuestionCount());
+            return selectExactUnits(units, targetQuestionCount, random);
         }
 
-        Integer targetQuestionCount = config.getQuestionCount() == null ? SMART_TRAINING_QUESTION_LIMIT : config.getQuestionCount();
         List<SmartTrainingRuleVM> enabledRules = rules.stream()
                 .filter(rule -> !Boolean.FALSE.equals(rule.getEnabled()))
                 .collect(Collectors.toList());
         if (enabledRules.isEmpty()) {
-            return questionMapper.selectRandomBySubjectId(subjectId, targetQuestionCount);
+            return selectExactUnits(units, targetQuestionCount, random);
         }
-
-        Map<SmartTrainingRuleVM, Integer> availableCounts = new HashMap<>();
-        Map<SmartTrainingRuleVM, Integer> selectedCounts = new HashMap<>();
-        int selectedTotal = 0;
+        Map<SmartTrainingRuleVM, List<QuestionSelectionUnit>> unitsByRule = new HashMap<>();
+        Map<SmartTrainingRuleVM, List<Integer>> optionsByRule = new HashMap<>();
         for (SmartTrainingRuleVM rule : enabledRules) {
             int minCount = smartTrainingMinCount(rule);
             int maxCount = smartTrainingMaxCount(rule);
             if (minCount > maxCount) {
                 throw new IllegalArgumentException("知识点“" + rule.getKnowledgePoint() + "”下限不能大于上限");
             }
-            Integer availableCount = questionMapper.selectCountBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint());
-            int available = availableCount == null ? 0 : availableCount;
-            int boundedMinCount = Math.min(minCount, available);
-            int boundedMaxCount = Math.min(maxCount, available);
-            availableCounts.put(rule, boundedMaxCount);
-            selectedCounts.put(rule, boundedMinCount);
-            selectedTotal += boundedMinCount;
-        }
-
-        if (selectedTotal > targetQuestionCount) {
-            throw new IllegalArgumentException("智能训练知识点下限之和超过总题数");
-        }
-
-        int remainingCount = targetQuestionCount - selectedTotal;
-        Random random = new Random();
-        while (remainingCount > 0) {
-            List<SmartTrainingRuleVM> candidates = enabledRules.stream()
-                    .filter(rule -> selectedCounts.get(rule) < availableCounts.get(rule))
+            List<QuestionSelectionUnit> ruleUnits = units.stream()
+                    .filter(unit -> java.util.Objects.equals(rule.getKnowledgePoint(), unit.getKnowledgePoint()))
                     .collect(Collectors.toList());
-            if (candidates.isEmpty()) {
-                throw new IllegalArgumentException("当前科目可用题目不足，无法生成" + targetQuestionCount + "题智能训练");
+            unitsByRule.put(rule, ruleUnits);
+            Set<Integer> reachable = QuestionSelectionUnitSelector.reachableCounts(ruleUnits, Math.min(maxCount, targetQuestionCount));
+            List<Integer> options = reachable.stream().filter(count -> count >= minCount && count <= maxCount)
+                    .collect(Collectors.toList());
+            Collections.sort(options);
+            if (options.isEmpty()) {
+                throw new IllegalArgumentException("知识点“" + rule.getKnowledgePoint() + "”无法在不拆题组的前提下满足题数范围");
             }
+            optionsByRule.put(rule, options);
+        }
+        Map<SmartTrainingRuleVM, Integer> allocation = new HashMap<>();
+        if (!allocateRuleCounts(enabledRules, optionsByRule, 0, targetQuestionCount, allocation,
+                random, new HashMap<>())) {
+            throw cannotGenerate(targetQuestionCount);
+        }
+        List<QuestionSelectionUnit> selected = new ArrayList<>();
+        for (SmartTrainingRuleVM rule : enabledRules) {
+            List<QuestionSelectionUnit> ruleSelection = QuestionSelectionUnitSelector.selectExact(
+                    unitsByRule.get(rule), allocation.get(rule), random);
+            if (ruleSelection == null) { throw cannotGenerate(targetQuestionCount); }
+            selected.addAll(ruleSelection);
+        }
+        Collections.shuffle(selected, random);
+        return selected;
+    }
 
-            int totalWeight = candidates.stream()
-                    .mapToInt(this::smartTrainingWeight)
+    private List<QuestionSelectionUnit> loadSelectionUnits(Integer subjectId) {
+        List<QuestionSelectionUnit> units = new ArrayList<>();
+        for (Question question : questionMapper.selectActiveIndependentBySubjectId(subjectId)) {
+            units.add(new QuestionSelectionUnit(ExamPaperItemObject.QUESTION, question.getId(), question.getKnowledgePoint(), Arrays.asList(question)));
+        }
+        List<QuestionGroup> groups = questionGroupMapper.selectActiveBySubjectId(subjectId);
+        if (!groups.isEmpty()) {
+            Map<Integer, List<Question>> childrenByGroup = questionMapper.selectByQuestionGroupIds(
+                    groups.stream().map(QuestionGroup::getId).collect(Collectors.toList())).stream()
+                    .collect(Collectors.groupingBy(Question::getQuestionGroupId));
+            for (QuestionGroup group : groups) {
+                List<Question> children = childrenByGroup.get(group.getId());
+                if (children == null || children.isEmpty()) { continue; }
+                if (children.stream().anyMatch(q -> !subjectId.equals(q.getSubjectId()))) {
+                    throw new IllegalStateException("题组与子题科目不一致：" + group.getId());
+                }
+                units.add(new QuestionSelectionUnit(ExamPaperItemObject.QUESTION_GROUP, group.getId(), group.getKnowledgePoint(), children));
+            }
+        }
+        return units;
+    }
+
+    private List<QuestionSelectionUnit> selectExactUnits(List<QuestionSelectionUnit> units, int target, Random random) {
+        List<QuestionSelectionUnit> selected = QuestionSelectionUnitSelector.selectExact(units, target, random);
+        if (selected == null) { throw cannotGenerate(target); }
+        return selected;
+    }
+
+    private boolean allocateRuleCounts(List<SmartTrainingRuleVM> rules,
+                                       Map<SmartTrainingRuleVM, List<Integer>> options,
+                                       int index, int remaining,
+                                       Map<SmartTrainingRuleVM, Integer> allocation,
+                                       Random random,
+                                       Map<String, Double> logMassCache) {
+        if (index == rules.size()) { return remaining == 0; }
+        SmartTrainingRuleVM rule = rules.get(index);
+        List<Integer> candidates = new ArrayList<>();
+        List<Double> candidateLogMasses = new ArrayList<>();
+        for (Integer count : options.get(rule)) {
+            if (count > remaining) { continue; }
+            double suffixLogMass = allocationLogMass(rules, options, index + 1,
+                    remaining - count, logMassCache);
+            if (Double.isInfinite(suffixLogMass) && suffixLogMass < 0) { continue; }
+            int extraCount = Math.max(0, count - smartTrainingMinCount(rule));
+            double candidateLogMass = suffixLogMass
+                    + extraCount * Math.log(smartTrainingWeight(rule));
+            candidates.add(count);
+            candidateLogMasses.add(candidateLogMass);
+        }
+        if (candidates.isEmpty()) { return false; }
+
+        int selectedIndex = candidates.size() - 1;
+        if (candidates.size() > 1) {
+            double maxLogMass = candidateLogMasses.stream().mapToDouble(Double::doubleValue).max().getAsDouble();
+            double totalMass = candidateLogMasses.stream()
+                    .mapToDouble(logMass -> Math.exp(logMass - maxLogMass))
                     .sum();
-            int randomWeight = random.nextInt(Math.max(1, totalWeight));
-            int weightCursor = 0;
-            SmartTrainingRuleVM selectedRule = candidates.get(candidates.size() - 1);
-            for (SmartTrainingRuleVM candidate : candidates) {
-                weightCursor += smartTrainingWeight(candidate);
-                if (randomWeight < weightCursor) {
-                    selectedRule = candidate;
+            double ticket = random.nextDouble() * totalMass;
+            double cumulative = 0D;
+            for (int candidateIndex = 0; candidateIndex < candidates.size(); candidateIndex++) {
+                cumulative += Math.exp(candidateLogMasses.get(candidateIndex) - maxLogMass);
+                if (ticket < cumulative) {
+                    selectedIndex = candidateIndex;
                     break;
                 }
             }
-            selectedCounts.put(selectedRule, selectedCounts.get(selectedRule) + 1);
-            remainingCount--;
         }
 
-        List<Question> questions = new ArrayList<>();
-        for (SmartTrainingRuleVM rule : enabledRules) {
-            Integer selectedCount = selectedCounts.get(rule);
-            if (selectedCount == null || selectedCount <= 0) {
-                continue;
-            }
-            List<Question> selectedQuestions = questionMapper.selectRandomBySubjectIdAndKnowledgePoint(subjectId, rule.getKnowledgePoint(), selectedCount);
-            if (selectedQuestions.size() < selectedCount) {
-                throw new IllegalArgumentException("知识点“" + rule.getKnowledgePoint() + "”可用题目不足，需要" + selectedCount + "题，当前" + selectedQuestions.size() + "题");
-            }
-            questions.addAll(selectedQuestions);
+        Integer selectedCount = candidates.get(selectedIndex);
+        allocation.put(rule, selectedCount);
+        return allocateRuleCounts(rules, options, index + 1, remaining - selectedCount,
+                allocation, random, logMassCache);
+    }
+
+    private double allocationLogMass(List<SmartTrainingRuleVM> rules,
+                                     Map<SmartTrainingRuleVM, List<Integer>> options,
+                                     int index, int remaining,
+                                     Map<String, Double> cache) {
+        if (remaining < 0) { return Double.NEGATIVE_INFINITY; }
+        if (index == rules.size()) { return remaining == 0 ? 0D : Double.NEGATIVE_INFINITY; }
+        String cacheKey = index + ":" + remaining;
+        Double cached = cache.get(cacheKey);
+        if (cached != null) { return cached; }
+
+        SmartTrainingRuleVM rule = rules.get(index);
+        double totalLogMass = Double.NEGATIVE_INFINITY;
+        for (Integer count : options.get(rule)) {
+            if (count > remaining) { continue; }
+            double suffixLogMass = allocationLogMass(rules, options, index + 1,
+                    remaining - count, cache);
+            if (Double.isInfinite(suffixLogMass) && suffixLogMass < 0) { continue; }
+            int extraCount = Math.max(0, count - smartTrainingMinCount(rule));
+            double candidateLogMass = suffixLogMass
+                    + extraCount * Math.log(smartTrainingWeight(rule));
+            totalLogMass = addLogMass(totalLogMass, candidateLogMass);
         }
-        return questions;
+        cache.put(cacheKey, totalLogMass);
+        return totalLogMass;
+    }
+
+    private double addLogMass(double left, double right) {
+        if (Double.isInfinite(left) && left < 0) { return right; }
+        if (Double.isInfinite(right) && right < 0) { return left; }
+        double max = Math.max(left, right);
+        return max + Math.log(Math.exp(left - max) + Math.exp(right - max));
+    }
+
+    private IllegalArgumentException cannotGenerate(int target) {
+        return new IllegalArgumentException("无法在不拆题组的前提下生成" + target + "题智能训练");
     }
 
     private int smartTrainingMinCount(SmartTrainingRuleVM rule) {
@@ -398,29 +495,78 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         vm.setLevel(examPaper.getGradeLevel());
         TextContent frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId());
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtil.toJsonListObject(frameTextContent.getContent(), ExamPaperTitleItemObject.class);
-        List<Integer> questionIds = examPaperTitleItemObjects.stream()
-                .flatMap(t -> t.getQuestionItems().stream()
-                        .map(q -> q.getId()))
+        List<Integer> questionIds = ExamPaperFrameUtil.expandQuestionItems(examPaperTitleItemObjects).stream()
+                .map(q -> q.getId())
                 .collect(Collectors.toList());
         List<Question> questions = questionMapper.selectByIds(questionIds);
         List<ExamPaperTitleItemVM> examPaperTitleItemVMS = examPaperTitleItemObjects.stream().map(t -> {
-            ExamPaperTitleItemVM tTitleVM = modelMapper.map(t, ExamPaperTitleItemVM.class);
-            List<QuestionEditRequestVM> questionItemsVM = t.getQuestionItems().stream().map(i -> {
-                Question question = questions.stream().filter(q -> q.getId().equals(i.getId())).findFirst().get();
-                QuestionEditRequestVM questionEditRequestVM = questionService.getQuestionEditRequestVM(question);
-                questionEditRequestVM.setItemOrder(i.getItemOrder());
-                return questionEditRequestVM;
-            }).collect(Collectors.toList());
+            ExamPaperTitleItemVM tTitleVM = new ExamPaperTitleItemVM();
+            tTitleVM.setName(t.getName());
+            List<QuestionEditRequestVM> questionItemsVM = ExamPaperFrameUtil.expandQuestionItems(t).stream()
+                    .map(i -> questionItemToVM(i, questions)).collect(Collectors.toList());
             tTitleVM.setQuestionItems(questionItemsVM);
+            tTitleVM.setPaperItems(paperItemsToVM(t, questions));
             return tTitleVM;
         }).collect(Collectors.toList());
         vm.setTitleItems(examPaperTitleItemVMS);
+        vm.setPaperItemCount(examPaperTitleItemVMS.stream().mapToInt(t -> t.getPaperItems().size()).sum());
         vm.setScore(ExamUtil.scoreToVM(examPaper.getScore()));
         if (ExamPaperTypeEnum.TimeLimit == ExamPaperTypeEnum.fromCode(examPaper.getPaperType())) {
             List<String> limitDateTime = Arrays.asList(DateTimeUtil.dateFormat(examPaper.getLimitStartTime()), DateTimeUtil.dateFormat(examPaper.getLimitEndTime()));
             vm.setLimitDateTime(limitDateTime);
         }
         return vm;
+    }
+
+    private QuestionEditRequestVM questionItemToVM(ExamPaperQuestionItemObject item, List<Question> questions) {
+        Question question = questions.stream().filter(q -> q.getId().equals(item.getId())).findFirst()
+                .orElseThrow(() -> new IllegalStateException("试卷引用的题目不存在：" + item.getId()));
+        QuestionEditRequestVM vm = questionService.getQuestionEditRequestVM(question);
+        vm.setItemOrder(item.getItemOrder());
+        vm.setGroupItemOrder(item.getGroupItemOrder() == null ? question.getGroupItemOrder() : item.getGroupItemOrder());
+        return vm;
+    }
+
+    private List<ExamPaperItemVM> paperItemsToVM(ExamPaperTitleItemObject title, List<Question> questions) {
+        List<ExamPaperItemObject> frameItems = title.getPaperItems();
+        if (frameItems == null || frameItems.isEmpty()) {
+            frameItems = new ArrayList<>();
+            for (ExamPaperQuestionItemObject questionItem : ExamPaperFrameUtil.expandQuestionItems(title)) {
+                ExamPaperItemObject frameItem = new ExamPaperItemObject();
+                frameItem.setType(ExamPaperItemObject.QUESTION);
+                frameItem.setId(questionItem.getId());
+                frameItem.setItemOrder(questionItem.getItemOrder());
+                frameItems.add(frameItem);
+            }
+        }
+        List<ExamPaperItemVM> result = new ArrayList<>();
+        for (ExamPaperItemObject frameItem : frameItems) {
+            ExamPaperItemVM vm = new ExamPaperItemVM();
+            vm.setType(frameItem.getType());
+            vm.setId(frameItem.getId());
+            vm.setItemOrder(frameItem.getItemOrder());
+            List<ExamPaperQuestionItemObject> questionItems;
+            if (ExamPaperItemObject.QUESTION_GROUP.equals(frameItem.getType())) {
+                QuestionGroup group = questionGroupMapper.selectByPrimaryKey(frameItem.getId());
+                if (group != null) {
+                    vm.setQuestionGroupType(group.getGroupType());
+                    vm.setQuestionGroupCode(group.getGroupCode());
+                    TextContent content = textContentService.selectById(group.getInfoTextContentId());
+                    if (content != null) {
+                        vm.setTitle(JsonUtil.toJsonObject(content.getContent(), com.mindskip.xzs.domain.question.QuestionGroupObject.class).getTitleContent());
+                    }
+                }
+                questionItems = frameItem.getQuestionItems() == null ? new ArrayList<>() : frameItem.getQuestionItems();
+            } else {
+                ExamPaperQuestionItemObject questionItem = new ExamPaperQuestionItemObject();
+                questionItem.setId(frameItem.getId());
+                questionItem.setItemOrder(frameItem.getItemOrder());
+                questionItems = Arrays.asList(questionItem);
+            }
+            vm.setQuestionItems(questionItems.stream().map(q -> questionItemToVM(q, questions)).collect(Collectors.toList()));
+            result.add(vm);
+        }
+        return result;
     }
 
     @Override
@@ -451,14 +597,27 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         }).collect(Collectors.toList());
     }
 
-    private void examPaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM, ExamPaper examPaper, List<ExamPaperTitleItemVM> titleItemsVM) {
+    private void examPaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM, ExamPaper examPaper, List<ExamPaperTitleItemObject> frame) {
         Integer gradeLevel = subjectService.levelBySubjectId(examPaperEditRequestVM.getSubjectId());
-        Integer questionCount = titleItemsVM.stream()
-                .mapToInt(t -> t.getQuestionItems().size()).sum();
-        Integer score = titleItemsVM.stream().
-                flatMapToInt(t -> t.getQuestionItems().stream()
-                        .mapToInt(q -> ExamUtil.scoreFromVM(q.getScore()))
-                ).sum();
+        List<Integer> questionIds = ExamPaperFrameUtil.expandQuestionItems(frame).stream()
+                .map(ExamPaperQuestionItemObject::getId).collect(Collectors.toList());
+        if (questionIds.isEmpty()) {
+            throw new IllegalArgumentException("试卷至少需要一个可作答子题");
+        }
+        if (questionIds.stream().distinct().count() != questionIds.size()) {
+            throw new IllegalArgumentException("试卷不能重复引用同一子题");
+        }
+        List<Question> questions = questionMapper.selectByIds(questionIds);
+        if (questions.size() != questionIds.size()) {
+            throw new IllegalArgumentException("试卷引用了不存在的题目");
+        }
+        for (Question question : questions) {
+            if (!examPaperEditRequestVM.getSubjectId().equals(question.getSubjectId())) {
+                throw new IllegalArgumentException("试卷与题目必须属于同一科目");
+            }
+        }
+        Integer questionCount = questions.size();
+        Integer score = questions.stream().mapToInt(Question::getScore).sum();
         examPaper.setQuestionCount(questionCount);
         examPaper.setScore(score);
         examPaper.setGradeLevel(gradeLevel);
@@ -469,42 +628,134 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         }
     }
 
-    private List<ExamPaperTitleItemObject> frameTextContentFromVM(List<ExamPaperTitleItemVM> titleItems) {
+    private List<ExamPaperTitleItemObject> frameTextContentFromVM(List<ExamPaperTitleItemVM> titleItems, Integer subjectId) {
         AtomicInteger index = new AtomicInteger(1);
         return titleItems.stream().map(t -> {
-            ExamPaperTitleItemObject titleItem = modelMapper.map(t, ExamPaperTitleItemObject.class);
-            List<ExamPaperQuestionItemObject> questionItems = t.getQuestionItems().stream()
-                    .map(q -> {
-                        ExamPaperQuestionItemObject examPaperQuestionItemObject = modelMapper.map(q, ExamPaperQuestionItemObject.class);
-                        examPaperQuestionItemObject.setItemOrder(index.getAndIncrement());
-                        return examPaperQuestionItemObject;
-                    })
-                    .collect(Collectors.toList());
-            titleItem.setQuestionItems(questionItems);
+            ExamPaperTitleItemObject titleItem = new ExamPaperTitleItemObject();
+            titleItem.setName(t.getName());
+            List<ExamPaperItemObject> paperItems = new ArrayList<>();
+            if (t.getPaperItems() != null && !t.getPaperItems().isEmpty()) {
+                for (ExamPaperItemVM itemVM : t.getPaperItems()) {
+                    paperItems.add(frameItemFromVM(itemVM, subjectId, index));
+                }
+            } else if (t.getQuestionItems() != null) {
+                for (QuestionEditRequestVM questionVM : t.getQuestionItems()) {
+                    ExamPaperItemVM itemVM = new ExamPaperItemVM();
+                    itemVM.setType(ExamPaperItemObject.QUESTION);
+                    itemVM.setId(questionVM.getId());
+                    paperItems.add(frameItemFromVM(itemVM, subjectId, index));
+                }
+            }
+            if (paperItems.isEmpty()) {
+                throw new IllegalArgumentException("试卷标题“" + t.getName() + "”至少需要一个题目或题组");
+            }
+            titleItem.setPaperItems(paperItems);
+            titleItem.setQuestionItems(null);
             return titleItem;
         }).collect(Collectors.toList());
+    }
+
+    private ExamPaperItemObject frameItemFromVM(ExamPaperItemVM itemVM, Integer subjectId, AtomicInteger itemOrder) {
+        if (itemVM.getId() == null) {
+            throw new IllegalArgumentException("试卷条目ID不能为空");
+        }
+        ExamPaperItemObject item = new ExamPaperItemObject();
+        item.setId(itemVM.getId());
+        if (ExamPaperItemObject.QUESTION_GROUP.equals(itemVM.getType())) {
+            QuestionGroup group = questionGroupMapper.selectByPrimaryKey(itemVM.getId());
+            if (group == null || Boolean.TRUE.equals(group.getDeleted()) || !Integer.valueOf(1).equals(group.getStatus())) {
+                throw new IllegalArgumentException("题组不存在或未启用：" + itemVM.getId());
+            }
+            if (!subjectId.equals(group.getSubjectId())) {
+                throw new IllegalArgumentException("试卷与题组必须属于同一科目");
+            }
+            List<Question> children = questionMapper.selectByQuestionGroupId(group.getId()).stream()
+                    .filter(q -> !Boolean.TRUE.equals(q.getDeleted()) && Integer.valueOf(1).equals(q.getStatus()))
+                    .collect(Collectors.toList());
+            if (children.isEmpty()) {
+                throw new IllegalArgumentException("有效题组至少需要一个子题：" + itemVM.getId());
+            }
+            List<ExamPaperQuestionItemObject> snapshots = new ArrayList<>();
+            for (Question child : children) {
+                if (!subjectId.equals(child.getSubjectId())) {
+                    throw new IllegalArgumentException("题组与子题必须属于同一科目");
+                }
+                ExamPaperQuestionItemObject snapshot = new ExamPaperQuestionItemObject();
+                snapshot.setId(child.getId());
+                snapshot.setGroupItemOrder(child.getGroupItemOrder());
+                snapshot.setItemOrder(itemOrder.getAndIncrement());
+                snapshots.add(snapshot);
+            }
+            item.setType(ExamPaperItemObject.QUESTION_GROUP);
+            item.setItemOrder(snapshots.get(0).getItemOrder());
+            item.setQuestionItems(snapshots);
+        } else {
+            Question question = questionMapper.selectByPrimaryKey(itemVM.getId());
+            if (question == null || Boolean.TRUE.equals(question.getDeleted()) || !Integer.valueOf(1).equals(question.getStatus())) {
+                throw new IllegalArgumentException("题目不存在或未启用：" + itemVM.getId());
+            }
+            if (question.getQuestionGroupId() != null) {
+                throw new IllegalArgumentException("题组子题不能作为独立题加入试卷：" + itemVM.getId());
+            }
+            if (!subjectId.equals(question.getSubjectId())) {
+                throw new IllegalArgumentException("试卷与题目必须属于同一科目");
+            }
+            item.setType(ExamPaperItemObject.QUESTION);
+            item.setItemOrder(itemOrder.getAndIncrement());
+        }
+        return item;
     }
 
     private List<ExamPaperTitleItemObject> frameTextContentFromQuestions(List<Question> questions) {
         List<ExamPaperTitleItemObject> titleItems = new ArrayList<>();
         AtomicInteger itemOrder = new AtomicInteger(1);
         Arrays.stream(QuestionTypeEnum.values()).forEach(questionType -> {
-            List<ExamPaperQuestionItemObject> questionItems = questions.stream()
+            List<ExamPaperItemObject> paperItems = questions.stream()
                     .filter(q -> q.getQuestionType().equals(questionType.getCode()))
                     .map(q -> {
-                        ExamPaperQuestionItemObject item = new ExamPaperQuestionItemObject();
+                        ExamPaperItemObject item = new ExamPaperItemObject();
+                        item.setType(ExamPaperItemObject.QUESTION);
                         item.setId(q.getId());
                         item.setItemOrder(itemOrder.getAndIncrement());
                         return item;
                     }).collect(Collectors.toList());
-            if (!questionItems.isEmpty()) {
+            if (!paperItems.isEmpty()) {
                 ExamPaperTitleItemObject titleItem = new ExamPaperTitleItemObject();
                 titleItem.setName(questionType.getName());
-                titleItem.setQuestionItems(questionItems);
+                titleItem.setPaperItems(paperItems);
                 titleItems.add(titleItem);
             }
         });
         return titleItems;
+    }
+
+    private List<ExamPaperTitleItemObject> frameTextContentFromUnits(List<QuestionSelectionUnit> units) {
+        ExamPaperTitleItemObject title = new ExamPaperTitleItemObject();
+        title.setName("智能训练");
+        List<ExamPaperItemObject> paperItems = new ArrayList<>();
+        AtomicInteger itemOrder = new AtomicInteger(1);
+        for (QuestionSelectionUnit unit : units) {
+            ExamPaperItemObject item = new ExamPaperItemObject();
+            item.setType(unit.getType());
+            item.setId(unit.getId());
+            if (ExamPaperItemObject.QUESTION_GROUP.equals(unit.getType())) {
+                List<ExamPaperQuestionItemObject> snapshots = new ArrayList<>();
+                for (Question question : unit.getQuestions()) {
+                    ExamPaperQuestionItemObject snapshot = new ExamPaperQuestionItemObject();
+                    snapshot.setId(question.getId());
+                    snapshot.setGroupItemOrder(question.getGroupItemOrder());
+                    snapshot.setItemOrder(itemOrder.getAndIncrement());
+                    snapshots.add(snapshot);
+                }
+                item.setItemOrder(snapshots.get(0).getItemOrder());
+                item.setQuestionItems(snapshots);
+            } else {
+                item.setItemOrder(itemOrder.getAndIncrement());
+            }
+            paperItems.add(item);
+        }
+        title.setPaperItems(paperItems);
+        return Arrays.asList(title);
     }
 
     private static class ImportedGespQuestion {

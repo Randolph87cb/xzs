@@ -17,6 +17,18 @@ public interface QuestionMapper extends BaseMapper<Question> {
 
     List<Question> selectByIds(@Param("ids") List<Integer> ids);
 
+    List<Question> selectByQuestionGroupId(@Param("questionGroupId") Integer questionGroupId);
+
+    List<Question> selectByQuestionGroupIds(@Param("questionGroupIds") List<Integer> questionGroupIds);
+
+    List<Question> selectActiveIndependentBySubjectId(@Param("subjectId") Integer subjectId);
+
+    int clearQuestionGroupAssignments(@Param("questionGroupId") Integer questionGroupId);
+
+    int updateQuestionGroupAssignment(@Param("id") Integer id,
+                                      @Param("questionGroupId") Integer questionGroupId,
+                                      @Param("groupItemOrder") Integer groupItemOrder);
+
     List<QuestionTitleContentVM> selectTitleContentByQuestionIds(@Param("questionIds") List<Integer> questionIds);
 
     List<Question> selectRandomBySubjectId(@Param("subjectId") Integer subjectId, @Param("limit") Integer limit);

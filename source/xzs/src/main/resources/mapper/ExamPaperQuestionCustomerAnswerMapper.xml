@@ -53,6 +53,8 @@
     <result column="import_batch" jdbcType="VARCHAR" property="importBatch" />
     <result column="import_source" jdbcType="VARCHAR" property="importSource" />
     <result column="import_question_order" jdbcType="INTEGER" property="importQuestionOrder" />
+    <result column="question_group_id" jdbcType="INTEGER" property="questionGroupId" />
+    <result column="group_item_order" jdbcType="INTEGER" property="groupItemOrder" />
     <result column="correct" jdbcType="VARCHAR" property="correct" />
     <result column="info_text_content_id" jdbcType="INTEGER" property="infoTextContentId" />
     <result column="create_user" jdbcType="INTEGER" property="createUser" />
@@ -328,6 +330,8 @@
       question.import_batch as workspace_question_import_batch,
       question.import_source as workspace_question_import_source,
       question.import_question_order as workspace_question_import_question_order,
+      question.question_group_id as workspace_question_question_group_id,
+      question.group_item_order as workspace_question_group_item_order,
       question.correct as workspace_question_correct,
       question.info_text_content_id as workspace_question_info_text_content_id,
       question.create_user as workspace_question_create_user,

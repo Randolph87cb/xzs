@@ -18,6 +18,9 @@ public class ExamPaperTitleItemVM {
     @Valid
     private List<QuestionEditRequestVM> questionItems;
 
+    @Valid
+    private List<ExamPaperItemVM> paperItems;
+
     public String getName() {
         return name;
     }
@@ -33,4 +36,7 @@ public class ExamPaperTitleItemVM {
     public void setQuestionItems(List<QuestionEditRequestVM> questionItems) {
         this.questionItems = questionItems;
     }
+
+    public List<ExamPaperItemVM> getPaperItems() { return paperItems; }
+    public void setPaperItems(List<ExamPaperItemVM> paperItems) { this.paperItems = paperItems; }
 }

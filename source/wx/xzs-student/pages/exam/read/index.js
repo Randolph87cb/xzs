@@ -1,6 +1,10 @@
 import {
   formatSeconds,
 } from '../../../utils/util.js'
+import {
+  mapAnswerItemsByOrder,
+  normalizeExamPaper
+} from '../../../utils/exam-paper.js'
 
 let app = getApp()
 Page({
@@ -9,6 +13,7 @@ Page({
     paperId: null,
     paper: {},
     answer: {},
+    answerByOrder: [],
     timer: null,
     doTime: 0,
     remainTime: 0,
@@ -30,8 +35,9 @@ Page({
         });
         if (res.code === 1) {
           _this.setData({
-            paper: res.response.paper,
+            paper: normalizeExamPaper(res.response.paper),
             answer: res.response.answer,
+            answerByOrder: mapAnswerItemsByOrder(res.response.answer.answerItems),
             paperId: paperId,
           });
         }

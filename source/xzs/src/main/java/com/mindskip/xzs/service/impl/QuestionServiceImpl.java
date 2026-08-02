@@ -8,6 +8,7 @@ import com.mindskip.xzs.domain.enums.QuestionTypeEnum;
 import com.mindskip.xzs.domain.question.QuestionItemObject;
 import com.mindskip.xzs.domain.question.QuestionObject;
 import com.mindskip.xzs.repository.QuestionMapper;
+import com.mindskip.xzs.repository.QuestionGroupMapper;
 import com.mindskip.xzs.service.QuestionService;
 import com.mindskip.xzs.service.SubjectService;
 import com.mindskip.xzs.service.TextContentService;
@@ -42,14 +43,16 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
     private final TextContentService textContentService;
     private final SubjectService subjectService;
     private final JdbcTemplate jdbcTemplate;
+    private final QuestionGroupMapper questionGroupMapper;
 
     @Autowired
-    public QuestionServiceImpl(QuestionMapper questionMapper, TextContentService textContentService, SubjectService subjectService, JdbcTemplate jdbcTemplate) {
+    public QuestionServiceImpl(QuestionMapper questionMapper, TextContentService textContentService, SubjectService subjectService, JdbcTemplate jdbcTemplate, QuestionGroupMapper questionGroupMapper) {
         super(questionMapper);
         this.textContentService = textContentService;
         this.questionMapper = questionMapper;
         this.subjectService = subjectService;
         this.jdbcTemplate = jdbcTemplate;
+        this.questionGroupMapper = questionGroupMapper;
     }
 
     @Override
@@ -75,6 +78,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         Question question = new Question();
         question.setSubjectId(model.getSubjectId());
         question.setGradeLevel(gradeLevel);
+        question.setQuestionType(model.getQuestionType());
         question.setCreateTime(now);
         question.setQuestionType(model.getQuestionType());
         question.setStatus(QuestionStatusEnum.OK.getCode());
@@ -96,8 +100,31 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
     @Override
     @Transactional
     public Question updateFullQuestion(QuestionEditRequestVM model) {
-        Integer gradeLevel = subjectService.levelBySubjectId(model.getSubjectId());
         Question question = questionMapper.selectByPrimaryKey(model.getId());
+        if (question == null || Boolean.TRUE.equals(question.getDeleted())) {
+            throw new IllegalArgumentException("题目不存在或已删除");
+        }
+        if (question.getQuestionGroupId() != null) {
+            throw new IllegalArgumentException("题组子题请在题组中编辑");
+        }
+        return updateFullQuestion(model, question);
+    }
+
+    @Override
+    @Transactional
+    public Question updateFullQuestionFromGroup(QuestionEditRequestVM model, Integer questionGroupId) {
+        Question question = questionMapper.selectByPrimaryKey(model.getId());
+        if (question == null || Boolean.TRUE.equals(question.getDeleted())) {
+            throw new IllegalArgumentException("子题不存在或已删除：" + model.getId());
+        }
+        if (question.getQuestionGroupId() != null && !question.getQuestionGroupId().equals(questionGroupId)) {
+            throw new IllegalArgumentException("子题已属于其它题组：" + model.getId());
+        }
+        return updateFullQuestion(model, question);
+    }
+
+    private Question updateFullQuestion(QuestionEditRequestVM model, Question question) {
+        Integer gradeLevel = subjectService.levelBySubjectId(model.getSubjectId());
         question.setSubjectId(model.getSubjectId());
         question.setGradeLevel(gradeLevel);
         question.setScore(ExamUtil.scoreFromVM(model.getScore()));
@@ -171,7 +198,27 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
             return questionEditItemVM;
         }).collect(Collectors.toList());
         questionEditRequestVM.setItems(editItems);
+        fillQuestionGroupContext(questionEditRequestVM, question);
         return questionEditRequestVM;
+    }
+
+    private void fillQuestionGroupContext(QuestionEditRequestVM vm, Question question) {
+        if (question.getQuestionGroupId() == null) {
+            return;
+        }
+        com.mindskip.xzs.domain.QuestionGroup group = questionGroupMapper.selectByPrimaryKey(question.getQuestionGroupId());
+        if (group == null) {
+            return;
+        }
+        vm.setQuestionGroupId(group.getId());
+        vm.setGroupItemOrder(question.getGroupItemOrder());
+        vm.setQuestionGroupType(group.getGroupType());
+        vm.setQuestionGroupCode(group.getGroupCode());
+        TextContent groupContent = textContentService.selectById(group.getInfoTextContentId());
+        if (groupContent != null) {
+            com.mindskip.xzs.domain.question.QuestionGroupObject object = JsonUtil.toJsonObject(groupContent.getContent(), com.mindskip.xzs.domain.question.QuestionGroupObject.class);
+            vm.setQuestionGroupTitle(object.getTitleContent());
+        }
     }
 
     @Override

@@ -17,6 +17,8 @@ public interface QuestionService extends BaseService<Question> {
 
     Question updateFullQuestion(QuestionEditRequestVM model);
 
+    Question updateFullQuestionFromGroup(QuestionEditRequestVM model, Integer questionGroupId);
+
     QuestionEditRequestVM getQuestionEditRequestVM(Integer questionId);
 
     QuestionEditRequestVM getQuestionEditRequestVM(Question question);

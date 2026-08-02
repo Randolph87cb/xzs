@@ -29,6 +29,7 @@ frontend/apps/admin/
 - `views/education`：学科列表、新增、编辑和删除。
 - `views/question/QuestionListView.vue`：题目列表、预览和删除。
 - `views/question/QuestionEditView.vue`：题目编辑和 UEditor 富文本闭环。
+- `views/question/QuestionGroupListView.vue`、`QuestionGroupEditView.vue`：程序阅读/程序填空题组列表，共享题面与有序子题的一体化编辑。
 - `views/paper`：试卷列表、创建和编辑。
 - `views/task`：任务列表、创建和编辑。
 - `views/smartTraining`：智能训练配置。

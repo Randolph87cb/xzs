@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindskip.xzs.repository.QuestionGroupMapper">
+  <resultMap id="BaseResultMap" type="com.mindskip.xzs.domain.QuestionGroup">
+    <id column="id" property="id"/>
+    <result column="group_type" property="groupType"/>
+    <result column="subject_id" property="subjectId"/>
+    <result column="grade_level" property="gradeLevel"/>
+    <result column="difficult" property="difficult"/>
+    <result column="knowledge_point" property="knowledgePoint"/>
+    <result column="info_text_content_id" property="infoTextContentId"/>
+    <result column="group_code" property="groupCode"/>
+    <result column="import_batch" property="importBatch"/>
+    <result column="import_source" property="importSource"/>
+    <result column="import_parent_order" property="importParentOrder"/>
+    <result column="create_user" property="createUser"/>
+    <result column="status" property="status"/>
+    <result column="create_time" property="createTime"/>
+    <result column="deleted" property="deleted"/>
+  </resultMap>
+  <sql id="BaseColumns">
+    id, group_type, subject_id, grade_level, difficult, knowledge_point, info_text_content_id,
+    group_code, import_batch, import_source, import_parent_order, create_user, status, create_time, deleted
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    SELECT <include refid="BaseColumns"/> FROM t_question_group WHERE id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey">DELETE FROM t_question_group WHERE id = #{id}</delete>
+  <insert id="insert" parameterType="com.mindskip.xzs.domain.QuestionGroup" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO t_question_group (<include refid="BaseColumns"/>) VALUES
+    (#{id}, #{groupType}, #{subjectId}, #{gradeLevel}, #{difficult}, #{knowledgePoint}, #{infoTextContentId},
+     #{groupCode}, #{importBatch}, #{importSource}, #{importParentOrder}, #{createUser}, #{status}, #{createTime}, #{deleted})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mindskip.xzs.domain.QuestionGroup" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO t_question_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">id,</if><if test="groupType != null">group_type,</if>
+      <if test="subjectId != null">subject_id,</if><if test="gradeLevel != null">grade_level,</if>
+      <if test="difficult != null">difficult,</if><if test="knowledgePoint != null">knowledge_point,</if>
+      <if test="infoTextContentId != null">info_text_content_id,</if><if test="groupCode != null">group_code,</if>
+      <if test="importBatch != null">import_batch,</if><if test="importSource != null">import_source,</if>
+      <if test="importParentOrder != null">import_parent_order,</if><if test="createUser != null">create_user,</if>
+      <if test="status != null">status,</if><if test="createTime != null">create_time,</if>
+      <if test="deleted != null">deleted,</if>
+    </trim>
+    <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+      <if test="id != null">#{id},</if><if test="groupType != null">#{groupType},</if>
+      <if test="subjectId != null">#{subjectId},</if><if test="gradeLevel != null">#{gradeLevel},</if>
+      <if test="difficult != null">#{difficult},</if><if test="knowledgePoint != null">#{knowledgePoint},</if>
+      <if test="infoTextContentId != null">#{infoTextContentId},</if><if test="groupCode != null">#{groupCode},</if>
+      <if test="importBatch != null">#{importBatch},</if><if test="importSource != null">#{importSource},</if>
+      <if test="importParentOrder != null">#{importParentOrder},</if><if test="createUser != null">#{createUser},</if>
+      <if test="status != null">#{status},</if><if test="createTime != null">#{createTime},</if>
+      <if test="deleted != null">#{deleted},</if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mindskip.xzs.domain.QuestionGroup">
+    UPDATE t_question_group <set>
+      <if test="groupType != null">group_type=#{groupType},</if><if test="subjectId != null">subject_id=#{subjectId},</if>
+      <if test="gradeLevel != null">grade_level=#{gradeLevel},</if><if test="difficult != null">difficult=#{difficult},</if>
+      <if test="knowledgePoint != null">knowledge_point=#{knowledgePoint},</if>
+      <if test="infoTextContentId != null">info_text_content_id=#{infoTextContentId},</if>
+      <if test="groupCode != null">group_code=#{groupCode},</if><if test="importBatch != null">import_batch=#{importBatch},</if>
+      <if test="importSource != null">import_source=#{importSource},</if>
+      <if test="importParentOrder != null">import_parent_order=#{importParentOrder},</if>
+      <if test="createUser != null">create_user=#{createUser},</if><if test="status != null">status=#{status},</if>
+      <if test="createTime != null">create_time=#{createTime},</if><if test="deleted != null">deleted=#{deleted},</if>
+    </set> WHERE id=#{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mindskip.xzs.domain.QuestionGroup">
+    UPDATE t_question_group SET group_type=#{groupType}, subject_id=#{subjectId}, grade_level=#{gradeLevel},
+      difficult=#{difficult}, knowledge_point=#{knowledgePoint}, info_text_content_id=#{infoTextContentId},
+      group_code=#{groupCode}, import_batch=#{importBatch}, import_source=#{importSource},
+      import_parent_order=#{importParentOrder}, create_user=#{createUser}, status=#{status},
+      create_time=#{createTime}, deleted=#{deleted} WHERE id=#{id}
+  </update>
+
+  <select id="page" resultMap="BaseResultMap">
+    SELECT <include refid="BaseColumns"/> FROM t_question_group
+    <where>
+      deleted=false
+      <if test="id != null">AND id=#{id}</if><if test="subjectId != null">AND subject_id=#{subjectId}</if>
+      <if test="groupType != null">AND group_type=#{groupType}</if>
+      <if test="knowledgePoint != null and knowledgePoint != ''">AND knowledge_point=#{knowledgePoint}</if>
+      <if test="status != null">AND status=#{status}</if>
+    </where>
+  </select>
+  <select id="selectActiveBySubjectId" resultMap="BaseResultMap">
+    SELECT <include refid="BaseColumns"/> FROM t_question_group
+    WHERE deleted=false AND status=1 AND subject_id=#{subjectId} ORDER BY id
+  </select>
+  <select id="selectByIds" resultMap="BaseResultMap">
+    SELECT <include refid="BaseColumns"/> FROM t_question_group WHERE id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </select>
+</mapper>

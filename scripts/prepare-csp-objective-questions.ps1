@@ -212,6 +212,152 @@ function Test-CspBlockHasAnswer {
     return $false
 }
 
+function Split-CspCompositeStem {
+    param(
+        [string]$Stem,
+        [int]$SubQuestionNo
+    )
+
+    $normalized = $Stem.Replace("`r`n", "`n").Replace("`r", "`n")
+    $pattern = "(?s)^(.*)`n\s*子题\s*" + [regex]::Escape([string]$SubQuestionNo) + "(?:\s*[:：]\s*(.*?))?\s*$"
+    $match = [regex]::Match($normalized, $pattern)
+    if (-not $match.Success) {
+        throw "无法按稳定 subQuestionNo=$SubQuestionNo 拆分复合题题面"
+    }
+    $common = $match.Groups[1].Value.Trim()
+    $child = $match.Groups[2].Value.Trim()
+    $lines = $common -split "`n"
+    $questionListStart = -1
+    $inFence = $false
+    $seenFence = $false
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        $trimmed = $lines[$i].Trim()
+        if ($trimmed.StartsWith('```')) {
+            $inFence = -not $inFence
+            $seenFence = $true
+            continue
+        }
+        if ($seenFence -and -not $inFence -and (
+            $trimmed -match '^#{0,6}\s*\**\s*[-•]?\s*(判断题|选择题|单选题)\s*[:：]?\s*\**$' -or
+            $trimmed -match '^(?:\d+\s*[\.\)）]\s*)?[①②③④⑤⑥⑦⑧⑨⑩](?:\s*[~～\-至]\s*[①②③④⑤⑥⑦⑧⑨⑩])?\s*处应填'
+        )) {
+            $questionListStart = $i
+            $common = (($lines[0..($i - 1)]) -join "`n").Trim()
+            break
+        }
+    }
+    if ($questionListStart -ge 0) {
+        $circled = @('①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩')[$SubQuestionNo - 1]
+        $derivedChild = $null
+        $questionCandidates = New-Object System.Collections.Generic.List[string]
+        for ($i = $questionListStart; $i -lt $lines.Count; $i++) {
+            $trimmed = $lines[$i].Trim()
+            $numbered = [regex]::Match($trimmed, '^\d+\s*[\.\)）]\s*(.+)$')
+            $filled = [regex]::Match($trimmed, '^' + [regex]::Escape($circled) + '\s*处应填\s*(.*)$')
+            if ($numbered.Success) { $questionCandidates.Add($numbered.Groups[1].Value.Trim()); continue }
+            if ($filled.Success) {
+                $suffix = $filled.Groups[1].Value.Trim()
+                $derivedChild = $circled + '处应填' + $suffix
+                break
+            }
+            if ($trimmed -match '^[①②③④⑤⑥⑦⑧⑨⑩]\s*[~～\-至]\s*[①②③④⑤⑥⑦⑧⑨⑩]\s*处应填') {
+                $derivedChild = $circled + '处应填'
+                break
+            }
+        }
+        if ($questionCandidates.Count -ge $SubQuestionNo) {
+            $derivedChild = $questionCandidates[$SubQuestionNo - 1]
+        }
+        if (-not [string]::IsNullOrWhiteSpace($derivedChild)) { $child = $derivedChild }
+    }
+    $child = $child -replace '[（(]\s*[）)]\s*$', ''
+    if ([string]::IsNullOrWhiteSpace($common) -or [string]::IsNullOrWhiteSpace($child)) {
+        throw "复合题拆分后共享题面或子题题干为空 (subQuestionNo=$SubQuestionNo)"
+    }
+    return [pscustomobject]@{ SharedTitle = $common; ChildTitle = $child }
+}
+
+function Get-CspCompositeManifest {
+    param(
+        [System.Collections.IEnumerable]$Questions,
+        [string]$ImportBatch
+    )
+
+    $allQuestions = @($Questions)
+    $issues = New-Object System.Collections.Generic.List[string]
+    $groups = New-Object System.Collections.Generic.List[object]
+    $paperSets = $allQuestions | Group-Object import_source | Sort-Object Name
+    if ($paperSets.Count -ne 14) { $issues.Add("预期 14 套 CSP 试卷，实际 $($paperSets.Count)") }
+    foreach ($paperSet in $paperSets) {
+        $compositeGroups = @($paperSet.Group | Group-Object parentProblemNo | Where-Object { $_.Count -gt 1 } |
+            Sort-Object { ($_.Group | Measure-Object questionNo -Minimum).Minimum })
+        if ($compositeGroups.Count -ne 5) {
+            $issues.Add("$($paperSet.Name): 预期 5 个复合题，实际 $($compositeGroups.Count)")
+            continue
+        }
+        for ($groupIndex = 0; $groupIndex -lt $compositeGroups.Count; $groupIndex++) {
+            $sourceGroup = $compositeGroups[$groupIndex]
+            $children = @($sourceGroup.Group | Sort-Object subQuestionNo)
+            if ($children.Count -lt 4 -or $children.Count -gt 7) {
+                $issues.Add("$($paperSet.Name)/parent=$($sourceGroup.Name): 子题数应为 4-7，实际 $($children.Count)")
+                continue
+            }
+            $orders = @($children | ForEach-Object { [int]$_.subQuestionNo })
+            $expectedOrders = @(1..$children.Count)
+            if (($orders -join ',') -ne ($expectedOrders -join ',')) {
+                $issues.Add("$($paperSet.Name)/parent=$($sourceGroup.Name): subQuestionNo 不连续")
+                continue
+            }
+            $splitChildren = New-Object System.Collections.Generic.List[object]
+            $sharedTitles = New-Object System.Collections.Generic.List[string]
+            foreach ($child in $children) {
+                try {
+                    $split = Split-CspCompositeStem -Stem ([string]$child.stemMarkdown) -SubQuestionNo ([int]$child.subQuestionNo)
+                    $sharedTitles.Add($split.SharedTitle)
+                    $splitChildren.Add([ordered]@{
+                        questionNo = [int]$child.questionNo
+                        subQuestionNo = [int]$child.subQuestionNo
+                        questionCode = [string]$child.question_code
+                        childTitle = $split.ChildTitle
+                    })
+                } catch {
+                    $issues.Add("$($paperSet.Name)/parent=$($sourceGroup.Name): $($_.Exception.Message)")
+                }
+            }
+            if (@($sharedTitles | Select-Object -Unique).Count -ne 1) {
+                $issues.Add("$($paperSet.Name)/parent=$($sourceGroup.Name): 子题提取出的共享题面不一致")
+                continue
+            }
+            $first = $children[0]
+            $groupType = if ($groupIndex -lt 3) { 1 } else { 2 }
+            $groupCode = "CSP-{0}-{1}1-G{2:000}" -f $first.year, $first.group, [int]$first.parentProblemNo
+            $groups.Add([ordered]@{
+                groupCode = $groupCode
+                groupType = $groupType
+                importBatch = $ImportBatch
+                importSource = [string]$first.import_source
+                parentProblemNo = [int]$first.parentProblemNo
+                subjectId = $(if ($first.group -eq 'J') { 9 } else { 10 })
+                sharedTitle = $sharedTitles[0]
+                children = @($splitChildren.ToArray())
+            })
+        }
+    }
+    return [pscustomobject]@{
+        questionCount = $allQuestions.Count
+        groupCount = $groups.Count
+        groupedQuestionCount = (@($groups | ForEach-Object { $_.children.Count }) | Measure-Object -Sum).Sum
+        independentQuestionCount = $allQuestions.Count - ((@($groups | ForEach-Object { $_.children.Count }) | Measure-Object -Sum).Sum)
+        programReadingGroupCount = @($groups | Where-Object { $_.groupType -eq 1 }).Count
+        programCompletionGroupCount = @($groups | Where-Object { $_.groupType -eq 2 }).Count
+        paperSetCount = $paperSets.Count
+        minGroupChildCount = (@($groups | ForEach-Object { $_.children.Count }) | Measure-Object -Minimum).Minimum
+        maxGroupChildCount = (@($groups | ForEach-Object { $_.children.Count }) | Measure-Object -Maximum).Maximum
+        groups = @($groups.ToArray())
+        issues = @($issues.ToArray())
+    }
+}
+
 function Get-CspQualityReport {
     param([string]$RootPath)
 
@@ -224,6 +370,7 @@ function Get-CspQualityReport {
         throw "CSP raw/all.json not found: $rawAllPath"
     }
     $rawAll = Get-Content -LiteralPath $rawAllPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $composite = Get-CspCompositeManifest -Questions $rawAll.questions -ImportBatch $rawAll.import_batch
 
     $sourcePattern = "来源：洛谷有题|洛谷题目ID|试卷：|URL：https://ti\.luogu\.com\.cn"
     $sourceHits = @($markdownFiles | Select-String -Pattern $sourcePattern)
@@ -261,6 +408,16 @@ function Get-CspQualityReport {
         missingImportMetadataCount = $missingMetadata.Count
         missingAnalysisCount = $missingAnalysis.Count
         importableQuestionCount = $questions.Count - $missingAnalysis.Count
+        compositeGroupCount = $composite.groupCount
+        groupedQuestionCount = $composite.groupedQuestionCount
+        independentQuestionCount = $composite.independentQuestionCount
+        programReadingGroupCount = $composite.programReadingGroupCount
+        programCompletionGroupCount = $composite.programCompletionGroupCount
+        compositePaperSetCount = $composite.paperSetCount
+        minGroupChildCount = $composite.minGroupChildCount
+        maxGroupChildCount = $composite.maxGroupChildCount
+        compositeIssueCount = $composite.issues.Count
+        compositeIssues = $composite.issues
         typeCounts = @($typeCounts)
         sourceDisplayHitSamples = @($sourceHits | Select-Object -First 5 Path, LineNumber, Line)
         missingAnswerSamples = @($answerMissing | Select-Object -First 5)
@@ -298,6 +455,15 @@ if ($QualityCheck -or -not $NormalizeFromRaw) {
     Write-Output "Missing import metadata: $($report.missingImportMetadataCount)"
     Write-Output "Missing analysis: $($report.missingAnalysisCount)"
     Write-Output "Importable questions without pending analysis: $($report.importableQuestionCount)"
+    Write-Output "Composite groups: $($report.compositeGroupCount)"
+    Write-Output "Grouped/independent questions: $($report.groupedQuestionCount)/$($report.independentQuestionCount)"
+    Write-Output "Program reading/completion groups: $($report.programReadingGroupCount)/$($report.programCompletionGroupCount)"
+    Write-Output "Composite paper sets/groups per set: $($report.compositePaperSetCount)/5"
+    Write-Output "Composite group child count range: $($report.minGroupChildCount)-$($report.maxGroupChildCount)"
+    Write-Output "Composite split issues: $($report.compositeIssueCount)"
+    if ($report.compositeIssueCount -gt 0) {
+        $report.compositeIssues | Select-Object -First 10 | ForEach-Object { Write-Output "- $_" }
+    }
     if ($report.sourceDisplayHitCount -gt 0) {
         Write-Output "Source display hit samples:"
         $report.sourceDisplayHitSamples | ForEach-Object { Write-Output "- $($_.Path):$($_.LineNumber): $($_.Line)" }
@@ -311,7 +477,8 @@ if ($QualityCheck -or -not $NormalizeFromRaw) {
         $report.missingMarkdownAnswerCount -gt 0 -or
         $report.missingRawAnswerCount -gt 0 -or
         $report.missingImportMetadataCount -gt 0 -or
-        $report.missingAnalysisCount -gt 0
+        $report.missingAnalysisCount -gt 0 -or
+        $report.compositeIssueCount -gt 0
     )) {
         exit 1
     }

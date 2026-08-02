@@ -65,6 +65,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for t_question_group_id_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."t_question_group_id_seq";
+CREATE SEQUENCE "public"."t_question_group_id_seq"
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for t_smart_training_config_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."t_smart_training_config_id_seq";
@@ -301,6 +312,27 @@ CREATE TABLE "public"."t_message_user" (
 -- ----------------------------
 -- Table structure for t_question
 -- ----------------------------
+DROP TABLE IF EXISTS "public"."t_question_group";
+CREATE TABLE "public"."t_question_group" (
+  "id" int4 NOT NULL DEFAULT nextval('t_question_group_id_seq'::regclass),
+  "group_type" int4 NOT NULL,
+  "subject_id" int4 NOT NULL,
+  "grade_level" int4,
+  "difficult" int4,
+  "knowledge_point" varchar(255) COLLATE "pg_catalog"."default",
+  "info_text_content_id" int4 NOT NULL,
+  "group_code" varchar(255) COLLATE "pg_catalog"."default",
+  "import_batch" varchar(255) COLLATE "pg_catalog"."default",
+  "import_source" varchar(500) COLLATE "pg_catalog"."default",
+  "import_parent_order" int4,
+  "create_user" int4,
+  "status" int4 NOT NULL DEFAULT 1,
+  "create_time" timestamp(6),
+  "deleted" bool NOT NULL DEFAULT false,
+  CONSTRAINT "ck_question_group_type" CHECK (group_type IN (1, 2))
+)
+;
+
 DROP TABLE IF EXISTS "public"."t_question";
 CREATE TABLE "public"."t_question" (
   "id" int4 NOT NULL DEFAULT nextval('t_question_id_seq'::regclass),
@@ -314,12 +346,18 @@ CREATE TABLE "public"."t_question" (
   "import_batch" varchar(255) COLLATE "pg_catalog"."default",
   "import_source" varchar(500) COLLATE "pg_catalog"."default",
   "import_question_order" int4,
+  "question_group_id" int4,
+  "group_item_order" int4,
   "correct" text COLLATE "pg_catalog"."default",
   "info_text_content_id" int4,
   "create_user" int4,
   "status" int4,
   "create_time" timestamp(6),
-  "deleted" bool
+  "deleted" bool,
+  CONSTRAINT "ck_question_group_assignment" CHECK (
+    (question_group_id IS NULL AND group_item_order IS NULL)
+    OR (question_group_id IS NOT NULL AND group_item_order IS NOT NULL AND group_item_order > 0)
+  )
 )
 ;
 
@@ -721,9 +759,23 @@ ALTER TABLE "public"."t_message_user" ADD CONSTRAINT "t_message_user_pkey" PRIMA
 -- ----------------------------
 -- Primary Key structure for table t_question
 -- ----------------------------
+ALTER TABLE "public"."t_question_group" ADD CONSTRAINT "t_question_group_pkey" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "uk_question_group_import_parent"
+  ON "public"."t_question_group" ("import_batch", "import_source", "import_parent_order")
+  WHERE deleted = false AND import_batch IS NOT NULL AND import_source IS NOT NULL AND import_parent_order IS NOT NULL;
+CREATE INDEX "idx_question_group_subject_type_status"
+  ON "public"."t_question_group" ("subject_id", "group_type", "status", "deleted");
+CREATE INDEX "idx_question_group_knowledge_status"
+  ON "public"."t_question_group" ("knowledge_point", "status", "deleted");
+
 ALTER TABLE "public"."t_question" ADD CONSTRAINT "t_question_pkey" PRIMARY KEY ("id");
 CREATE UNIQUE INDEX "uk_question_import_source_order"
   ON "public"."t_question" ("import_batch", "import_source", "import_question_order");
+CREATE UNIQUE INDEX "uk_question_group_item_order"
+  ON "public"."t_question" ("question_group_id", "group_item_order")
+  WHERE deleted = false AND question_group_id IS NOT NULL;
+CREATE INDEX "idx_question_question_group"
+  ON "public"."t_question" ("question_group_id", "status", "deleted", "group_item_order");
 
 -- ----------------------------
 -- Primary Key structure for table t_smart_training_config

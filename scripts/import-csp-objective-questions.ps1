@@ -63,6 +63,90 @@ function Split-QuestionBlocks {
     return $blocks
 }
 
+function Split-CspCompositeStem {
+    param([string]$Stem, [int]$SubQuestionNo)
+
+    $normalized = $Stem.Replace("`r`n", "`n").Replace("`r", "`n")
+    $pattern = "(?s)^(.*)`n\s*子题\s*" + [regex]::Escape([string]$SubQuestionNo) + "(?:\s*[:：]\s*(.*?))?\s*$"
+    $match = [regex]::Match($normalized, $pattern)
+    if (-not $match.Success) { throw "无法按稳定 subQuestionNo=$SubQuestionNo 拆分复合题题面" }
+    $common = $match.Groups[1].Value.Trim()
+    $child = $match.Groups[2].Value.Trim()
+    $lines = $common -split "`n"
+    $questionListStart = -1
+    $inFence = $false
+    $seenFence = $false
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        $trimmed = $lines[$i].Trim()
+        if ($trimmed.StartsWith('```')) { $inFence = -not $inFence; $seenFence = $true; continue }
+        if ($seenFence -and -not $inFence -and (
+            $trimmed -match '^#{0,6}\s*\**\s*[-•]?\s*(判断题|选择题|单选题)\s*[:：]?\s*\**$' -or
+            $trimmed -match '^(?:\d+\s*[\.\)）]\s*)?[①②③④⑤⑥⑦⑧⑨⑩](?:\s*[~～\-至]\s*[①②③④⑤⑥⑦⑧⑨⑩])?\s*处应填'
+        )) {
+            $questionListStart = $i
+            $common = (($lines[0..($i - 1)]) -join "`n").Trim()
+            break
+        }
+    }
+    if ($questionListStart -ge 0) {
+        $circled = @('①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩')[$SubQuestionNo - 1]
+        $derivedChild = $null
+        $candidates = New-Object System.Collections.Generic.List[string]
+        for ($i = $questionListStart; $i -lt $lines.Count; $i++) {
+            $trimmed = $lines[$i].Trim()
+            $numbered = [regex]::Match($trimmed, '^\d+\s*[\.\)）]\s*(.+)$')
+            $filled = [regex]::Match($trimmed, '^' + [regex]::Escape($circled) + '\s*处应填\s*(.*)$')
+            if ($numbered.Success) { $candidates.Add($numbered.Groups[1].Value.Trim()); continue }
+            if ($filled.Success) { $derivedChild = $circled + '处应填' + $filled.Groups[1].Value.Trim(); break }
+            if ($trimmed -match '^[①②③④⑤⑥⑦⑧⑨⑩]\s*[~～\-至]\s*[①②③④⑤⑥⑦⑧⑨⑩]\s*处应填') {
+                $derivedChild = $circled + '处应填'; break
+            }
+        }
+        if ($candidates.Count -ge $SubQuestionNo) { $derivedChild = $candidates[$SubQuestionNo - 1] }
+        if (-not [string]::IsNullOrWhiteSpace($derivedChild)) { $child = $derivedChild }
+    }
+    $child = $child -replace '[（(]\s*[）)]\s*$', ''
+    if ([string]::IsNullOrWhiteSpace($common) -or [string]::IsNullOrWhiteSpace($child)) {
+        throw "复合题拆分后共享题面或子题题干为空 (subQuestionNo=$SubQuestionNo)"
+    }
+    return [pscustomobject]@{ SharedTitle = $common; ChildTitle = $child }
+}
+
+function Get-CspCompositeMetadataMap {
+    param([System.Collections.IEnumerable]$RawQuestions)
+
+    $map = @{}
+    foreach ($paper in (@($RawQuestions) | Group-Object import_source | Sort-Object Name)) {
+        $groups = @($paper.Group | Group-Object parentProblemNo | Where-Object { $_.Count -gt 1 } |
+            Sort-Object { ($_.Group | Measure-Object questionNo -Minimum).Minimum })
+        if ($groups.Count -ne 5) { throw "$($paper.Name) 预期 5 个复合题，实际 $($groups.Count)" }
+        for ($groupIndex = 0; $groupIndex -lt $groups.Count; $groupIndex++) {
+            $children = @($groups[$groupIndex].Group | Sort-Object subQuestionNo)
+            if ((@($children | ForEach-Object { [int]$_.subQuestionNo }) -join ',') -ne ((1..$children.Count) -join ',')) {
+                throw "$($paper.Name)/parent=$($groups[$groupIndex].Name) 的 subQuestionNo 不连续"
+            }
+            $sharedTitles = New-Object System.Collections.Generic.List[string]
+            foreach ($child in $children) {
+                $split = Split-CspCompositeStem -Stem ([string]$child.stemMarkdown) -SubQuestionNo ([int]$child.subQuestionNo)
+                $sharedTitles.Add($split.SharedTitle)
+                $groupCode = "CSP-{0}-{1}1-G{2:000}" -f $child.year, $child.group, [int]$child.parentProblemNo
+                $map["$($child.import_source)|$($child.questionNo)"] = [pscustomobject]@{
+                    GroupType = $(if ($groupIndex -lt 3) { 1 } else { 2 })
+                    GroupCode = $groupCode
+                    ParentProblemNo = [int]$child.parentProblemNo
+                    GroupItemOrder = [int]$child.subQuestionNo
+                    SharedTitle = $split.SharedTitle
+                    ChildTitle = $split.ChildTitle
+                }
+            }
+            if (@($sharedTitles | Select-Object -Unique).Count -ne 1) {
+                throw "$($paper.Name)/parent=$($groups[$groupIndex].Name) 的共享题面不一致"
+            }
+        }
+    }
+    return $map
+}
+
 function Get-OptionLineIndexes {
     param([string[]]$Lines)
 
@@ -269,6 +353,54 @@ function New-QuestionContentJson {
     return ($jsonObject | ConvertTo-Json -Depth 20 -Compress)
 }
 
+function New-QuestionGroupUpsertSql {
+    param([object]$Group)
+
+    $content = ([ordered]@{ titleContent = $Group.SharedTitle } | ConvertTo-Json -Compress)
+    $contentLiteral = New-DollarQuotedSqlLiteral $content
+    $groupCodeLiteral = New-DollarQuotedSqlLiteral $Group.GroupCode
+    $importBatchLiteral = New-DollarQuotedSqlLiteral $ImportBatch
+    $importSourceLiteral = New-DollarQuotedSqlLiteral $Group.Source
+    $knowledgePointLiteral = New-DollarQuotedSqlLiteral $Group.KnowledgePoint
+    return @"
+WITH incoming AS (
+    SELECT $($Group.GroupType)::int AS group_type, $($Group.SubjectId)::int AS subject_id,
+      $($Group.Level)::int AS grade_level, 1::int AS difficult,
+      ${knowledgePointLiteral}::text AS knowledge_point, ${groupCodeLiteral}::text AS group_code,
+      ${importBatchLiteral}::text AS import_batch, ${importSourceLiteral}::text AS import_source,
+      $($Group.ParentProblemNo)::int AS import_parent_order, ${contentLiteral}::text AS content,
+      COALESCE((SELECT id FROM t_user WHERE user_name='admin' ORDER BY id LIMIT 1), 1)::int AS create_user
+), existing_group AS (
+    SELECT g.id, g.info_text_content_id FROM t_question_group g, incoming i
+    WHERE g.import_batch=i.import_batch AND g.import_source=i.import_source
+      AND g.import_parent_order=i.import_parent_order ORDER BY g.id LIMIT 1
+), updated_content AS (
+    UPDATE t_text_content tc SET content=i.content FROM incoming i, existing_group g
+    WHERE tc.id=g.info_text_content_id RETURNING tc.id
+), inserted_content AS (
+    INSERT INTO t_text_content(content, create_time)
+    SELECT i.content, now() FROM incoming i WHERE NOT EXISTS (SELECT 1 FROM updated_content) RETURNING id
+), content_row AS (
+    SELECT id FROM updated_content UNION ALL SELECT id FROM inserted_content
+), updated_group AS (
+    UPDATE t_question_group g SET group_type=i.group_type, subject_id=i.subject_id,
+      grade_level=i.grade_level, difficult=i.difficult, knowledge_point=i.knowledge_point,
+      info_text_content_id=c.id, group_code=i.group_code, import_batch=i.import_batch,
+      import_source=i.import_source, import_parent_order=i.import_parent_order,
+      create_user=COALESCE(g.create_user,i.create_user), status=1,
+      create_time=COALESCE(g.create_time,now()), deleted=false
+    FROM incoming i, existing_group e, content_row c WHERE g.id=e.id RETURNING g.id
+)
+INSERT INTO t_question_group(group_type, subject_id, grade_level, difficult, knowledge_point,
+  info_text_content_id, group_code, import_batch, import_source, import_parent_order,
+  create_user, status, create_time, deleted)
+SELECT i.group_type, i.subject_id, i.grade_level, i.difficult, i.knowledge_point,
+  c.id, i.group_code, i.import_batch, i.import_source, i.import_parent_order,
+  i.create_user, 1, now(), false
+FROM incoming i, content_row c WHERE NOT EXISTS (SELECT 1 FROM updated_group);
+"@
+}
+
 function New-QuestionUpsertSql {
     param([object]$Question)
 
@@ -278,6 +410,10 @@ function New-QuestionUpsertSql {
     $questionCodeLiteral = New-DollarQuotedSqlLiteral $Question.QuestionCode
     $importBatchLiteral = New-DollarQuotedSqlLiteral $ImportBatch
     $importSourceLiteral = New-DollarQuotedSqlLiteral $Question.Source
+    $groupLookup = if ($null -ne $Question.ParentProblemNo) {
+        "(SELECT id FROM t_question_group WHERE import_batch=${importBatchLiteral}::text AND import_source=${importSourceLiteral}::text AND import_parent_order=$($Question.ParentProblemNo) AND deleted=false ORDER BY id LIMIT 1)"
+    } else { "NULL" }
+    $groupItemOrder = if ($null -ne $Question.GroupItemOrder) { [string][int]$Question.GroupItemOrder } else { "NULL" }
 
     return @"
 WITH incoming AS (
@@ -292,6 +428,8 @@ WITH incoming AS (
         ${importBatchLiteral}::text AS import_batch,
         ${importSourceLiteral}::text AS import_source,
         $($Question.Order)::int AS import_question_order,
+        ${groupLookup}::int AS question_group_id,
+        ${groupItemOrder}::int AS group_item_order,
         ${correctLiteral}::text AS correct,
         ${contentLiteral}::text AS content,
         COALESCE((SELECT id FROM t_user WHERE user_name = 'admin' ORDER BY id LIMIT 1), 1)::int AS create_user
@@ -348,6 +486,8 @@ updated_question AS (
         import_batch = i.import_batch,
         import_source = i.import_source,
         import_question_order = i.import_question_order,
+        question_group_id = i.question_group_id,
+        group_item_order = i.group_item_order,
         correct = i.correct,
         info_text_content_id = cr.id,
         create_user = COALESCE(q.create_user, i.create_user),
@@ -360,12 +500,12 @@ updated_question AS (
 )
 INSERT INTO t_question (
     question_type, subject_id, score, grade_level, difficult, knowledge_point,
-    question_code, import_batch, import_source, import_question_order, correct,
+    question_code, import_batch, import_source, import_question_order, question_group_id, group_item_order, correct,
     info_text_content_id, create_user, status, create_time, deleted
 )
 SELECT
     i.question_type, i.subject_id, i.score, i.grade_level, i.difficult, i.knowledge_point,
-    i.question_code, i.import_batch, i.import_source, i.import_question_order, i.correct,
+    i.question_code, i.import_batch, i.import_source, i.import_question_order, i.question_group_id, i.group_item_order, i.correct,
     cr.id, i.create_user, 1, now(), false
 FROM incoming i, content_row cr
 WHERE NOT EXISTS (SELECT 1 FROM updated_question)
@@ -378,6 +518,8 @@ SET
     difficult = EXCLUDED.difficult,
     knowledge_point = EXCLUDED.knowledge_point,
     question_code = EXCLUDED.question_code,
+    question_group_id = EXCLUDED.question_group_id,
+    group_item_order = EXCLUDED.group_item_order,
     correct = EXCLUDED.correct,
     info_text_content_id = EXCLUDED.info_text_content_id,
     create_user = COALESCE(t_question.create_user, EXCLUDED.create_user),
@@ -395,6 +537,7 @@ function Load-CspQuestions {
         throw "CSP raw/all.json not found: $rawAllPath"
     }
     $rawAll = Get-Content -LiteralPath $rawAllPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $compositeMap = Get-CspCompositeMetadataMap -RawQuestions $rawAll.questions
     $rawBySourceOrder = @{}
     foreach ($rawQuestion in @($rawAll.questions)) {
         $source = if ($rawQuestion.import_source) {
@@ -418,7 +561,23 @@ function Load-CspQuestions {
             if (-not $rawBySourceOrder.ContainsKey($key)) {
                 throw "$relativePath 第$($block.Order)题缺少 raw 元数据"
             }
-            $questions.Add((Parse-CspQuestionBlock -Block $block -RelativePath $relativePath -RawQuestion $rawBySourceOrder[$key]))
+            $parsed = Parse-CspQuestionBlock -Block $block -RelativePath $relativePath -RawQuestion $rawBySourceOrder[$key]
+            if ($compositeMap.ContainsKey($key)) {
+                $metadata = $compositeMap[$key]
+                $parsed.Title = $metadata.ChildTitle
+                $parsed | Add-Member -NotePropertyName GroupType -NotePropertyValue $metadata.GroupType
+                $parsed | Add-Member -NotePropertyName GroupCode -NotePropertyValue $metadata.GroupCode
+                $parsed | Add-Member -NotePropertyName ParentProblemNo -NotePropertyValue $metadata.ParentProblemNo
+                $parsed | Add-Member -NotePropertyName GroupItemOrder -NotePropertyValue $metadata.GroupItemOrder
+                $parsed | Add-Member -NotePropertyName SharedTitle -NotePropertyValue $metadata.SharedTitle
+            } else {
+                $parsed | Add-Member -NotePropertyName GroupType -NotePropertyValue $null
+                $parsed | Add-Member -NotePropertyName GroupCode -NotePropertyValue $null
+                $parsed | Add-Member -NotePropertyName ParentProblemNo -NotePropertyValue $null
+                $parsed | Add-Member -NotePropertyName GroupItemOrder -NotePropertyValue $null
+                $parsed | Add-Member -NotePropertyName SharedTitle -NotePropertyValue $null
+            }
+            $questions.Add($parsed)
         }
     }
     return $questions
@@ -450,6 +609,32 @@ $questions = @(Load-CspQuestions -RootPath $QuestionBankRoot)
 if ($questions.Count -eq 0) {
     throw "No CSP questions parsed from $QuestionBankRoot"
 }
+$groupedQuestions = @($questions | Where-Object { $null -ne $_.ParentProblemNo })
+$independentQuestions = @($questions | Where-Object { $null -eq $_.ParentProblemNo })
+$questionGroups = @($groupedQuestions | Group-Object Source, ParentProblemNo | ForEach-Object {
+    $children = @($_.Group | Sort-Object GroupItemOrder)
+    $first = $children[0]
+    [pscustomobject]@{
+        GroupType = $first.GroupType
+        GroupCode = $first.GroupCode
+        Source = $first.Source
+        ParentProblemNo = $first.ParentProblemNo
+        SubjectId = $first.SubjectId
+        Level = $first.Level
+        KnowledgePoint = $first.KnowledgePoint
+        SharedTitle = $first.SharedTitle
+        Children = $children
+    }
+})
+if ($questions.Count -ne 600 -or $questionGroups.Count -ne 70 -or
+    $groupedQuestions.Count -ne 390 -or $independentQuestions.Count -ne 210) {
+    throw "CSP 复合题统计不匹配：questions=$($questions.Count), groups=$($questionGroups.Count), grouped=$($groupedQuestions.Count), independent=$($independentQuestions.Count)"
+}
+$readingGroups = @($questionGroups | Where-Object { $_.GroupType -eq 1 }).Count
+$completionGroups = @($questionGroups | Where-Object { $_.GroupType -eq 2 }).Count
+if ($readingGroups -ne 42 -or $completionGroups -ne 28) {
+    throw "CSP 题组类型统计不匹配：programReading=$readingGroups, programCompletion=$completionGroups"
+}
 
 $typeSummary = $questions | Group-Object QuestionType | Sort-Object Name | ForEach-Object {
     $typeName = switch ($_.Name) { "1" { "单选题" } "2" { "多选题" } "3" { "判断题" } default { "题型$($_.Name)" } }
@@ -469,6 +654,9 @@ Write-Output ($typeSummary -join "; ")
 Write-Output "Pending analysis questions: $($pendingAnalysis.Count)"
 Write-Output "Import metadata issues: $($metadataIssues.Count)"
 Write-Output "Importable questions: $($importableQuestions.Count)"
+Write-Output "Composite groups: $($questionGroups.Count)"
+Write-Output "Grouped/independent questions: $($groupedQuestions.Count)/$($independentQuestions.Count)"
+Write-Output "Program reading/completion groups: $readingGroups/$completionGroups"
 if ($pendingAnalysis.Count -gt 0) {
     Write-Output "Pending analysis samples:"
     $pendingAnalysis | Sort-Object Source, Order | Select-Object -First 10 | ForEach-Object {
@@ -496,6 +684,9 @@ New-Item -ItemType Directory -Force -Path $RuntimeDir | Out-Null
 $sql = New-Object System.Text.StringBuilder
 [void]$sql.AppendLine("\set ON_ERROR_STOP on")
 [void]$sql.AppendLine("BEGIN;")
+foreach ($group in $questionGroups) {
+    [void]$sql.AppendLine((New-QuestionGroupUpsertSql -Group $group))
+}
 foreach ($question in $importableQuestions) {
     [void]$sql.AppendLine((New-QuestionUpsertSql -Question $question))
 }

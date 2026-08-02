@@ -3,6 +3,7 @@ package com.mindskip.xzs.domain.exam;
 public class ExamPaperQuestionItemObject {
     private Integer id;
     private Integer itemOrder;
+    private Integer groupItemOrder;
 
     public Integer getId() {
         return id;
@@ -19,4 +20,7 @@ public class ExamPaperQuestionItemObject {
     public void setItemOrder(Integer itemOrder) {
         this.itemOrder = itemOrder;
     }
+
+    public Integer getGroupItemOrder() { return groupItemOrder; }
+    public void setGroupItemOrder(Integer groupItemOrder) { this.groupItemOrder = groupItemOrder; }
 }
