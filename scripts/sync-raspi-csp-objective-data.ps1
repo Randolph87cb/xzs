@@ -130,7 +130,6 @@ function New-QuestionStrongCheckSql {
     return @"
 \set ON_ERROR_STOP on
 BEGIN;
-SET TRANSACTION READ ONLY;
 $ManifestSql
 DO `$`$
 DECLARE
