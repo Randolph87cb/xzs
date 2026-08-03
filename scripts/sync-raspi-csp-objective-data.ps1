@@ -626,10 +626,12 @@ try {
     }
 
     $pythonSource = @'
+import gzip
 import json
 import os
 import re
 import shlex
+import shutil
 import socket
 import subprocess
 import sys
@@ -702,7 +704,7 @@ def build_remote_files(remote_dir, stages):
         name = stage.get("name")
         if name not in ALLOWED_STAGE_NAMES:
             raise SystemExit("refusing unexpected CSP sync stage name")
-        remote_path = f"{remote_dir}/{index:02d}-{name}.sql"
+        remote_path = f"{remote_dir}/{index:02d}-{name}.sql.gz"
         if not remote_path.startswith(remote_dir + "/"):
             raise SystemExit("refusing remote SQL path outside the temporary directory")
         remote_files.append((name, remote_path, stage["path"]))
@@ -774,7 +776,10 @@ try:
     sftp = client.open_sftp()
     sftp.mkdir(remote_dir, mode=0o700)
     for _, remote_path, local_path in remote_files:
-        sftp.put(local_path, remote_path)
+        compressed_path = local_path + ".gz"
+        with open(local_path, "rb") as source, gzip.open(compressed_path, "wb", compresslevel=6) as target:
+            shutil.copyfileobj(source, target)
+        sftp.put(compressed_path, remote_path)
         sftp.chmod(remote_path, 0o600)
     sftp.close()
 
@@ -792,10 +797,12 @@ try:
     ]
     for name, remote_path, _ in remote_files:
         commands.append("printf 'PHASE_START=%s\\n' " + shlex.quote(name))
+        commands.append("gzip -t -- " + shlex.quote(remote_path))
         commands.append(
-            "docker exec -i " + POSTGRES_CONTAINER
+            "gzip -dc -- " + shlex.quote(remote_path)
+            + " | docker exec -i " + POSTGRES_CONTAINER
             + " sh -ceu 'test -n \"$POSTGRES_USER\"; test -n \"$POSTGRES_DB\"; exec psql -X -q -v ON_ERROR_STOP=1 -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\"'"
-            + " < " + shlex.quote(remote_path) + " >/dev/null"
+            + " >/dev/null"
         )
         commands.append("printf 'PHASE_OK=%s\\n' " + shlex.quote(name))
     commands.append("printf 'CSP_SYNC_RESULT=ok\\n'")
