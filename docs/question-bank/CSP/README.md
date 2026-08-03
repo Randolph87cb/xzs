@@ -114,6 +114,24 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-csp-objective-papers.ps1
 
 `sync-csp-objective-papers.ps1` 默认从 `docker\.env.production` 读取 `SPRING_DATASOURCE_URL`，脚本输出不打印连接串、用户名、密码或 token。新 frame 的标题项使用 `paperItems`：独立题是 `QUESTION`，题组是 `QUESTION_GROUP` 并快照全部子题 ID、组内顺序和全卷 `itemOrder`。试卷 `question_count` 仍是可作答子题数；试卷按稳定名称和 `paper_type = 1` 匹配更新，避免重复创建。后端继续兼容读取旧 `questionItems` frame。
 
+树莓派生产环境已使用 Compose 内的本地 PostgreSQL 后，应改用专用入口，避免读取或连接 Neon：
+
+```powershell
+# 完全离线：生成并校验本地 manifest，只展示非敏感阶段；不读取根 .env，不启动隧道
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-raspi-csp-objective-data.ps1 -Plan
+
+# 只读检查固定生产 Compose、xzs-postgres 容器和数据库 schema
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-raspi-csp-objective-data.ps1 -PreflightOnly
+
+# 显式授权后按固定顺序同步题目、强校验、同步试卷并最终强校验
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-raspi-csp-objective-data.ps1 -Execute
+
+# 只读执行最终 ExpectSynced 强校验
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-raspi-csp-objective-data.ps1 -ExpectSynced
+```
+
+`-Execute -QuestionsOnly` 和 `-Execute -PaperOnly` 分别限制写入范围；`PaperOnly` 会在写试卷前先强校验 600 题、390/210 组内/独立题、42/28 程序阅读/填空题组、组内连续顺序和题组科目关联。最终校验还要求 14 套卷各有 5 个完整题组单元、总计 70 组，frame 不得缺失或重复组内子题，且全卷 `itemOrder` 必须完整覆盖 `1..question_count`。真实远端模式固定通过 Cloudflare TCP + Paramiko 连接 `/opt/apps/gesp-csp-quiz`，只向固定的 `xzs-postgres` 容器输入 SQL，并从容器环境读取 PostgreSQL 用户和库名，不读取生产数据库连接串。远端唯一临时 SQL 和本地 UUID 临时目录在成功或失败时都会清理。
+
 ## 主流程：控制当前已登录浏览器
 
 1. 人工确认 Edge 或浏览器已登录洛谷有题，例如能访问 `https://ti.luogu.com.cn/problemset/1035`，页面标题类似 `1035 - CSP 2020 提高级第一轮`。

@@ -132,7 +132,7 @@ public class ExamPaperAnswerController extends BaseWXApiController {
         ExamPaperAnswer examPaperAnswer = examPaperAnswerService.selectById(id);
         ExamPaperEditRequestVM paper = examPaperService.examPaperToVM(examPaperAnswer.getExamPaperId());
         ExamPaperSubmitVM answer = examPaperAnswerService.examPaperAnswerToVM(examPaperAnswer.getId());
-        vm.setPaper(paper);
+        vm.setPaper(WXExamPaperLegacyProjection.apply(paper));
         vm.setAnswer(answer);
         return RestResponse.ok(vm);
     }

@@ -37,7 +37,7 @@ public class ExamPaperController extends BaseWXApiController {
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
     public RestResponse<ExamPaperEditRequestVM> select(@PathVariable Integer id) {
         ExamPaperEditRequestVM vm = examPaperService.examPaperToVM(id);
-        return RestResponse.ok(vm);
+        return RestResponse.ok(WXExamPaperLegacyProjection.apply(vm));
     }
 
 
