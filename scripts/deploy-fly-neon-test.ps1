@@ -44,6 +44,48 @@ function Read-EnvFile {
     return $values
 }
 
+function Invoke-FlySecretsImport {
+    param(
+        [string]$Payload,
+        [string]$AppName
+    )
+
+    $flyctl = Get-Command flyctl -CommandType Application -ErrorAction Stop | Select-Object -First 1
+    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $startInfo.FileName = $flyctl.Source
+    $startInfo.Arguments = "secrets import --stage -a $AppName"
+    $startInfo.UseShellExecute = $false
+    $startInfo.RedirectStandardInput = $true
+
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $startInfo
+    $stdin = $null
+    $originalInputEncoding = [Console]::InputEncoding
+    try {
+        $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+        [Console]::InputEncoding = $utf8NoBom
+
+        if (-not $process.Start()) {
+            throw "Failed to start flyctl secrets import."
+        }
+
+        $stdin = $process.StandardInput.BaseStream
+        $payloadBytes = $utf8NoBom.GetBytes($Payload)
+        $stdin.Write($payloadBytes, 0, $payloadBytes.Length)
+        $stdin.Close()
+        $stdin = $null
+
+        $process.WaitForExit()
+        return $process.ExitCode
+    } finally {
+        if ($null -ne $stdin) {
+            $stdin.Dispose()
+        }
+        [Console]::InputEncoding = $originalInputEncoding
+        $process.Dispose()
+    }
+}
+
 $envPath = Resolve-WorkspacePath $EnvFile
 if (-not (Test-Path -LiteralPath $envPath)) {
     throw "Env file not found: $envPath"
@@ -91,9 +133,9 @@ $payload = ($secretNames | ForEach-Object { "$_=$($secretValues[$_])" }) -join "
 
 Write-Output "Importing Fly test secrets from $EnvFile for app $AppName."
 Write-Output "Secret names: $($secretNames -join ', ')"
-$payload | flyctl secrets import --stage -a $AppName | Out-Host
-if ($LASTEXITCODE -ne 0) {
-    throw "flyctl secrets import failed with exit code $LASTEXITCODE."
+$importExitCode = Invoke-FlySecretsImport -Payload $payload -AppName $AppName
+if ($importExitCode -ne 0) {
+    throw "flyctl secrets import failed with exit code $importExitCode."
 }
 
 Write-Output "Staging removal of legacy datasource username/password secrets if present."
