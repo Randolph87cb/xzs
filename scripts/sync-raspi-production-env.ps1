@@ -192,9 +192,9 @@ $tempScript = [System.IO.Path]::ChangeExtension([System.IO.Path]::GetTempFileNam
 $tempEnv = if ($ShadowAssetsOnly) { $null } else { [System.IO.Path]::ChangeExtension([System.IO.Path]::GetTempFileName(), ".env") }
 
 $pythonSource = @'
-import base64
 import os
 import re
+import secrets
 import shlex
 import socket
 import subprocess
@@ -385,8 +385,15 @@ printf 'BACKUP_DIR=%s\n' "$APP_DIR/$backup_dir"
 printf 'COMPOSE_CHECK=ok\n'
 {restart_block}
 '''
-    encoded = base64.b64encode(script.encode()).decode()
-    stdin, stdout, stderr = client.exec_command("printf %s " + shlex.quote(encoded) + " | base64 -d | bash")
+    sudo_marker = "XZS_SUDO_STDIN_" + secrets.token_hex(16)
+    sudo_wrapper = 'while IFS= read -r line; do [ "$line" = "$1" ] && break; done; exec bash -s'
+    sudo_command = "sudo -S -k -p '' bash -c " + shlex.quote(sudo_wrapper) + " bash " + shlex.quote(sudo_marker)
+    stdin, stdout, stderr = client.exec_command(sudo_command)
+    stdin.write(password + "\n")
+    stdin.write(sudo_marker + "\n")
+    stdin.write(script)
+    stdin.flush()
+    stdin.channel.shutdown_write()
     out = stdout.read().decode("utf-8", errors="replace")
     err = stderr.read().decode("utf-8", errors="replace")
     rc = stdout.channel.recv_exit_status()
