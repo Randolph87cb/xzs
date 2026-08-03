@@ -12,7 +12,7 @@ source/xzs/
     │   ├── base/             # 通用 Controller、分页、响应对象、系统状态码
     │   ├── configuration/    # Spring MVC、安全、异常处理、属性配置、微信拦截器
     │   ├── context/          # Web 与微信请求上下文
-    │   ├── controller/       # 管理端、学生端、小程序 API
+    │   ├── controller/       # 管理端、学生端 API 与历史小程序兼容 API
     │   ├── domain/           # 数据库实体、枚举、题目/试卷/任务 JSON 对象
     │   ├── event/            # 注册、用户日志、答卷计算事件
     │   ├── exception/        # 业务异常
@@ -36,7 +36,7 @@ source/xzs/
 
 - 管理端：`/api/admin/...`，对应 `controller/admin`。
 - 学生 Web 端：`/api/student/...`，对应 `controller/student`。
-- 微信小程序：`/api/wx/student/...`，对应 `controller/wx/student`。
+- 微信小程序兼容接口：`/api/wx/student/...`，对应 `controller/wx/student`。小程序当前停用，接口仅为历史兼容保留，不进入默认开发、构建、发布和验收。
 
 ## 关键分层
 

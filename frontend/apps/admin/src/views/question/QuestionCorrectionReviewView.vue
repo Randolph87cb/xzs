@@ -1,5 +1,8 @@
 <template>
-  <section class="admin-page correction-workbench">
+  <section
+    class="admin-page correction-workbench"
+    :class="{ 'is-mobile-detail': mobilePanel === 'detail' }"
+  >
     <header class="admin-page__header">
       <div>
         <h1>改错审核</h1>
@@ -59,7 +62,7 @@
             type="button"
             class="correction-workbench__queue-item"
             :class="{ 'is-active': selectedId === row.id }"
-            @click="selectCorrection(row.id)"
+            @click="openCorrection(row.id)"
           >
             <span class="correction-workbench__queue-title">{{ stripHtml(row.title) || '无题干' }}</span>
             <span class="correction-workbench__queue-submeta">
@@ -94,6 +97,11 @@
       </aside>
 
       <main class="correction-workbench__workspace" v-loading="detailLoading">
+        <div class="correction-workbench__mobile-back mobile-only">
+          <el-button plain data-testid="correction-back-to-queue" @click="returnToQueue">
+            返回审核队列
+          </el-button>
+        </div>
         <template v-if="detail">
           <section class="correction-workbench__question-panel">
             <div class="correction-workbench__panel-header">
@@ -179,7 +187,7 @@
                 >
                   AI 未返回学生可见建议，请老师手动填写或重新预审。
                 </p>
-                <div class="correction-workbench__actions-row">
+                <div class="correction-workbench__actions-row admin-sticky-actions">
                   <el-button v-if="canApplyAiSuggestion" plain @click="applyAiSuggestionManually">应用 AI 建议</el-button>
                   <el-button :loading="reviewing" :disabled="!canReview" @click="saveReview(false)">仅保存</el-button>
                   <el-button type="primary" :loading="reviewing" :disabled="!canReview" @click="saveReview(true)">
@@ -225,63 +233,102 @@
                 <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
               </section>
 
-              <section class="correction-workbench__review-block">
-                <h3>AI 详细原因</h3>
-                <template v-if="currentAiReview">
-                  <dl class="correction-workbench__ai-summary">
-                    <div class="correction-workbench__ai-summary-block">
-                      <dt>给老师看的理由</dt>
-                      <dd>
-                        <QuestionMarkdown :content="currentAiReview.teacherReason || currentAiReview.reason || '暂无'" />
-                      </dd>
-                    </div>
-                    <div class="correction-workbench__ai-summary-block">
-                      <dt>返回给学生的建议</dt>
-                      <dd>
-                        <QuestionMarkdown :content="currentAiStudentFeedbackDraft || '暂无'" />
-                      </dd>
-                    </div>
-                    <div
-                      v-if="!currentAiStudentFeedbackDraft && currentAiReview.reviewComment"
-                      class="correction-workbench__ai-summary-block"
-                    >
-                      <dt>旧字段兼容</dt>
-                      <dd>
-                        <QuestionMarkdown :content="currentAiReview.reviewComment" />
-                      </dd>
-                    </div>
-                    <div class="correction-workbench__ai-summary-block">
-                      <dt>错误信息</dt>
-                      <dd class="correction-workbench__danger-text">{{ currentAiReview.errorMessage || '暂无' }}</dd>
-                    </div>
-                  </dl>
-                  <p v-if="currentAiReview.finishTime" class="correction-workbench__muted-text">
-                    完成时间：{{ currentAiReview.finishTime }}
-                  </p>
-                </template>
-                <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
-              </section>
+              <details
+                class="correction-workbench__review-block correction-workbench__collapsible"
+                :open="aiDetailsOpen"
+                data-testid="correction-ai-details"
+                @toggle="handleDisclosureToggle('aiDetails', $event)"
+              >
+                <summary>AI 详细原因</summary>
+                <div class="correction-workbench__collapsible-content">
+                  <template v-if="currentAiReview">
+                    <dl class="correction-workbench__ai-summary">
+                      <div class="correction-workbench__ai-summary-block">
+                        <dt>给老师看的理由</dt>
+                        <dd>
+                          <QuestionMarkdown :content="currentAiReview.teacherReason || currentAiReview.reason || '暂无'" />
+                        </dd>
+                      </div>
+                      <div class="correction-workbench__ai-summary-block">
+                        <dt>返回给学生的建议</dt>
+                        <dd>
+                          <QuestionMarkdown :content="currentAiStudentFeedbackDraft || '暂无'" />
+                        </dd>
+                      </div>
+                      <div
+                        v-if="!currentAiStudentFeedbackDraft && currentAiReview.reviewComment"
+                        class="correction-workbench__ai-summary-block"
+                      >
+                        <dt>旧字段兼容</dt>
+                        <dd>
+                          <QuestionMarkdown :content="currentAiReview.reviewComment" />
+                        </dd>
+                      </div>
+                      <div class="correction-workbench__ai-summary-block">
+                        <dt>错误信息</dt>
+                        <dd class="correction-workbench__danger-text">{{ currentAiReview.errorMessage || '暂无' }}</dd>
+                      </div>
+                    </dl>
+                    <p v-if="currentAiReview.finishTime" class="correction-workbench__muted-text">
+                      完成时间：{{ currentAiReview.finishTime }}
+                    </p>
+                  </template>
+                  <p v-else class="correction-workbench__muted-text">暂无 AI 预审记录。</p>
+                </div>
+              </details>
             </section>
 
-            <section class="correction-workbench__card">
-              <div class="correction-workbench__section-header">
+            <details
+              class="correction-workbench__card correction-workbench__collapsible correction-workbench__history"
+              :open="reviewHistoryOpen"
+              data-testid="correction-review-history"
+              @toggle="handleDisclosureToggle('reviewHistory', $event)"
+            >
+              <summary class="correction-workbench__section-header">
                 <h2>审核历史</h2>
                 <el-tag size="small" type="info">{{ detail.reviewRecords?.length ?? 0 }} 条</el-tag>
+              </summary>
+              <div class="correction-workbench__collapsible-content">
+                <el-table
+                  v-if="detail.reviewRecords?.length"
+                  class="desktop-only"
+                  :data="detail.reviewRecords"
+                  border
+                >
+                  <el-table-column label="结果" width="90">
+                    <template #default="{ row }">{{ statusText(row.review_result) }}</template>
+                  </el-table-column>
+                  <el-table-column prop="reviewer_name" label="审核人" width="100" />
+                  <el-table-column label="审核意见" min-width="180">
+                    <template #default="{ row }">
+                      <QuestionMarkdown :content="row.review_comment || '暂无'" />
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="create_time" label="时间" width="150" />
+                </el-table>
+                <div v-if="detail.reviewRecords?.length" class="admin-mobile-cards mobile-only">
+                  <article
+                    v-for="record in detail.reviewRecords"
+                    :key="`${record.create_time}-${record.reviewer_name}`"
+                    class="admin-mobile-card correction-workbench__history-card"
+                  >
+                    <div class="admin-mobile-card__status">
+                      <strong>{{ statusText(record.review_result) }}</strong>
+                      <span>{{ record.create_time || '-' }}</span>
+                    </div>
+                    <div class="admin-mobile-field">
+                      <span class="admin-mobile-field__label">审核人</span>
+                      <span class="admin-mobile-field__value">{{ record.reviewer_name || '-' }}</span>
+                    </div>
+                    <div class="correction-workbench__history-comment">
+                      <span class="admin-mobile-field__label">审核意见</span>
+                      <QuestionMarkdown :content="record.review_comment || '暂无'" />
+                    </div>
+                  </article>
+                </div>
+                <div v-else class="correction-workbench__empty">暂无审核历史</div>
               </div>
-              <el-table v-if="detail.reviewRecords?.length" :data="detail.reviewRecords" border>
-                <el-table-column label="结果" width="90">
-                  <template #default="{ row }">{{ statusText(row.review_result) }}</template>
-                </el-table-column>
-                <el-table-column prop="reviewer_name" label="审核人" width="100" />
-                <el-table-column label="审核意见" min-width="180">
-                  <template #default="{ row }">
-                    <QuestionMarkdown :content="row.review_comment || '暂无'" />
-                  </template>
-                </el-table-column>
-                <el-table-column prop="create_time" label="时间" width="150" />
-              </el-table>
-              <div v-else class="correction-workbench__empty">暂无审核历史</div>
-            </section>
+            </details>
           </aside>
         </template>
         <div v-else class="correction-workbench__empty">请选择左侧改错记录</div>
@@ -291,7 +338,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { QuestionCorrectionContext, QuestionMarkdown } from '@xzs/question-renderer'
 import {
@@ -345,6 +392,9 @@ interface NormalizedAiReview {
 interface SelectCorrectionOptions {
   preserveReviewDraft?: boolean
 }
+type MobilePanel = 'queue' | 'detail'
+type DisclosureName = 'aiDetails' | 'reviewHistory'
+type ViewportMode = 'mobile' | 'desktop'
 interface ReviewFormDraftSnapshot {
   id: number
   reviewResult: ReviewResultDraft
@@ -357,6 +407,13 @@ const detailLoading = ref(false)
 const reviewing = ref(false)
 const aiCurrentLoading = ref(false)
 const aiBatchLoading = ref(false)
+const mobilePanel = ref<MobilePanel>('queue')
+const mobileMediaQuery = window.matchMedia('(max-width: 767px)')
+const isMobileViewport = ref(mobileMediaQuery.matches)
+const disclosureState = reactive<Record<DisclosureName, Record<ViewportMode, boolean>>>({
+  aiDetails: { mobile: false, desktop: true },
+  reviewHistory: { mobile: false, desktop: true }
+})
 const records = ref<AdminQuestionCorrectionItem[]>([])
 const detail = ref<AdminQuestionCorrectionItem | null>(null)
 const selectedId = ref<number | null>(null)
@@ -380,6 +437,11 @@ const reviewForm = reactive<{
 })
 const reviewFormEdited = ref(false)
 const aiDraftApplied = ref(false)
+const loadedPageIndex = ref(query.pageIndex)
+const loadedPageSize = ref(query.pageSize)
+const viewportMode = computed<ViewportMode>(() => (isMobileViewport.value ? 'mobile' : 'desktop'))
+const aiDetailsOpen = computed(() => disclosureState.aiDetails[viewportMode.value])
+const reviewHistoryOpen = computed(() => disclosureState.reviewHistory[viewportMode.value])
 
 const currentAiReview = computed<NormalizedAiReview | null>(() => {
   if (!detail.value) return null
@@ -419,6 +481,26 @@ const reviewAnswer = computed(() => {
 
 init()
 
+onMounted(() => {
+  isMobileViewport.value = mobileMediaQuery.matches
+  mobileMediaQuery.addEventListener('change', handleViewportChange)
+})
+
+onBeforeUnmount(() => {
+  mobileMediaQuery.removeEventListener('change', handleViewportChange)
+})
+
+function handleViewportChange(event: MediaQueryListEvent) {
+  isMobileViewport.value = event.matches
+}
+
+function handleDisclosureToggle(name: DisclosureName, event: Event) {
+  const disclosure = event.currentTarget
+  if (disclosure instanceof HTMLDetailsElement) {
+    disclosureState[name][viewportMode.value] = disclosure.open
+  }
+}
+
 async function init() {
   const classResult = await getAdminClassOptions()
   classOptions.value = classResult.response ?? []
@@ -436,6 +518,8 @@ async function loadQueue() {
     const result = await getAdminQuestionCorrectionPage(query)
     records.value = result.response?.list ?? []
     total.value = result.response?.total ?? 0
+    loadedPageIndex.value = query.pageIndex
+    loadedPageSize.value = query.pageSize
   } finally {
     loading.value = false
   }
@@ -480,19 +564,66 @@ async function selectCorrection(id: number, options: SelectCorrectionOptions = {
 }
 
 async function handleSearch() {
+  if (!(await discardEditedDraft())) return
   query.pageIndex = 1
+  mobilePanel.value = 'queue'
   await loadData()
 }
 
 async function handlePageChange(page: number) {
+  if (!(await discardEditedDraft())) {
+    query.pageIndex = loadedPageIndex.value
+    return
+  }
   query.pageIndex = page
+  mobilePanel.value = 'queue'
   await loadData()
 }
 
 async function handlePageSizeChange(pageSize: number) {
+  if (!(await discardEditedDraft())) {
+    query.pageSize = loadedPageSize.value
+    query.pageIndex = loadedPageIndex.value
+    return
+  }
   query.pageSize = pageSize
   query.pageIndex = 1
+  mobilePanel.value = 'queue'
   await loadData()
+}
+
+async function openCorrection(id: number) {
+  if (selectedId.value === id && detail.value) {
+    mobilePanel.value = 'detail'
+    return
+  }
+  if (selectedId.value !== id && !(await discardEditedDraft())) return
+  await selectCorrection(id)
+  if (detail.value) {
+    mobilePanel.value = 'detail'
+  }
+}
+
+async function returnToQueue() {
+  if (!(await discardEditedDraft())) return
+  mobilePanel.value = 'queue'
+}
+
+async function discardEditedDraft() {
+  if (!reviewFormEdited.value) return true
+  try {
+    await ElMessageBox.confirm('当前审核草稿尚未保存，返回队列后将丢弃这些修改。是否继续？', '未保存的审核草稿', {
+      confirmButtonText: '放弃修改',
+      cancelButtonText: '继续审核',
+      type: 'warning'
+    })
+  } catch {
+    return false
+  }
+  if (detail.value) {
+    resetReviewForm(detail.value)
+  }
+  return true
 }
 
 async function saveReview(goNext: boolean) {
@@ -518,14 +649,16 @@ async function saveReview(goNext: boolean) {
       reviewResult: reviewForm.reviewResult,
       reviewComment: reviewForm.reviewComment?.trim()
     })
+    reviewFormEdited.value = false
     ElMessage.success(result.message || '改错审核已保存')
     if (goNext) {
       await loadQueue()
-      const targetId = nextId && records.value.some((record) => record.id === nextId) ? nextId : records.value[0]?.id
+      const targetId = nextId && records.value.some((record) => record.id === nextId) ? nextId : null
       if (targetId) {
         await selectCorrection(targetId)
       } else {
         clearDetail()
+        mobilePanel.value = 'queue'
       }
     } else {
       await selectCorrection(currentId)
@@ -579,7 +712,7 @@ async function runAiBatchReview() {
     )
     await loadQueue()
     if (selectedId.value) {
-      await selectCorrection(selectedId.value)
+      await selectCorrection(selectedId.value, { preserveReviewDraft: reviewFormEdited.value })
     } else {
       await selectFirstQueueRecord()
     }
@@ -1097,6 +1230,20 @@ function parseAnswerArray(value?: string | null) {
   gap: 10px;
 }
 
+.correction-workbench__actions-row.admin-sticky-actions {
+  position: static;
+  padding: 0;
+}
+
+.correction-workbench__mobile-back {
+  padding: 12px 12px 0;
+}
+
+.correction-workbench__mobile-back .el-button {
+  width: 100%;
+  min-height: 44px;
+}
+
 .correction-workbench__markdown-preview {
   display: grid;
   gap: 8px;
@@ -1226,6 +1373,61 @@ function parseAnswerArray(value?: string | null) {
   color: var(--el-color-danger);
 }
 
+.correction-workbench__collapsible {
+  min-width: 0;
+}
+
+.correction-workbench__collapsible > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  color: var(--xzs-text);
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  list-style: none;
+}
+
+.correction-workbench__collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+.correction-workbench__collapsible > summary::after {
+  flex: 0 0 auto;
+  color: var(--xzs-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  content: "展开";
+}
+
+.correction-workbench__collapsible[open] > summary::after {
+  content: "收起";
+}
+
+.correction-workbench__collapsible-content {
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.correction-workbench__history-card {
+  gap: 10px;
+}
+
+.correction-workbench__history-card .admin-mobile-card__status > span {
+  color: var(--xzs-text-muted);
+  font-size: 12px;
+}
+
+.correction-workbench__history-comment {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .correction-workbench__empty {
   display: grid;
   place-items: center;
@@ -1253,7 +1455,40 @@ function parseAnswerArray(value?: string | null) {
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
+  .correction-workbench.is-mobile-detail .correction-workbench__filters,
+  .correction-workbench.is-mobile-detail .correction-workbench__queue {
+    display: none;
+  }
+
+  .correction-workbench:not(.is-mobile-detail) .correction-workbench__workspace {
+    display: none;
+  }
+
+  .correction-workbench__layout,
+  .correction-workbench__workspace {
+    min-height: 0;
+  }
+
+  .correction-workbench__queue {
+    max-height: none;
+    min-height: 360px;
+  }
+
+  .correction-workbench__queue-list {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .correction-workbench__question-panel,
+  .correction-workbench__side-panel {
+    padding: 12px;
+  }
+
+  .correction-workbench__workspace {
+    overflow: visible;
+  }
+
   .correction-workbench__actions-row,
   .correction-workbench__section-header,
   .correction-workbench__panel-header {
@@ -1266,8 +1501,33 @@ function parseAnswerArray(value?: string | null) {
     margin-left: 0;
   }
 
+  .correction-workbench__actions-row.admin-sticky-actions {
+    position: sticky;
+    z-index: 5;
+    bottom: 0;
+    margin: 0 -12px -12px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--xzs-border);
+    background: var(--xzs-surface);
+    box-shadow: 0 -8px 18px rgb(16 32 63 / 8%);
+  }
+
+  .correction-workbench__decision-group {
+    grid-template-columns: 1fr;
+  }
+
+  .correction-workbench__decision-group :deep(.el-radio-button__inner) {
+    min-height: 44px;
+  }
+
   .correction-workbench__ai-summary {
     grid-template-columns: 1fr;
+  }
+
+  .correction-workbench__ai-overview .correction-workbench__section-header .el-button {
+    width: 100%;
+    min-height: 44px;
+    margin-left: 0;
   }
 }
 </style>

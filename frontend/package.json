@@ -13,6 +13,7 @@
     "test:question-renderer": "pnpm --filter @xzs/question-renderer test",
     "verify:student-ui": "node scripts/verify-student-ui-screenshots.mjs",
     "verify:admin-ui": "node scripts/verify-admin-ui-screenshots.mjs",
+    "verify:admin-mobile-ui": "node scripts/verify-admin-mobile-ui.mjs",
     "verify:public-pages": "node scripts/verify-public-pages.mjs",
     "typecheck": "pnpm -r typecheck"
   },

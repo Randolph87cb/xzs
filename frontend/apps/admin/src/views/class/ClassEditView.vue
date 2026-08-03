@@ -7,7 +7,7 @@
       </div>
     </header>
 
-    <el-form ref="formRef" :model="form" :rules="rules" label-width="92px" style="max-width: 720px">
+    <el-form ref="formRef" class="class-edit-form" :model="form" :rules="rules" label-width="92px">
       <el-form-item label="班级名称" prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
@@ -30,10 +30,12 @@
           <el-option label="禁用" :value="2" />
         </el-select>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submit">提交</el-button>
-        <el-button @click="router.push('/class/list')">返回</el-button>
-      </el-form-item>
+      <div class="admin-sticky-actions">
+        <el-button type="primary" :loading="submitting" :disabled="loading || submitting" @click="submit">
+          保存
+        </el-button>
+        <el-button :disabled="submitting" @click="router.push('/class/list')">返回</el-button>
+      </div>
     </el-form>
   </section>
 </template>
@@ -56,6 +58,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
+const submitting = ref(false)
 const teachers = ref<AdminUserListItem[]>([])
 const form = reactive<AdminClassEditModel>({ id: null, name: '', gradeLevel: 1, teacherId: null, status: 1 })
 const rules: FormRules = {
@@ -98,15 +101,26 @@ function teacherOptionLabel(teacher: AdminUserListItem) {
 }
 
 async function submit() {
-  const valid = await formRef.value?.validate()
-  if (!valid) return
-  loading.value = true
+  if (submitting.value) return
+  try {
+    const valid = await formRef.value?.validate()
+    if (!valid) return
+  } catch {
+    return
+  }
+  submitting.value = true
   try {
     const result = await saveAdminClass(form)
     ElMessage.success(result.message || '保存成功')
     router.push('/class/list')
   } finally {
-    loading.value = false
+    submitting.value = false
   }
 }
 </script>
+
+<style scoped>
+.class-edit-form {
+  max-width: 720px;
+}
+</style>

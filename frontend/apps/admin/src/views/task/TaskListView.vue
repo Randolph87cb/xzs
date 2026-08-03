@@ -15,7 +15,7 @@
       <el-button type="primary" @click="search">查询</el-button>
     </section>
 
-    <el-table :data="tasks" border>
+    <el-table class="desktop-only" :data="tasks" border>
       <el-table-column prop="id" label="Id" width="90" />
       <el-table-column prop="title" label="标题" min-width="220" show-overflow-tooltip />
       <el-table-column prop="className" label="班级" min-width="140" />
@@ -28,6 +28,32 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="mobile-only">
+      <div class="admin-mobile-cards">
+        <article v-for="task in tasks" :key="task.id" class="admin-mobile-card">
+        <div class="admin-mobile-card__header">
+          <strong>{{ task.title || '未命名任务' }}</strong>
+          <el-tag size="small" type="info">{{ task.className || '全部班级' }}</el-tag>
+        </div>
+        <div class="admin-mobile-card__fields">
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">发送人</span>
+            <span class="admin-mobile-field__value">{{ task.createUserName || '—' }}</span>
+          </div>
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">创建时间</span>
+            <span class="admin-mobile-field__value">{{ task.createTime || '—' }}</span>
+          </div>
+        </div>
+        <div class="admin-mobile-card__actions">
+          <el-button type="primary" plain @click="router.push(`/task/edit?id=${task.id}`)">编辑</el-button>
+          <el-button type="danger" plain @click="remove(task.id)">删除</el-button>
+        </div>
+        </article>
+        <el-empty v-if="tasks.length === 0" description="暂无任务" />
+      </div>
+    </div>
 
     <footer class="admin-page__pagination">
       <el-pagination

@@ -2,13 +2,13 @@
 
 ## 项目结构概览
 
-本项目是“信息学客观题一本通 / GESP/CSP 客观题训练”，基于开源考试系统 PostgreSQL 版改造，包含一个 Spring Boot 后端、一个 Vue 3 + Vite 管理端、一个 Vue 3 + Vite 学生端，以及一个微信小程序学生端。
+本项目是“信息学客观题一本通 / GESP/CSP 客观题训练”，基于开源考试系统 PostgreSQL 版改造，当前产品包含一个 Spring Boot 后端、一个 Vue 3 + Vite 管理端和一个 Vue 3 + Vite 学生端；仓库另保留已停用的微信小程序学生端历史源码。
 
 - 后端源码在 `source/xzs`，主要按 `controller`、`service`、`repository`、`domain`、`viewmodel` 分层。
 - 管理端 Web 源码和默认构建来源在 `frontend/apps/admin`。
 - 学生端 Web 源码和默认构建来源在 `frontend/apps/student`。
 - 现代前端工作区在 `frontend`，承载 Vue 3 + Vite 学生端、管理端和共享包；旧 Vue 2 Web 目录已删除，不再保留新旧并行入口。
-- 微信小程序学生端在 `source/wx/xzs-student`。
+- 微信小程序学生端历史源码在 `source/wx/xzs-student`，当前不启用、不构建、不发布、不验收。
 - PostgreSQL 初始化脚本在 `sql/xzs-postgresql.sql`；后端 Flyway 迁移脚本在 `source/xzs/src/main/resources/db/migration`。
 - 真题题库 Markdown 资料在 `docs/question-bank`。
 - 本地构建、测量、静态资源同步、维护和数据导入脚本在 `scripts`。
@@ -16,6 +16,12 @@
 - Fly.io 冷启动按量部署说明在 `docs/fly-managed-postgres-deployment.md`；根目录 `Dockerfile` 和 `fly.toml` 是 Fly 部署入口。
 - 树莓派部署说明在 `docs/raspberry-pi-deployment.md` 和 `docker/README.md`；树莓派与 Fly 共用容器镜像的说明在 `docs/container-image-deployment.md`；对应 systemd 服务模板和数据库初始化、备份、恢复脚本在 `deploy/raspberry-pi`。
 - 发布包与部署材料分别在 `release`、`docker` 和 `deploy`。
+
+## 微信小程序停用约定
+
+- 默认开发、构建、部署和验收只覆盖学生 Web、管理 Web 与其后端能力。
+- `source/wx/xzs-student` 仅作历史源码保留，不删除；后端 `/api/wx/**` 兼容接口继续保留。
+- 除非用户明确要求重新启用微信小程序，不为小程序同步新功能，也不把它描述为当前产品能力。
 
 ## 树莓派与 Docker 运维入口
 
@@ -57,7 +63,7 @@
 - `web-admin.md`：管理端 Web 结构。
 - `web-student.md`：学生端 Web 结构。
 - `frontend-modernization.md`：Vue 3 + Vite 覆盖式重构工作区结构。
-- `wx-student.md`：微信小程序结构。
+- `wx-student.md`：已停用、仅保留历史源码的微信小程序结构。
 - `database-deploy.md`：数据库与部署资产。
 - `reading-guide.md`：代码阅读入口建议。
 

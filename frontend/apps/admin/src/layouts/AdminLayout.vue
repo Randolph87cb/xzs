@@ -1,16 +1,23 @@
 <template>
   <el-container class="admin-layout">
-    <el-aside class="admin-layout__aside" :class="{ 'is-collapsed': isAsideCollapsed }" :width="asideWidth">
+    <el-aside
+      class="admin-layout__aside"
+      :class="{
+        'is-collapsed': menuCollapsed,
+        'is-mobile-open': mobileMenuOpen
+      }"
+      :width="asideWidth"
+    >
       <div class="admin-layout__brand">
         <img class="admin-layout__mark" :src="appIconUrl" alt="" />
-        <div v-show="!isAsideCollapsed" class="admin-layout__brand-text">
+        <div v-show="!menuCollapsed" class="admin-layout__brand-text">
           <strong>信息学客观题一本通</strong>
           <span>信息学智能组卷</span>
         </div>
       </div>
       <el-menu
         router
-        :collapse="isAsideCollapsed"
+        :collapse="menuCollapsed"
         :collapse-transition="false"
         :default-active="route.path"
         class="admin-layout__menu"
@@ -33,21 +40,32 @@
         </template>
       </el-menu>
     </el-aside>
+    <button
+      v-if="mobileMenuOpen"
+      class="admin-layout__backdrop"
+      type="button"
+      aria-label="关闭菜单"
+      @click="closeMobileMenu"
+    />
 
-    <el-container>
+    <el-container class="admin-layout__body">
       <el-header class="admin-layout__header">
         <div class="admin-layout__header-left">
-          <el-tooltip :content="isAsideCollapsed ? '展开菜单' : '收起菜单'" placement="bottom">
+          <el-tooltip :content="navigationButtonLabel" placement="bottom">
             <el-button
               class="admin-layout__collapse-button"
-              :icon="isAsideCollapsed ? Expand : Fold"
+              :icon="navigationButtonIcon"
               circle
               text
-              :aria-label="isAsideCollapsed ? '展开菜单' : '收起菜单'"
-              @click="toggleAside"
+              :aria-label="navigationButtonLabel"
+              :aria-expanded="isMobile ? mobileMenuOpen : !isAsideCollapsed"
+              @click="toggleNavigation"
             />
           </el-tooltip>
-          <div class="admin-layout__title">管理后台</div>
+          <div class="admin-layout__title">
+            <span class="desktop-only">管理后台</span>
+            <span class="mobile-only">{{ mobilePageTitle }}</span>
+          </div>
           <nav class="admin-layout__tabs" aria-label="后台视图">
             <RouterLink
               v-for="tab in visibleHeaderTabs"
@@ -60,7 +78,7 @@
             </RouterLink>
           </nav>
         </div>
-        <div class="admin-layout__user">
+        <div class="admin-layout__user desktop-only">
           <el-button :icon="Search" circle text aria-label="搜索" />
           <el-button :icon="Bell" circle text aria-label="通知" />
           <el-button :icon="QuestionFilled" circle text aria-label="帮助" />
@@ -68,6 +86,17 @@
           <span>{{ userStore.userInfo?.userName ?? userStore.userName }}</span>
           <el-button text @click="handleLogout">退出</el-button>
         </div>
+        <el-dropdown class="admin-layout__account mobile-only" trigger="click" @command="handleAccountCommand">
+          <el-button class="admin-layout__account-button" text aria-label="打开账号菜单">
+            <el-avatar :size="32" :src="userStore.userInfo?.imagePath">{{ userInitial }}</el-avatar>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="profile">个人资料</el-dropdown-item>
+              <el-dropdown-item command="logout" divided>退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </el-header>
       <el-main class="admin-layout__main">
         <router-view />
@@ -77,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import {
   Bell,
   Collection,
@@ -85,6 +114,7 @@ import {
   EditPen,
   Expand,
   Fold,
+  Menu,
   QuestionFilled,
   Reading,
   Search,
@@ -107,8 +137,25 @@ const userStore = useUserStore()
 const appIconUrl = `${import.meta.env.BASE_URL}app-icon.svg`
 const asideStorageKey = 'xzs-admin-aside-collapsed'
 const isAsideCollapsed = ref(readAsideCollapsed())
+const mobileMediaQuery = window.matchMedia('(max-width: 767px)')
+const isMobile = ref(mobileMediaQuery.matches)
+const mobileMenuOpen = ref(false)
+const menuCollapsed = computed(() => !isMobile.value && isAsideCollapsed.value)
 const asideWidth = computed(() => (isAsideCollapsed.value ? '64px' : '232px'))
 const userInitial = computed(() => (userStore.userInfo?.userName ?? userStore.userName ?? 'A').slice(0, 1).toUpperCase())
+const mobilePageTitle = computed(() => typeof route.meta.title === 'string' ? route.meta.title : '管理后台')
+const navigationButtonLabel = computed(() => {
+  if (isMobile.value) {
+    return mobileMenuOpen.value ? '关闭菜单' : '打开菜单'
+  }
+  return isAsideCollapsed.value ? '展开菜单' : '收起菜单'
+})
+const navigationButtonIcon = computed(() => {
+  if (isMobile.value) {
+    return mobileMenuOpen.value ? Fold : Menu
+  }
+  return isAsideCollapsed.value ? Expand : Fold
+})
 const adminHeaderTabs = [
   { title: '数据看板', path: '/dashboard', isActive: (path: string) => path === '/dashboard' },
   { title: '考试管理', path: '/exam/paper/list', isActive: (path: string) => path.startsWith('/exam') },
@@ -148,8 +195,55 @@ function toggleAside() {
   window.localStorage.setItem(asideStorageKey, isAsideCollapsed.value ? '1' : '0')
 }
 
+function toggleNavigation() {
+  if (isMobile.value) {
+    mobileMenuOpen.value = !mobileMenuOpen.value
+    return
+  }
+  toggleAside()
+}
+
+function closeMobileMenu() {
+  mobileMenuOpen.value = false
+}
+
+function handleViewportChange(event: MediaQueryListEvent) {
+  isMobile.value = event.matches
+  if (!event.matches) {
+    closeMobileMenu()
+  }
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && mobileMenuOpen.value) {
+    closeMobileMenu()
+  }
+}
+
+async function handleAccountCommand(command: string) {
+  if (command === 'profile') {
+    await router.push('/profile/index')
+    return
+  }
+  if (command === 'logout') {
+    await handleLogout()
+  }
+}
+
 async function handleLogout() {
   await userStore.logout()
   router.push('/login')
 }
+
+watch(() => route.fullPath, closeMobileMenu)
+
+onMounted(() => {
+  mobileMediaQuery.addEventListener('change', handleViewportChange)
+  document.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  mobileMediaQuery.removeEventListener('change', handleViewportChange)
+  document.removeEventListener('keydown', handleKeydown)
+})
 </script>

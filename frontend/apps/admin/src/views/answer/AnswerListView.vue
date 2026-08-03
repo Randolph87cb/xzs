@@ -17,7 +17,7 @@
       </el-select>
     </section>
 
-    <el-table :data="answers" border>
+    <el-table class="desktop-only" :data="answers" border>
       <el-table-column prop="id" label="Id" width="90" />
       <el-table-column prop="paperName" label="试卷名称" min-width="220" show-overflow-tooltip />
       <el-table-column prop="userName" label="用户名称" width="140" />
@@ -30,6 +30,36 @@
       <el-table-column prop="doTime" label="耗时" width="110" />
       <el-table-column prop="createTime" label="提交时间" width="170" />
     </el-table>
+
+    <div class="mobile-only">
+      <div class="admin-mobile-cards">
+        <article v-for="answer in answers" :key="answer.id" class="admin-mobile-card">
+        <div class="admin-mobile-card__header">
+          <strong>{{ answer.paperName || '未命名试卷' }}</strong>
+          <el-tag type="success">{{ answer.userScore }} / {{ answer.paperScore }} 分</el-tag>
+        </div>
+        <div class="admin-mobile-card__fields">
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">学生</span>
+            <span class="admin-mobile-field__value">{{ answer.userName || '—' }}</span>
+          </div>
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">正确题数</span>
+            <span class="admin-mobile-field__value">{{ answer.questionCorrect }} / {{ answer.questionCount }}</span>
+          </div>
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">耗时</span>
+            <span class="admin-mobile-field__value">{{ answer.doTime || '—' }}</span>
+          </div>
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">提交时间</span>
+            <span class="admin-mobile-field__value">{{ answer.createTime || '—' }}</span>
+          </div>
+        </div>
+        </article>
+        <el-empty v-if="answers.length === 0" description="暂无答卷" />
+      </div>
+    </div>
 
     <footer class="admin-page__pagination">
       <el-pagination

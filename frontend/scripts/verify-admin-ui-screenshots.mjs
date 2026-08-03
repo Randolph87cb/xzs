@@ -37,15 +37,16 @@ page.on('response', (response) => {
 
 try {
   await page.goto(appUrl('/login'), { waitUntil: 'networkidle' })
-  await page.getByRole('heading', { name: '信息学客观题一本通管理端' }).waitFor({ timeout: 15000 })
+  await page.getByRole('heading', { name: '信息学客观题一本通', exact: true }).waitFor({ timeout: 15000 })
   await capture('01-login.png')
 
   await page.locator('input[autocomplete="username"]').fill(userName)
   await page.locator('input[autocomplete="current-password"]').fill(password)
   await page.getByRole('button', { name: '登录' }).click()
   await page.waitForURL(/#\/dashboard/, { timeout: 15000 })
-  await page.getByText('试卷数量').waitFor({ timeout: 15000 })
-  await page.getByText('近 30 日趋势').waitFor({ timeout: 15000 })
+  await page.getByText('今日考试场次', { exact: true }).waitFor({ timeout: 15000 })
+  await page.getByRole('heading', { name: '近 30 日答题趋势', exact: true }).waitFor({ timeout: 15000 })
+  await page.getByRole('heading', { name: '运营关注', exact: true }).waitFor({ timeout: 15000 })
   await capture('02-dashboard.png')
 
   const dashboard = await postJson('/api/admin/dashboard/index')

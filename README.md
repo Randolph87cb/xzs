@@ -26,7 +26,9 @@
 
 信息学客观题一本通是一套面向 GESP/CSP 客观题训练的在线练习系统，提供学生端练习、错题沉淀、考试记录和管理端题库/试卷管理能力。
 
-本项目基于开源考试系统 PostgreSQL 版改造，后端使用 Java + Spring Boot，Web 端使用 Vue 3 + Vite，保留微信小程序学生端源码。项目支持本地构建、Docker 部署、Fly.io 冷启动部署和树莓派部署。
+本项目基于开源考试系统 PostgreSQL 版改造，后端使用 Java + Spring Boot，Web 端使用 Vue 3 + Vite。项目支持本地构建、Docker 部署、Fly.io 冷启动部署和树莓派部署。
+
+微信小程序学生端仅保留历史源码和后端兼容接口，当前不启用、不构建、不发布、不验收；默认开发和新功能只覆盖学生 Web 与管理 Web。除非后续明确重新启用，不再为小程序同步功能。
 
 当前部署环境约定：树莓派是生产环境，使用 Neon `production` branch；Fly.io 是测试环境，应用名 `gesp-csp-quiz`，默认访问地址 `https://gesp-csp-quiz.fly.dev`，使用 Neon `test` branch；本地是开发环境，也使用 Neon `test` branch。Fly 测试环境部署入口为 `scripts/deploy-fly-neon-test.ps1`。
 
@@ -95,23 +97,6 @@
 | 时间线  | 显示管理员创建时间  |  
 | 修改资料  | 修改姓名、手机号  |  
 
-### 小程序功能
-
-|  模块   | 介绍  |
-|  ----  | ----  |
-| 登录  | 用户登录登出功能，登录会自动绑定微信账号，登出会解绑  |  
-| 注册  | 年级、用户名、密码  |  
-| 任务中心  | 管理员发布的年级任务，每个学生只能做一次  |  
-| 考试  | 题干支持文本、图片、数学公式、表格等，学生答题支持：文本  |  
-| 固定试卷  | 可重复练习、自行批改的试卷  |  
-| 时段试卷  | 在时间限制内，可重复练习、自行批改的试卷  |  
-| 考试记录  | 查看答卷记录和试卷信息  |  
-| 错题本  | 答错题目会自动进入错题本，显示题目基本信息  |  
-| 个人信息  | 显示学生个人资料  |  
-| 更新信息  | 修改个人资料、头像  |  
-| 个人动态  | 显示用户最近的个人动态  |  
-| 消息中心  | 用于接收管理员发送的消息  |  
-
 ### 系统展示
 
 * 学生训练端
@@ -119,22 +104,6 @@
     <tr>
         <td><img src="https://www.mindskip.net/style/git/images/student/1.png"/></td>
         <td><img src="https://www.mindskip.net/style/git/images/student/2.png"/></td>
-    </tr>
-</table>
-
-*  小程序考试系统
-<table>
-    <tr>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/1.png"/></td>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/2.png"/></td>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/3.png"/></td>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/4.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/5.png"/></td>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/8.png"/></td>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/6.png"/></td>
-        <td><img src="https://www.mindskip.net/style/git/images/wx/student/7.png"/></td>
     </tr>
 </table>
 

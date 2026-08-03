@@ -18,11 +18,10 @@
           placeholder="密码"
           show-password
           type="password"
-          @keyup.enter="handleLogin"
         />
       </el-form-item>
       <el-checkbox v-model="form.remember">保持登录</el-checkbox>
-      <el-button class="admin-login__button" type="primary" native-type="submit" :loading="loading" @click="handleLogin">
+      <el-button class="admin-login__button" type="primary" native-type="submit" :loading="loading">
         登录
       </el-button>
     </el-form>

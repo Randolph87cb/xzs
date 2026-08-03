@@ -27,10 +27,17 @@
           </div>
           <el-button @click="loadData">刷新</el-button>
         </header>
-        <div class="admin-dashboard__chart">
-          <div v-for="item in trendItems" :key="item.day" class="admin-dashboard__bar">
-            <span :style="{ height: `${item.height}%` }" />
-            <small>{{ item.day }}</small>
+        <div class="admin-dashboard__chart-scroll" aria-label="近 30 日答题趋势，可左右滑动查看全部日期">
+          <div class="admin-dashboard__chart">
+            <div
+              v-for="item in trendItems"
+              :key="item.day"
+              class="admin-dashboard__bar"
+              :class="{ 'has-date-label': item.showLabel }"
+            >
+              <span :style="{ height: `${item.height}%` }" />
+              <small>{{ item.showLabel ? item.day : '' }}</small>
+            </div>
           </div>
         </div>
       </section>
@@ -79,7 +86,8 @@ const trendItems = computed(() => {
   const max = Math.max(...values, 1)
   return labels.map((day, index) => ({
     day,
-    height: Math.max(6, Math.round(((values[index] ?? 0) / max) * 100))
+    height: Math.max(6, Math.round(((values[index] ?? 0) / max) * 100)),
+    showLabel: index === 0 || index === labels.length - 1 || index % 5 === 0
   }))
 })
 
@@ -95,3 +103,114 @@ async function loadData() {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.admin-dashboard {
+  min-width: 0;
+}
+
+.admin-dashboard__chart-scroll {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 767px) {
+  .admin-dashboard {
+    gap: 12px;
+  }
+
+  .admin-dashboard__notice {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+  }
+
+  .admin-dashboard__notice .el-button {
+    align-self: flex-end;
+    min-height: 44px;
+    margin: -6px 0 -8px;
+  }
+
+  .admin-dashboard__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .admin-dashboard__metric {
+    align-items: flex-start;
+    min-height: 116px;
+    padding: 12px;
+  }
+
+  .admin-dashboard__metric p {
+    min-height: 36px;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .admin-dashboard__metric strong {
+    display: block;
+    max-width: 100%;
+    font-size: 24px;
+    overflow-wrap: anywhere;
+  }
+
+  .admin-dashboard__metric small {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .admin-dashboard__metric-icon {
+    display: none;
+  }
+
+  .admin-dashboard__panel {
+    padding: 14px 12px;
+  }
+
+  .admin-dashboard__panel header {
+    align-items: flex-start;
+  }
+
+  .admin-dashboard__panel header .el-button {
+    flex: 0 0 auto;
+    min-height: 44px;
+  }
+
+  .admin-dashboard__chart-scroll {
+    margin-right: -12px;
+    padding-right: 12px;
+  }
+
+  .admin-dashboard__chart {
+    grid-template-columns: repeat(30, 16px);
+    gap: 8px;
+    width: max-content;
+    min-width: 720px;
+    height: 220px;
+    padding: 18px 0 24px;
+  }
+
+  .admin-dashboard__bar {
+    grid-template-rows: minmax(0, 1fr) 18px;
+    gap: 4px;
+  }
+
+  .admin-dashboard__bar small {
+    display: block;
+    width: 48px;
+    color: var(--xzs-text-muted);
+    font-size: 10px;
+    white-space: nowrap;
+    transform: translateX(-4px);
+  }
+
+  .admin-dashboard__bar:not(.has-date-label) small {
+    visibility: hidden;
+  }
+}
+</style>

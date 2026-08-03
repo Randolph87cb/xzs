@@ -13,7 +13,7 @@
       <el-button type="primary" @click="search">查询</el-button>
     </section>
 
-    <el-table :data="classes" border>
+    <el-table class="desktop-only" :data="classes" border>
       <el-table-column prop="id" label="Id" width="90" />
       <el-table-column prop="name" label="班级名称" min-width="180" />
       <el-table-column prop="gradeLevel" label="年级" width="100" />
@@ -31,6 +31,38 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="mobile-only">
+      <div class="admin-mobile-cards">
+        <article v-for="item in classes" :key="item.id" class="admin-mobile-card">
+        <div class="admin-mobile-card__header">
+          <strong>{{ item.name || '未命名班级' }}</strong>
+          <el-tag :type="item.status === 1 ? 'success' : 'info'">
+            {{ item.status === 1 ? '启用' : '禁用' }}
+          </el-tag>
+        </div>
+        <div class="admin-mobile-card__fields">
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">年级</span>
+            <span class="admin-mobile-field__value">{{ item.gradeLevel ?? '—' }}</span>
+          </div>
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">负责老师</span>
+            <span class="admin-mobile-field__value">{{ item.teacherName || '—' }}</span>
+          </div>
+          <div class="admin-mobile-field">
+            <span class="admin-mobile-field__label">创建时间</span>
+            <span class="admin-mobile-field__value">{{ item.createTime || '—' }}</span>
+          </div>
+        </div>
+        <div class="admin-mobile-card__actions">
+          <el-button type="primary" plain @click="router.push(`/class/edit?id=${item.id}`)">编辑</el-button>
+          <el-button type="danger" plain @click="remove(item.id)">删除</el-button>
+        </div>
+        </article>
+        <el-empty v-if="classes.length === 0" description="暂无班级" />
+      </div>
+    </div>
 
     <footer class="admin-page__pagination">
       <el-pagination

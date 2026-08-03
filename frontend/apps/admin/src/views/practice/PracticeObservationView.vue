@@ -67,7 +67,7 @@
           <el-segmented v-model="displayMode" :options="displayOptions" size="small" />
         </header>
 
-        <div v-if="students.length" class="practice-observation__matrix-scroll">
+        <div v-if="students.length" class="practice-observation__matrix-scroll" aria-label="练习矩阵，可左右滑动查看日期">
           <div class="practice-observation__matrix" :style="matrixStyle">
             <div class="practice-observation__student-heading">学生 / 备考方向</div>
             <div
@@ -85,7 +85,7 @@
                 class="practice-observation__student-cell"
                 :class="{ 'is-selected': selectedStudent?.id === student.id }"
                 type="button"
-                @click="selectStudent(student.id)"
+                @click="selectStudent(student.id, $event)"
               >
                 <span class="practice-observation__avatar">
                   <img
@@ -114,7 +114,7 @@
                 ]"
                 type="button"
                 :aria-label="dayAriaLabel(student.name, day)"
-                @click="selectStudent(student.id)"
+                @click="selectStudent(student.id, $event)"
               >
                 <template v-if="day.questionCount">
                   <span class="practice-observation__bars" aria-hidden="true">
@@ -141,7 +141,7 @@
         </footer>
       </main>
 
-      <aside v-if="!detailClosed" class="practice-observation__detail">
+      <aside v-if="!detailClosed" ref="detailSection" class="practice-observation__detail" tabindex="-1">
         <template v-if="selectedStudent">
           <header class="practice-observation__detail-header">
             <span class="practice-observation__avatar practice-observation__avatar--large">
@@ -163,7 +163,7 @@
               circle
               text
               aria-label="关闭学生详情"
-              @click="detailClosed = true"
+              @click="closeDetail"
             />
           </header>
 
@@ -234,7 +234,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { Close, Refresh, Search, UserFilled } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import {
@@ -254,6 +254,8 @@ const data = ref<AdminPracticeObservationResponse>()
 const classOptions = ref<AdminClassListItem[]>([])
 const selectedStudentId = ref<number>()
 const detailClosed = ref(false)
+const detailSection = ref<HTMLElement>()
+const isMobileViewport = ref(false)
 const avatarErrors = ref(new Set<number>())
 const displayMode = ref<DisplayMode>('accuracy')
 const displayOptions = [
@@ -276,8 +278,8 @@ const summary = computed(() => data.value?.summary ?? {
 const selectedStudent = computed(() => students.value.find((student) => student.id === selectedStudentId.value))
 const todayText = computed(() => data.value?.periodEnd ?? '')
 const matrixStyle = computed(() => ({
-  gridTemplateColumns: `168px repeat(${Math.max(dates.value.length, 1)}, minmax(92px, 1fr))`,
-  minWidth: `${168 + dates.value.length * 92}px`
+  gridTemplateColumns: `${isMobileViewport.value ? 144 : 168}px repeat(${Math.max(dates.value.length, 1)}, minmax(${isMobileViewport.value ? 80 : 92}px, 1fr))`,
+  minWidth: `${(isMobileViewport.value ? 144 : 168) + dates.value.length * (isMobileViewport.value ? 80 : 92)}px`
 }))
 const trendPoints = computed(() => {
   if (!selectedStudent.value) {
@@ -294,8 +296,16 @@ const trendPoints = computed(() => {
 })
 const trendPolyline = computed(() => trendPoints.value.map((point) => `${point.x},${point.y}`).join(' '))
 
+const mobileMediaQuery = window.matchMedia('(max-width: 767px)')
+
 onMounted(async () => {
+  updateMobileViewport(mobileMediaQuery)
+  mobileMediaQuery.addEventListener('change', updateMobileViewport)
   await Promise.all([loadClasses(), loadData()])
+})
+
+onBeforeUnmount(() => {
+  mobileMediaQuery.removeEventListener('change', updateMobileViewport)
 })
 
 watch(students, (items) => {
@@ -327,9 +337,29 @@ function classOptionLabel(item: AdminClassListItem) {
   return item.gradeLevel ? `${item.name} · ${item.gradeLevel}级` : item.name
 }
 
-function selectStudent(studentId: number) {
+async function selectStudent(studentId: number, event?: MouseEvent) {
+  if (event?.currentTarget instanceof HTMLElement) {
+    lastStudentTrigger = event.currentTarget
+  }
   selectedStudentId.value = studentId
   detailClosed.value = false
+  if (isMobileViewport.value) {
+    await nextTick()
+    detailSection.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    detailSection.value?.focus({ preventScroll: true })
+  }
+}
+
+let lastStudentTrigger: HTMLElement | null = null
+
+async function closeDetail() {
+  detailClosed.value = true
+  await nextTick()
+  lastStudentTrigger?.focus({ preventScroll: true })
+}
+
+function updateMobileViewport(event: MediaQueryList | MediaQueryListEvent) {
+  isMobileViewport.value = event.matches
 }
 
 function hasAvatar(student: AdminPracticeObservationStudent) {
@@ -544,7 +574,11 @@ function dayAriaLabel(studentName: string, day: AdminPracticeObservationDay) {
 }
 
 .practice-observation__matrix-scroll {
+  position: relative;
   overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: inset -14px 0 12px -16px rgb(36 67 111 / 55%);
 }
 
 .practice-observation__matrix {
@@ -560,6 +594,9 @@ function dayAriaLabel(studentName: string, day: AdminPracticeObservationDay) {
 }
 
 .practice-observation__student-heading {
+  position: sticky;
+  z-index: 3;
+  left: 0;
   display: flex;
   align-items: center;
   color: var(--xzs-text-muted);
@@ -599,12 +636,16 @@ function dayAriaLabel(studentName: string, day: AdminPracticeObservationDay) {
 }
 
 .practice-observation__student-cell {
+  position: sticky;
+  z-index: 2;
+  left: 0;
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px;
   color: var(--xzs-text);
   text-align: left;
+  background: var(--xzs-surface);
 }
 
 .practice-observation__student-cell > span:last-child {
@@ -953,14 +994,75 @@ function dayAriaLabel(studentName: string, day: AdminPracticeObservationDay) {
     width: 100%;
   }
 
+  .practice-observation__filters .el-button {
+    width: 100%;
+    min-height: 44px;
+    margin-left: 0;
+  }
+
+  .practice-observation__tabs span:not(.is-active) {
+    display: none;
+  }
+
+  .practice-observation__tabs {
+    gap: 0;
+  }
+
   .practice-observation__summary {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 3px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .practice-observation__summary > span {
+    display: grid;
+    align-content: center;
+    min-width: 0;
+    min-height: 58px;
+    padding: 8px 10px;
+    border: 1px solid var(--xzs-border);
+    border-radius: var(--xzs-radius-sm);
+    background: var(--xzs-surface);
+    overflow-wrap: anywhere;
   }
 
   .practice-observation__summary i {
     display: none;
+  }
+
+  .practice-observation__matrix-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .practice-observation__matrix-header :deep(.el-segmented) {
+    width: 100%;
+  }
+
+  .practice-observation__legend {
+    gap: 8px 12px;
+  }
+
+  .practice-observation__legend small {
+    flex: 1 1 100%;
+    margin-left: 0;
+  }
+
+  .practice-observation__detail {
+    scroll-margin-top: calc(68px + env(safe-area-inset-top));
+  }
+
+  .practice-observation__recent-list article {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .practice-observation__recent-list time {
+    grid-column: 1 / -1;
+  }
+
+  .practice-observation__recent-list span,
+  .practice-observation__recent-list em {
+    text-align: right;
   }
 }
 </style>

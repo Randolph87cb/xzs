@@ -1,12 +1,12 @@
 # 项目结构概览
 
-信息学客观题一本通是一套面向 GESP/CSP 客观题训练的 Java + Vue 前后端分离练习系统，基于开源考试系统 PostgreSQL 版改造，并附带微信小程序学生端。仓库同时包含源码、静态文档站、数据库脚本、Docker 配置、设备部署资产和已构建发布包。
+信息学客观题一本通是一套面向 GESP/CSP 客观题训练的 Java + Vue 前后端分离练习系统，基于开源考试系统 PostgreSQL 版改造。当前产品入口是学生 Web 和管理 Web；仓库另保留已停用的微信小程序学生端历史源码。仓库同时包含源码、静态文档站、数据库脚本、Docker 配置、设备部署资产和已构建发布包。
 
 主要技术栈：
 
 - 后端：Java 8、Spring Boot 2.7.18、Spring Security、MyBatis、PageHelper、Undertow、PostgreSQL、Flyway。
 - Web 前端：学生端和管理端源码均位于 `frontend/` 工作区，技术栈为 Vue 3、Vue Router 4、Pinia、Element Plus、Vite；旧 Vue 2 Web 目录已删除。
-- 微信小程序：原生微信小程序，内置 iView Weapp 组件。
+- 微信小程序（历史保留、当前停用）：原生微信小程序，内置 iView Weapp 组件；不进入默认开发、构建、部署和验收。
 - 数据库：PostgreSQL 初始化脚本位于 `sql/xzs-postgresql.sql`，Flyway 迁移脚本位于 `source/xzs/src/main/resources/db/migration/`。
 
 ## 顶层目录
@@ -24,8 +24,8 @@ xzs/
 ├── scripts/             # 本地构建、测量、静态资源同步、维护、题库解析治理和数据导入脚本
 ├── source/              # 源码根目录
 │   ├── xzs/             # Spring Boot 后端
-│   └── wx/              # 微信小程序源码
-│       └── xzs-student/ # 学生端小程序
+│   └── wx/              # 已停用的微信小程序历史源码
+│       └── xzs-student/ # 学生端小程序历史保留目录
 ├── sql/                 # PostgreSQL 建库/建表/初始化脚本
 ├── AGENTS.md            # 面向后续协作者的项目结构简述
 ├── Dockerfile           # Fly.io 远端构建用多阶段镜像
@@ -41,7 +41,7 @@ xzs/
 - `web-admin.md`：管理端 Vue 项目结构。
 - `web-student.md`：学生端 Vue 项目结构。
 - `frontend-modernization.md`：Vue 3 + Vite 覆盖式重构工作区结构。
-- `wx-student.md`：微信小程序学生端结构。
+- `wx-student.md`：已停用、仅保留历史源码的微信小程序学生端结构。
 - `database-deploy.md`：数据库、发布包与部署资产。
 - `reading-guide.md`：按业务链路阅读代码的建议入口。
 

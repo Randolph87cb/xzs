@@ -14,4 +14,4 @@
 
 - 管理端：先读 `frontend/apps/admin/src/router/index.ts`，再进入对应 `views`、`components` 和 `frontend/packages/api-client/src/*.ts`，最后查 `/api/admin/...` 的后端 Controller。
 - 学生 Web 端：先读 `frontend/apps/student/src/router/index.ts`，再进入对应 `views`、`components` 和 `frontend/packages/api-client/src/*.ts`，最后查 `/api/student/...` 的后端 Controller。
-- 微信小程序：先读 `source/wx/xzs-student/app.json` 和 `app.js`，再按 `pages` 目录查页面，最后查 `/api/wx/student/...` 的后端 Controller。
+- 微信小程序（历史保留、当前停用）：默认开发和验收无需阅读或同步；仅在用户明确要求重新启用或排查历史兼容问题时，先读 `source/wx/xzs-student/app.json` 和 `app.js`，再按 `pages` 目录查页面，最后查保留的 `/api/wx/student/...` 后端 Controller。
