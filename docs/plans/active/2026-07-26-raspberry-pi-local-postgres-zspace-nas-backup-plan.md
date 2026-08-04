@@ -257,6 +257,10 @@ Playwright 首页、错题本翻页和考试记录只读流程通过，未产生
 
 ### 4. Neon 异地灾备
 
+> 每日刷新加固与 Neon `test` 数据更新的后续执行拆分见
+> `docs/plans/active/2026-08-04-neon-daily-data-refresh-plan.md`。该方案明确区分
+> 隔离 DR 刷新与会覆盖测试写入的 `test` branch reset。
+
 - 当前现状：
   - 生产应用已不再连接 Neon production；Neon 旧环境备份和独立停止态
     `xzs-app-neon-rollback` 容器在 7 天观察期内保留。
