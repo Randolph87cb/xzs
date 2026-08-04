@@ -248,6 +248,9 @@ public class QuestionCorrectionController extends BaseApiController {
 
     private String pageBaseSql() {
         return "select c.*, u.user_name, u.real_name, q.question_type, q.correct, a.answer as student_answer, " +
+                "q.question_group_id as question_group_id, q.group_item_order as group_item_order, " +
+                "qg.group_code as question_group_code, qg.group_type as question_group_type, " +
+                "gtc.content::jsonb ->> 'titleContent' as question_group_title, " +
                 "tc.content::jsonb ->> 'titleContent' as title, " +
                 "tc.content::jsonb ->> 'questionItemObjects' as items, " +
                 "tc.content::jsonb ->> 'analyze' as analyze, " +
@@ -259,6 +262,8 @@ public class QuestionCorrectionController extends BaseApiController {
                 "join t_user u on u.id = c.user_id " +
                 "join t_question q on q.id = c.question_id " +
                 "join t_text_content tc on tc.id = q.info_text_content_id " +
+                "left join t_question_group qg on qg.id = q.question_group_id " +
+                "left join t_text_content gtc on gtc.id = qg.info_text_content_id " +
                 "join t_exam_paper_question_customer_answer a on a.id = c.customer_answer_id " +
                 latestAiReviewJoinSql() +
                 "where c.deleted = false ";

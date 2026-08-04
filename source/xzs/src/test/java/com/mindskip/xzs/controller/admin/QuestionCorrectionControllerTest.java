@@ -18,6 +18,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -105,9 +106,14 @@ public class QuestionCorrectionControllerTest {
     }
 
     @Test
-    public void selectIncludesQuestionItemsAndStudentAnswer() {
+    public void selectIncludesQuestionContentStudentAnswerAndCurrentQuestionGroupContextOnly() {
         Map<String, Object> row = correction("SUBMITTED");
         row.put("student_answer", "A");
+        row.put("question_group_id", 30);
+        row.put("group_item_order", 2);
+        row.put("question_group_code", "CSP-2025-G1");
+        row.put("question_group_type", 1);
+        row.put("question_group_title", "shared material");
         jdbcTemplate.addQueryForListResult(Collections.singletonList(row));
         jdbcTemplate.addQueryForListResult(Collections.emptyList());
 
@@ -118,7 +124,26 @@ public class QuestionCorrectionControllerTest {
         assertTrue(detailQuery.getSql().contains("->> 'questionItemObjects' as items"));
         assertTrue(detailQuery.getSql().contains("->> 'analyze' as analyze"));
         assertTrue(detailQuery.getSql().contains("student_answer"));
+        assertTrue(detailQuery.getSql().contains("q.question_group_id as question_group_id"));
+        assertTrue(detailQuery.getSql().contains("q.group_item_order as group_item_order"));
+        assertTrue(detailQuery.getSql().contains("qg.group_code as question_group_code"));
+        assertTrue(detailQuery.getSql().contains("qg.group_type as question_group_type"));
+        assertTrue(detailQuery.getSql().contains("gtc.content::jsonb ->> 'titleContent' as question_group_title"));
+        assertTrue(detailQuery.getSql().contains("left join t_question_group qg on qg.id = q.question_group_id"));
+        assertTrue(detailQuery.getSql().contains("left join t_text_content gtc on gtc.id = qg.info_text_content_id"));
+
+        String normalizedSql = detailQuery.getSql().replaceAll("\\s+", " ").toLowerCase();
+        assertEquals(1, countOccurrences(normalizedSql, "join t_question q on q.id = c.question_id"));
+        assertEquals(1, countOccurrences(normalizedSql, "t_question "));
+        assertFalse(normalizedSql.contains("json_agg("));
+        assertFalse(normalizedSql.contains("jsonb_agg("));
+        assertFalse(normalizedSql.contains("array_agg("));
         assertEquals("A", response.getResponse().get("student_answer"));
+        assertEquals(30, response.getResponse().get("question_group_id"));
+        assertEquals(2, response.getResponse().get("group_item_order"));
+        assertEquals("CSP-2025-G1", response.getResponse().get("question_group_code"));
+        assertEquals(1, response.getResponse().get("question_group_type"));
+        assertEquals("shared material", response.getResponse().get("question_group_title"));
     }
 
     @Test
@@ -272,6 +297,16 @@ public class QuestionCorrectionControllerTest {
         Map<String, Object> row = new HashMap<>();
         row.put("status", status);
         return row;
+    }
+
+    private int countOccurrences(String value, String token) {
+        int count = 0;
+        int fromIndex = 0;
+        while ((fromIndex = value.indexOf(token, fromIndex)) >= 0) {
+            count++;
+            fromIndex += token.length();
+        }
+        return count;
     }
 
     private User user(Integer id, String userName, String realName, RoleEnum role) {

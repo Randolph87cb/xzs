@@ -216,6 +216,11 @@ export interface AdminQuestionCorrectionItem {
   user_name?: string
   real_name?: string
   question_id: number
+  question_group_id?: number | null
+  group_item_order?: number | null
+  question_group_code?: string | null
+  question_group_type?: number | null
+  question_group_title?: string | null
   customer_answer_id: number
   title?: string
   items?: AdminQuestionEditItem[] | string | null

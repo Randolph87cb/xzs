@@ -115,12 +115,31 @@
               </div>
               <el-tag :type="statusTagType(detail.review_status)">{{ statusText(detail.review_status) }}</el-tag>
             </div>
-            <QuestionCorrectionContext
+            <section
+              v-if="questionGroupTitle"
+              class="correction-workbench__group-context"
+              data-testid="correction-question-group-context"
+            >
+              <div class="correction-workbench__group-meta">
+                <strong>{{ questionGroupTypeText(detail.question_group_type) }}</strong>
+                <span v-if="detail.question_group_code">题组编号：{{ detail.question_group_code }}</span>
+                <span v-if="detail.group_item_order !== null && detail.group_item_order !== undefined">
+                  第 {{ detail.group_item_order }} 小题
+                </span>
+              </div>
+              <QuestionMarkdown :content="questionGroupTitle" />
+            </section>
+            <div
               v-if="reviewQuestion && reviewAnswer"
-              :question="reviewQuestion"
-              :answer="reviewAnswer"
-              :show-result="false"
-            />
+              class="correction-workbench__current-question"
+              data-testid="correction-current-question"
+            >
+              <QuestionCorrectionContext
+                :question="reviewQuestion"
+                :answer="reviewAnswer"
+                :show-result="false"
+              />
+            </div>
           </section>
 
           <aside class="correction-workbench__side-panel">
@@ -458,6 +477,10 @@ const canApplyAiSuggestion = computed(() => {
   return Boolean(
     getAiStudentFeedbackDraft(aiReview) || aiReview.reviewResult === 'APPROVED' || aiReview.reviewResult === 'REJECTED'
   )
+})
+const questionGroupTitle = computed(() => {
+  const title = detail.value?.question_group_title
+  return title?.trim() ? title : ''
 })
 const reviewQuestion = computed(() => {
   if (!detail.value) return null
@@ -832,6 +855,12 @@ function statusTagType(status?: string): 'success' | 'warning' | 'danger' | 'inf
   return 'info'
 }
 
+function questionGroupTypeText(type?: number | null) {
+  if (type === 1) return '程序阅读题共享题面'
+  if (type === 2) return '程序填空题共享题面'
+  return '题组共享题面'
+}
+
 function aiResultText(result: QuestionCorrectionAiReviewResult) {
   const map: Record<QuestionCorrectionAiReviewResult, string> = {
     APPROVED: '建议通过',
@@ -1166,6 +1195,36 @@ function parseAnswerArray(value?: string | null) {
   margin-bottom: 16px;
 }
 
+.correction-workbench__group-context {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #f8fbff;
+}
+
+.correction-workbench__group-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--xzs-text-muted);
+  font-size: 13px;
+}
+
+.correction-workbench__group-meta strong {
+  color: var(--xzs-primary);
+  font-size: 14px;
+}
+
+.correction-workbench__group-context :deep(.question-markdown),
+.correction-workbench__current-question {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .correction-workbench__side-panel {
   display: grid;
   align-content: start;
@@ -1482,6 +1541,10 @@ function parseAnswerArray(value?: string | null) {
 
   .correction-workbench__question-panel,
   .correction-workbench__side-panel {
+    padding: 12px;
+  }
+
+  .correction-workbench__group-context {
     padding: 12px;
   }
 
