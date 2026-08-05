@@ -76,7 +76,6 @@ nano .env
 - `XZS_POSTGRES_DATA_DIR`：已确认位于 USB SSD 的数据目录，例如
   `<USB-SSD>/xzs/postgres/data`。不能使用 SD 卡路径或 NAS 路径。
 - `XZS_BACKUP_STAGING_DIR`：USB SSD 上独立的备份暂存目录。
-- `NEON_DR_DIRECT_URL`：专用 Neon 灾备目标的 direct（非 pooled）连接串。
 - `XZS_AI_CONFIG_SECRET`：生产环境固定密钥，32 字符或更长。该值用于加密/解密老师保存的大模型 API Key，换值后旧密文需要重新保存。
 
 不要把 `.env` 提交到 Git，也不要发到聊天记录或日志里。
@@ -114,6 +113,28 @@ Compose 配置校验。同步本身不会安装 systemd unit。确认要同步�
 `.env.shadow.example` 和 `ops`，随后用无 secret 的临时占位配置检查生产默认形态和
 影子形态均可展开。它不会启动容器，也不能与 `-Restart`、`-SkipPull`、`-Verify`
 或 `-AllowPlaceholders` 组合。
+
+Neon production 刷新和后续 `test` reset 不使用上述应用 `.env`。先从专用模板创建
+本地忽略文件并离线查看部署计划；计划模式不读取任何 secret，也不连接远端：
+
+```powershell
+Copy-Item docker/.env.neon-production-refresh.example docker/.env.neon-production-refresh
+# 填写真实值后再继续；不要打印或提交该文件。
+.\scripts\deploy-raspi-neon-refresh.ps1 -Plan
+```
+
+默认执行只上传所需 ops 脚本和三个 systemd unit（人工 service、日常 service、timer），把专用配置原子安装为
+`/etc/xzs/neon-production-refresh.env`（`root:root 0600`），执行 Bash/Python、unit、
+命令依赖和文件权限的离线预检，并主动保持 timer 禁用。它不会运行刷新或 reset：
+
+```powershell
+.\scripts\deploy-raspi-neon-refresh.ps1
+```
+
+该入口复用 `sync-raspi-production-env.ps1` 的 Cloudflare TCP 隧道、根目录 `.env`
+中的 `MY_SSH_KEY` 和 Paramiko 认证方式；密码与 Neon secret 都通过标准输入或 SFTP
+传输，不进入命令行和日志。应用日常同步仍可独立使用原入口，两个脚本写入同一个
+`/opt/apps/gesp-csp-quiz/ops`，但专用入口只覆盖刷新所需白名单文件。
 
 登录阿里云 ACR：
 
@@ -435,14 +456,37 @@ XZS_BACKUP_ROOT="/mnt/zspace-xzs-backup/gesp-csp-quiz" \
 ./ops/backup-postgres-to-zspace.sh --label before-upgrade
 ```
 
-Neon 每日刷新 timer 只在本地主库稳定观察至少 7 天、专用 DR 目标已准备、
-首次人工恢复和校验通过后安装并启用：
+Neon 每日刷新分三次显式调用，不能合并越过检查点。第一步只安装和离线预检，timer
+保持禁用；第二步才允许首次人工执行 Neon production 刷新和 `test` reset，完成后仍
+保持禁用。`-RunOnce` 启动独立的 `xzs-neon-dr-refresh-manual.service`：第一个
+`ExecStart` 成功刷新 production 后，第二个 `ExecStart` 才以 `--preserve-current`
+保留 reset 前的 test 回滚分支。任一步失败都会停止，不进入下一步：
 
-```sh
-sudo install -m 0644 ops/xzs-neon-dr-refresh.service ops/xzs-neon-dr-refresh.timer /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now xzs-neon-dr-refresh.timer
+```powershell
+.\scripts\deploy-raspi-neon-refresh.ps1
+.\scripts\deploy-raspi-neon-refresh.ps1 `
+  -RunOnce `
+  -ConfirmManualRun REFRESH_NEON_PRODUCTION_AND_RESET_TEST
 ```
+
+人工周期必须对账通过，且至少 7 天稳定观察完成后，才能单独启用 timer。启用入口会
+再次检查 production 刷新和 test reset 的成功状态属于同一备份代次：
+
+```powershell
+.\scripts\deploy-raspi-neon-refresh.ps1 `
+  -EnableTimer `
+  -ConfirmEnableTimer ENABLE_DAILY_NEON_PRODUCTION_REFRESH_AND_TEST_RESET `
+  -ConfirmSevenDayObservationCompleted
+```
+
+启用操作只有在 `systemctl enable --now` 成功且 timer 同时为 `enabled`、`active` 后才
+提交；任一步失败都会立即执行 `disable --now` 回滚，失败返回时 timer 必须保持禁用。
+
+不传 `-RunOnce` 或 `-EnableTimer` 时绝不执行外部数据库写入；每次普通安装还会主动
+禁用 timer，避免重新部署配置时意外触发旧计划。任何安装、预检、人工周期或状态
+检查失败都会返回非零退出码，不继续启用 timer。日常
+`xzs-neon-dr-refresh.service` 的 test reset 不带 `--preserve-current`，避免每天积累
+旧分支；保留回滚分支只用于上述首次人工演练。
 
 不要把生产应用指向 Neon DR；故障切换必须先冻结本地写入，避免双主。Fly.io 固定
 为 Neon test 测试环境，不是生产灾备写入目标。

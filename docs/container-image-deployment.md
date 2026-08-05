@@ -55,6 +55,10 @@ Fly 测试环境也使用同一个 `Dockerfile`，但由 `flyctl deploy` 构建�
 - Fly 测试环境从 `.env.neon-test` 读取测试 secret，部署入口为 `scripts/deploy-fly-neon-test.ps1`。
 - 树莓派生产环境从 `/opt/apps/gesp-csp-quiz/.env` 读取本地数据库、USB SSD
   数据目录、备份目录和生产 secret，模板为 `docker/.env.production.example`。
+- Neon production 刷新与后续 `test` reset 使用独立的
+  `/etc/xzs/neon-production-refresh.env`（`root:root 0600`），本地忽略文件为
+  `docker/.env.neon-production-refresh`，可提交模板为
+  `docker/.env.neon-production-refresh.example`。它不与应用 `.env` 合并。
 - 树莓派 compose 模板为 `docker/docker-compose.yml`，默认镜像是 ACR `latest`。
 - 树莓派影子验收使用同一 Compose 和 `docker/.env.shadow.example`，固定以
   `xzs-shadow` 独立 project 运行，只绑定 `127.0.0.1:18000`，不修改生产 project。
@@ -62,8 +66,8 @@ Fly 测试环境也使用同一个 `Dockerfile`，但由 `flyctl deploy` 构建�
 ## 差异点
 
 - 数据库链路不同：树莓派应用只连接 Compose 内部 PostgreSQL；Fly 和本地只连接
-  Neon `test`。树莓派 `.env` 中的 `NEON_DR_DIRECT_URL` 仅供独立灾备刷新任务使用，
-  不传给应用容器。
+  Neon `test`。Neon production/test 的连接串和 API key 只存在于独立刷新环境文件，
+  不写入应用 `.env`，也不传给应用容器。
 - 镜像 registry 不同：树莓派拉阿里云 ACR，Fly 由 Fly 自己构建和发布。
 - 日志路径不同：树莓派 compose 默认把 `/usr/log/xzs/` 映射到宿主机 `./log`；Fly 日志主要看 `fly logs`。
 - 密钥来源不同：树莓派 `.env` 在生产主机维护；Fly secret 由本机 `.env.neon-test` 导入。

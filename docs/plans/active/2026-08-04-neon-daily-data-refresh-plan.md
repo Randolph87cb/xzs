@@ -3,7 +3,7 @@
 状态：active
 创建日期：2026-08-04
 完成日期：
-验证摘要：已完成仓库与远端只读审计；当前 Neon DR 目标与 Fly 使用的 Neon `test` 目标不同，树莓派未安装或启用 `xzs-neon-dr-refresh.timer`。进入实现前仍需确认是否允许每日覆盖 `test` 分支。
+验证摘要：仓库实现与本地离线验收已 GO：生产刷新失败门 18/18、`test` reset 状态机 19/19、PowerShell 部署失败门和 timer 回滚验证通过。用户已确认每日刷新 Neon `production`，成功后 reset `test`，并接受 `test` 临时写入被覆盖。尚未安装远端 unit、执行首次真实刷新或启用 timer。
 
 ## 背景与现状
 
@@ -24,6 +24,8 @@
 - 任务形态：复杂分阶段。
 - 主线程：定界、方案、阶段验收、Git、外部写操作授权、部署和上线后观察。
 - 实现 subagent：只修改仓库内刷新脚本、unit、模板和测试，不执行 Git、树莓派或 Neon 写操作。
+- 部署集成 subagent：提供独立 secret 模板和可重复部署入口；默认仅安装、离线预检并
+  保持 timer 禁用，首次人工周期和 timer 启用分别要求显式确认参数。
 - 独立验证 subagent：验证失败门、目标隔离、备份族校验、日志脱敏、定时行为和部署后状态。
 - 外部写操作：首次 DR 恢复、`test` reset、timer 安装/启用必须串行，并在各自检查点通过后由主线程执行。
 - Git 策略：实现和独立验证通过后由主线程提交并 push；不得提交任何 secret 或测试输出。
@@ -72,11 +74,15 @@
 3. 主线程验收实现范围和本地失败门。
 4. 独立验证 subagent 统一验证仓库产物，失败项集中返修一次。
 5. 主线程提交并 push。
-6. 树莓派只读 preflight；建立 Neon 侧回滚点。
-7. 首次人工 DR 刷新并完成数据对账和日志脱敏检查。
-8. 安装但暂不启用 timer，验证下次触发计划后启用；观察首次自动运行。
-9. 若已授权覆盖 `test`，再实现并演练 branch reset；通过后安装每日 test reset timer。
-10. 连续观察至少两次自动周期，确认 DR/test 新鲜度、Fly 可用性和失败告警。
+6. 从 `docker/.env.neon-production-refresh.example` 建立被忽略的本地专用 secret，
+   通过 `scripts/deploy-raspi-neon-refresh.ps1` 安装 ops、unit 和远端 root `0600`
+   环境文件；默认只做离线 preflight，并保持 timer 禁用。
+7. 建立 Neon 侧回滚点，再显式传 `-RunOnce` 和确认词执行首次人工周期。人工 unit
+   严格先刷新 production，成功后才以 `--preserve-current` reset test，并完成数据
+   对账和日志脱敏检查。
+8. 至少 7 天稳定观察完成后，单独显式传 `-EnableTimer`、启用确认词和观察期确认开关；
+   日常 unit 不保留旧 test 分支。验证下次触发计划后观察首次自动运行。
+9. 连续观察至少两次自动周期，确认 DR/test 新鲜度、Fly 可用性和失败告警。
 
 ## 检查点与停止条件
 
@@ -88,13 +94,13 @@
 
 ## 风险与待确认
 
-- 需要用户确认：是否每天自动覆盖 Fly 使用的 Neon `test` 分支，并接受所有测试写入在下一次 reset 时丢失、连接短暂中断。
+- 已确认：每天自动覆盖 Fly 使用的 Neon `test` 分支，接受所有测试写入在下一次 reset 时丢失和连接短暂中断。
 - 需要确认 Neon `test` 与准备每日刷新的父分支存在可 reset 的父子关系；否则需先调整 Neon 分支结构。
 - 需要确认生产学生数据是否允许完整进入公开测试环境；若不允许，必须先定义账号、姓名、联系方式和答题记录的脱敏规则。
 - Neon API key、branch ID 和 direct URL 只能写入被忽略的本地/远端 secret 文件，不能进入 Git、日志或聊天。
 
 ## 收尾记录
 
-- 完成状态：等待用户确认 `test` 覆盖与生产数据进入测试环境的边界。
+- 完成状态：执行中；仓库实现和离线验收已 GO，等待专用 Neon secret 配置后进入远端安装、只读 preflight 和首次人工周期。
 - 归档日期：
 - 归档原因：

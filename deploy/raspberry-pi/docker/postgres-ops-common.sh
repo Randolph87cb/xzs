@@ -19,6 +19,100 @@ require_file() {
   [[ -r "$1" ]] || die "Required file is not readable: $1"
 }
 
+require_root_0600_file() {
+  local file="$1"
+  local owner_id
+  local mode
+
+  require_file "$file"
+  [[ ! -L "$file" ]] || die "Secret environment file must not be a symbolic link."
+  owner_id="$(stat --format '%u' "$file")"
+  mode="$(stat --format '%a' "$file")"
+  [[ "$owner_id" == "0" && "$mode" == "600" ]] ||
+    die "Secret environment file must be owned by root with mode 0600."
+}
+
+acquire_postgres_ops_lock() {
+  require_command flock
+  require_command readlink
+  require_command realpath
+  local lock_file="${XZS_POSTGRES_OPS_LOCK_FILE:-/run/lock/xzs-postgres-ops.lock}"
+  local lock_dir
+  local inherited_fd="${XZS_POSTGRES_OPS_LOCK_FD:-}"
+  local resolved_lock_file
+  local resolved_inherited_target
+  lock_dir="$(dirname "$lock_file")"
+  [[ -d "$lock_dir" ]] || die "PostgreSQL operations lock directory does not exist: $lock_dir"
+
+  if [[ -n "$inherited_fd" ]]; then
+    [[ "$inherited_fd" =~ ^[0-9]+$ && -e "/proc/$$/fd/${inherited_fd}" ]] ||
+      die "Inherited PostgreSQL operations lock descriptor is invalid."
+    resolved_lock_file="$(realpath -e "$lock_file")"
+    resolved_inherited_target="$(readlink -f "/proc/$$/fd/${inherited_fd}")"
+    [[ "$resolved_inherited_target" == "$resolved_lock_file" ]] ||
+      die "Inherited PostgreSQL operations lock descriptor points to the wrong file."
+    flock -n "$inherited_fd" ||
+      die "Another XZS PostgreSQL backup, restore, or Neon refresh operation is already running."
+    return
+  fi
+
+  exec {XZS_POSTGRES_OPS_LOCK_FD}>"$lock_file"
+  flock -n "$XZS_POSTGRES_OPS_LOCK_FD" ||
+    die "Another XZS PostgreSQL backup, restore, or Neon refresh operation is already running."
+  export XZS_POSTGRES_OPS_LOCK_FD
+}
+
+acquire_shared_lock_for_operational_entrypoint() {
+  local caller
+  caller="$(basename "$0")"
+  case "$caller" in
+    backup-postgres-to-zspace.sh | \
+      restore-postgres-backup.sh | \
+      test-restore-postgres-backup.sh | \
+      refresh-neon-dr-from-latest.sh | \
+      refresh-neon-disaster-recovery.sh)
+      acquire_postgres_ops_lock
+      ;;
+  esac
+}
+
+resolve_verified_nas_project_root() {
+  local project_root="${XZS_BACKUP_ROOT:-/mnt/zspace-xzs-backup/gesp-csp-quiz}"
+  local expected_mount_target="${XZS_BACKUP_EXPECTED_MOUNT_TARGET:-}"
+  local expected_fstype="${XZS_BACKUP_EXPECTED_FSTYPE:-cifs}"
+  local findmnt_output
+  local actual_mount_target
+  local actual_fstype
+  local extra
+
+  require_command findmnt
+  require_command realpath
+  [[ "$project_root" == /* ]] || die "Backup project root must be an absolute path."
+  [[ "$expected_mount_target" == /* ]] ||
+    die "Set XZS_BACKUP_EXPECTED_MOUNT_TARGET to the mount target containing the NAS backup root."
+  [[ "$expected_fstype" =~ ^[A-Za-z0-9._+-]+$ ]] ||
+    die "XZS_BACKUP_EXPECTED_FSTYPE is invalid."
+
+  project_root="$(realpath -e "$project_root")"
+  expected_mount_target="$(realpath -e "$expected_mount_target")"
+  if ! findmnt_output="$(
+    findmnt --noheadings --raw --target "$project_root" --output TARGET,FSTYPE
+  )"; then
+    die "Could not identify the filesystem carrying the NAS backup root."
+  fi
+  read -r actual_mount_target actual_fstype extra <<<"$findmnt_output"
+  [[ -n "$actual_mount_target" && -n "$actual_fstype" && -z "${extra:-}" ]] ||
+    die "Filesystem identity for the NAS backup root is ambiguous."
+  actual_mount_target="$(realpath -e "$actual_mount_target")"
+  [[ "$actual_mount_target" != "/" ]] ||
+    die "NAS backup root is carried by the root filesystem, not the expected remote mount."
+  [[ "$actual_mount_target" == "$expected_mount_target" && "$actual_fstype" == "$expected_fstype" ]] ||
+    die "NAS backup root is not carried by the approved mount target and filesystem type."
+  [[ "$project_root" == "$actual_mount_target"/* ]] ||
+    die "Backup project root must be below the verified NAS mount target."
+  printf '%s' "$project_root"
+}
+
 compose() {
   docker compose --project-directory "$APP_DIR" --env-file "$ENV_FILE" -f "$COMPOSE_FILE" "$@"
 }
@@ -126,3 +220,5 @@ load_postgres_identity() {
   POSTGRES_USER="$(read_compose_env_value POSTGRES_USER)"
   POSTGRES_DB="$(read_compose_env_value POSTGRES_DB)"
 }
+
+acquire_shared_lock_for_operational_entrypoint

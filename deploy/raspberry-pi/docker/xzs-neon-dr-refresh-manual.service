@@ -1,5 +1,5 @@
 [Unit]
-Description=Refresh Neon production from the latest verified XZS backup
+Description=Manually refresh Neon production and reset test with a preserved rollback branch
 RequiresMountsFor=/mnt/zspace-xzs-backup
 After=docker.service
 Requires=docker.service
@@ -16,7 +16,7 @@ Environment=XZS_NEON_DR_STATE_FILE=/var/lib/xzs-neon-dr-refresh/last-success.jso
 Environment=XZS_NEON_TEST_SECRET_FILE=/etc/xzs/neon-production-refresh.env
 Environment=XZS_NEON_TEST_RESET_STATE_FILE=/var/lib/xzs-neon-dr-refresh/test-reset-state.json
 ExecStart=/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n7 /opt/apps/gesp-csp-quiz/ops/refresh-neon-dr-from-latest.sh
-ExecStart=/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n7 /usr/bin/python3 /opt/apps/gesp-csp-quiz/ops/reset-neon-test-from-production.py
+ExecStart=/usr/bin/nice -n 10 /usr/bin/ionice -c2 -n7 /usr/bin/python3 /opt/apps/gesp-csp-quiz/ops/reset-neon-test-from-production.py --preserve-current
 UMask=0077
 NoNewPrivileges=true
 PrivateTmp=true
