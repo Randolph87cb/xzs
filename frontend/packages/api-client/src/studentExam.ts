@@ -226,6 +226,12 @@ export interface QuestionAnswerDetail {
 
 export type QuestionCorrectionReviewStatus = 'SUBMITTED' | 'APPROVED' | 'REJECTED'
 
+export type QuestionCorrectionStatusFilter = 'UNSUBMITTED' | QuestionCorrectionReviewStatus
+
+export interface WrongQuestionPageRequest extends PageRequest {
+  correctionStatus?: QuestionCorrectionStatusFilter
+}
+
 export interface QuestionCorrectionRecord {
   id?: number
   user_id?: number
@@ -336,7 +342,9 @@ export function getQuestionAnswerPage(request: PageRequest): Promise<ApiResponse
   return post<PageResponse<QuestionAnswerListItem>>('/api/student/question/answer/page', request)
 }
 
-export function getWrongQuestionPage(request: PageRequest): Promise<ApiResponse<PageResponse<QuestionAnswerListItem>>> {
+export function getWrongQuestionPage(
+  request: WrongQuestionPageRequest
+): Promise<ApiResponse<PageResponse<QuestionAnswerListItem>>> {
   return post<PageResponse<QuestionAnswerListItem>>('/api/student/question/answer/wrongQuestionPage', request)
 }
 

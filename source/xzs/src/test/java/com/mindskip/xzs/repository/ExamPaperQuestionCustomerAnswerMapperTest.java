@@ -7,6 +7,8 @@ import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.session.Configuration;
 import org.junit.Test;
 
+import com.mindskip.xzs.viewmodel.student.question.answer.QuestionPageStudentRequestVM;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,12 +52,62 @@ public class ExamPaperQuestionCustomerAnswerMapperTest {
         assertTrue(properties.contains("correction"));
     }
 
+    @Test
+    public void wrongQuestionPageWithoutCorrectionStatusKeepsAllWrongQuestions() throws Exception {
+        MappedStatement statement = wrongQuestionPageStatement();
+
+        BoundSql boundSql = statement.getBoundSql(wrongQuestionPageRequest(null));
+        String sql = normalize(boundSql.getSql());
+
+        assertTrue(sql.contains("left join lateral"));
+        assertTrue(sql.contains("customer_answer_id = latest.id"));
+        assertFalse(sql.contains("correction.review_status is null"));
+        assertFalse(sql.contains("correction.review_status = ?"));
+    }
+
+    @Test
+    public void wrongQuestionPageFiltersUnsubmittedBeforePagination() throws Exception {
+        MappedStatement statement = wrongQuestionPageStatement();
+
+        BoundSql boundSql = statement.getBoundSql(wrongQuestionPageRequest("UNSUBMITTED"));
+        String sql = normalize(boundSql.getSql());
+
+        assertTrue(sql.contains("correction.review_status is null"));
+        assertFalse(sql.contains("correction.review_status = ?"));
+    }
+
+    @Test
+    public void wrongQuestionPageFiltersSubmittedBeforePagination() throws Exception {
+        MappedStatement statement = wrongQuestionPageStatement();
+
+        BoundSql boundSql = statement.getBoundSql(wrongQuestionPageRequest("SUBMITTED"));
+        String sql = normalize(boundSql.getSql());
+
+        assertTrue(sql.contains("correction.review_status = ?"));
+        assertFalse(sql.contains("correction.review_status is null"));
+    }
+
     private Configuration parse(String resource) throws Exception {
         Configuration configuration = new Configuration();
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(resource)) {
             new XMLMapperBuilder(input, configuration, resource, configuration.getSqlFragments()).parse();
         }
         return configuration;
+    }
+
+    private MappedStatement wrongQuestionPageStatement() throws Exception {
+        Configuration configuration = parse("mapper/ExamPaperQuestionCustomerAnswerMapper.xml");
+        return configuration.getMappedStatement(
+                "com.mindskip.xzs.repository.ExamPaperQuestionCustomerAnswerMapper.studentWrongQuestionPage");
+    }
+
+    private QuestionPageStudentRequestVM wrongQuestionPageRequest(String correctionStatus) {
+        QuestionPageStudentRequestVM request = new QuestionPageStudentRequestVM();
+        request.setCreateUser(7);
+        request.setPageIndex(1);
+        request.setPageSize(10);
+        request.setCorrectionStatus(correctionStatus);
+        return request;
     }
 
     private String normalize(String sql) {

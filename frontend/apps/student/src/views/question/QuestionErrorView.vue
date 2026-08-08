@@ -12,7 +12,7 @@
       <aside class="question-error__queue" v-loading="loading">
         <div class="question-error__queue-header">
           <h2>错题队列</h2>
-          <el-tag size="small" type="info">{{ total }} 条</el-tag>
+          <el-tag size="small" type="info">{{ activeLayerLabel }} {{ total }} 条</el-tag>
         </div>
 
         <div class="question-error__status-grid" aria-label="改错状态筛选">
@@ -249,7 +249,6 @@ const selectedQuestion = ref<ExamQuestion | null>(null)
 const selectedAnswer = ref<AnswerItem | null>(null)
 const correction = ref<QuestionCorrectionRecord | null>(null)
 const wrongHistory = ref<QuestionWrongHistoryItem[]>([])
-const completedCorrectionLayer = ref<CorrectionLayerKey | null>(null)
 const query = reactive({
   pageIndex: 1,
   pageSize: 10
@@ -262,7 +261,7 @@ let questionListRequestSequence = 0
 let selectionRequestSequence = 0
 
 const filteredQuestions = computed(() =>
-  questions.value.filter((question) => rowCorrectionLayer(question) === activeCorrectionLayer.value)
+  questions.value
 )
 const groupedFilteredQuestions = computed(() => {
   const groups = new Map<string, QuestionAnswerListItem[]>()
@@ -280,6 +279,7 @@ const groupedFilteredQuestions = computed(() => {
 
 const selectedCorrectionLayer = computed<CorrectionLayerKey>(() => correctionLayerFromRecord(correction.value))
 const selectedCorrectionStatusText = computed(() => correctionLayerText(selectedCorrectionLayer.value))
+const activeLayerLabel = computed(() => correctionLayerText(activeCorrectionLayer.value))
 const canSubmitCorrection = computed(() => {
   const status = selectedCorrectionLayer.value
   return status === 'UNSUBMITTED' || status === 'REJECTED'
@@ -296,26 +296,35 @@ const correctionHistoryText = computed(() => {
   }
   return map[selectedCorrectionLayer.value]
 })
-const detailEmptyDescription = computed(() =>
-  completedCorrectionLayer.value === activeCorrectionLayer.value ? '当前层次已处理完成' : '请选择错题'
-)
+const detailEmptyDescription = computed(() => (total.value === 0 && !loading.value ? '当前层次暂无错题' : '请选择错题'))
 
 onMounted(loadQuestions)
 
 async function loadQuestions() {
   const listRequestSequence = ++questionListRequestSequence
-  completedCorrectionLayer.value = null
   invalidateSelectedQuestion()
   loading.value = true
   try {
-    const result = await getWrongQuestionPage(query)
+    const result = await getWrongQuestionPage({
+      pageIndex: query.pageIndex,
+      pageSize: query.pageSize,
+      correctionStatus: activeCorrectionLayer.value
+    })
     if (listRequestSequence !== questionListRequestSequence) {
       return
     }
 
     const page = result.response
-    questions.value = page?.list ?? []
-    total.value = page?.total ?? 0
+    const pageList = page?.list ?? []
+    const pageTotal = page?.total ?? 0
+    if (pageTotal > 0 && pageList.length === 0 && query.pageIndex > 1) {
+      query.pageIndex = Math.max(1, Math.min(query.pageIndex - 1, page?.pages ?? query.pageIndex - 1))
+      await loadQuestions()
+      return
+    }
+
+    questions.value = pageList
+    total.value = pageTotal
     query.pageIndex = page?.pageNum ?? query.pageIndex
   } finally {
     if (listRequestSequence === questionListRequestSequence) {
@@ -330,7 +339,6 @@ async function loadQuestions() {
 
 async function selectQuestion(row: QuestionAnswerListItem) {
   const requestSequence = ++selectionRequestSequence
-  completedCorrectionLayer.value = null
   selectedRow.value = row
   selectedQuestion.value = null
   selectedAnswer.value = null
@@ -380,9 +388,7 @@ async function submitCorrectionForm() {
     return
   }
 
-  const activeLayer = activeCorrectionLayer.value
   const currentRow = selectedRow.value
-  const nextQuestion = findNextQuestion(currentRow)
   const selectedRequestSequence = selectionRequestSequence
   const wrongReason = correctionForm.wrongReason.trim()
   const correctThinking = correctionForm.correctThinking.trim()
@@ -404,7 +410,6 @@ async function submitCorrectionForm() {
     ElMessage.success(result.message || '已提交，已移至待审核')
 
     if (selectedRequestSequence === selectionRequestSequence && selectedRow.value?.id === currentRow.id) {
-      activeCorrectionLayer.value = activeLayer
       correction.value = {
         ...correction.value,
         id: submitted.correctionId,
@@ -415,13 +420,7 @@ async function submitCorrectionForm() {
         reviewer_name: undefined,
         review_comment: undefined
       }
-
-      if (nextQuestion && rowCorrectionLayer(nextQuestion) === activeLayer) {
-        await selectQuestion(nextQuestion)
-      } else {
-        clearSelectedQuestion()
-        completedCorrectionLayer.value = activeLayer
-      }
+      await loadQuestions()
     }
   } finally {
     submitting.value = false
@@ -434,9 +433,9 @@ function handlePageChange(page: number) {
 }
 
 function handleLayerChange(layer: CorrectionLayerKey) {
-  completedCorrectionLayer.value = null
   activeCorrectionLayer.value = layer
-  selectFirstQuestionInCurrentLayer()
+  query.pageIndex = 1
+  loadQuestions()
 }
 
 async function selectFirstQuestionInCurrentLayer() {
@@ -462,22 +461,6 @@ function clearSelectedQuestion() {
 
 function invalidateSelectedQuestion() {
   clearSelectedQuestion()
-}
-
-function findNextQuestion(currentRow: QuestionAnswerListItem) {
-  const currentLayerQuestions = filteredQuestions.value
-  const currentIndex = currentLayerQuestions.findIndex((question) => question.id === currentRow.id)
-  const currentKnowledgePoint = currentRow.knowledgePoint || '未分类'
-  const afterCurrent = currentIndex >= 0 ? currentLayerQuestions.slice(currentIndex + 1) : currentLayerQuestions
-  const beforeCurrent = currentIndex > 0 ? currentLayerQuestions.slice(0, currentIndex) : []
-
-  return (
-    afterCurrent.find((question) => (question.knowledgePoint || '未分类') === currentKnowledgePoint) ??
-    beforeCurrent.find((question) => (question.knowledgePoint || '未分类') === currentKnowledgePoint) ??
-    afterCurrent[0] ??
-    beforeCurrent[0] ??
-    null
-  )
 }
 
 function updateSelectedRowStatus(record: QuestionCorrectionRecord | null) {
@@ -541,7 +524,7 @@ function correctionTimelineType(status: CorrectionLayerKey) {
 }
 
 function layerCount(status: CorrectionLayerKey) {
-  return questions.value.filter((question) => rowCorrectionLayer(question) === status).length
+  return status === activeCorrectionLayer.value ? total.value : '查看'
 }
 
 function questionTypeText(type: number) {

@@ -412,6 +412,18 @@
       order by id desc
       limit 1
     ) correction on true
+    <where>
+      <if test="correctionStatus != null and correctionStatus != ''">
+        <choose>
+          <when test="correctionStatus == &quot;UNSUBMITTED&quot;">
+            and correction.review_status is null
+          </when>
+          <otherwise>
+            and correction.review_status = #{correctionStatus}
+          </otherwise>
+        </choose>
+      </if>
+    </where>
     order by coalesce(nullif(question.knowledge_point, ''), '未分类') asc,
       grouped.wrong_count desc,
       grouped.latest_wrong_time desc,
